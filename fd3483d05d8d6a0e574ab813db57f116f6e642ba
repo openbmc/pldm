@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f65cda38_b7386764",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:20Z",
+      "side": 1,
+      "message": "Sure, I plan to have a refactoring patch in the following relation chain.",
+      "parentUuid": "bc1646f0_d995bdb7",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2c4a384_57b067e0",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e11ae48_c338d809",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:20Z",
+      "side": 1,
+      "message": "Health PDI:\nhttps://github.com/openbmc/phosphor-dbus-interfaces/blob/808b2b794199f65dfec970a626cebc7200db660a/yaml/xyz/openbmc_project/State/Decorator/OperationalStatus.interface.yaml#L9\n\nPresence PDI: \nhttps://github.com/openbmc/phosphor-dbus-interfaces/blob/808b2b794199f65dfec970a626cebc7200db660a/yaml/xyz/openbmc_project/Inventory/Item.interface.yaml#L14\n\n`OperationalStatus`, corresponding to health state set, is default to false due to the definition in the existing PDI.\n`Present`, corresponding to presence state set, doesn\u0027t have any default value defined in existing PDI, I simply aligns it to the case of `OperationalStatus`.\n\nFor this newly introduced `LinkStatus`, corresponding to Link State, it is new and remain unmerged in PDI. Happy to change its default value to false if you insists.\n\nPlease find the patch in the following link:\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/93593",
+      "parentUuid": "d2c4a384_57b067e0",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd3abec0_1d0ac007",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-26T02:42:00Z",
       "side": 1,
       "message": "This test never checks the default value. Worth adding that check?",
+      "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9496ea_cfbe2a91",
+        "filename": "platform-mc/test/state_set_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:20Z",
+      "side": 1,
+      "message": "Sure, I have added a test in PS4.",
+      "parentUuid": "dd3abec0_1d0ac007",
       "revId": "fd3483d05d8d6a0e574ab813db57f116f6e642ba",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
