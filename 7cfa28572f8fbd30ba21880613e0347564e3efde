@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "471c8812_04cd0ad3",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:14Z",
+      "side": 1,
+      "message": "Thanks for catching this, I have added the 2 bad cases in PS4.",
+      "parentUuid": "a12c4cd2_aed12209",
+      "revId": "7cfa28572f8fbd30ba21880613e0347564e3efde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1104ab4f_7df4f4c1",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c76e277_a097de51",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:14Z",
+      "side": 1,
+      "message": "Acknowledged, I plan to make a patch in the following relation chain to refactor this.",
+      "parentUuid": "1104ab4f_7df4f4c1",
+      "revId": "7cfa28572f8fbd30ba21880613e0347564e3efde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd5407a3_88329963",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-21T04:48:45Z",
       "side": 1,
       "message": "This test never checks the default value is Normal. Worth adding that check?",
+      "revId": "7cfa28572f8fbd30ba21880613e0347564e3efde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "214a9b78_f21f00bb",
+        "filename": "platform-mc/test/state_set_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-28T02:48:14Z",
+      "side": 1,
+      "message": "Sure, I have added a test for this in PS4.",
+      "parentUuid": "bd5407a3_88329963",
       "revId": "7cfa28572f8fbd30ba21880613e0347564e3efde",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
