@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a190f6b7_90a8ac7a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-28T03:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb340af1_67c7ea1f",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be3045af_8d090cd1",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-26T22:05:56Z",
       "side": 1,
       "message": "nit: Use pkg::Descriptors instead of the vector type",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4b8a271_b9190d20",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-28T03:34:11Z",
+      "side": 1,
+      "message": "I used `std::multiset\u003cpkg::Descriptor\u003e` instead, behind a `pkg::SortedDescriptors` alias, to order by the whole entry. `pkg::Descriptors` is a multimap keyed on `DescriptorType`, so entries sharing a type are ordered only by insertion — that is the bug this change fixes.",
+      "parentUuid": "be3045af_8d090cd1",
       "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "614d6f30_67414ba0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-28T03:34:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2899214_e5772a5a",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cb9d9c4_f598fc65",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-08-26T22:05:56Z",
       "side": 1,
       "message": "Can we use std::for_each so it looks cleaner?",
+      "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df450765_cef67bb5",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-08-28T03:34:11Z",
+      "side": 1,
+      "message": "I would rather keep the range-for. `std::for_each` needs a lambda and a capture to do the same thing, so it comes out longer here — it earns its place when the iterators have to be spelled out, which is not the case for a container. Let me know if you feel strongly.",
+      "parentUuid": "6cb9d9c4_f598fc65",
       "revId": "2687db0b9c0752e858a1a929858a54115ab793fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
