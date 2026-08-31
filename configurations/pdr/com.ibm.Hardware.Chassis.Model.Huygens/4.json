@@ -4,6 +4,177 @@
             "pdrType": 4,
             "entries": [
                 {
+                    "entity_path": "/xyz/openbmc_project/inventory/system",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power0",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis1",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power1",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis2",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power2",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis3",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power3",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis4",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power4",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis5",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power5",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis6",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power6",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis7",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power7",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system/chassis8",
+                    "sensors": [
+                        {
+                            "set": {
+                                "id": 260,
+                                "size": 2,
+                                "states": [1, 10]
+                            },
+                            "dbus": {
+                                "path": "/org/openbmc/control/power8",
+                                "interface": "org.openbmc.control.Power",
+                                "property_name": "pgood",
+                                "property_type": "int32_t",
+                                "property_values": [1, 0]
+                            }
+                        }
+                    ]
+                },
+                {
                     "entity_path": "/xyz/openbmc_project/inventory/system/chassis0",
                     "sensors": [
                         {
