@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e237ba4_d74a70f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:20:01Z",
+      "side": 1,
+      "message": "Actually I am trying to implement a health state set feature that exposed by `Network Controller`.\n\nTo achieve this, I need this patch to enable pldmd to creates D-Bus object for entity type `Network Controller`. The following patch then maps the PDI `OperationalStatus` to health state set.\n\nI put the patch in such series to distinguish between \"feature\" and \"infra\" patch. \nHowever, this review enlighten me to separate the following patch from this long chain. \n\nThanks for acknowledging this!",
+      "parentUuid": "01d4e1fc_5cb102e2",
+      "range": {
+        "startLine": 41,
+        "startChar": 3,
+        "endLine": 41,
+        "endChar": 10
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0e549de_665bffff",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-27T17:50:15Z",
       "side": 1,
       "message": "Do you need to to also test corresponding Redfish?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 2
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d42a078a_3ae95bad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:20:01Z",
+      "side": 1,
+      "message": "Sure, I have added the corresponding redfish test logs in PS9.",
+      "parentUuid": "d0e549de_665bffff",
       "range": {
         "startLine": 49,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0ca135_5043b2f4",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:20:01Z",
+      "side": 1,
+      "message": "I am doing this to follows the redfish schema.\nFrom the redfish schema perspective, a port can only appears under a Redfish Switch/NetworkAdapter if it publishes `connected_to` to that object.\n\nTherefore, the proposed logic is to lookup if there is any parent entity type of `Network Controller` for the port entity. If so, we will then create association for them, representing the connection.",
+      "parentUuid": "a9938cc4_4cfc732a",
+      "range": {
+        "startLine": 232,
+        "startChar": 68,
+        "endLine": 233,
+        "endChar": 46
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f04bf401_69b0bc15",
@@ -93,6 +165,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84baaffd_b605152e",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:20:01Z",
+      "side": 1,
+      "message": "It is because the associations definition from PLDM PDR may not be applicable in bmcweb. \nFor example, a PDR could exposes the following structures:\n```\nNetwork Controller (Network Adapter / PCIeSwitch)\n|- ...\n|- Connector - Ethernet (Port)\n`- Connector - OSFP\n```\n\nGenerally, we will only creates D-Bus object for Network Controller and Port, and ignore the connector.\nHowever, if we strictly follows the structure here, we will be needing association for network controller \u003c-\u003e connector, and connector \u003c-\u003e port.",
+      "parentUuid": "f04bf401_69b0bc15",
+      "range": {
+        "startLine": 119,
+        "startChar": 61,
+        "endLine": 120,
+        "endChar": 60
+      },
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4ace1b9_d521a75e",
@@ -106,6 +202,24 @@
       "writtenOn": "2026-08-27T17:50:15Z",
       "side": 1,
       "message": "I think this needs some explanation in the commit message.",
+      "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67bffb11_6062cf9d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:20:01Z",
+      "side": 1,
+      "message": "Sure, I have attached the explanation in the commit messasge.\nThanks for acknowledging this.",
+      "parentUuid": "d4ace1b9_d521a75e",
       "revId": "8f4a63893a97d2da17ab12e0285659a54af99f23",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
