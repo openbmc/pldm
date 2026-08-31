@@ -1,0 +1,10 @@
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: <apuli@nvidia.com>
+Code-Review+1: <jvoon@nvidia.com>
+Code-Review+1: Meghana Vangapandu <meghanav@ami.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Mon, 31 Aug 2026 05:56:39 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/92739
+Project: openbmc/pldm
+Branch: refs/heads/master
