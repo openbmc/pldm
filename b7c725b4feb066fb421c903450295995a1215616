@@ -52,6 +52,24 @@
       "parentUuid": "aae7f301_bf1fefef",
       "revId": "b7c725b4feb066fb421c903450295995a1215616",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5952e85f_5dbdf2de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:26:21Z",
+      "side": 1,
+      "message": "I think this patch is ready now.\n@apuli@nvidia.com, please help set the patch as ready.\n\nAlso, I have submitted another bmcweb patch for this feature.\nPlease fine the redfish response in the CL as well.\n\nhttps://gerrit.openbmc.org/c/openbmc/bmcweb/+/93962",
+      "parentUuid": "5739adf4_0f737545",
+      "revId": "b7c725b4feb066fb421c903450295995a1215616",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
