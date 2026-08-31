@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9b12f38_0f38e3f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:19:55Z",
+      "side": 1,
+      "message": "This is an infra patch and thus no state sensor were actually enabled yet.\nThe only testing on this patch is the unit test.\n\nTo inspect how this infra patch works, I suggest reviewing the following feature patch such as health state set, presence state set, or link state set.",
+      "parentUuid": "dcaf122c_779ff551",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "659418fe_f1a9329a",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-27T17:39:00Z",
       "side": 1,
       "message": "Should we update the design doc on how the polling interval for state sensors is determined? Also why do we prevent polling instead of events?",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0a7ba68_d78aa984",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:19:55Z",
+      "side": 1,
+      "message": "Sure, I have updated the design docs as well.\n\nPlease check in the following link:\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/92069\n\nRegarding the second question, I need to clarify that polling is not instead of events. In fact, polling is the path for a terminus that doesn\u0027t support async events and the infra will be implemented in another patch.",
+      "parentUuid": "659418fe_f1a9329a",
       "revId": "5727b2409894844431fb81716c50e54547e87cf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22b8545_44e2af34",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:19:55Z",
+      "side": 1,
+      "message": "Yes, this implementation assign an extra time budget to state sensor for its polling.\nIn the worst case, that state sensor spent all of its budget for its polling, numeric sensor has to wait 2x original time compared to its original time.\n\nHowever, in the most case it should be nearly zero because every polling shouldn\u0027t be spending so much budget.",
+      "parentUuid": "14661a3f_b6b380e0",
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbad1f38_cae1426c",
@@ -65,6 +119,30 @@
       "writtenOn": "2026-08-27T17:39:00Z",
       "side": 1,
       "message": "Better to move this to a new function.",
+      "range": {
+        "startLine": 305,
+        "startChar": 1,
+        "endLine": 381,
+        "endChar": 0
+      },
+      "revId": "5727b2409894844431fb81716c50e54547e87cf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "066eeeb9_7ea468b0",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T11:19:55Z",
+      "side": 1,
+      "message": "Sure, I have made this an util function in PS7.\nThanks for acknowledging this.",
+      "parentUuid": "cbad1f38_cae1426c",
       "range": {
         "startLine": 305,
         "startChar": 1,
