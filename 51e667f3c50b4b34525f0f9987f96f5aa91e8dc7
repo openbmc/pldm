@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2659f4b_0c847d57",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T09:22:31Z",
+      "side": 1,
+      "message": "This patch is an infra patch and the getter is part of this state sensor infra.\nSo I think it should be kept in this patch rather than moving it to another feature patch.",
+      "parentUuid": "6c37a481_551577f7",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2287a0ad_0ed12e6c",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24474b1e_2d66d273",
+        "filename": "platform-mc/state_sensor.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T09:22:31Z",
+      "side": 1,
+      "message": "We can only do unit test, which I have already done in PS16.\nFor testing involving actual deployment on hardware platform, please check it on the child patches in the relation chain.",
+      "parentUuid": "2287a0ad_0ed12e6c",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd17f2e0_be9bc1cc",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-08-27T17:27:50Z",
       "side": 1,
       "message": "Not following what this is,",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 27
+      },
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b8d2f69_307e5751",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T09:22:31Z",
+      "side": 1,
+      "message": "DSP0248 v1.3.0 mentioned that a state sensor can be \"composite\", which can contains up to 8 component state sensors.\n\n`updatePresentState()` integrates response from PLDM command `GetStateSensorReadings` to update the property for each state set.\n\nNot sure which part of the implementation are you having concerns, please acknowledge.",
+      "parentUuid": "dd17f2e0_be9bc1cc",
       "range": {
         "startLine": 87,
         "startChar": 0,
@@ -81,6 +141,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61bd7717_70e4a8fd",
+        "filename": "platform-mc/state_sensor.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T09:22:31Z",
+      "side": 1,
+      "message": "Thanks for the catching!\n`stateSets` will only be used in constructor and thus I have discarded it from member data in PS17.\n\nAlso, I have rename `compositeStateSets` to avoid the naming confusion as well.",
+      "parentUuid": "f757943f_25157d8b",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 50
+      },
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7d15549_af038469",
@@ -94,6 +178,24 @@
       "writtenOn": "2026-08-27T17:27:50Z",
       "side": 1,
       "message": "Again this is a bit confusing as the commit message says no D-Bus objects are created. If this commit adds State PDIs to entity D-Bus objects then that should be in the testing details.",
+      "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0307d0c1_8550cf13",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T09:22:31Z",
+      "side": 1,
+      "message": "As previously discussed, this is an infra patch to enable state sensor in pldmd.\nThis function helps creating D-Bus interface on D-Bus object for each existing PLDM entity.\n\nHowever, not every PLDM entity will get their D-Bus object created. Currently pldmd only creates D-Bus object for certain shortlisted entity type.\n\nIn addition, to create D-Bus interface on the D-Bus object owned by each entity we need appropriate PDI for the mapping. \n\nCurrently we don\u0027t have enough PDI to covers all of the state set type defined in DSP0249. Only some shortlisted PDI are able to do so.\n\nI keep the effort of enabling more entity type and PDI in the next few patches in the relation chains. Please check them for more details.\n\nThanks!",
+      "parentUuid": "f7d15549_af038469",
       "revId": "51e667f3c50b4b34525f0f9987f96f5aa91e8dc7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
