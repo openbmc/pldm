@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ba08a19_d9e02e5f",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T04:53:34Z",
+      "side": 1,
+      "message": "They were used in the test file. \nAs the member data sits within the private section, we need this function to validate the correctness in the testing file.",
+      "parentUuid": "7a19d3c4_c7f5f154",
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "034a548c_60fbfa49",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-27T16:55:38Z",
       "side": 1,
       "message": "Shouldn\u0027t this return an error code?",
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4784a75_f103404c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T04:53:34Z",
+      "side": 1,
+      "message": "I have done try-catch within the function and put logs for the error case.\nNot sure why do we need to expose the error to the caller?",
+      "parentUuid": "034a548c_60fbfa49",
       "revId": "714e6f62e3ead11ae53848939834576788e89990",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -53,6 +89,53 @@
         "startChar": 0,
         "endLine": 398,
         "endChar": 9
+      },
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4950437a_7458e643",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T04:53:34Z",
+      "side": 1,
+      "message": "They are mapped. \n`addEntity()` resolves the names through `getEntityName()` which looks the full entity key up in `entityAuxiliaryNamesTbl`.\n\nAlso, there is already a test case covering this scenario, please check the case `procAuxNamesPdr` for more details.",
+      "parentUuid": "b4db9e5f_c52b459c",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 9
+      },
+      "revId": "714e6f62e3ead11ae53848939834576788e89990",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f21a8d1e_7ce33a0f",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-08-31T04:53:34Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com\nFollowing the question for the usage of `getContainers()`,\nthey were used here for the inspection.",
+      "range": {
+        "startLine": 645,
+        "startChar": 4,
+        "endLine": 660,
+        "endChar": 55
       },
       "revId": "714e6f62e3ead11ae53848939834576788e89990",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
