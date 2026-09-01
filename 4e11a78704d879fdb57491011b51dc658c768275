@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6734fbd_28a71d28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-09-01T07:58:35Z",
+      "side": 1,
+      "message": "Perhaps use prefix `fw-update:`?",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7ac13f8_37816f61",
@@ -32,6 +49,40 @@
       "side": 1,
       "message": "Have we considered removing the package parser code completely from pldm and just calling the APIs from libpldm++?",
       "parentUuid": "c7ac13f8_37816f61",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e30688e2_68741cc6",
+        "filename": "common/types.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-09-01T07:58:35Z",
+      "side": 1,
+      "message": "These aren\u0027t package concepts -- they\u0027re populated from `QueryDeviceIdentifiers` /\n`GetFirmwareParameters` responses. Better to move them out of the namespace;\nconfirmed none of them collide with libpldm++.\n\n  - `DescriptorMap`\n  - `DownstreamDescriptorMap`\n  - `DownstreamDeviceIndex` / `DownstreamDeviceInfo`\n  - `SoftwareIdentifier`\n  - `ComponentInfo` / `ComponentInfoMap`",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ad6856_224838c6",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-09-01T07:58:35Z",
+      "side": 1,
+      "message": "Worth aligning with the actual class name.",
       "revId": "4e11a78704d879fdb57491011b51dc658c768275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
