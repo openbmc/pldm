@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1842f4b_424c4366",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-01T09:46:22Z",
+      "side": 1,
+      "message": "can we use std::to_array?",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a5983ed_ab903c0c",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-01T09:46:22Z",
+      "side": 1,
+      "message": "Should we add on or two State sets to show this will be consumed?",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "724c67ad_72df81e2",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-01T09:46:22Z",
+      "side": 1,
+      "message": "this class and `StateSensor` both hold StateSetBase. Is this intentional?",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
