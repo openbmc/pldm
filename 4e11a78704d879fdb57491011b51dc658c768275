@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f67a624c_3d0bbf08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-01T15:09:34Z",
+      "side": 1,
+      "message": "Done, makes more sense that way since the change goes beyond the header 👍",
+      "parentUuid": "a6734fbd_28a71d28",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7ac13f8_37816f61",
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6f65cbc8_81aa7f10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-01T15:09:34Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s currently possible as some of these types are constructed in this repo.\n\ne.g. in ` fw-update/test/device_updater_test.cpp`\n\nThe constructor is currently not public in libpldm++ as it was initially meant as a readonly flow, parsing the package and extracting information from it.\n\nLong term it could be possible to avoid the wrapping by e.g. exposing one constructor per ABI/spec revision.",
+      "parentUuid": "105d1342_66d06c26",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e30688e2_68741cc6",
         "filename": "common/types.hpp",
         "patchSetId": 8
@@ -66,6 +102,24 @@
       "writtenOn": "2026-09-01T07:58:35Z",
       "side": 1,
       "message": "These aren\u0027t package concepts -- they\u0027re populated from `QueryDeviceIdentifiers` /\n`GetFirmwareParameters` responses. Better to move them out of the namespace;\nconfirmed none of them collide with libpldm++.\n\n  - `DescriptorMap`\n  - `DownstreamDescriptorMap`\n  - `DownstreamDeviceIndex` / `DownstreamDeviceInfo`\n  - `SoftwareIdentifier`\n  - `ComponentInfo` / `ComponentInfoMap`",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a45e35b_e8d143af",
+        "filename": "common/types.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-01T15:09:34Z",
+      "side": 1,
+      "message": "right, moved them out of `pkg`. Thanks 👍",
+      "parentUuid": "e30688e2_68741cc6",
       "revId": "4e11a78704d879fdb57491011b51dc658c768275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -87,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a232b6d0_c74088a2",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-01T15:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0ad6856_224838c6",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b09d819_377cacb0",
@@ -100,6 +172,24 @@
       "writtenOn": "2026-08-25T05:18:07Z",
       "side": 1,
       "message": "this can also be moved inside the sub namespace right?",
+      "revId": "4e11a78704d879fdb57491011b51dc658c768275",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "476a874c_334d486d",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-01T15:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b09d819_377cacb0",
       "revId": "4e11a78704d879fdb57491011b51dc658c768275",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
