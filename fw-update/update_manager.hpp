@@ -232,7 +232,7 @@ class UpdateManager : public UpdateManagerBase
      * dbus
      *
      */
-    uint8_t lastProgress;
+    uint8_t lastProgress = 0;
 };
 
 } // namespace fw_update

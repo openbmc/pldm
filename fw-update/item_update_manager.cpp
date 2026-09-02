@@ -264,6 +264,7 @@ void ItemUpdateManager::teardownUpdate()
     packageMap.reset();
     dupFd.reset();
     updateInProgress = false;
+    lastProgress = 0;
 }
 
 Response ItemUpdateManager::handleRequest(
