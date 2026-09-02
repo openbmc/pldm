@@ -18,6 +18,7 @@ tests = [
     'package_parser_test',
     'device_updater_test',
     'update_manager_test',
+    'device_updater_flow_test',
     'firmware_inventory_manager_test',
     'firmware_inventory_test',
     'condition_collector_test',
@@ -31,6 +32,7 @@ foreach t : tests
         executable(
             t.underscorify(),
             t + '.cpp',
+            cpp_args: t == 'device_updater_flow_test' ? ['-fno-access-control'] : [],
             implicit_include_directories: false,
             include_directories: '../../pldmd',
             dependencies: test_deps,
