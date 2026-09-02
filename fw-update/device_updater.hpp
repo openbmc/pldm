@@ -2,7 +2,7 @@
 
 #include "common/types.hpp"
 
-#include <libpldm/base.h>
+#include <libpldm/firmware_update.h>
 #include <linux/mctp.h>
 
 #include <sdbusplus/message/native_types.hpp>
@@ -309,7 +309,38 @@ class DeviceUpdater
     void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                       size_t respMsgLen);
 
+    /** @brief Decode a GetStatus command response
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] response - PLDM response message, nullptr if none arrived
+     *  @param[in] respMsgLen - Response message length
+     *
+     *  @return the decoded status, or std::nullopt if the response is
+     *          missing, cannot be decoded or reports an error
+     */
+    static std::optional<pldm_get_status_resp> parseGetStatusResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
+
   private:
+    /** @brief Send GetStatus command request after a component is applied
+     *
+     *  @return PLDM_SUCCESS if the request was sent, otherwise an error code
+     */
+    [[nodiscard]] int sendGetStatusRequest();
+
+    /** @brief Handler for GetStatus command response after a component is
+     *         applied
+     *
+     *  Moves on to the next component or to activation if the device is
+     *  ready for the next transfer, otherwise fails the update.
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] response - PLDM response message, nullptr if none arrived
+     *  @param[in] respMsgLen - Response message length
+     */
+    void handleApplyState(mctp_eid_t eid, const pldm_msg* response,
+                          size_t respMsgLen);
+
     /** @brief Send PassComponentTable command request
      *
      *  @param[in] compOffset - component offset in compImageInfos
