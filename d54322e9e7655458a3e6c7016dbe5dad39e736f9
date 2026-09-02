@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c6f33ba_723a113d",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-02T10:13:15Z",
+      "side": 1,
+      "message": "Let\u0027s not do this.",
+      "revId": "d54322e9e7655458a3e6c7016dbe5dad39e736f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "127d165b_f42f8fba",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-02T10:13:15Z",
+      "side": 1,
+      "message": "Instead let\u0027s define an array probably in platform-mc/dbus_impl_fru.hpp that contains contained-entity, container-entity, forward-association, backward-association and add function that will iterate over it to find the match to establish association.",
+      "revId": "d54322e9e7655458a3e6c7016dbe5dad39e736f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab323025_13852d1f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-02T10:13:15Z",
+      "side": 1,
+      "message": "And then pass the association obtained from comment above to the entity object.",
+      "revId": "d54322e9e7655458a3e6c7016dbe5dad39e736f9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
