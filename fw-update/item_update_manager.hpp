@@ -260,7 +260,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * dbus
      *
      */
-    uint8_t lastProgress;
+    uint8_t lastProgress = 0;
 };
 
 } // namespace pldm::fw_update
