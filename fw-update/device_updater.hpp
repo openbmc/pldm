@@ -301,7 +301,7 @@ class DeviceUpdater
     /** @brief Component info for the components in this FD derived from
      *         GetFirmwareParameters response
      */
-    const ComponentInfo& compInfo;
+    const ComponentInfo compInfo;
 
     /** @brief Maximum size in bytes of the variable payload to be requested by
      *         the FD via RequestFirmwareData command
