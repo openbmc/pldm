@@ -21,6 +21,7 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
+#include <set>
 #include <unordered_map>
 #include <utility>
 
@@ -160,12 +161,22 @@ class UpdateManager : public UpdateManagerBase
 
     void resetActivationState() override;
 
-    /** @brief
+    /** @brief Associate firmware device ID records in the package to
+     *         discovered devices, skipping endpoints whose component info
+     *         is missing or empty and recording them in skippedEids
      *
+     *  @param[in] fwDeviceIDRecords - Device ID records in the package
+     *  @param[in] descriptorMap - Descriptors of the discovered devices
+     *  @param[in] componentInfoMap - Component info of the discovered devices
+     *  @param[out] totalNumComponentUpdates - Total component updates for the
+     *                                         matched devices
+     *
+     *  @return Matched devices as pairs of EID and device ID record offset
      */
     DeviceUpdaterInfos associatePkgToDevices(
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const DescriptorMap& descriptorMap,
+        const ComponentInfoMap& componentInfoMap,
         TotalComponentUpdates& totalNumComponentUpdates);
 
     /** @brief Generate a unique software ID based on current timestamp
@@ -220,6 +231,10 @@ class UpdateManager : public UpdateManagerBase
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;
     std::unordered_map<mctp_eid_t, bool> deviceUpdateCompletionMap;
+    /** @brief Endpoints matching the package but skipped for missing or empty
+     *         component info
+     */
+    std::set<mctp_eid_t> skippedEids;
 
     /** @brief Total number of component updates to calculate the progress of
      *         the Firmware activation
