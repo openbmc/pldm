@@ -1,8 +1,12 @@
 #include "fw-update/device_updater.hpp"
 #include "fw-update/package_parser.hpp"
+#include "fw-update/update_manager.hpp"
+#include "requester/handler.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <libpldm/firmware_update.h>
 
+#include <chrono>
 #include <fstream>
 
 #include <gmock/gmock.h>
@@ -10,6 +14,18 @@
 
 using namespace pldm;
 using namespace pldm::fw_update;
+
+/** @brief Minimal no-op UpdateManagerBase for tests without D-Bus */
+class TestUpdateManager : public UpdateManagerBase
+{
+  public:
+    using UpdateManagerBase::UpdateManagerBase;
+
+    void updateDeviceCompletion(mctp_eid_t /*eid*/, bool /*status*/) override {}
+    void updateActivationProgress() override {}
+    void activatePackage() override {}
+    void resetActivationState() override {}
+};
 
 class DeviceUpdaterTest : public testing::Test
 {
@@ -190,6 +206,40 @@ TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
 
     EXPECT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_DATA_OUT_OF_RANGE);
+}
+
+TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
+{
+    constexpr mctp_eid_t eid = 1;
+    auto event = sdeventplus::Event::get_default();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
+
+    // Bind to the map-owned entry, as UpdateManager::processStream does
+    ComponentInfoMap componentInfoMap{{eid, compInfo}};
+    DeviceUpdater deviceUpdater(eid, package, fwDeviceIDRecord, compImageInfos,
+                                componentInfoMap.at(eid), 512, &updateManager);
+
+    // InventoryManager::removeFDs() erases the entry mid-update
+    componentInfoMap.erase(eid);
+
+    // A successful RequestUpdate response defers sendPassCompTableRequest
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_update_resp)>
+        requestUpdateResponse{0x00, 0x05, 0x10, 0x00, 0x00, 0x00, 0x00};
+    auto responseMsg =
+        reinterpret_cast<const pldm_msg*>(requestUpdateResponse.data());
+    deviceUpdater.requestUpdate(eid, responseMsg,
+                                sizeof(pldm_request_update_resp));
+
+    // The deferred request preparation reads the component info; it must not
+    // touch the erased entry (the send itself fails gracefully: no transport)
+    sd_event_run(event.get(), std::chrono::microseconds(100000).count());
+
+    EXPECT_EQ(deviceUpdater.getProgress(), 0);
 }
 
 TEST_F(DeviceUpdaterTest, FullUpdateProgress)

@@ -143,7 +143,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief The component information of the target device
      */
-    const ComponentInfo& componentInfo;
+    const ComponentInfo componentInfo;
 
     /**
      * @brief The package data for the firmware update
