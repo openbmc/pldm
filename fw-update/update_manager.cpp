@@ -390,6 +390,7 @@ void UpdateManager::completeUpdate(bool status)
 void UpdateManager::resetActivationState()
 {
     updateInProgress = false;
+    lastProgress = 0;
     activation.reset();
     activationProgress.reset();
     objPath.clear();
