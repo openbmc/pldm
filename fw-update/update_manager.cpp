@@ -11,6 +11,7 @@
 #include <cassert>
 #include <filesystem>
 #include <fstream>
+#include <set>
 #include <string>
 
 PHOSPHOR_LOG2_USING;
@@ -167,7 +168,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 
     auto deviceUpdaterInfos =
         associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
+                              componentInfoMap, totalNumComponentUpdates);
     if (!deviceUpdaterInfos.size())
     {
         error(
@@ -189,6 +190,8 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         const auto& fwDeviceIDRecord =
             fwDeviceIDRecords[deviceUpdaterInfo.second];
         auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        // associatePkgToDevices only returns EIDs with non-empty comp info
+        assert(search != componentInfoMap.end());
         deviceUpdaterMap.emplace(
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
@@ -211,9 +214,11 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const ComponentInfoMap& componentInfoMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
+    std::set<mctp_eid_t> skippedEids;
     for (size_t index = 0; index < fwDeviceIDRecords.size(); ++index)
     {
         const auto& deviceIDDescriptors =
@@ -224,6 +229,20 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
                               deviceIDDescriptors.begin(),
                               deviceIDDescriptors.end()))
             {
+                // Skip endpoints without usable GetFirmwareParameters data
+                auto compInfoSearch = componentInfoMap.find(eid);
+                if (compInfoSearch == componentInfoMap.end() ||
+                    compInfoSearch->second.empty())
+                {
+                    // Log once per skipped endpoint per package
+                    if (skippedEids.insert(eid).second)
+                    {
+                        error(
+                            "Skipping endpoint ID {EID} matching the package: no usable component info (GetFirmwareParameters failed or reported zero components).",
+                            "EID", eid);
+                    }
+                    continue;
+                }
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
                     std::get<ApplicableComponents>(fwDeviceIDRecords[index]);

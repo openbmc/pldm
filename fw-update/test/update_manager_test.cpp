@@ -14,6 +14,8 @@ using namespace pldm;
 using namespace pldm::fw_update;
 using namespace std::chrono;
 
+namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+
 class UpdateManagerTest : public testing::Test
 {
   protected:
@@ -112,4 +114,94 @@ TEST_F(UpdateManagerTest, activationProgressAdvancesPerChunk)
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     // Transfer complete: capped at 97 until verify/apply/activate
     EXPECT_EQ(progressOf(manager)->progress(), 97);
+}
+
+TEST_F(UpdateManagerTest, skipDeviceMissingComponentInfo)
+{
+    constexpr mctp_eid_t eidWithCompInfo = 1;
+    constexpr mctp_eid_t eidWithoutCompInfo = 2;
+    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
+                     {eidWithoutCompInfo, uuidDescriptors}};
+    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
+
+    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+                          componentInfoMap);
+    EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
+
+    // The device with component info is serviced by a DeviceUpdater
+    auto response = requestFwData(manager, eidWithCompInfo);
+    ASSERT_GT(response.size(), sizeof(pldm_msg));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+
+    // The device without component info must not get a DeviceUpdater
+    response = requestFwData(manager, eidWithoutCompInfo);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
+}
+
+TEST_F(UpdateManagerTest, skipDeviceEmptyComponentInfo)
+{
+    constexpr mctp_eid_t eidWithCompInfo = 1;
+    constexpr mctp_eid_t eidWithEmptyCompInfo = 2;
+    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
+                     {eidWithEmptyCompInfo, uuidDescriptors}};
+    // GetFirmwareParameters succeeded but reported zero components
+    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
+                        {eidWithEmptyCompInfo, {}}};
+
+    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+                          componentInfoMap);
+    EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
+
+    // The device with component info is serviced by a DeviceUpdater
+    auto response = requestFwData(manager, eidWithCompInfo);
+    ASSERT_GT(response.size(), sizeof(pldm_msg));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+
+    // The zero-component device must not get a DeviceUpdater
+    response = requestFwData(manager, eidWithEmptyCompInfo);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
+}
+
+TEST_F(UpdateManagerTest, componentCountExcludesSkippedDevices)
+{
+    constexpr mctp_eid_t eidWithCompInfo = 1;
+    constexpr mctp_eid_t eidWithoutCompInfo = 2;
+    constexpr mctp_eid_t eidWithEmptyCompInfo = 3;
+    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
+                     {eidWithoutCompInfo, uuidDescriptors},
+                     {eidWithEmptyCompInfo, uuidDescriptors}};
+    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
+                        {eidWithEmptyCompInfo, {}}};
+    FirmwareDeviceIDRecords fwDeviceIDRecords{
+        {1, {0x00}, "VersionString2", uuidDescriptors, {}}};
+
+    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+                          componentInfoMap);
+    TotalComponentUpdates totalNumComponentUpdates = 0;
+    auto deviceUpdaterInfos = manager.associatePkgToDevices(
+        fwDeviceIDRecords, descriptorMap, componentInfoMap,
+        totalNumComponentUpdates);
+
+    // Only the device with non-empty component info is matched and counted
+    ASSERT_EQ(deviceUpdaterInfos.size(), 1);
+    EXPECT_EQ(deviceUpdaterInfos[0].first, eidWithCompInfo);
+    EXPECT_EQ(deviceUpdaterInfos[0].second, 0);
+    EXPECT_EQ(totalNumComponentUpdates, 1);
+}
+
+TEST_F(UpdateManagerTest, allDevicesMissingComponentInfoTerminates)
+{
+    constexpr mctp_eid_t eidWithoutCompInfo = 2;
+    descriptorMap = {{eidWithoutCompInfo, uuidDescriptors}};
+
+    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+                          componentInfoMap);
+    EXPECT_EQ(manager.processPackage(copyTestPackage()), -1);
+
+    // The update must terminate as Invalid instead of wedging in Activating
+    ASSERT_NE(manager.activation, nullptr);
+    EXPECT_EQ(manager.activation->activation(),
+              software::Activation::Activations::Invalid);
 }
