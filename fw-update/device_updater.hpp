@@ -2,7 +2,7 @@
 
 #include "common/types.hpp"
 
-#include <libpldm/base.h>
+#include <libpldm/firmware_update.h>
 #include <linux/mctp.h>
 
 #include <sdbusplus/message/native_types.hpp>
@@ -10,6 +10,8 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <functional>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -305,7 +307,20 @@ class DeviceUpdater
     void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                       size_t respMsgLen);
 
+    /** @brief Parse GetStatus, returning nullopt on missing or invalid data */
+    static std::optional<pldm_get_status_resp> parseGetStatusResponse(
+        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
+
   private:
+    using ResponseHandler =
+        std::function<void(mctp_eid_t, const pldm_msg*, size_t)>;
+
+    /** @brief Send GetStatus; return an error if registration fails */
+    [[nodiscard]] int sendGetStatusRequest(ResponseHandler callback);
+
+    /** @brief Advance after a valid post-apply status, otherwise abort */
+    void handleApplyState(const std::optional<pldm_get_status_resp>& status);
+
     /** @brief Send PassComponentTable command request
      *
      *  @param[in] compOffset - component offset in compImageInfos
@@ -423,6 +438,9 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief Suppress status callbacks after destruction */
+    std::shared_ptr<bool> aliveToken = std::make_shared<bool>(true);
 };
 
 } // namespace fw_update
