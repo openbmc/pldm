@@ -11,6 +11,8 @@
 #include <spanstream>
 #include <variant>
 
+class ItemUpdateManagerTest;
+
 namespace pldm::fw_update
 {
 
@@ -24,6 +26,8 @@ using ApplyTimeIntf =
 class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 {
   public:
+    friend class ::ItemUpdateManagerTest;
+
     ItemUpdateManager() = delete;
     ItemUpdateManager(const ItemUpdateManager&) = delete;
     ItemUpdateManager(ItemUpdateManager&&) = delete;
@@ -260,7 +264,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * dbus
      *
      */
-    uint8_t lastProgress;
+    uint8_t lastProgress = 0;
 };
 
 } // namespace pldm::fw_update
