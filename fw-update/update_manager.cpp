@@ -173,11 +173,20 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 
     auto deviceUpdaterInfos =
         associatePkgToDevices(parser->getFwDeviceIDRecords(), descriptorMap,
-                              totalNumComponentUpdates);
+                              componentInfoMap, totalNumComponentUpdates);
     if (!deviceUpdaterInfos.size())
     {
-        error(
-            "No matching devices found with the PLDM firmware update package");
+        if (skippedEids.empty())
+        {
+            error(
+                "No matching devices found with the PLDM firmware update package");
+        }
+        else
+        {
+            error(
+                "All {COUNT} endpoints matching the PLDM firmware update package were skipped",
+                "COUNT", skippedEids.size());
+        }
         markPackageInvalid();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             Incompatible();
@@ -192,6 +201,8 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         const auto& fwDeviceIDRecord =
             fwDeviceIDRecords[deviceUpdaterInfo.second];
         auto search = componentInfoMap.find(deviceUpdaterInfo.first);
+        // associatePkgToDevices only returns EIDs with non-empty comp info
+        assert(search != componentInfoMap.end());
         deviceUpdaterMap.emplace(
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
@@ -214,6 +225,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
     const FirmwareDeviceIDRecords& fwDeviceIDRecords,
     const DescriptorMap& descriptorMap,
+    const ComponentInfoMap& componentInfoMap,
     TotalComponentUpdates& totalNumComponentUpdates)
 {
     DeviceUpdaterInfos deviceUpdaterInfos;
@@ -227,6 +239,20 @@ DeviceUpdaterInfos UpdateManager::associatePkgToDevices(
                               deviceIDDescriptors.begin(),
                               deviceIDDescriptors.end()))
             {
+                // Skip endpoints without usable GetFirmwareParameters data
+                auto compInfoSearch = componentInfoMap.find(eid);
+                if (compInfoSearch == componentInfoMap.end() ||
+                    compInfoSearch->second.empty())
+                {
+                    // Log once per skipped endpoint per package
+                    if (skippedEids.insert(eid).second)
+                    {
+                        error(
+                            "Skipping endpoint ID {EID} matching the package: component info is missing or empty.",
+                            "EID", eid);
+                    }
+                    continue;
+                }
                 deviceUpdaterInfos.emplace_back(std::make_pair(eid, index));
                 const auto& applicableComponents =
                     std::get<ApplicableComponents>(fwDeviceIDRecords[index]);
@@ -250,6 +276,16 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
                 completeUpdate(false);
                 return;
             }
+        }
+
+        // A skipped endpoint was not updated, so the package update failed
+        if (!skippedEids.empty())
+        {
+            error(
+                "Firmware update skipped {COUNT} endpoints matching the package",
+                "COUNT", skippedEids.size());
+            completeUpdate(false);
+            return;
         }
 
         if (!postConditionPath.empty())
@@ -421,6 +457,7 @@ void UpdateManager::releasePackage()
 {
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
+    skippedEids.clear();
     parser.reset();
     if (package.is_open())
     {
