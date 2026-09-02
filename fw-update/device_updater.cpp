@@ -897,32 +897,23 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
                 updateManager->updateActivationProgress();
             }
         }
-        if (componentIndex == applicableComponents.size() - 1)
+        if (updateManager != nullptr)
         {
-            componentIndex = 0;
-            componentUpdateStatus.clear();
-            componentUpdateStatus[componentIndex] =
-                ComponentUpdateStatus::Accepted;
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
-                              this));
-            }
-        }
-        else
-        {
-            componentIndex++;
-            componentUpdateStatus[componentIndex] =
-                ComponentUpdateStatus::Accepted;
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                              componentIndex));
-            }
+            // Confirm the FD state before moving on to the next component
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event, [this](auto&) {
+                    pldmRequest.reset();
+                    auto rc = sendGetStatusRequest(
+                        [this](mctp_eid_t eid, const pldm_msg* response,
+                               size_t length) {
+                            handleApplyState(
+                                parseGetStatusResponse(eid, response, length));
+                        });
+                    if (rc)
+                    {
+                        handleApplyState(std::nullopt);
+                    }
+                });
         }
     }
     else
@@ -950,6 +941,43 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     }
 
     return response;
+}
+
+void DeviceUpdater::handleApplyState(
+    const std::optional<pldm_get_status_resp>& status)
+{
+    if (status && status->current_state == PLDM_FD_STATE_READY_XFER &&
+        status->aux_state == PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER &&
+        status->aux_state_status == PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS)
+    {
+        const auto& applicableComponents =
+            std::get<ApplicableComponents>(fwDeviceIDRecord);
+        if (componentIndex == applicableComponents.size() - 1)
+        {
+            componentIndex = 0;
+            componentUpdateStatus.clear();
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Accepted;
+            sendActivateFirmwareRequest();
+        }
+        else
+        {
+            componentIndex++;
+            componentUpdateStatus[componentIndex] =
+                ComponentUpdateStatus::Accepted;
+            sendUpdateComponentRequest(componentIndex);
+        }
+        return;
+    }
+
+    if (status)
+    {
+        error(
+            "Invalid post-apply status for endpoint ID '{EID}', state '{STATE}', auxiliary state '{AUX_STATE}', status '{AUX_STATUS}'",
+            "EID", eid, "STATE", status->current_state, "AUX_STATE",
+            status->aux_state, "AUX_STATUS", status->aux_state_status);
+    }
+    updateManager->updateDeviceCompletion(eid, false);
 }
 
 void DeviceUpdater::sendActivateFirmwareRequest()
@@ -1039,6 +1067,79 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
 
     updateManager->updateActivationProgress();
     updateManager->updateDeviceCompletion(eid, true);
+}
+
+int DeviceUpdater::sendGetStatusRequest(ResponseHandler callback)
+{
+    auto instanceIdResult = updateManager->instanceIdDb.next(eid);
+    if (!instanceIdResult)
+    {
+        error(
+            "Failed to allocate instance ID for get status request for endpoint ID '{EID}'",
+            "EID", eid);
+        return PLDM_ERROR;
+    }
+    auto instanceId = instanceIdResult.value();
+    Request request(sizeof(pldm_msg_hdr));
+    auto requestMsg = new (request.data()) pldm_msg;
+
+    auto rc = encode_get_status_req(instanceId, requestMsg,
+                                    PLDM_GET_STATUS_REQ_BYTES);
+    if (rc)
+    {
+        updateManager->instanceIdDb.free(eid, instanceId);
+        error(
+            "Failed to encode get status req for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+        return rc;
+    }
+
+    rc = updateManager->handler.registerRequest(
+        eid, instanceId, PLDM_FWUP, PLDM_GET_STATUS, std::move(request),
+        [alive = std::weak_ptr(aliveToken), callback = std::move(callback)](
+            mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+            if (!alive.expired())
+            {
+                callback(eid, response, respMsgLen);
+            }
+        });
+    if (rc)
+    {
+        error(
+            "Failed to send get status request for endpoint ID '{EID}', response code '{RC}'",
+            "EID", eid, "RC", rc);
+    }
+    return rc;
+}
+
+std::optional<pldm_get_status_resp> DeviceUpdater::parseGetStatusResponse(
+    mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
+{
+    if (response == nullptr || !respMsgLen)
+    {
+        error("No response received for get status for endpoint ID '{EID}'",
+              "EID", eid);
+        return std::nullopt;
+    }
+
+    pldm_get_status_resp status{};
+    // The packed response cannot provide an aligned decoder output pointer.
+    bitfield32_t updateOptionFlagsEnabled{};
+    auto rc = decode_get_status_resp(
+        response, respMsgLen, &status.completion_code, &status.current_state,
+        &status.previous_state, &status.aux_state, &status.aux_state_status,
+        &status.progress_percent, &status.reason_code,
+        &updateOptionFlagsEnabled);
+    if (rc || status.completion_code)
+    {
+        error(
+            "Failed to parse get status response for endpoint ID '{EID}', response code '{RC}', completion code '{CC}'",
+            "EID", eid, "RC", rc, "CC", status.completion_code);
+        return std::nullopt;
+    }
+
+    status.update_option_flags_enabled = updateOptionFlagsEnabled;
+    return status;
 }
 
 void DeviceUpdater::sendCancelUpdateComponentRequest()

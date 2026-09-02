@@ -314,3 +314,46 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST_F(DeviceUpdaterTest, ParseGetStatusResponse)
+{
+    // READY XFER after APPLY, aux state IDLE/LEARN COMPONENTS/READY XFER,
+    // progress 100%, reason code initialization, nonzero update option flags
+    constexpr std::array<uint8_t,
+                         sizeof(pldm_msg_hdr) + sizeof(pldm_get_status_resp)>
+        getStatusResp{0x00, 0x05, 0x1B, 0x00, 0x02, 0x05, 0x03,
+                      0x00, 0x64, 0x00, 0x78, 0x56, 0x34, 0x12};
+    auto respMsg = reinterpret_cast<const pldm_msg*>(getStatusResp.data());
+
+    auto status = DeviceUpdater::parseGetStatusResponse(
+        0, respMsg, sizeof(pldm_get_status_resp));
+    ASSERT_TRUE(status.has_value());
+    EXPECT_EQ(status->completion_code, PLDM_SUCCESS);
+    EXPECT_EQ(status->current_state, PLDM_FD_STATE_READY_XFER);
+    EXPECT_EQ(status->previous_state, PLDM_FD_STATE_APPLY);
+    EXPECT_EQ(status->aux_state, PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER);
+    EXPECT_EQ(status->aux_state_status,
+              PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS);
+    EXPECT_EQ(status->progress_percent, 100);
+    EXPECT_EQ(status->reason_code, PLDM_FD_INITIALIZATION);
+    EXPECT_EQ(static_cast<uint32_t>(status->update_option_flags_enabled.value),
+              0x12345678u);
+}
+
+TEST_F(DeviceUpdaterTest, ParseGetStatusResponseErrors)
+{
+    // No response
+    EXPECT_FALSE(DeviceUpdater::parseGetStatusResponse(0, nullptr, 0));
+
+    // Non-success completion code
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> ccError{
+        0x00, 0x05, 0x1B, PLDM_ERROR};
+    auto respMsg = reinterpret_cast<const pldm_msg*>(ccError.data());
+    EXPECT_FALSE(DeviceUpdater::parseGetStatusResponse(0, respMsg, 1));
+
+    // Truncated payload
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 4> truncated{
+        0x00, 0x05, 0x1B, 0x00, 0x02, 0x05, 0x03};
+    respMsg = reinterpret_cast<const pldm_msg*>(truncated.data());
+    EXPECT_FALSE(DeviceUpdater::parseGetStatusResponse(0, respMsg, 4));
+}
