@@ -24,6 +24,8 @@
 #include <unordered_map>
 #include <utility>
 
+class UpdateManagerTest;
+
 namespace pldm
 {
 
@@ -79,6 +81,8 @@ class UpdateManagerBase
 class UpdateManager : public UpdateManagerBase
 {
   public:
+    friend class ::UpdateManagerTest;
+
     UpdateManager() = delete;
     UpdateManager(const UpdateManager&) = delete;
     UpdateManager(UpdateManager&&) = delete;
@@ -226,7 +230,7 @@ class UpdateManager : public UpdateManagerBase
      * dbus
      *
      */
-    uint8_t lastProgress;
+    uint8_t lastProgress = 0;
 };
 
 } // namespace fw_update
