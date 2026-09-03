@@ -21,6 +21,7 @@ tests = [
     'numeric_sensor_test',
     'event_manager_test',
     'dbus_to_terminus_effecter_test',
+    'dbus_impl_fru_test',
 ]
 
 foreach t : tests
