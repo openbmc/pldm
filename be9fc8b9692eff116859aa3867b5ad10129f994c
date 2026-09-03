@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dce4f9aa_dfa63cc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000926
+      },
+      "writtenOn": "2026-09-03T09:05:18Z",
+      "side": 1,
+      "message": "Parsing for redfish resource/action PDRs was recently merged to master: `91640: pldmtool: Support parsing Redfish Resource/Action PDRs` | https://gerrit.openbmc.org/c/openbmc/pldm/+/91640\n\nCan you please add them as well?",
+      "revId": "be9fc8b9692eff116859aa3867b5ad10129f994c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
