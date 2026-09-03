@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "880f973a_5292e5b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-09-03T06:02:01Z",
+      "side": 1,
+      "message": "The dependent EM commit is still in review , and this cannot be merged without that. Please ping back here once its is merged.",
+      "revId": "23db23bacbc5ac39e10518a3a37e3660a891dd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
