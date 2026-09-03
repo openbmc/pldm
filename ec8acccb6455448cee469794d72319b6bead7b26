@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0082e765_16812019",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T03:47:10Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e188cd2f_80e75883",
+      "range": {
+        "startLine": 181,
+        "startChar": 20,
+        "endLine": 185,
+        "endChar": 59
+      },
+      "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f35c0779_15cde7b8",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-08-27T08:11:15Z",
       "side": 1,
       "message": "oemVendorIanaFieldType is the same as PLDM_OEM_FRU_FIELD_TYPE_IANA right, we can reuse that.\n\nAlso I notice that some part of the code are similar in both #ifdef OEM-IBM and #else part. Can we bring those to the common part of the code so we have less duplication of code?",
+      "range": {
+        "startLine": 189,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 59
+      },
+      "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "990933aa_23c2572a",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T03:47:10Z",
+      "side": 1,
+      "message": "1.Regarding reusing PLDM_OEM_FRU_FIELD_TYPE_IANA:\nPLDM_OEM_FRU_FIELD_TYPE_IANA is defined inside libpldm/oem/ibm/fru.h (as part of pldm_oem_ibm_fru_field_type), which is conditionally included only under #ifdef OEM_IBM. Reusing it in the common/non-IBM path would require unconditionally including an IBM-scoped header in generic code or would break non-IBM builds (-Doem-ibm\u003ddisabled). Per DMTF DSP0257 Table 6, Field Type 1 is standard \"Vendor IANA\" across all OEM record sets, so keeping a generic constant (oemVendorIanaFieldType \u003d 1) avoids cross-vendor header dependencies.\n\n\n2.Done in Patchset 3. Hoisted the Vendor IANA mapping, uint32 IANA parsing, and raw hex fallback out of the #ifdef block so both paths share common logic, keeping only IBM-specific RT/IPZ handling guarded. Also trimmed the verbose comments.",
+      "parentUuid": "f35c0779_15cde7b8",
       "range": {
         "startLine": 189,
         "startChar": 37,
