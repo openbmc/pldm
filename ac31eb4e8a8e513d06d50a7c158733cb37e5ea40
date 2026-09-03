@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e74b36cb_3b8ee806",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "\"DSP0267 v1.3.0 Table 5\" in patchset 3.",
+      "parentUuid": "450e14e3_1c0812bd",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d3923a2_f592dd17",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-25T09:24:14Z",
       "side": 1,
       "message": "same here. pls specify version of the DMTF spec used or referred to.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef9fde5f_3a5e814b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "\"DSP0267 v1.3.0 Table 5\" in patchset 3.",
+      "parentUuid": "0d3923a2_f592dd17",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c751a2a_b20a17dd",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "You\u0027re right, I missed the ApplyComplete response side. Per\nDSP0267 v1.3.0 §12.9 the response can send\nComponentActivationMethodsModification back. My read of the word\n\"modification\" is that it REPLACES the package\u0027s ReqCompActivationMethod\nfor that specific component — the device is telling us what it\nactually needs.\n\nPatchset 3: track effective methods per (device, component), starting\nfrom the package value and overwriting with the ApplyComplete\nresponse where present.",
+      "parentUuid": "6cb823a5_bd982532",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b90a93a1_d8125cef",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 2
@@ -82,6 +136,24 @@
       "writtenOn": "2026-08-25T09:24:14Z",
       "side": 1,
       "message": "I would suggest renaming one of them to improve readability.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71a25264_773ae903",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1004,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b90a93a1_d8125cef",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +177,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6915d0b2_6e6e0f3f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Sure — will move them. \n  a) update_manager.hpp, right where they get used",
+      "parentUuid": "01fe54c0_d0ac436e",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "94025b17_e462999c",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -116,6 +206,24 @@
       "writtenOn": "2026-08-25T09:24:14Z",
       "side": 1,
       "message": "some unit test coverage would be good",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58689a0e_ef7224c9",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "94025b17_e462999c",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -139,6 +247,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c089b325_65c435e0",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Fair point — you\u0027re right that OR-then-worst can force AC on a device\nthat also advertises SelfContained. Reading DSP0267 v1.3.0 Table 5\nagain, multiple bits mean the component supports multiple methods and\nthe UA gets to pick. So for patchset 3 I\u0027ll switch to:\n\n  - per device: pick the lightest bit set as that device\u0027s effective\n    activation method\n  - package level: take the worst among those per-device picks\n\nAn \"AC + SelfContained\" device then correctly reduces to SelfContained,\nand we only land in Staged if at least one device is genuinely stuck\nat MediumReset / Reboot / DC / AC. Same change also removes the dead\nSelfContained / Automatic branches Vishnu flagged.\n\nDoes that match how you\u0027d read it, or would you pick a different\nper-device rule?",
+      "parentUuid": "fe2f3061_66dbaea1",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a3dd00f_4e4d5bb5",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -150,6 +276,24 @@
       "writtenOn": "2026-08-25T09:24:14Z",
       "side": 1,
       "message": "This is dead code.\n\n`bool requiresOperatorAction(const std::bitset\u003c16\u003e\u0026 agg)` returns everything except `actMethodSelfContained` so this part of the condition will never be reached.",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed15f13d_ed381b53",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "will be Removed by the per-device lightest-method refactor in patchset 3.",
+      "parentUuid": "0a3dd00f_4e4d5bb5",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -173,6 +317,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec90bdd3_feb7ca98",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Agreed — the awaiting-activation event needs a matching completion\nevent, otherwise consumers see a stale \"awaiting\" state after the\nnext update.\n\nThree options I\u0027m weighing for patchset 3:\n\n  (a) Add OpenBMC.0.1.FirmwareUpdateActivationComplete to the same\n      openbmc registry (paired with AwaitingActivation) and emit on\n      Staged→Active\n  (b) Reuse an existing DMTF Update event (e.g. UpdateSuccessful) at\n      the transition\n  (c) Mark the original phosphor-logging entry Resolved on transition\n\nLeaning toward (a) for symmetry and precise semantics. Any preference?",
+      "parentUuid": "cffd35d4_2be03940",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "655e8d5d_70f4f2d6",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -184,6 +346,24 @@
       "writtenOn": "2026-08-25T10:17:05Z",
       "side": 1,
       "message": "Bmcweb will currently leave the update task\u0027s TaskState at \"Stopping\" on Redfish without ever reaching a completion state",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2605ab69_75ae6e70",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-03T14:13:07Z",
+      "side": 1,
+      "message": "Right, no mapping today for Activations::Staged. Which TaskState\nshould it land on — Suspended, Interrupted, or Completed?",
+      "parentUuid": "655e8d5d_70f4f2d6",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
