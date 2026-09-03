@@ -1,7 +1,7 @@
 #!/bin/sh
 mkdir -p /var/lib/phosphor-software-manager/hostfw
 PHYP_SECURITY=/var/lib/phosphor-software-manager/hostfw/PHYP-SECURITY
-SIZE=$((1024 * 64))
+SIZE=$((1024 * 128))
 PHYP_SECURITY_FILE_SIZE="$(stat -c%s "$PHYP_SECURITY")"
 
 if [ ! -f "$PHYP_SECURITY" ]; then
