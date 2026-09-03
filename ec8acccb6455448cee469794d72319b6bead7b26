@@ -93,6 +93,30 @@
       },
       "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a61fb94d_2cc532c4",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-09-03T05:42:09Z",
+      "side": 1,
+      "message": "Given that OEM -\u003e Vendor IANA is a spec defined field type (Table 6 DSP0257_1.0.0), I would suggest adding that to libpldm instead of defining a constexpr in the middle of the code.",
+      "parentUuid": "990933aa_23c2572a",
+      "range": {
+        "startLine": 189,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 59
+      },
+      "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
