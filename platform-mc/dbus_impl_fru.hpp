@@ -302,13 +302,14 @@ using PowerSupplyServer =
 using AcceleratorServer =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::Accelerator;
 
-/** @brief Create the appropriate PldmEntityReq for the given entity type.
+/** @brief Create the PldmEntityReq which matches the given entity type.
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
  *  @param[in] entityType - PLDM entity type
- *  @return unique_ptr to PldmEntityBase
+ *  @return unique_ptr to PldmEntityBase, nullptr when the entity type has no
+ *          matching Inventory.Item interface
  */
-inline std::unique_ptr<PldmEntityBase> createPldmEntity(
+inline std::unique_ptr<PldmEntityBase> createPldmEntityForType(
     sdbusplus::bus_t& bus, const std::string& path, uint16_t entityType)
 {
     switch (entityType)
@@ -331,9 +332,29 @@ inline std::unique_ptr<PldmEntityBase> createPldmEntity(
         case PLDM_ENTITY_BOARD:
         case PLDM_ENTITY_SYS_BOARD:
         case PLDM_ENTITY_CARD:
-        default:
             return std::make_unique<PldmEntityReq<BoardServer>>(bus, path);
+        default:
+            return nullptr;
     }
+}
+
+/** @brief Create the appropriate PldmEntityReq for the given entity type.
+ *  @param[in] bus - D-Bus bus
+ *  @param[in] path - D-Bus object path
+ *  @param[in] entityType - PLDM entity type
+ *  @return unique_ptr to PldmEntityBase, with the Inventory.Item.Board
+ *          interface when the entity type has no matching Inventory.Item
+ *          interface
+ */
+inline std::unique_ptr<PldmEntityBase> createPldmEntity(
+    sdbusplus::bus_t& bus, const std::string& path, uint16_t entityType)
+{
+    auto entity = createPldmEntityForType(bus, path, entityType);
+    if (entity)
+    {
+        return entity;
+    }
+    return std::make_unique<PldmEntityReq<BoardServer>>(bus, path);
 }
 
 } // namespace dbus_api
