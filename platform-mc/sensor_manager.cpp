@@ -94,10 +94,14 @@ void SensorManager::disableTerminusSensors(pldm_tid_t tid)
 void SensorManager::stopPolling(pldm_tid_t tid)
 {
     /* Stop polling timer */
-    if (sensorPollTimers.contains(tid))
+    auto timerIt = sensorPollTimers.find(tid);
+    if (timerIt != sensorPollTimers.end())
     {
-        sensorPollTimers[tid]->stop();
-        sensorPollTimers.erase(tid);
+        if (timerIt->second != nullptr)
+        {
+            timerIt->second->stop();
+        }
+        sensorPollTimers.erase(timerIt);
     }
 
     roundRobinSensorItMap.erase(tid);
@@ -143,11 +147,11 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                 lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
                 try
                 {
-                    if (self.sensorPollTimers.contains(tid) &&
-                        self.sensorPollTimers[tid] &&
-                        self.sensorPollTimers[tid]->isRunning())
+                    auto timerIt = self.sensorPollTimers.find(tid);
+                    if (timerIt != self.sensorPollTimers.end() &&
+                        timerIt->second && timerIt->second->isRunning())
                     {
-                        self.sensorPollTimers[tid]->stop();
+                        timerIt->second->stop();
                     }
                 }
                 catch (const std::exception& e)
