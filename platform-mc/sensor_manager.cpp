@@ -138,9 +138,7 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
                 lg2::info("Stopped polling for Terminus ID {TID}", "TID", tid);
                 try
                 {
-                    if (self.sensorPollTimers.contains(tid) &&
-                        self.sensorPollTimers[tid] &&
-                        self.sensorPollTimers[tid]->isRunning())
+                    if (self.isSensorPollTimerRunning(tid))
                     {
                         self.sensorPollTimers[tid]->stop();
                     }
@@ -157,6 +155,13 @@ void SensorManager::doSensorPolling(pldm_tid_t tid)
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
 }
 
+bool SensorManager::isSensorPollTimerRunning(pldm_tid_t tid) const
+{
+    auto it = sensorPollTimers.find(tid);
+    return it != sensorPollTimers.end() && it->second &&
+           it->second->isRunning();
+}
+
 exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
 {
     uint64_t t0 = 0;
@@ -167,8 +172,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
 
     do
     {
-        if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
-            !sensorPollTimers[tid]->isRunning())
+        if (!isSensorPollTimerRunning(tid))
         {
             co_return PLDM_ERROR;
         }
@@ -252,8 +256,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             {
                 rc = co_await getSensorReading(sensor);
 
-                if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
-                    !sensorPollTimers[tid]->isRunning())
+                if (!isSensorPollTimerRunning(tid))
                 {
                     co_return PLDM_ERROR;
                 }
@@ -324,8 +327,7 @@ exec::task<int> SensorManager::getSensorReading(
         co_return rc;
     }
 
-    if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
-        !sensorPollTimers[tid]->isRunning())
+    if (!isSensorPollTimerRunning(tid))
     {
         co_return PLDM_ERROR;
     }
