@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "32ffd318_719ff361",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-04T07:39:39Z",
+      "side": 1,
+      "message": "To prevent starving, can we use this simple approach instead and remove `pollStateSensors`?\n`toBeUpdated` would be numericCount + sensorCount\nMake `roundRobinSensorItMap[tid]` hold both a single index for numeric and state sensor combined.\nfor roundRobinSensorItMap[tid] \u003e numeric.size() poll state sensor.",
+      "parentUuid": "a38335db_3d01a661",
+      "revId": "ef714180a5d0aa9c831645e7b7a54134c1da157d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4aff8d67_340f3103",
         "filename": "platform-mc/sensor_manager.cpp",
         "patchSetId": 7
