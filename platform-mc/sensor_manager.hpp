@@ -95,6 +95,14 @@ class SensorManager
      */
     exec::task<int> getSensorReading(std::shared_ptr<NumericSensor> sensor);
 
+    /** @brief Check whether the sensor polling timer of a terminus exists and
+     *         is still running
+     *
+     *  @param[in] tid - Destination TID
+     *  @return true if the terminus has a running polling timer
+     */
+    bool isSensorPollTimerRunning(pldm_tid_t tid) const;
+
     /** @brief Reference to to PLDM daemon's main event loop.
      */
     sdeventplus::Event& event;
