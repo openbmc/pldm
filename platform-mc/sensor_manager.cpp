@@ -27,7 +27,10 @@ void SensorManager::startPolling(pldm_tid_t tid)
     }
 
     /* tid already initializes roundRobinSensors list */
-    if (sensorPollTimers.contains(tid))
+    auto timer = std::make_unique<sdbusplus::Timer>(event.get(), [this, tid] {
+        this->doSensorPolling(tid);
+    });
+    if (!sensorPollTimers.try_emplace(tid, std::move(timer)).second)
     {
         lg2::info("Terminus ID {TID}: sensor poll timer already exists.", "TID",
                   tid);
@@ -38,22 +41,24 @@ void SensorManager::startPolling(pldm_tid_t tid)
 
     updateAvailableState(tid, true);
 
-    sensorPollTimers[tid] = std::make_unique<sdbusplus::Timer>(
-        event.get(), [this, tid] { this->doSensorPolling(tid); });
-
     startSensorPollTimer(tid);
 }
 
 void SensorManager::startSensorPollTimer(pldm_tid_t tid)
 {
+    auto it = sensorPollTimers.find(tid);
+    if (it == sensorPollTimers.end() || !it->second)
+    {
+        return;
+    }
+
     try
     {
-        if (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning())
+        if (!it->second->isRunning())
         {
-            sensorPollTimers[tid]->start(
-                duration_cast<std::chrono::milliseconds>(
-                    std::chrono::milliseconds(pollingTime)),
-                true);
+            it->second->start(duration_cast<std::chrono::milliseconds>(
+                                  std::chrono::milliseconds(pollingTime)),
+                              true);
         }
     }
     catch (const std::exception& e)
