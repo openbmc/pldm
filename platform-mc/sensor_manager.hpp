@@ -134,6 +134,15 @@ class SensorManager
 
     /** @brief pointer to Manager */
     Manager* manager;
+
+  private:
+    /** @brief Check whether the sensor polling timer of a terminus exists and
+     *         is still running, using a single lookup of the polling timers.
+     *
+     *  @param[in] tid - Destination TID
+     *  @return true if the terminus has a running polling timer
+     */
+    bool isSensorPollTimerRunning(pldm_tid_t tid) const;
 };
 } // namespace platform_mc
 } // namespace pldm
