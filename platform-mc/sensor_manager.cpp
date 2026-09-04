@@ -167,8 +167,8 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
 
     do
     {
-        if ((!sensorPollTimers.contains(tid)) ||
-            (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+        if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
+            !sensorPollTimers[tid]->isRunning())
         {
             co_return PLDM_ERROR;
         }
@@ -252,9 +252,8 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             {
                 rc = co_await getSensorReading(sensor);
 
-                if ((!sensorPollTimers.contains(tid)) ||
-                    (sensorPollTimers[tid] &&
-                     !sensorPollTimers[tid]->isRunning()))
+                if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
+                    !sensorPollTimers[tid]->isRunning())
                 {
                     co_return PLDM_ERROR;
                 }
@@ -325,8 +324,8 @@ exec::task<int> SensorManager::getSensorReading(
         co_return rc;
     }
 
-    if ((!sensorPollTimers.contains(tid)) ||
-        (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning()))
+    if (!sensorPollTimers.contains(tid) || !sensorPollTimers[tid] ||
+        !sensorPollTimers[tid]->isRunning())
     {
         co_return PLDM_ERROR;
     }
