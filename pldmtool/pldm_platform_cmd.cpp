@@ -2840,6 +2840,100 @@ class GetNumericEffecterValue : public CommandInterface
     uint16_t effecterId;
 };
 
+class SetStateSensorEnables : public CommandInterface
+{
+  public:
+    ~SetStateSensorEnables() override = default;
+    SetStateSensorEnables() = delete;
+    SetStateSensorEnables(const SetStateSensorEnables&) = delete;
+    SetStateSensorEnables(SetStateSensorEnables&&) = default;
+    SetStateSensorEnables& operator=(const SetStateSensorEnables&) = delete;
+    SetStateSensorEnables& operator=(SetStateSensorEnables&&) = delete;
+
+    static constexpr auto minFieldCount = 1;
+    static constexpr auto maxFieldCount =
+        PLDM_PLATFORM_SET_STATE_SENSOR_ENABLES_MAX_COUNT;
+
+    explicit SetStateSensorEnables(const char* type, const char* name,
+                                   CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-i, --sensor_id", sensorId,
+                        "A handle that is used to identify and access "
+                        "the sensor")
+            ->required();
+        app->add_option("-c, --count", fieldCount,
+                        "The number of state sensor enable fields")
+            ->required();
+        app->add_option("-d, --data", fieldData,
+                        "Set state sensor enable data in pairs:\n"
+                        "opState0 eventEnable0 opState1 eventEnable1 ...")
+            ->required();
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        if (fieldCount < minFieldCount || fieldCount > maxFieldCount)
+        {
+            std::cerr << "Request Message Error: fieldCount size "
+                      << static_cast<int>(fieldCount) << " is invalid\n";
+            return {PLDM_ERROR_INVALID_DATA, {}};
+        }
+
+        if (fieldData.size() != fieldCount * 2)
+        {
+            std::cerr << "Request Message Error: fieldData size "
+                      << fieldData.size() << " is invalid\n";
+            return {PLDM_ERROR_INVALID_DATA, {}};
+        }
+
+        const size_t payloadLen = sizeof(sensorId) + sizeof(fieldCount) +
+                                  fieldData.size() * sizeof(uint8_t);
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLen);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        struct pldm_platform_set_state_sensor_enables_req req = {};
+        req.sensor_id = sensorId;
+        req.composite_sensor_count = fieldCount;
+        for (size_t i = 0; i < fieldData.size(); i += 2)
+        {
+            req.op_fields[i / 2].sensor_operational_state = fieldData[i];
+            req.op_fields[i / 2].sensor_event_message_enable = fieldData[i + 1];
+        }
+
+        size_t encodedPayloadLen = payloadLen;
+        auto rc = encode_pldm_platform_set_state_sensor_enables_req(
+            instanceId, &req, request, &encodedPayloadLen);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        if (payloadLength == 0)
+        {
+            std::cerr << "Response Message Error: empty payload\n";
+            return;
+        }
+
+        const uint8_t completionCode = responsePtr->payload[0];
+        if (completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: cc="
+                      << static_cast<int>(completionCode) << std::endl;
+            return;
+        }
+
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint16_t sensorId;
+    uint8_t fieldCount;
+    std::vector<uint8_t> fieldData;
+};
+
 void registerCommand(CLI::App& app)
 {
     auto platform = app.add_subcommand("platform", "platform type command");
@@ -2884,6 +2978,11 @@ void registerCommand(CLI::App& app)
         "GetStateEffecterStates", "get the state effecter states");
     commands.push_back(std::make_unique<GetStateEffecterStates>(
         "platform", "getStateEffecterStates", getStateEffecterStates));
+
+    auto setStateSensorEnables = platform->add_subcommand(
+        "SetStateSensorEnables", "enable or disable state sensor entries");
+    commands.push_back(std::make_unique<SetStateSensorEnables>(
+        "platform", "setStateSensorEnables", setStateSensorEnables));
 }
 
 void parseGetPDROption()
