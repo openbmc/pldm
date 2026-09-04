@@ -72,13 +72,14 @@ void SensorManager::startSensorPollTimer(pldm_tid_t tid)
 
 void SensorManager::disableTerminusSensors(pldm_tid_t tid)
 {
-    if (!termini.contains(tid))
+    auto terminusIt = termini.find(tid);
+    if (terminusIt == termini.end())
     {
         return;
     }
 
     // numeric sensor
-    auto terminus = termini[tid];
+    auto terminus = terminusIt->second;
     if (!terminus)
     {
         return;
@@ -106,10 +107,11 @@ void SensorManager::stopPolling(pldm_tid_t tid)
 
     roundRobinSensorItMap.erase(tid);
 
-    if (doSensorPollingTaskHandles.contains(tid))
+    auto handleIt = doSensorPollingTaskHandles.find(tid);
+    if (handleIt != doSensorPollingTaskHandles.end())
     {
-        doSensorPollingTaskHandles[tid]->scope.request_stop();
-        doSensorPollingTaskHandles.erase(tid);
+        handleIt->second->scope.request_stop();
+        doSensorPollingTaskHandles.erase(handleIt);
         // The coroutine holds its own shared_ptr<PollHandle> as a parameter
         // (in the coroutine frame), so the scope outlives this erase and is
         // destroyed cleanly after final_suspend completes its bookkeeping.
@@ -120,18 +122,14 @@ void SensorManager::stopPolling(pldm_tid_t tid)
 
 void SensorManager::doSensorPolling(pldm_tid_t tid)
 {
-    auto it = doSensorPollingTaskHandles.find(tid);
-    if (it != doSensorPollingTaskHandles.end())
+    auto [it, inserted] = doSensorPollingTaskHandles.try_emplace(tid);
+    if (!inserted && !it->second->rcOpt.has_value())
     {
-        if (!it->second->rcOpt.has_value())
-        {
-            return;
-        }
-        doSensorPollingTaskHandles.erase(it);
+        return;
     }
 
     auto handle = std::make_shared<PollHandle>();
-    doSensorPollingTaskHandles[tid] = handle;
+    it->second = handle;
     handle->scope.spawn(
         [](SensorManager& self, pldm_tid_t tid,
            std::shared_ptr<PollHandle> handle) -> exec::task<void> {
@@ -203,12 +201,13 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_await stdexec::just_stopped();
         }
 
-        if (!termini.contains(tid))
+        auto terminusIt = termini.find(tid);
+        if (terminusIt == termini.end())
         {
             co_return PLDM_SUCCESS;
         }
 
-        auto& terminus = termini[tid];
+        auto& terminus = terminusIt->second;
         if (!terminus)
         {
             lg2::info(
@@ -233,14 +232,15 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
         auto& numericSensors = terminus->numericSensors;
         auto toBeUpdated = numericSensors.size();
 
-        if (!roundRobinSensorItMap.contains(tid))
+        auto sensorItEntry = roundRobinSensorItMap.find(tid);
+        if (sensorItEntry == roundRobinSensorItMap.end())
         {
             lg2::info(
                 "Terminus ID {TID} does not have a round robin sensor iteration {NOW}.",
                 "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
             co_return PLDM_ERROR;
         }
-        auto& sensorIt = roundRobinSensorItMap[tid];
+        auto& sensorIt = sensorItEntry->second;
 
         while (((t1 - t0) < pollingTimeInUsec) && (toBeUpdated > 0))
         {
