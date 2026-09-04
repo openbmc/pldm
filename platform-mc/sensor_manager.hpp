@@ -69,11 +69,12 @@ class SensorManager
      */
     bool getAvailableState(pldm_tid_t tid)
     {
-        if (!availableState.contains(tid))
+        auto it = availableState.find(tid);
+        if (it == availableState.end())
         {
             return false;
         }
-        return availableState[tid];
+        return it->second;
     };
 
   protected:
