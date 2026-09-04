@@ -94,10 +94,14 @@ void SensorManager::disableTerminusSensors(pldm_tid_t tid)
 void SensorManager::stopPolling(pldm_tid_t tid)
 {
     /* Stop polling timer */
-    if (sensorPollTimers.contains(tid))
+    auto timerIt = sensorPollTimers.find(tid);
+    if (timerIt != sensorPollTimers.end())
     {
-        sensorPollTimers[tid]->stop();
-        sensorPollTimers.erase(tid);
+        if (timerIt->second != nullptr)
+        {
+            timerIt->second->stop();
+        }
+        sensorPollTimers.erase(timerIt);
     }
 
     roundRobinSensorItMap.erase(tid);
