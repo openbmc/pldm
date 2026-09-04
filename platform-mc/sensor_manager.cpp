@@ -46,14 +46,19 @@ void SensorManager::startPolling(pldm_tid_t tid)
 
 void SensorManager::startSensorPollTimer(pldm_tid_t tid)
 {
+    auto it = sensorPollTimers.find(tid);
+    if (it == sensorPollTimers.end() || !it->second)
+    {
+        return;
+    }
+
     try
     {
-        if (sensorPollTimers[tid] && !sensorPollTimers[tid]->isRunning())
+        if (!it->second->isRunning())
         {
-            sensorPollTimers[tid]->start(
-                duration_cast<std::chrono::milliseconds>(
-                    std::chrono::milliseconds(pollingTime)),
-                true);
+            it->second->start(duration_cast<std::chrono::milliseconds>(
+                                  std::chrono::milliseconds(pollingTime)),
+                              true);
         }
     }
     catch (const std::exception& e)
