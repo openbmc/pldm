@@ -35,6 +35,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f839a6a4_bd8cd291",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-04T01:47:13Z",
+      "side": 1,
+      "message": "Acknowledged.\nHowever, I will keep it as `std::array\u003c\u003e` here.\nThe reason is that `std::to_array\u003c\u003e` is not compatible with empty array, the refactoring will be taken care in the following patch:\n\nhttps://gerrit.openbmc.org/c/openbmc/pldm/+/85050",
+      "parentUuid": "c1842f4b_424c4366",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7028e013_320bdaac",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-04T01:47:13Z",
+      "side": 1,
+      "message": "The table is intentionally empty here as this is an infra patch.\nTo examine how it works, please check on the feature patches in the relation chain.\n\nThanks!",
+      "parentUuid": "6a5983ed_ab903c0c",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "724c67ad_72df81e2",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-09-01T09:46:22Z",
       "side": 1,
       "message": "this class and `StateSensor` both hold StateSetBase. Is this intentional?",
+      "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f65695_8463d22d",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-04T01:47:13Z",
+      "side": 1,
+      "message": "Yes, `StateSets` owns the interfaces keyed by state set ID, and `StateSensor` indexed by composite sensor offset.\nThis allows the implementation easier and reduce the complexity for table look-up in runtime.",
+      "parentUuid": "724c67ad_72df81e2",
       "revId": "9c2c4e1f9f5c01146dee00713001a3b795110760",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
