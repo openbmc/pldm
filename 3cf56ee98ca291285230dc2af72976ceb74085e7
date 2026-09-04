@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f2cfba_8a2e86e4",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-04T05:36:10Z",
+      "side": 1,
+      "message": "nit: this part of the log is strictly not necessary.",
+      "range": {
+        "startLine": 100,
+        "startChar": 68,
+        "endLine": 100,
+        "endChar": 129
+      },
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6bdfa3_442e9e57",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-04T05:36:10Z",
+      "side": 1,
+      "message": "nit: it would be better if we put each state set class into separate files.",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7732adb_fef5dd2b",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-04T05:36:10Z",
+      "side": 1,
+      "message": "Should we just make this method pure virtual?",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d50721b_22d4330f",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-04T05:36:10Z",
+      "side": 1,
+      "message": "We might not need this if we go ahead with comment at line 208.",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
