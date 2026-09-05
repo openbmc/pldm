@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b19f4da_95429553",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-05T22:50:14Z",
+      "side": 1,
+      "message": "To clarify my earlier reply, the modification is carried in the\nApplyComplete request from the device. I\u0027ll use it when ApplyResult\nindicates successful application with an activation-method modification,\nand track it for that component.",
+      "parentUuid": "7c751a2a_b20a17dd",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b90a93a1_d8125cef",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 2
@@ -265,6 +283,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9659e555_9f867f4a",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-05T22:50:14Z",
+      "side": 1,
+      "message": "One correction to my earlier reply: picking the lightest method after\nOR-ing component masks would still lose requirements. I\u0027ll keep the\nmethods per component so that a SelfContained-capable component doesn\u0027t\nhide another component that requires an AC power cycle.",
+      "parentUuid": "c089b325_65c435e0",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a3dd00f_4e4d5bb5",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -329,6 +365,24 @@
       "side": 1,
       "message": "Agreed — the awaiting-activation event needs a matching completion\nevent, otherwise consumers see a stale \"awaiting\" state after the\nnext update.\n\nThree options I\u0027m weighing for patchset 3:\n\n  (a) Add OpenBMC.0.1.FirmwareUpdateActivationComplete to the same\n      openbmc registry (paired with AwaitingActivation) and emit on\n      Staged→Active\n  (b) Reuse an existing DMTF Update event (e.g. UpdateSuccessful) at\n      the transition\n  (c) Mark the original phosphor-logging entry Resolved on transition\n\nLeaning toward (a) for symmetry and precise semantics. Any preference?",
       "parentUuid": "cffd35d4_2be03940",
+      "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbf7aac1_8c24a76f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-09-05T22:50:14Z",
+      "side": 1,
+      "message": "Adding a completion event alone isn\u0027t enough. I\u0027ll also check how we\ncan confirm that the updated firmware is active after the required reset\nor power cycle before emitting it.",
+      "parentUuid": "ec90bdd3_feb7ca98",
       "revId": "ac31eb4e8a8e513d06d50a7c158733cb37e5ea40",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
