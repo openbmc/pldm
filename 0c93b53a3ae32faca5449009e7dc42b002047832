@@ -16,6 +16,57 @@
       "message": "Hi all,\n\nI have resolved the merge conflicts and rebased the commit onto the latest master.\n\nCould you please take another look and help re-apply your +1? Thanks!",
       "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ae8f50_65b35b93",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:40:47Z",
+      "side": 1,
+      "message": "Why is this change required?",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "671c3567_ec55d03b",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:40:47Z",
+      "side": 1,
+      "message": "This can be true for devices with multiple components as well. Is this intentional, since your commit message calls out only single compoennt FDs?",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8d945ea_a5839373",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:40:47Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we be updating the version published on the D-Bus when this function is eventually called from `taskCOmpletionCallback` after an update finishes?",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
