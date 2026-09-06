@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e59873c_2b5d3acc",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:25:44Z",
+      "side": 1,
+      "message": "Can we mark this private since consumers can no longer parse a package with any public API?",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d1a6f48_29abda77",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:25:44Z",
+      "side": 1,
+      "message": "Can you update the doxygen comment here? Function no longer returns nullptr on failure",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69569b38_7366afbc",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:25:44Z",
+      "side": 1,
+      "message": "Could you rename the variable to `pkgHdr` since that\u0027s what its called in the definition?",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44525c80_cd8c0d7c",
+        "filename": "fw-update/test/package_parser_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-06T21:25:44Z",
+      "side": 1,
+      "message": "I don\u0027t think this check does anything meaningful anymore, please remove the check from all the tests",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
