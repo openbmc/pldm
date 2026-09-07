@@ -89,6 +89,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "571a656b_b8e4dc70",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-07T09:47:59Z",
+      "side": 1,
+      "message": "Understood, I have modified the implementation to align to your suggestion in PS11.\nThanks for the suggestion and review!",
+      "parentUuid": "32ffd318_719ff361",
+      "revId": "ef714180a5d0aa9c831645e7b7a54134c1da157d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4aff8d67_340f3103",
