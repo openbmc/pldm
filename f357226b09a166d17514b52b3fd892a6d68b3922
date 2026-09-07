@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "943582dc_efc76e01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T18:37:10Z",
+      "side": 1,
+      "message": "What is the behavior for other updaters in phosphor-bmc-code-mgmt ?",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72037a23_9526d97d",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T18:37:10Z",
+      "side": 1,
+      "message": "With this change, we should rename activationComplete. \nIt was originally named that because it was set to true in ActivateFirmware.",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f38de1e_f2dac41c",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T18:37:10Z",
+      "side": 1,
+      "message": "I think we should remove activationComplete\u003dtrue from other places as they’re now redundant.",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
