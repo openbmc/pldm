@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4db062e_0a01a890",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T17:38:04Z",
+      "side": 1,
+      "message": "nit - please correct the enum values here.",
+      "revId": "673892cf2e248d7a8265d2ee81343cbf2471c822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfdc8de9_f1e52c2c",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T17:38:04Z",
+      "side": 1,
+      "message": "Add doc comment for failed as in the leading block.",
+      "revId": "673892cf2e248d7a8265d2ee81343cbf2471c822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e0c868_9bbb9e9a",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-09-07T17:38:04Z",
+      "side": 1,
+      "message": "nit - Please put the per-value semantics in the leading block",
+      "revId": "673892cf2e248d7a8265d2ee81343cbf2471c822",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
