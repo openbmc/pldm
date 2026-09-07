@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13c405d1_602dcd1d",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-07T10:22:46Z",
+      "side": 1,
+      "message": "Acknowledged, I have removed the line in PS6.",
+      "parentUuid": "17f2cfba_8a2e86e4",
+      "range": {
+        "startLine": 100,
+        "startChar": 68,
+        "endLine": 100,
+        "endChar": 129
+      },
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e6bdfa3_442e9e57",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-09-04T05:36:10Z",
       "side": 1,
       "message": "nit: it would be better if we put each state set class into separate files.",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8dd9659_ece0b9be",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-07T10:22:46Z",
+      "side": 1,
+      "message": "Good idea, I have done this in PS6.",
+      "parentUuid": "8e6bdfa3_442e9e57",
       "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0155ce36_e4d430bc",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-07T10:22:46Z",
+      "side": 1,
+      "message": "A static factory can\u0027t be virtual since there will be no instance exists at the point the state set is created. \nTo align with your request below(removing the mapping), I have dropped this function and changed `createStateSet()(` as a plain switch on the state set ID.",
+      "parentUuid": "a7732adb_fef5dd2b",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d50721b_22d4330f",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-09-04T05:36:10Z",
       "side": 1,
       "message": "We might not need this if we go ahead with comment at line 208.",
+      "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96520064_8bda459d",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-07T10:22:46Z",
+      "side": 1,
+      "message": "Done, I have removed this mapping and uses switch-case in PS6.",
+      "parentUuid": "6d50721b_22d4330f",
       "revId": "3cf56ee98ca291285230dc2af72976ceb74085e7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
