@@ -460,6 +460,7 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
         // If there are no HOST PDR's, there is no further action
         if (hostPDRHandler == nullptr)
         {
+            info("No Host PDR present at this time");
             return PLDM_SUCCESS;
         }
 
@@ -487,8 +488,11 @@ int Handler::sensorEvent(const pldm_msg* request, size_t payloadLength,
                     hostPDRHandler->lookupSensorInfo(sensorEntry);
             }
             // If there is no mapping for events return PLDM_SUCCESS
-            catch (const std::out_of_range&)
+            catch (const std::out_of_range& e)
             {
+                error(
+                    "Sensor with no mapping, error as {ERR}, sensor id as {SEN_ID} and event state as {EVE_STATE}",
+                    "ERR", e, "SEN_ID", sensorId, "EVE_STATE", eventState);
                 return PLDM_SUCCESS;
             }
         }
