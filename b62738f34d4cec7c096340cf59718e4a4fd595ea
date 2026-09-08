@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba958c87_3c40d9ca",
+        "filename": "oem/ampere/event/cper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T10:16:48Z",
+      "side": 1,
+      "message": "I think we can remove this now?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "b62738f34d4cec7c096340cf59718e4a4fd595ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44333b02_e5048c8e",
+        "filename": "oem/ampere/event/cper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T10:16:48Z",
+      "side": 1,
+      "message": "Should we separate the error cases with different logs so that we can distinguish between them during debugging?",
+      "range": {
+        "startLine": 63,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 5
+      },
+      "revId": "b62738f34d4cec7c096340cf59718e4a4fd595ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fda2ecc_ccce87d6",
+        "filename": "oem/ampere/event/cper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T10:16:48Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we set `decoded \u003d false` here?",
+      "range": {
+        "startLine": 188,
+        "startChar": 8,
+        "endLine": 188,
+        "endChar": 52
+      },
+      "revId": "b62738f34d4cec7c096340cf59718e4a4fd595ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
