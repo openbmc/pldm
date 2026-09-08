@@ -8,7 +8,7 @@ namespace pldm::responder::oem_meta
 /** @class PowerControlHandler
  *
  *  @brief Inherits and implements FileHandler. This class is used
- *  to handle incoming sled cycle request from Hosts
+ *  to handle incoming slot power control requests from Hosts
  */
 class PowerControlHandler : public FileHandler
 {
@@ -27,12 +27,14 @@ class PowerControlHandler : public FileHandler
     ~PowerControlHandler() override = default;
 
     /** @brief Method to add handler for write-file command
-     *         "SLED_CYCLE, 12V-CYCLE and DC-cycle" to let
-     *         Host can trigger power control to the system.
+     *         "12V-CYCLE and DC-cycle" to let a host trigger power
+     *         control on its own slot.
      *         - Option:
-     *             - 0x00: Sled-cycle
      *             - 0x01: Slot 12V-cycle
      *             - 0x02: Slot DC-cycle
+     *
+     *         Both act on the slot derived from the sender's TID, so a host
+     *         can only cycle itself. Any other option is rejected.
      *  @param[in] data - APML alert raw data.
      *  @return  PLDM completion code.
      */
