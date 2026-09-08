@@ -129,6 +129,11 @@ conf_data.set_quoted(
     get_option('fw-update-targets-json'),
 )
 
+conf_data.set(
+    'OEM_META_HOST_SLED_CONTROL',
+    get_option('oem-meta-host-sled-control').allowed(),
+)
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(

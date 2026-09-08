@@ -117,6 +117,13 @@ option(
     value: 'enabled',
 )
 
+option(
+    'oem-meta-host-sled-control',
+    type: 'feature',
+    description: 'Let a host request sled-wide power control (sled cycle, NIC power cycle) over the OEM Meta power control command. Nothing in the request identifies the sender as entitled to disturb hardware it shares with other hosts, so a platform whose BMC serves more than one host should build with this disabled.',
+    value: 'enabled',
+)
+
 ## OEM NVIDIA Options
 option(
     'oem-nvidia',

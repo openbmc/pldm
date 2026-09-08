@@ -24,6 +24,38 @@ enum class POWER_CONTROL_OPTION
     NIC3_POWER_CYCLE = 0x06,
 };
 
+#ifndef OEM_META_HOST_SLED_CONTROL
+namespace
+{
+
+/** @brief Tell whether an option disturbs hosts other than the requester.
+ *
+ *  A sled cycle power-cycles every host in the sled, and a NIC is shared by
+ *  more than one host, so either one takes down neighbours of whoever asked.
+ *  The slot cycles are self-scoped by contrast: they act on the slot derived
+ *  from the sender's TID, so a host can only cycle itself.
+ *
+ *  @param[in] option - Power control option from the request.
+ *  @return true if the option reaches beyond the requester's own slot.
+ */
+bool disturbsOtherHosts(uint8_t option)
+{
+    switch (static_cast<POWER_CONTROL_OPTION>(option))
+    {
+        case POWER_CONTROL_OPTION::SLED_CYCLE:
+        case POWER_CONTROL_OPTION::NIC0_POWER_CYCLE:
+        case POWER_CONTROL_OPTION::NIC1_POWER_CYCLE:
+        case POWER_CONTROL_OPTION::NIC2_POWER_CYCLE:
+        case POWER_CONTROL_OPTION::NIC3_POWER_CYCLE:
+            return true;
+        default:
+            return false;
+    }
+}
+
+} // namespace
+#endif
+
 int PowerControlHandler::write(const message& data)
 {
     if (data.size() != power_control_len)
@@ -36,6 +68,17 @@ int PowerControlHandler::write(const message& data)
 
     std::string slotNum = pldm::oem_meta::getSlotNumberStringByTID(tid);
     uint8_t option = data[0];
+
+#ifndef OEM_META_HOST_SLED_CONTROL
+    if (disturbsOtherHosts(option))
+    {
+        error(
+            "Refusing power control option {OPTION} from TID {TID} (slot {SLOT}): the option disrupts other hosts and the request carries nothing that entitles the sender to it. Rebuild with -Doem-meta-host-sled-control=enabled to allow it.",
+            "OPTION", option, "TID", tid, "SLOT", slotNum);
+        return PLDM_ERROR;
+    }
+#endif
+
     pldm::utils::DBusMapping dbusMapping;
     dbusMapping.propertyType = "string";
     std::string property{};

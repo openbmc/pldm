@@ -33,6 +33,13 @@ class PowerControlHandler : public FileHandler
      *             - 0x00: Sled-cycle
      *             - 0x01: Slot 12V-cycle
      *             - 0x02: Slot DC-cycle
+     *             - 0x03..0x06: NIC0..NIC3 power cycle
+     *
+     *         The slot options act on the slot the sender's TID belongs to,
+     *         so a host can only cycle itself. The sled cycle and the NIC
+     *         power cycles reach other hosts, and nothing in the request
+     *         entitles the sender to that, so they are rejected unless the
+     *         build enabled oem-meta-host-sled-control.
      *  @param[in] data - APML alert raw data.
      *  @return  PLDM completion code.
      */
