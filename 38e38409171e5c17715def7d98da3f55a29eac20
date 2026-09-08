@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f671d47_debe08f3",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T09:43:38Z",
+      "side": 1,
+      "message": "nit:\nCan we use `for (auto defIndex:defIndices)` here?",
+      "range": {
+        "startLine": 245,
+        "startChar": 16,
+        "endLine": 245,
+        "endChar": 62
+      },
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe801908_b8181f90",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T09:43:38Z",
+      "side": 1,
+      "message": "Should we use `PLDM_INVALID_BIOS_TABLE_DATA_INTEGRITY_CHECK` here?",
+      "range": {
+        "startLine": 249,
+        "startChar": 24,
+        "endLine": 249,
+        "endChar": 61
+      },
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97e0fd4d_54d46b80",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T09:43:38Z",
+      "side": 1,
+      "message": "nit:\nThis as well, `for (auto handle:handles)` would be nice.",
+      "range": {
+        "startLine": 404,
+        "startChar": 16,
+        "endLine": 404,
+        "endChar": 59
+      },
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1734f920_2b6dc98b",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T09:43:38Z",
+      "side": 1,
+      "message": "This as well, should we change the error code as suggested above?",
+      "range": {
+        "startLine": 408,
+        "startChar": 24,
+        "endLine": 408,
+        "endChar": 61
+      },
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beffc833_a5a65723",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-08T09:43:38Z",
+      "side": 1,
+      "message": "same here.",
+      "range": {
+        "startLine": 426,
+        "startChar": 24,
+        "endLine": 426,
+        "endChar": 61
+      },
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
