@@ -127,6 +127,15 @@ Response FileIOHandler::readFileIO(pldm_tid_t tid, const pldm_msg* request,
         return ccOnlyResponse(request, rc);
     }
 
+    // Clamp handler-revised length to the request-sized response buffer.
+    if (response_msg->length > request_msg.length)
+    {
+        error(
+            "OEM Meta read handler returned length {RETURNED} exceeding request length {REQUESTED}",
+            "RETURNED", response_msg->length, "REQUESTED", request_msg.length);
+        response_msg->length = request_msg.length;
+    }
+
     response_msg->completion_code = PLDM_SUCCESS;
     encoderesplen += response_msg->length;
 
