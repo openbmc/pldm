@@ -176,10 +176,27 @@ uint64_t BIOSIntegerAttribute::getAttrValue(const PropertyValue& propertyValue)
 
 uint64_t BIOSIntegerAttribute::getAttrValue(std::optional<int64_t> persisted)
 {
+    auto validateAttributeValue = [this](int64_t value) -> uint64_t {
+        if (value < static_cast<int64_t>(integerInfo.lowerBound) ||
+            value > static_cast<int64_t>(integerInfo.upperBound))
+        {
+            error(
+                "Persisted value '{VALUE}' out of range [{LOW},{HIGH}] for "
+                "attribute '{ATTRIBUTE}', using default",
+                "VALUE", value, "LOW", integerInfo.lowerBound, "HIGH",
+                integerInfo.upperBound, "ATTRIBUTE", name);
+            return integerInfo.defaultValue;
+        }
+        return static_cast<uint64_t>(value);
+    };
+
     if (!dBusMap.has_value())
     {
-        return static_cast<uint64_t>(
-            persisted.value_or(static_cast<int64_t>(integerInfo.defaultValue)));
+        if (persisted.has_value())
+        {
+            return validateAttributeValue(*persisted);
+        }
+        return integerInfo.defaultValue;
     }
 
     try
@@ -196,8 +213,11 @@ uint64_t BIOSIntegerAttribute::getAttrValue(std::optional<int64_t> persisted)
             "Error getting integer attribute '{ATTRIBUTE}' at path '{PATH}' and interface '{INTERFACE}' for property '{PROPERTY}', error - {ERROR}",
             "ATTRIBUTE", name, "PATH", dBusMap->objectPath, "INTERFACE",
             dBusMap->interface, "PROPERTY", dBusMap->propertyName, "ERROR", e);
-        return static_cast<uint64_t>(
-            persisted.value_or(static_cast<int64_t>(integerInfo.defaultValue)));
+        if (persisted.has_value())
+        {
+            return validateAttributeValue(*persisted);
+        }
+        return integerInfo.defaultValue;
     }
 }
 
