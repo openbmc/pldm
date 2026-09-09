@@ -124,7 +124,16 @@ void BIOSIntegerAttribute::constructEntry(
         persisted = std::get<int64_t>(*optAttributeValue);
     }
 
-    auto currentValue = getAttrValue(persisted);
+    auto currentValue = static_cast<int64_t>(getAttrValue(persisted));
+    if (currentValue < (int64_t)integerInfo.lowerBound ||
+        currentValue > (int64_t)integerInfo.upperBound)
+    {
+        error(
+            "Setting to default value {DEF_VAL} For Attribute {ATTR_NAME} Received value: {CURR_VAL}",
+            "DEF_VAL", integerInfo.defaultValue, "ATTR_NAME", name, "CURR_VAL",
+            currentValue);
+        currentValue = integerInfo.defaultValue;
+    }
 
     table::attribute_value::constructIntegerEntry(attrValueTable, attrHandle,
                                                   attrType, currentValue);

@@ -120,7 +120,14 @@ void BIOSStringAttribute::constructEntry(
     }
 
     auto currStr = getAttrValue(std::move(persisted));
-
+    if (currStr.size() < stringInfo.minLength ||
+        currStr.size() > stringInfo.maxLength)
+    {
+        error(
+            "setting to default. received string size {STR_SIZE} for attribute {ATTR_NAME}",
+            "STR_SIZE", currStr.size(), "ATTR_NAME", name);
+        currStr = stringInfo.defString;
+    }
     table::attribute_value::constructStringEntry(attrValueTable, attrHandle,
                                                  attrType, currStr);
 }
