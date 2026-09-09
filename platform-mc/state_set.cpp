@@ -1,5 +1,9 @@
 #include "state_set.hpp"
 
+#include "state_set_performance.hpp"
+
+#include <libpldm/state_set.h>
+
 #include <phosphor-logging/lg2.hpp>
 
 PHOSPHOR_LOG2_USING;
@@ -9,11 +13,13 @@ namespace pldm
 namespace platform_mc
 {
 
-std::unique_ptr<StateSetBase> createStateSet(
-    [[maybe_unused]] StateSets& stateSets, StateSetId stateSetId)
+std::unique_ptr<StateSetBase> createStateSet(StateSets& stateSets,
+                                             StateSetId stateSetId)
 {
     switch (stateSetId)
     {
+        case PLDM_STATE_SET_PERFORMANCE:
+            return std::make_unique<StateSetPerformance>(stateSets);
         default:
             return nullptr;
     }
