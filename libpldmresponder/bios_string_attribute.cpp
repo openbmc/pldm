@@ -77,15 +77,35 @@ void BIOSStringAttribute::setAttrValueOnDbus(
 std::string BIOSStringAttribute::getAttrValue(
     std::optional<std::string> persisted)
 {
+    auto validateAttributeValue =
+        [this](const std::string& value) -> std::string {
+        if (value.size() < stringInfo.minLength ||
+            value.size() > stringInfo.maxLength)
+        {
+            error(
+                "Persisted string length {LEN} out of range [{MIN},{MAX}] for "
+                "attribute '{ATTRIBUTE}', using default",
+                "LEN", value.size(), "MIN", stringInfo.minLength, "MAX",
+                stringInfo.maxLength, "ATTRIBUTE", name);
+            return stringInfo.defString;
+        }
+        return value;
+    };
+
     if (!dBusMap.has_value())
     {
-        return persisted.value_or(stringInfo.defString);
+        if (persisted.has_value())
+        {
+            return validateAttributeValue(*persisted);
+        }
+        return stringInfo.defString;
     }
     try
     {
-        return dbusHandler->getDbusProperty<std::string>(
+        auto dbusValue = dbusHandler->getDbusProperty<std::string>(
             dBusMap->objectPath.c_str(), dBusMap->propertyName.c_str(),
             dBusMap->interface.c_str());
+        return validateAttributeValue(dbusValue);
     }
     catch (const std::exception& e)
     {
@@ -93,7 +113,11 @@ std::string BIOSStringAttribute::getAttrValue(
             "Failed to get string attribute '{ATTRIBUTE}' at path '{PATH}' and interface '{INTERFACE}' for property '{PROPERTY}', error - {ERROR}",
             "ATTRIBUTE", name, "PATH", dBusMap->objectPath, "INTERFACE",
             dBusMap->interface, "PROPERTY", dBusMap->propertyName, "ERROR", e);
-        return persisted.value_or(stringInfo.defString);
+        if (persisted.has_value())
+        {
+            return validateAttributeValue(*persisted);
+        }
+        return stringInfo.defString;
     }
 }
 
