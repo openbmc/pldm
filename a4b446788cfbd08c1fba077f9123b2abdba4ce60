@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37e20f42_453bf0b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "2cfdd388_42e68b00",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f58913f6_b24eca1a",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-08-13T06:43:29Z",
       "side": 1,
       "message": "I think start_lifetime_as is added now to openbmc CI and the yocto. Can we make that change everywhere we used the new operator?",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841095dc_9fe0e065",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done. Added start_lifetime_as as a replacement of new operator.",
+      "parentUuid": "f58913f6_b24eca1a",
       "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52058cf4_a3c812c1",
+        "filename": "host-bmc/host_pdr_handler.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "6745c9ef_b5d10841",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78806fee_7d9a4098",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-08-13T06:43:29Z",
       "side": 1,
       "message": "can we elaborate the doxygen with the input parameters?",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "738deacd_8845e3bf",
+        "filename": "libpldmresponder/oem_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done. Added doxygen info of the arguments",
+      "parentUuid": "78806fee_7d9a4098",
       "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e17330f_d0f2733d",
+        "filename": "libpldmresponder/pdr_utils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "25e3abec_81893e27",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80a33294_855bd172",
@@ -103,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2bad443_de644db5",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "80a33294_855bd172",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ab275a4_e1d4d0df",
@@ -116,6 +224,24 @@
       "writtenOn": "2026-08-13T06:43:29Z",
       "side": 1,
       "message": "add the doxygen for this",
+      "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3933884_d0adcd98",
+        "filename": "oem/ibm/libpldmresponder/oem_ibm_handler.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1002348
+      },
+      "writtenOn": "2026-09-09T06:37:57Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3ab275a4_e1d4d0df",
       "revId": "a4b446788cfbd08c1fba077f9123b2abdba4ce60",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
