@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f0c72b4_f3db8da8",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-09-09T07:04:33Z",
+      "side": 1,
+      "message": "The componentInfoMap update and the image-set-level entry now happen after the loop, so an early return would drop the components already parsed successfully. break stops the parse (the pointer arithmetic isn\u0027t trustworthy after a failed decode) while keeping the partial results.",
+      "parentUuid": "d8ae8f50_65b35b93",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "671c3567_ec55d03b",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dac8dd0_52765bb2",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-09-09T07:04:33Z",
+      "side": 1,
+      "message": "Yes, this is intentional. The check is deliberately generic: it keys on version-string equality, not on component count. A multi-component FD whose image set version happens to equal one of its component versions has exactly the same redundancy, so suppressing the duplicate there is equally correct. Single-component FDs are called out in the commit message because they hit this by construction (the image set version is always the same as the only component\u0027s version), i.e. they\u0027re the motivating case rather than a restriction.",
+      "parentUuid": "671c3567_ec55d03b",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8d945ea_a5839373",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-09-06T21:40:47Z",
       "side": 1,
       "message": "Shouldn\u0027t we be updating the version published on the D-Bus when this function is eventually called from `taskCOmpletionCallback` after an update finishes?",
+      "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf06cb5c_7ffaeab3",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-09-09T07:04:33Z",
+      "side": 1,
+      "message": "Yes, and it still is. createFirmwareEntry() is an upsert keyed on SoftwareIdentifier, so on the re-query path each entry is refreshed with the newly decoded version. This patch only changes whether the redundant image-level object is created, not whether versions get published.",
+      "parentUuid": "f8d945ea_a5839373",
       "revId": "0c93b53a3ae32faca5449009e7dc42b002047832",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
