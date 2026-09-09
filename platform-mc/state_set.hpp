@@ -4,8 +4,6 @@
 
 #include <sdbusplus/bus.hpp>
 
-#include <algorithm>
-#include <array>
 #include <map>
 #include <memory>
 #include <string>
@@ -40,44 +38,16 @@ class StateSetBase
     virtual void setPresentState(uint8_t presentState) = 0;
 };
 
-using StateSetCreator = std::unique_ptr<StateSetBase> (*)(sdbusplus::bus_t&,
-                                                          const std::string&);
-
-/** @struct StateSetItem
- *  @brief The D-Bus interface of one state set.
- */
-struct StateSetItem
-{
-    StateSetId stateSetId;  //!< DSP0249 state set ID
-    StateSetCreator create; //!< Creator of the D-Bus interface
-};
-
-/** @brief The state sets which have a D-Bus interface.
- *
- *  The mapping is injective: two state sets do not share the property of a
- *  D-Bus interface, so the component sensors of one entity do not overwrite
- *  each other. A state set gets its entry when its interface is added.
- */
-inline constexpr std::array<StateSetItem, 0> stateSetItems{};
-
 /** @brief Create the D-Bus interface which matches the given state set
+ *
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
  *  @param[in] stateSetId - DSP0249 state set ID
  *  @return unique_ptr to StateSetBase, nullptr when the state set has no
  *          matching D-Bus interface
  */
-inline std::unique_ptr<StateSetBase> createStateSet(
-    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId)
-{
-    auto it =
-        std::ranges::find(stateSetItems, stateSetId, &StateSetItem::stateSetId);
-    if (it == stateSetItems.end())
-    {
-        return nullptr;
-    }
-    return it->create(bus, path);
-}
+std::unique_ptr<StateSetBase> createStateSet(
+    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId);
 
 /** @class StateSets
  *  @brief The state set interfaces implemented on one D-Bus object.
