@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1241529_ce539caa",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-09T09:16:07Z",
+      "side": 1,
+      "message": "Should we add a default case here?\nNot sure if returning `quiet_NaN()` as default is intentional?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 18
+      },
+      "revId": "4bb87318257c7d3c448c818d55a2b8545b348d11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a392021b_32adffd6",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-09T09:16:07Z",
+      "side": 1,
+      "message": "Should we have a NaN/negative guard here?",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 26,
+        "endChar": 76
+      },
+      "revId": "4bb87318257c7d3c448c818d55a2b8545b348d11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0cbd57_86f13e93",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-09T09:16:07Z",
+      "side": 1,
+      "message": "It seems like the second argument is `skipSignal` instead of `signal`.\nIn this case, I think we have to set the second argument to true to avoid triggerring property change signals.\n\nRef:\nhttps://github.com/openbmc/sdbusplus/blob/2af34c3f50ff8488bfcddbfc394aaaaaabf2e00d/tools/sdbusplus/templates/interface.server.hpp.mako#L73",
+      "range": {
+        "startLine": 78,
+        "startChar": 8,
+        "endLine": 80,
+        "endChar": 53
+      },
+      "revId": "4bb87318257c7d3c448c818d55a2b8545b348d11",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
