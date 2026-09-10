@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libpldmresponder/platform.hpp"
+#include "oem/nvidia/inventory_event_handler.hpp"
 #include "platform-mc/manager.hpp"
 
 namespace pldm
@@ -9,6 +10,7 @@ namespace oem_nvidia
 {
 
 static constexpr const uint8_t PLDM_OEM_NVIDIA_LEGACY_CPER_EVENT_CLASS = 0xFA;
+static constexpr const uint8_t PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS = 0xF3;
 
 /**
  * @class OemNVIDIA
@@ -67,6 +69,30 @@ class OemNVIDIA
                                const uint8_t* eventData, size_t eventDataSize) {
                 return platformManager->handlePolledCperEvent(
                     tid, eventId, eventData, eventDataSize);
+            }});
+
+        platformHandler->registerEventHandlers(
+            PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS,
+            {[platformManager](const pldm_msg* request, size_t payloadLength,
+                               uint8_t /* formatVersion */, uint8_t tid,
+                               size_t eventDataOffset) {
+                const auto* eventData =
+                    reinterpret_cast<const uint8_t*>(request->payload) +
+                    eventDataOffset;
+                auto name = platformManager->getTerminusName(tid);
+                return handleInventoryEvent(
+                    tid, name.value_or(std::string_view{}), eventData,
+                    payloadLength - eventDataOffset);
+            }});
+
+        platformManager->registerPolledEventHandler(
+            PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS,
+            {[platformManager](pldm_tid_t tid, uint16_t /* eventId */,
+                               const uint8_t* eventData, size_t eventDataSize) {
+                auto name = platformManager->getTerminusName(tid);
+                return handleInventoryEvent(tid,
+                                            name.value_or(std::string_view{}),
+                                            eventData, eventDataSize);
             }});
     }
 };
