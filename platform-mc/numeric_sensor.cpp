@@ -51,34 +51,6 @@ inline bool NumericSensor::createInventoryPath(
     return true;
 }
 
-inline double getSensorDataValue(uint8_t sensor_data_size,
-                                 union_sensor_data_size& value)
-{
-    double ret = std::numeric_limits<double>::quiet_NaN();
-    switch (sensor_data_size)
-    {
-        case PLDM_SENSOR_DATA_SIZE_UINT8:
-            ret = value.value_u8;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT8:
-            ret = value.value_s8;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT16:
-            ret = value.value_u16;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT16:
-            ret = value.value_s16;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT32:
-            ret = value.value_u32;
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT32:
-            ret = value.value_s32;
-            break;
-    }
-    return ret;
-}
-
 inline double getRangeFieldValue(uint8_t range_field_format,
                                  union_range_field_format& value)
 {
@@ -232,11 +204,12 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
             {{"chassis", "all_sensors", associationPath}});
     }
 
-    double maxValue =
-        getSensorDataValue(pdr->sensor_data_size, pdr->max_readable);
-    double minValue =
-        getSensorDataValue(pdr->sensor_data_size, pdr->min_readable);
-    hysteresis = getSensorDataValue(pdr->sensor_data_size, pdr->hysteresis);
+    double maxValue = pldm::utils::getSensorDataValue(pdr->sensor_data_size,
+                                                      pdr->max_readable);
+    double minValue = pldm::utils::getSensorDataValue(pdr->sensor_data_size,
+                                                      pdr->min_readable);
+    hysteresis =
+        pldm::utils::getSensorDataValue(pdr->sensor_data_size, pdr->hysteresis);
 
     bool hasCriticalThresholds = false;
     bool hasWarningThresholds = false;
