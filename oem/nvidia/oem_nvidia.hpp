@@ -1,6 +1,7 @@
 #pragma once
 
 #include "libpldmresponder/platform.hpp"
+#include "oem/nvidia/inventory_event_handler.hpp"
 #include "platform-mc/manager.hpp"
 
 namespace pldm
@@ -9,6 +10,7 @@ namespace oem_nvidia
 {
 
 static constexpr const uint8_t PLDM_OEM_NVIDIA_LEGACY_CPER_EVENT_CLASS = 0xFA;
+static constexpr const uint8_t PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS = 0xF3;
 
 /**
  * @class OemNVIDIA
@@ -68,7 +70,38 @@ class OemNVIDIA
                 return platformManager->handlePolledCperEvent(
                     tid, eventId, eventData, eventDataSize);
             }});
+
+        platformHandler->registerEventHandlers(
+            PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS,
+            {[this, platformManager](
+                 const pldm_msg* request, const size_t payloadLength,
+                 const uint8_t /* formatVersion */, const uint8_t tid,
+                 const size_t eventDataOffset) {
+                const auto* eventData =
+                    reinterpret_cast<const uint8_t*>(request->payload) +
+                    eventDataOffset;
+                std::optional<std::string_view> name =
+                    platformManager->getTerminusName(tid);
+                return inventoryEventHandler.handleEvent(
+                    tid, name.value_or(std::string_view{}), eventData,
+                    payloadLength - eventDataOffset);
+            }});
+
+        platformManager->registerPolledEventHandler(
+            PLDM_OEM_NVIDIA_INVENTORY_EVENT_CLASS,
+            {[this, platformManager](
+                 const pldm_tid_t tid, const uint16_t /* eventId */,
+                 const uint8_t* eventData, const size_t eventDataSize) {
+                std::optional<std::string_view> name =
+                    platformManager->getTerminusName(tid);
+                return inventoryEventHandler.handleEvent(
+                    tid, name.value_or(std::string_view{}), eventData,
+                    eventDataSize);
+            }});
     }
+
+    /** @brief Forwards inventory events to the hosting service */
+    InventoryEventHandler inventoryEventHandler;
 };
 
 } // namespace oem_nvidia
