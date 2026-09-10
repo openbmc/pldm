@@ -264,6 +264,10 @@ if get_option('oem-meta').allowed()
     subdir('oem/meta')
 endif
 
+if get_option('oem-nvidia').allowed()
+    subdir('oem/nvidia')
+endif
+
 if get_option('libpldmresponder').allowed()
     subdir('libpldmresponder')
     deps += [libpldmresponder_dep]
@@ -342,4 +346,7 @@ if get_option('tests').allowed()
     subdir('requester/test')
     subdir('platform-mc/test')
     subdir('test')
+    if get_option('oem-nvidia').allowed()
+        subdir('oem/nvidia/test')
+    endif
 endif
