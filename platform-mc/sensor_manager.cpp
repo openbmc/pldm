@@ -388,29 +388,10 @@ exec::task<int> SensorManager::getSensorReading(
             co_return completionCode;
     }
 
-    switch (sensorDataSize)
+    if (const auto reading =
+            pldm::utils::getSensorDataValue(sensorDataSize, presentReading))
     {
-        case PLDM_SENSOR_DATA_SIZE_UINT8:
-            value = static_cast<double>(presentReading.value_u8);
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT8:
-            value = static_cast<double>(presentReading.value_s8);
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT16:
-            value = static_cast<double>(presentReading.value_u16);
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT16:
-            value = static_cast<double>(presentReading.value_s16);
-            break;
-        case PLDM_SENSOR_DATA_SIZE_UINT32:
-            value = static_cast<double>(presentReading.value_u32);
-            break;
-        case PLDM_SENSOR_DATA_SIZE_SINT32:
-            value = static_cast<double>(presentReading.value_s32);
-            break;
-        default:
-            value = std::numeric_limits<double>::quiet_NaN();
-            break;
+        value = static_cast<double>(*reading);
     }
 
     sensor->updateReading(true, true, value);
