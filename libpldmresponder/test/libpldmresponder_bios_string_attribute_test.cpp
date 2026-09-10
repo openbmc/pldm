@@ -4,6 +4,9 @@
 
 #include <nlohmann/json.hpp>
 
+#include <cstring>
+#include <limits>
+
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -157,6 +160,62 @@ TEST_F(TestBIOSStringAttribute, ConstructEntry)
 
     checkConstructEntry(stringReadWrite, biosStringTable, expectedAttrEntry,
                         expectedAttrValueEntry);
+}
+
+TEST_F(TestBIOSStringAttribute, GenerateAttributeEntryRejectsOversizedString)
+{
+    auto jsonStringReadWrite = R"({
+            "attribute_name" : "str_example1",
+            "string_type" : "ASCII",
+            "minimum_string_length" : 1,
+            "maximum_string_length" : 65535,
+            "default_string" : "abc",
+            "read_only" : false,
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName"
+        })"_json;
+    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, nullptr};
+
+    std::string oversized(
+        static_cast<size_t>(std::numeric_limits<uint16_t>::max()) + 1, 'a');
+    Table attrValueEntry(sizeof(pldm_bios_attr_val_table_entry), 0);
+
+    stringReadWrite.generateAttributeEntry(oversized, attrValueEntry);
+
+    EXPECT_TRUE(attrValueEntry.empty());
+}
+
+TEST_F(TestBIOSStringAttribute, GenerateAttributeEntryAcceptsMaxLengthString)
+{
+    auto jsonStringReadWrite = R"({
+            "attribute_name" : "str_example1",
+            "string_type" : "ASCII",
+            "minimum_string_length" : 1,
+            "maximum_string_length" : 65535,
+            "default_string" : "abc",
+            "read_only" : false,
+            "help_text" : "HelpText",
+            "display_name" : "DisplayName"
+        })"_json;
+    BIOSStringAttribute stringReadWrite{jsonStringReadWrite, nullptr};
+
+    std::string maxLength(std::numeric_limits<uint16_t>::max(), 'a');
+    Table attrValueEntry(sizeof(pldm_bios_attr_val_table_entry), 0);
+
+    stringReadWrite.generateAttributeEntry(maxLength, attrValueEntry);
+
+    ASSERT_FALSE(attrValueEntry.empty());
+    EXPECT_EQ(attrValueEntry.size(),
+              sizeof(pldm_bios_attr_val_table_entry) + sizeof(uint16_t) +
+                  maxLength.size() - 1);
+
+    auto entry = reinterpret_cast<pldm_bios_attr_val_table_entry*>(
+        attrValueEntry.data());
+    uint16_t encodedLen;
+    memcpy(&encodedLen, entry->value, sizeof(uint16_t));
+    EXPECT_EQ(encodedLen, maxLength.size());
+    EXPECT_EQ(0, memcmp(entry->value + sizeof(uint16_t), maxLength.data(),
+                        maxLength.size()));
 }
 
 TEST_F(TestBIOSStringAttribute, setAttrValueOnDbus)

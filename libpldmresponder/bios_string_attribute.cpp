@@ -4,6 +4,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <limits>
 #include <variant>
 
 PHOSPHOR_LOG2_USING;
@@ -148,7 +149,19 @@ void BIOSStringAttribute::generateAttributeEntry(
     Table& attrValueEntry)
 {
     std::string value = std::get<std::string>(attributevalue);
-    uint16_t len = value.size();
+
+    if (value.size() > std::numeric_limits<uint16_t>::max())
+    {
+        error("String length '{LENGTH}' for attribute '{ATTRIBUTE}' exceeds "
+              "the maximum encodable length '{MAX_LENGTH}', rejecting value",
+              "LENGTH", value.size(), "ATTRIBUTE", name, "MAX_LENGTH",
+              std::numeric_limits<uint16_t>::max());
+        // Empty attrValueEntry signals rejection to the caller.
+        attrValueEntry.clear();
+        return;
+    }
+
+    uint16_t len = static_cast<uint16_t>(value.size());
 
     attrValueEntry.resize(
         sizeof(pldm_bios_attr_val_table_entry) + sizeof(uint16_t) + len - 1);
@@ -157,7 +170,7 @@ void BIOSStringAttribute::generateAttributeEntry(
 
     entry->attr_type = 1;
     memcpy(entry->value, &len, sizeof(uint16_t));
-    memcpy(entry->value + sizeof(uint16_t), value.c_str(), value.size());
+    memcpy(entry->value + sizeof(uint16_t), value.c_str(), len);
 }
 
 } // namespace bios

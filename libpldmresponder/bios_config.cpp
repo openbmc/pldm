@@ -1133,6 +1133,16 @@ void BIOSConfig::constructPendingAttribute(
 
         (*iter)->generateAttributeEntry(attributevalue, attrValueEntry);
 
+        if (attrValueEntry.empty())
+        {
+            // Rejected by generateAttributeEntry(); skip instead of
+            // calling setAttrValue with a malformed entry.
+            error(
+                "Skipping pending attribute '{ATTRIBUTE}': value rejected by generateAttributeEntry",
+                "ATTRIBUTE", attributeName);
+            continue;
+        }
+
         setAttrValue(attrValueEntry.data(), attrValueEntry.size(), true);
     }
 
