@@ -676,6 +676,21 @@ bool dbusPropValuesToDouble(const std::string_view& type,
                             const pldm::utils::PropertyValue& value,
                             double* doubleValue);
 
+/** @brief Convert a numeric sensor reading to a double
+ *
+ *  Reads the member of the union selected by the sensor data size. The
+ *  union and its tag appear together in the Numeric Sensor PDR and in the
+ *  GetSensorReading response.
+ *
+ *  @param[in] sensorDataSize - one of the PLDM_SENSOR_DATA_SIZE_* values
+ *  @param[in] value - the union holding the reading
+ *
+ *  @return the reading as a double, or quiet NaN when sensorDataSize is not
+ *          a recognized sensor data size.
+ */
+double getSensorDataValue(uint8_t sensorDataSize,
+                          const union_sensor_data_size& value);
+
 /** @brief Convert the Fru String bytes from PLDM Fru to std::string
  *
  *  @param[in] value - the Fru String bytes

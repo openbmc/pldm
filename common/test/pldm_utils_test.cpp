@@ -4,6 +4,8 @@
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
 
+#include <cmath>
+
 #include <gtest/gtest.h>
 
 using namespace pldm::utils;
@@ -1507,4 +1509,50 @@ TEST(GenerateSwId, testRandomness)
     }
     // With 50 calls, we should get at least some different values
     EXPECT_GT(ids.size(), 1);
+}
+
+TEST(GetSensorDataValue, testUnsignedDataSizes)
+{
+    union_sensor_data_size value{};
+
+    /* Each value is too large for the next narrower type, so reading the
+       wrong member would not produce it. */
+    value.value_u8 = 200;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT8, value),
+                     200);
+
+    value.value_u16 = 40000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT16, value),
+                     40000);
+
+    value.value_u32 = 3000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, value),
+                     3000000000);
+}
+
+TEST(GetSensorDataValue, testSignedDataSizesKeepTheSign)
+{
+    union_sensor_data_size value{};
+
+    value.value_s8 = -120;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, value),
+                     -120);
+
+    value.value_s16 = -30000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, value),
+                     -30000);
+
+    value.value_s32 = -2000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, value),
+                     -2000000000);
+}
+
+TEST(GetSensorDataValue, testUnrecognizedDataSizeIsNaN)
+{
+    union_sensor_data_size value{};
+    value.value_u32 = 1234;
+
+    EXPECT_TRUE(std::isnan(
+        getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32 + 1, value)));
+    EXPECT_TRUE(std::isnan(getSensorDataValue(0xFF, value)));
 }
