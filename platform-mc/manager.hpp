@@ -266,6 +266,22 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return terminusManager.getActiveEidByName(terminusName);
     }
 
+    /** @brief Get the name of the terminus with the given TID
+     *
+     *  @param[in] tid - Terminus ID
+     *  @return the terminus name, or std::nullopt when the TID is not being
+     *          managed or the terminus has no name
+     */
+    std::optional<std::string_view> getTerminusName(pldm_tid_t tid)
+    {
+        auto it = termini.find(tid);
+        if (it == termini.end() || !it->second)
+        {
+            return std::nullopt;
+        }
+        return it->second->getTerminusName();
+    }
+
   private:
     /** @brief List of discovered termini */
     TerminiMapper termini{};
