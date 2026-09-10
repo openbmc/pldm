@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <map>
+#include <optional>
 #include <span>
 #include <string>
 #include <variant>
@@ -681,6 +682,21 @@ std::string_view trimNameForDbus(std::string& name);
 bool dbusPropValuesToDouble(const std::string_view& type,
                             const pldm::utils::PropertyValue& value,
                             double* doubleValue);
+
+/** @brief Read a numeric sensor reading as an integer
+ *
+ *  Reads the member of the union selected by the sensor data size. The
+ *  union and its tag appear together in the Numeric Sensor PDR and in the
+ *  GetSensorReading response.
+ *
+ *  @param[in] sensorDataSize - a pldm_sensor_readings_data_type value
+ *  @param[in] value - the union holding the reading
+ *
+ *  @return the reading, or std::nullopt when sensorDataSize is not a
+ *          recognized sensor data size.
+ */
+std::optional<int64_t> getSensorDataValue(uint8_t sensorDataSize,
+                                          const union_sensor_data_size& value);
 
 /** @brief Convert the Fru String bytes from PLDM Fru to std::string
  *

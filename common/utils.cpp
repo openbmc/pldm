@@ -825,6 +825,28 @@ bool dbusPropValuesToDouble(const std::string_view& type,
     return true;
 }
 
+std::optional<int64_t> getSensorDataValue(const uint8_t sensorDataSize,
+                                          const union_sensor_data_size& value)
+{
+    switch (sensorDataSize)
+    {
+        case PLDM_SENSOR_DATA_SIZE_UINT8:
+            return value.value_u8;
+        case PLDM_SENSOR_DATA_SIZE_SINT8:
+            return value.value_s8;
+        case PLDM_SENSOR_DATA_SIZE_UINT16:
+            return value.value_u16;
+        case PLDM_SENSOR_DATA_SIZE_SINT16:
+            return value.value_s16;
+        case PLDM_SENSOR_DATA_SIZE_UINT32:
+            return value.value_u32;
+        case PLDM_SENSOR_DATA_SIZE_SINT32:
+            return value.value_s32;
+        default:
+            return std::nullopt;
+    }
+}
+
 std::optional<std::string> fruFieldValuestring(const uint8_t* value,
                                                const uint8_t& length)
 {
