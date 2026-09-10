@@ -5,6 +5,10 @@
 #include <linux/mctp.h>
 
 #include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <cstring>
+#include <limits>
 
 #include <gtest/gtest.h>
 
@@ -1526,4 +1530,94 @@ TEST(GetCurrentSystemTimeInMicroseconds, testWithinSystemClockBounds)
 
     EXPECT_GE(now, before);
     EXPECT_LE(now, after);
+}
+
+TEST(GetSensorDataValue, testUnsignedDataSizes)
+{
+    union_sensor_data_size u8{};
+    u8.value_u8 = 200;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT8, u8), 200);
+
+    union_sensor_data_size u16{};
+    u16.value_u16 = 40000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT16, u16),
+                     40000);
+
+    union_sensor_data_size u32{};
+    u32.value_u32 = 3000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32),
+                     3000000000);
+}
+
+TEST(GetSensorDataValue, testSignedDataSizesKeepTheSign)
+{
+    union_sensor_data_size s8{};
+    s8.value_s8 = -120;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8), -120);
+
+    union_sensor_data_size s16{};
+    s16.value_s16 = -30000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16),
+                     -30000);
+
+    union_sensor_data_size s32{};
+    s32.value_s32 = -2000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32),
+                     -2000000000);
+}
+
+TEST(GetSensorDataValue, testBoundaryValues)
+{
+    union_sensor_data_size u32Min{};
+    u32Min.value_u32 = 0;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32Min),
+                     0);
+
+    union_sensor_data_size u32Max{};
+    u32Max.value_u32 = UINT32_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32Max),
+                     UINT32_MAX);
+
+    union_sensor_data_size s8Min{};
+    s8Min.value_s8 = INT8_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8Min),
+                     INT8_MIN);
+
+    union_sensor_data_size s8Max{};
+    s8Max.value_s8 = INT8_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8Max),
+                     INT8_MAX);
+
+    union_sensor_data_size s16Min{};
+    s16Min.value_s16 = INT16_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16Min),
+                     INT16_MIN);
+
+    union_sensor_data_size s16Max{};
+    s16Max.value_s16 = INT16_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16Max),
+                     INT16_MAX);
+
+    union_sensor_data_size s32Min{};
+    s32Min.value_s32 = INT32_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32Min),
+                     INT32_MIN);
+
+    union_sensor_data_size s32Max{};
+    s32Max.value_s32 = INT32_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32Max),
+                     INT32_MAX);
+}
+
+TEST(GetSensorDataValue, testEveryUnrecognizedDataSizeIsNaN)
+{
+    union_sensor_data_size value;
+    std::memset(&value, 0x5a, sizeof(value));
+
+    for (int size = PLDM_SENSOR_DATA_SIZE_MAX + 1; size <= UINT8_MAX; ++size)
+    {
+        ASSERT_TRUE(
+            std::isnan(getSensorDataValue(static_cast<uint8_t>(size), value)))
+            << "sensorDataSize " << size;
+    }
 }
