@@ -9,6 +9,7 @@
 #include <libpldm/state_set.h>
 
 #include <algorithm>
+#include <cmath>
 #include <cstddef>
 #include <format>
 #include <map>
@@ -1888,41 +1889,12 @@ class GetPDR : public CommandInterface
         output["plusTolerance"] = pdr.plus_tolerance;
         output["minusTolerance"] = pdr.minus_tolerance;
 
-        switch (pdr.sensor_data_size)
-        {
-            case PLDM_SENSOR_DATA_SIZE_UINT8:
-                output["hysteresis"] = pdr.hysteresis.value_u8;
-                output["maxReadable"] = pdr.max_readable.value_u8;
-                output["minReadable"] = pdr.min_readable.value_u8;
-                break;
-            case PLDM_SENSOR_DATA_SIZE_SINT8:
-                output["hysteresis"] = pdr.hysteresis.value_s8;
-                output["maxReadable"] = pdr.max_readable.value_s8;
-                output["minReadable"] = pdr.min_readable.value_s8;
-                break;
-            case PLDM_SENSOR_DATA_SIZE_UINT16:
-                output["hysteresis"] = pdr.hysteresis.value_u16;
-                output["maxReadable"] = pdr.max_readable.value_u16;
-                output["minReadable"] = pdr.min_readable.value_u16;
-                break;
-            case PLDM_SENSOR_DATA_SIZE_SINT16:
-                output["hysteresis"] = pdr.hysteresis.value_s16;
-                output["maxReadable"] = pdr.max_readable.value_s16;
-                output["minReadable"] = pdr.min_readable.value_s16;
-                break;
-            case PLDM_SENSOR_DATA_SIZE_UINT32:
-                output["hysteresis"] = pdr.hysteresis.value_u32;
-                output["maxReadable"] = pdr.max_readable.value_u32;
-                output["minReadable"] = pdr.min_readable.value_u32;
-                break;
-            case PLDM_SENSOR_DATA_SIZE_SINT32:
-                output["hysteresis"] = pdr.hysteresis.value_s32;
-                output["maxReadable"] = pdr.max_readable.value_s32;
-                output["minReadable"] = pdr.min_readable.value_s32;
-                break;
-            default:
-                break;
-        }
+        output["hysteresis"] = pldm::utils::getSensorDataValue(
+            pdr.sensor_data_size, pdr.hysteresis);
+        output["maxReadable"] = pldm::utils::getSensorDataValue(
+            pdr.sensor_data_size, pdr.max_readable);
+        output["minReadable"] = pldm::utils::getSensorDataValue(
+            pdr.sensor_data_size, pdr.min_readable);
 
         output["supportedThresholds"] = pdr.supported_thresholds.byte;
         output["thresholAndHysteresisVolatility"] =
@@ -2517,14 +2489,13 @@ class GetSensorReading : public CommandInterface
         uint8_t presentState = 0;
         uint8_t previousState = 0;
         uint8_t eventState = 0;
-        std::array<uint8_t, sizeof(uint32_t)>
-            presentReading{}; // maximum size for the present Value is uint32
-                              // according to spec DSP0248
+        union_sensor_data_size presentReading{};
 
         auto rc = decode_get_sensor_reading_resp(
             responsePtr, payloadLength, &completionCode, &sensorDataSize,
             &sensorOperationalState, &sensorEventMessageEnable, &presentState,
-            &previousState, &eventState, presentReading.data());
+            &previousState, &eventState,
+            reinterpret_cast<uint8_t*>(&presentReading));
 
         if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
         {
@@ -2546,51 +2517,14 @@ class GetSensorReading : public CommandInterface
             getSensorState(previousState, &sensorPresState);
         output["eventState"] = getSensorState(eventState, &sensorPresState);
 
-        switch (sensorDataSize)
+        double reading =
+            pldm::utils::getSensorDataValue(sensorDataSize, presentReading);
+        if (std::isnan(reading))
         {
-            case PLDM_SENSOR_DATA_SIZE_UINT8:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<uint8_t*>(presentReading.data()));
-                break;
-            }
-            case PLDM_SENSOR_DATA_SIZE_SINT8:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<int8_t*>(presentReading.data()));
-                break;
-            }
-            case PLDM_SENSOR_DATA_SIZE_UINT16:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<uint16_t*>(presentReading.data()));
-                break;
-            }
-            case PLDM_SENSOR_DATA_SIZE_SINT16:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<int16_t*>(presentReading.data()));
-                break;
-            }
-            case PLDM_SENSOR_DATA_SIZE_UINT32:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<uint32_t*>(presentReading.data()));
-                break;
-            }
-            case PLDM_SENSOR_DATA_SIZE_SINT32:
-            {
-                output["presentReading"] =
-                    *(reinterpret_cast<int32_t*>(presentReading.data()));
-                break;
-            }
-            default:
-            {
-                std::cerr << "Unknown Sensor Data Size : "
-                          << static_cast<int>(sensorDataSize) << std::endl;
-                break;
-            }
+            std::cerr << "Unknown Sensor Data Size : "
+                      << static_cast<int>(sensorDataSize) << std::endl;
         }
+        output["presentReading"] = reading;
 
         pldmtool::helper::DisplayInJson(output);
     }
