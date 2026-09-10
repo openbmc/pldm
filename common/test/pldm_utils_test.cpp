@@ -5,6 +5,11 @@
 #include <linux/mctp.h>
 
 #include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <cstring>
+#include <limits>
+#include <type_traits>
 
 #include <gtest/gtest.h>
 
@@ -1526,4 +1531,145 @@ TEST(GetCurrentSystemTimeInMicroseconds, testWithinSystemClockBounds)
 
     EXPECT_GE(now, before);
     EXPECT_LE(now, after);
+}
+
+TEST(GetSensorDataValue, testUnsignedDataSizes)
+{
+    /* Each value is too large for the next narrower type, so reading the
+       wrong member would not produce it. */
+    union_sensor_data_size u8{};
+    u8.value_u8 = 200;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT8, u8), 200);
+
+    union_sensor_data_size u16{};
+    u16.value_u16 = 40000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT16, u16),
+                     40000);
+
+    union_sensor_data_size u32{};
+    u32.value_u32 = 3000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32),
+                     3000000000);
+}
+
+TEST(GetSensorDataValue, testSignedDataSizesKeepTheSign)
+{
+    union_sensor_data_size s8{};
+    s8.value_s8 = -120;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8), -120);
+
+    union_sensor_data_size s16{};
+    s16.value_s16 = -30000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16),
+                     -30000);
+
+    union_sensor_data_size s32{};
+    s32.value_s32 = -2000000000;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32),
+                     -2000000000);
+}
+
+TEST(GetSensorDataValue, testBoundaryValues)
+{
+    union_sensor_data_size u32Min{};
+    u32Min.value_u32 = 0;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32Min),
+                     0);
+
+    union_sensor_data_size u32Max{};
+    u32Max.value_u32 = UINT32_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_UINT32, u32Max),
+                     UINT32_MAX);
+
+    union_sensor_data_size s8Min{};
+    s8Min.value_s8 = INT8_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8Min),
+                     INT8_MIN);
+
+    union_sensor_data_size s8Max{};
+    s8Max.value_s8 = INT8_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT8, s8Max),
+                     INT8_MAX);
+
+    union_sensor_data_size s16Min{};
+    s16Min.value_s16 = INT16_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16Min),
+                     INT16_MIN);
+
+    union_sensor_data_size s16Max{};
+    s16Max.value_s16 = INT16_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT16, s16Max),
+                     INT16_MAX);
+
+    union_sensor_data_size s32Min{};
+    s32Min.value_s32 = INT32_MIN;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32Min),
+                     INT32_MIN);
+
+    union_sensor_data_size s32Max{};
+    s32Max.value_s32 = INT32_MAX;
+    EXPECT_DOUBLE_EQ(getSensorDataValue(PLDM_SENSOR_DATA_SIZE_SINT32, s32Max),
+                     INT32_MAX);
+}
+
+/* Fill the union with 0x00 and 0xff before setting the member, so reading
+   a different member than the data size selects cannot return v. */
+template <typename T>
+void expectExactForValues(uint8_t sensorDataSize,
+                          T union_sensor_data_size::* member, int64_t step)
+{
+    constexpr auto bits = sizeof(T) * 8;
+    constexpr int64_t lo =
+        std::is_signed_v<T> ? -(int64_t{1} << (bits - 1)) : 0;
+    constexpr int64_t hi = std::is_signed_v<T> ? (int64_t{1} << (bits - 1)) - 1
+                                               : (int64_t{1} << bits) - 1;
+    for (int64_t v = lo; v <= hi; v += step)
+    {
+        for (int fill : {0x00, 0xff})
+        {
+            union_sensor_data_size value;
+            std::memset(&value, fill, sizeof(value));
+            value.*member = static_cast<T>(v);
+            ASSERT_EQ(getSensorDataValue(sensorDataSize, value),
+                      static_cast<double>(v))
+                << "sensorDataSize " << static_cast<int>(sensorDataSize)
+                << " value " << v << " fill " << fill;
+        }
+    }
+}
+
+/* For each data size, store every representable value (every 65537th for
+   the 32-bit sizes, which includes both limits) into a union pre-filled
+   with 0x00 and then 0xff, and check that the helper returns it exactly.
+   Reading the wrong member or with the wrong sign fails on at least one
+   fill. */
+TEST(GetSensorDataValue, testEveryValueIsExact)
+{
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_UINT8,
+                         &union_sensor_data_size::value_u8, 1);
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_SINT8,
+                         &union_sensor_data_size::value_s8, 1);
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_UINT16,
+                         &union_sensor_data_size::value_u16, 1);
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_SINT16,
+                         &union_sensor_data_size::value_s16, 1);
+
+    /* 2^32 - 1 is a multiple of 65537, so the sweep lands on both limits. */
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_UINT32,
+                         &union_sensor_data_size::value_u32, 65537);
+    expectExactForValues(PLDM_SENSOR_DATA_SIZE_SINT32,
+                         &union_sensor_data_size::value_s32, 65537);
+}
+
+TEST(GetSensorDataValue, testEveryUnrecognizedDataSizeIsNaN)
+{
+    union_sensor_data_size value;
+    std::memset(&value, 0x5a, sizeof(value));
+
+    for (int size = PLDM_SENSOR_DATA_SIZE_MAX + 1; size <= UINT8_MAX; ++size)
+    {
+        ASSERT_TRUE(
+            std::isnan(getSensorDataValue(static_cast<uint8_t>(size), value)))
+            << "sensorDataSize " << size;
+    }
 }
