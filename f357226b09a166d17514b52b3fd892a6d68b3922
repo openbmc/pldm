@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "055822fe_3f0af6f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:53:10Z",
+      "side": 1,
+      "message": "Its updaters leave progress at the last value on failure and only set Failed. Not workable here: the aggregate is the minimum across devices, so one failed device would pin the package below 100%. Added to the message.",
+      "parentUuid": "943582dc_efc76e01",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72037a23_9526d97d",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00d2b69e_3850b4d1",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:53:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72037a23_9526d97d",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f38de1e_f2dac41c",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-09-07T18:37:10Z",
       "side": 1,
       "message": "I think we should remove activationComplete\u003dtrue from other places as they’re now redundant.",
+      "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b84a484_c2fd5fcc",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:53:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f38de1e_f2dac41c",
       "revId": "f357226b09a166d17514b52b3fd892a6d68b3922",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
