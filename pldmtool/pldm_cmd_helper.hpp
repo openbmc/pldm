@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/instance_id.hpp"
+#include "common/utils.hpp"
 
 #include <err.h>
 #include <libpldm/base.h>
@@ -18,8 +19,11 @@
 #include <CLI/CLI.hpp>
 #include <nlohmann/json.hpp>
 
+#include <cmath>
+#include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <string>
 #include <utility>
 
 namespace pldmtool
@@ -60,6 +64,33 @@ void Logger(bool pldmverbose, const char* msg, const T& data)
 static inline void DisplayInJson(const ordered_json& data)
 {
     std::cout << data.dump(4) << std::endl;
+}
+
+/** @brief Add a range field of a numeric PDR to the JSON output
+ *
+ *  Integer formats are printed as integers and REAL32 as a float. The field
+ *  is left out when the rangeFieldFormat is not a defined value.
+ *
+ *  @param[in,out] output - JSON object to add the field to
+ *  @param[in] key - name of the field
+ *  @param[in] format - rangeFieldFormat of the PDR owning the field
+ *  @param[in] value - the range field to print
+ */
+inline void addRangeField(ordered_json& output, const std::string& key,
+                          uint8_t format, const union_range_field_format& value)
+{
+    if (format == PLDM_RANGE_FIELD_FORMAT_REAL32)
+    {
+        output[key] = value.value_f32;
+        return;
+    }
+
+    const double fieldValue = pldm::utils::getRangeFieldValue(format, value);
+    if (std::isnan(fieldValue))
+    {
+        return;
+    }
+    output[key] = static_cast<int64_t>(fieldValue);
 }
 
 /**
