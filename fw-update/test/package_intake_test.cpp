@@ -76,6 +76,11 @@ class PackageIntakeTest : public testing::Test
                updateManager.packageStream;
     }
 
+    bool updatersReleased() const
+    {
+        return updateManager.deviceUpdaterMap.empty() && !updateManager.parser;
+    }
+
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
@@ -173,4 +178,93 @@ TEST_F(PackageIntakeTest, ReleasesMappingWhenNoDeviceIsDiscovered)
     EXPECT_THROW(updateManager.processFd(fd), Unavailable);
     EXPECT_FALSE(packageHeld());
     close(fd);
+}
+
+TEST_F(PackageIntakeTest, ReleasesPackageAfterCompletion)
+{
+    int fd = makeMemfd(package);
+    updateManager.processFd(fd);
+    close(fd);
+    runDeferred();
+    ASSERT_TRUE(packageHeld());
+
+    updateManager.updateDeviceCompletion(1, true);
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              software::Activation::Activations::Active);
+    // Released on the next loop iteration: the completing DeviceUpdater may
+    // still be executing when the update completes
+    EXPECT_TRUE(packageHeld());
+
+    runDeferred();
+    EXPECT_FALSE(packageHeld());
+    EXPECT_TRUE(updatersReleased());
+    // The Software object stays so clients can read the final state
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              software::Activation::Activations::Active);
+
+    // A late FD command is refused instead of being served from a released
+    // package
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
+                     0x00, 0x00, 0x02, 0x00, 0x00};
+    auto response = updateManager.handleRequest(
+        1, PLDM_REQUEST_FIRMWARE_DATA,
+        reinterpret_cast<const pldm_msg*>(reqFwDataReq.data()),
+        sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
+}
+
+TEST_F(PackageIntakeTest, ReleasesPackageWhenPackageIsInvalid)
+{
+    std::vector<uint8_t> truncated(package.begin(), package.begin() + 10);
+    int fd = makeMemfd(truncated);
+    updateManager.processFd(fd);
+    close(fd);
+    // The deferred processStream rejects the package
+    runDeferred();
+
+    EXPECT_FALSE(packageHeld());
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              software::Activation::Activations::Invalid);
+}
+
+TEST_F(PackageIntakeTest, ReleasesPackageWhenNoDeviceMatches)
+{
+    descriptorMap[1] = {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xAA)}};
+    int fd = makeMemfd(package);
+    updateManager.processFd(fd);
+    close(fd);
+    runDeferred();
+
+    EXPECT_FALSE(packageHeld());
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              software::Activation::Activations::Invalid);
+}
+
+TEST_F(PackageIntakeTest, StartsTheNextUpdateBeforeAPendingRelease)
+{
+    int fd = makeMemfd(package);
+    updateManager.processFd(fd);
+    close(fd);
+    runDeferred();
+    updateManager.updateDeviceCompletion(1, true);
+    ASSERT_TRUE(packageHeld());
+
+    // The next StartUpdate is dispatched before the pending release runs
+    updateManager.resetActivationState();
+    int next = makeMemfd(package);
+    updateManager.processFd(next);
+    close(next);
+    // One loop iteration dispatches one source: run both pending defers
+    runDeferred();
+    runDeferred();
+
+    EXPECT_TRUE(packageHeld());
+    EXPECT_TRUE(hasUpdater(1));
 }

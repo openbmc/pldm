@@ -188,7 +188,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        releasePackage();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -204,7 +204,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        releasePackage();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -220,7 +220,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        releasePackage();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -235,7 +235,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
         activation = std::make_unique<Activation>(
             pldm::utils::DBusHandler::getBus(), objPath,
             software::Activation::Activations::Invalid, this);
-        parser.reset();
+        releasePackage();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             Incompatible();
     }
@@ -445,33 +445,43 @@ void UpdateManager::completeUpdate(bool status)
     {
         taskCompletionCallback();
     }
+
+    // The completing DeviceUpdater may still be executing; release its
+    // package from the event loop instead
+    releaseDeferHandler = std::make_unique<sdeventplus::source::Defer>(
+        event, [this](sdeventplus::source::EventBase&) {
+            releaseDeferHandler.reset();
+            releasePackage();
+        });
 }
 
 void UpdateManager::resetActivationState()
 {
+    // Deferred work of the previous update must not touch the next package
+    releaseDeferHandler.reset();
+    updateDeferHandler.reset();
     updateInProgress = false;
     lastProgress = 0;
     activation.reset();
     activationProgress.reset();
     objPath.clear();
-
-    if (package.is_open())
-    {
-        package.close();
-    }
-    deviceUpdaterMap.clear();
-    deviceUpdateCompletionMap.clear();
-    parser.reset();
     releasePackage();
-    std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
 }
 
 void UpdateManager::releasePackage()
 {
+    deviceUpdaterMap.clear();
+    deviceUpdateCompletionMap.clear();
+    parser.reset();
     packageStream.reset();
     packageMap.reset();
     packageFd.reset();
+    if (package.is_open())
+    {
+        package.close();
+    }
+    std::filesystem::remove(fwPackageFilePath);
 }
 
 void UpdateManager::updateActivationProgress()
