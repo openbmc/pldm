@@ -5,12 +5,17 @@
 #include "package_parser.hpp"
 #include "systemd_interface.hpp"
 
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <cassert>
 #include <filesystem>
 #include <fstream>
+#include <spanstream>
 #include <string>
 
 PHOSPHOR_LOG2_USING;
@@ -23,6 +28,9 @@ namespace fw_update
 
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+using InvalidArgument =
+    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+using Unavailable = sdbusplus::xyz::openbmc_project::Common::Error::Unavailable;
 
 std::string UpdateManager::getSwId()
 {
@@ -91,6 +99,58 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         package.close();
         std::filesystem::remove(packageFilePath);
         return -1;
+    }
+}
+
+std::string UpdateManager::processFd(int fd)
+{
+    // The D-Bus message owns fd and closes it once the method returns
+    auto rawDupFd = dup(fd);
+    if (rawDupFd < 0)
+    {
+        error("Failed to duplicate the package descriptor, error - {ERRNO}",
+              "ERRNO", errno);
+        throw Unavailable();
+    }
+    auto dupFd = std::make_unique<pldm::utils::CustomFD>(rawDupFd);
+
+    struct stat sb{};
+    if (fstat(rawDupFd, &sb) != 0)
+    {
+        error("Failed to stat the package file descriptor, error - {ERRNO}",
+              "ERRNO", errno);
+        throw Unavailable();
+    }
+    if (!S_ISREG(sb.st_mode) || sb.st_size <= 0)
+    {
+        error("Package file descriptor is not a non-empty regular file");
+        throw InvalidArgument();
+    }
+
+    std::unique_ptr<pldm::utils::MMapHandler> map;
+    try
+    {
+        map = std::make_unique<pldm::utils::MMapHandler>(rawDupFd);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to map the package file descriptor, error - {ERROR}",
+              "ERROR", e);
+        throw Unavailable();
+    }
+
+    packageFd = std::move(dupFd);
+    packageMap = std::move(map);
+    packageStream = std::make_unique<std::ispanstream>(packageMap->getChars(),
+                                                       std::ios::binary);
+    try
+    {
+        return processStreamDefer(*packageStream, packageMap->getSize());
+    }
+    catch (...)
+    {
+        releasePackage();
+        throw;
     }
 }
 
@@ -402,8 +462,16 @@ void UpdateManager::resetActivationState()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
+    releasePackage();
     std::filesystem::remove(fwPackageFilePath);
     totalNumComponentUpdates = 0;
+}
+
+void UpdateManager::releasePackage()
+{
+    packageStream.reset();
+    packageMap.reset();
+    packageFd.reset();
 }
 
 void UpdateManager::updateActivationProgress()
