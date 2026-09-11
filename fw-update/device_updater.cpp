@@ -157,9 +157,7 @@ void DeviceUpdater::startFwUpdateFlow()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_REQUEST_UPDATE, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->requestUpdate(eid, response, respMsgLen);
-        });
+        guarded(&DeviceUpdater::requestUpdate));
     if (rc)
     {
         // Handle error scenario
@@ -295,10 +293,7 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_PASS_COMPONENT_TABLE,
-        std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->passCompTable(eid, response, respMsgLen);
-        });
+        std::move(request), guarded(&DeviceUpdater::passCompTable));
     if (rc)
     {
         // Handle error scenario
@@ -436,9 +431,7 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_UPDATE_COMPONENT, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->updateComponent(eid, response, respMsgLen);
-        });
+        guarded(&DeviceUpdater::updateComponent));
     if (rc)
     {
         // Handle error scenario
@@ -957,9 +950,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->activateFirmware(eid, response, respMsgLen);
-        });
+        guarded(&DeviceUpdater::activateFirmware));
     if (rc)
     {
         error(
@@ -1040,10 +1031,7 @@ void DeviceUpdater::sendCancelUpdateComponentRequest()
 
     rc = updateManager->handler.registerRequest(
         eid, instanceId, PLDM_FWUP, PLDM_CANCEL_UPDATE_COMPONENT,
-        std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->cancelUpdateComponent(eid, response, respMsgLen);
-        });
+        std::move(request), guarded(&DeviceUpdater::cancelUpdateComponent));
     if (rc)
     {
         error(
@@ -1150,6 +1138,18 @@ uint8_t DeviceUpdater::getProgress() const
         static_cast<double>(weightedProgress) / static_cast<double>(totalSize);
 
     return static_cast<uint8_t>(std::floor(percentage));
+}
+
+DeviceUpdater::ResponseHandler DeviceUpdater::guarded(ResponseMethod method)
+{
+    return [this, method, alive = std::weak_ptr(aliveToken)](
+               mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
+        if (alive.expired())
+        {
+            return;
+        }
+        (this->*method)(eid, response, respMsgLen);
+    };
 }
 
 } // namespace fw_update
