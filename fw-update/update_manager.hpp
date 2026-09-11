@@ -203,7 +203,9 @@ class UpdateManager : public UpdateManagerBase
      */
     void completeUpdate(bool status);
 
-    /** @brief Release the mapped package and its file descriptor */
+    /** @brief Release the package and everything reading it: device
+     *         updaters, parser, stream, mapping, descriptor and the inotify
+     *         package file. The Software object is left in place. */
     void releasePackage();
 
     /** @brief Device identifiers of the managed FDs */
@@ -241,6 +243,7 @@ class UpdateManager : public UpdateManagerBase
 
     decltype(std::chrono::steady_clock::now()) startTime;
     std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
+    std::unique_ptr<sdeventplus::source::Defer> releaseDeferHandler;
 
     std::string preConditionPath;
     std::string postConditionPath;
