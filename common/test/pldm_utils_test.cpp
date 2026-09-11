@@ -4,6 +4,10 @@
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
 
+#include <cmath>
+#include <cstdint>
+#include <limits>
+
 #include <gtest/gtest.h>
 
 using namespace pldm::utils;
@@ -1507,4 +1511,53 @@ TEST(GenerateSwId, testRandomness)
     }
     // With 50 calls, we should get at least some different values
     EXPECT_GT(ids.size(), 1);
+}
+
+TEST(GetRangeFieldValue, signedFormatsKeepSign)
+{
+    union_range_field_format value{};
+
+    value.value_s8 = -5;
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_SINT8, value), -5.0);
+
+    value.value_s16 = -300;
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_SINT16, value),
+              -300.0);
+
+    value.value_s32 = std::numeric_limits<int32_t>::min();
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_SINT32, value),
+              static_cast<double>(std::numeric_limits<int32_t>::min()));
+}
+
+TEST(GetRangeFieldValue, unsignedFormatsUseFullRange)
+{
+    union_range_field_format value{};
+
+    value.value_u8 = 200;
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_UINT8, value), 200.0);
+
+    value.value_u16 = 60000;
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_UINT16, value),
+              60000.0);
+
+    value.value_u32 = std::numeric_limits<uint32_t>::max();
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_UINT32, value),
+              static_cast<double>(std::numeric_limits<uint32_t>::max()));
+}
+
+TEST(GetRangeFieldValue, real32KeepsFraction)
+{
+    union_range_field_format value{};
+
+    value.value_f32 = -12.5f;
+    EXPECT_EQ(getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_REAL32, value), -12.5);
+}
+
+TEST(GetRangeFieldValue, undefinedFormatIsNaN)
+{
+    union_range_field_format value{};
+    value.value_u32 = 1;
+
+    EXPECT_TRUE(std::isnan(
+        getRangeFieldValue(PLDM_RANGE_FIELD_FORMAT_REAL32 + 1, value)));
 }
