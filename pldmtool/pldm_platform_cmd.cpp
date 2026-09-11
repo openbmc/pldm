@@ -1,3 +1,4 @@
+#include "common/pdr_value.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
@@ -1489,60 +1490,17 @@ class GetPDR : public CommandInterface
         output["rangeFieldFormat"] = unsigned(pdr->range_field_format);
         output["rangeFieldSupport"] = unsigned(pdr->range_field_support.byte);
 
-        switch (pdr->range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_u8);
-                output["normalMax"] = unsigned(pdr->normal_max.value_u8);
-                output["normalMin"] = unsigned(pdr->normal_min.value_u8);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_u8);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_u8);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_s8);
-                output["normalMax"] = unsigned(pdr->normal_max.value_s8);
-                output["normalMin"] = unsigned(pdr->normal_min.value_s8);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_s8);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_s8);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_u16);
-                output["normalMax"] = unsigned(pdr->normal_max.value_u16);
-                output["normalMin"] = unsigned(pdr->normal_min.value_u16);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_u16);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_u16);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_s16);
-                output["normalMax"] = unsigned(pdr->normal_max.value_s16);
-                output["normalMin"] = unsigned(pdr->normal_min.value_s16);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_s16);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_s16);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_u32);
-                output["normalMax"] = unsigned(pdr->normal_max.value_u32);
-                output["normalMin"] = unsigned(pdr->normal_min.value_u32);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_u32);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_u32);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_s32);
-                output["normalMax"] = unsigned(pdr->normal_max.value_s32);
-                output["normalMin"] = unsigned(pdr->normal_min.value_s32);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_s32);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_s32);
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                output["nominalValue"] = unsigned(pdr->nominal_value.value_f32);
-                output["normalMax"] = unsigned(pdr->normal_max.value_f32);
-                output["normalMin"] = unsigned(pdr->normal_min.value_f32);
-                output["ratedMax"] = unsigned(pdr->rated_max.value_f32);
-                output["ratedMin"] = unsigned(pdr->rated_min.value_f32);
-                break;
-            default:
-                break;
-        }
+        const uint8_t rangeFormat = pdr->range_field_format;
+        output["nominalValue"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr->nominal_value);
+        output["normalMax"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr->normal_max);
+        output["normalMin"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr->normal_min);
+        output["ratedMax"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr->rated_max);
+        output["ratedMin"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr->rated_min);
     }
 
     void printStateEffecterPDR(const uint8_t* data, ordered_json& output)
@@ -1932,88 +1890,25 @@ class GetPDR : public CommandInterface
         output["rangeFieldFormat"] = pdr.range_field_format;
         output["rangeFieldSupport"] = pdr.range_field_support.byte;
 
-        switch (pdr.range_field_format)
-        {
-            case PLDM_RANGE_FIELD_FORMAT_UINT8:
-                output["nominalValue"] = pdr.nominal_value.value_u8;
-                output["normalMax"] = pdr.normal_max.value_u8;
-                output["normalMin"] = pdr.normal_min.value_u8;
-                output["warningHigh"] = pdr.warning_high.value_u8;
-                output["warningLow"] = pdr.warning_low.value_u8;
-                output["criticalHigh"] = pdr.critical_high.value_u8;
-                output["criticalLow"] = pdr.critical_low.value_u8;
-                output["fatalHigh"] = pdr.fatal_high.value_u8;
-                output["fatalLow"] = pdr.fatal_low.value_u8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT8:
-                output["nominalValue"] = pdr.nominal_value.value_s8;
-                output["normalMax"] = pdr.normal_max.value_s8;
-                output["normalMin"] = pdr.normal_min.value_s8;
-                output["warningHigh"] = pdr.warning_high.value_s8;
-                output["warningLow"] = pdr.warning_low.value_s8;
-                output["criticalHigh"] = pdr.critical_high.value_s8;
-                output["criticalLow"] = pdr.critical_low.value_s8;
-                output["fatalHigh"] = pdr.fatal_high.value_s8;
-                output["fatalLow"] = pdr.fatal_low.value_s8;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT16:
-                output["nominalValue"] = pdr.nominal_value.value_u16;
-                output["normalMax"] = pdr.normal_max.value_u16;
-                output["normalMin"] = pdr.normal_min.value_u16;
-                output["warningHigh"] = pdr.warning_high.value_u16;
-                output["warningLow"] = pdr.warning_low.value_u16;
-                output["criticalHigh"] = pdr.critical_high.value_u16;
-                output["criticalLow"] = pdr.critical_low.value_u16;
-                output["fatalHigh"] = pdr.fatal_high.value_u16;
-                output["fatalLow"] = pdr.fatal_low.value_u16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT16:
-                output["nominalValue"] = pdr.nominal_value.value_s16;
-                output["normalMax"] = pdr.normal_max.value_s16;
-                output["normalMin"] = pdr.normal_min.value_s16;
-                output["warningHigh"] = pdr.warning_high.value_s16;
-                output["warningLow"] = pdr.warning_low.value_s16;
-                output["criticalHigh"] = pdr.critical_high.value_s16;
-                output["criticalLow"] = pdr.critical_low.value_s16;
-                output["fatalHigh"] = pdr.fatal_high.value_s16;
-                output["fatalLow"] = pdr.fatal_low.value_s16;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_UINT32:
-                output["nominalValue"] = pdr.nominal_value.value_u32;
-                output["normalMax"] = pdr.normal_max.value_u32;
-                output["normalMin"] = pdr.normal_min.value_u32;
-                output["warningHigh"] = pdr.warning_high.value_u32;
-                output["warningLow"] = pdr.warning_low.value_u32;
-                output["criticalHigh"] = pdr.critical_high.value_u32;
-                output["criticalLow"] = pdr.critical_low.value_u32;
-                output["fatalHigh"] = pdr.fatal_high.value_u32;
-                output["fatalLow"] = pdr.fatal_low.value_u32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_SINT32:
-                output["nominalValue"] = pdr.nominal_value.value_s32;
-                output["normalMax"] = pdr.normal_max.value_s32;
-                output["normalMin"] = pdr.normal_min.value_s32;
-                output["warningHigh"] = pdr.warning_high.value_s32;
-                output["warningLow"] = pdr.warning_low.value_s32;
-                output["criticalHigh"] = pdr.critical_high.value_s32;
-                output["criticalLow"] = pdr.critical_low.value_s32;
-                output["fatalHigh"] = pdr.fatal_high.value_s32;
-                output["fatalLow"] = pdr.fatal_low.value_s32;
-                break;
-            case PLDM_RANGE_FIELD_FORMAT_REAL32:
-                output["nominalValue"] = pdr.nominal_value.value_f32;
-                output["normalMax"] = pdr.normal_max.value_f32;
-                output["normalMin"] = pdr.normal_min.value_f32;
-                output["warningHigh"] = pdr.warning_high.value_f32;
-                output["warningLow"] = pdr.warning_low.value_f32;
-                output["criticalHigh"] = pdr.critical_high.value_f32;
-                output["criticalLow"] = pdr.critical_low.value_f32;
-                output["fatalHigh"] = pdr.fatal_high.value_f32;
-                output["fatalLow"] = pdr.fatal_low.value_f32;
-                break;
-            default:
-                break;
-        }
+        const uint8_t rangeFormat = pdr.range_field_format;
+        output["nominalValue"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.nominal_value);
+        output["normalMax"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.normal_max);
+        output["normalMin"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.normal_min);
+        output["warningHigh"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.warning_high);
+        output["warningLow"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.warning_low);
+        output["criticalHigh"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.critical_high);
+        output["criticalLow"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.critical_low);
+        output["fatalHigh"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.fatal_high);
+        output["fatalLow"] =
+            pldm::utils::getRangeFieldValue(rangeFormat, pdr.fatal_low);
     }
 
     /** @brief Format the Compact Numeric Sensor PDR types to json output
