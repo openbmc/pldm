@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc32742_f3107b07",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f61e2c0_7b0c4b4f",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5355b87_61df8c27",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-07T18:17:32Z",
       "side": 1,
       "message": "As a follow up patch, we should send CancelUpdate to other places as when where statemachine can get stuck ?",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eb1a864_09a38b38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done — every PassComponentTable/UpdateComponent error return now goes through failAndCancelUpdate(), which fails the component and sends CancelUpdate; completion is reported from the CancelUpdate response.",
+      "parentUuid": "c5355b87_61df8c27",
       "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "417e6416_12e4a536",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "172a38f6_41b34e82",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd166cad_1c214b15",
@@ -82,6 +136,24 @@
       "writtenOn": "2026-09-07T18:17:32Z",
       "side": 1,
       "message": "Again the same comment applies here",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54f7f753_19ffa8f3",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd166cad_1c214b15",
       "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d2b54f_bda08809",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f97f5ded_fdc5f88f",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6a30d56_f47f3321",
@@ -116,6 +206,24 @@
       "writtenOn": "2026-09-07T18:17:32Z",
       "side": 1,
       "message": "This path should also send CancelUpdate.",
+      "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfbb6926_43449386",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-09-11T14:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6a30d56_f47f3321",
       "revId": "3d1f3ad4c4dfec944ac0a6c86770d74b78b9bdad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
