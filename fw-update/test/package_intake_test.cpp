@@ -53,6 +53,23 @@ class PackageIntakeTest : public testing::Test
         event.run(milliseconds(50));
     }
 
+    // Response handler the requester keeps for a request of the updater
+    DeviceUpdater::ResponseHandler outstandingResponse(mctp_eid_t eid)
+    {
+        return updateManager.deviceUpdaterMap.at(eid)->guarded(
+            &DeviceUpdater::requestUpdate);
+    }
+
+    bool hasUpdater(mctp_eid_t eid) const
+    {
+        return updateManager.deviceUpdaterMap.contains(eid);
+    }
+
+    bool completionRecorded() const
+    {
+        return !updateManager.deviceUpdateCompletionMap.empty();
+    }
+
     bool packageHeld() const
     {
         return updateManager.packageFd || updateManager.packageMap ||
@@ -111,6 +128,24 @@ TEST_F(PackageIntakeTest, ServesImageFromMappingAfterCallerClosesFd)
         response.begin() + sizeof(pldm_msg_hdr) + sizeof(uint8_t),
         response.end());
     EXPECT_EQ(served, expected);
+}
+
+TEST_F(PackageIntakeTest, DropsResponsesForAReleasedUpdater)
+{
+    int fd = makeMemfd(package);
+    updateManager.processFd(fd);
+    close(fd);
+    runDeferred();
+    ASSERT_TRUE(hasUpdater(1));
+    auto response = outstandingResponse(1);
+
+    // The next update releases the updater while its request is outstanding
+    updateManager.resetActivationState();
+    ASSERT_FALSE(hasUpdater(1));
+
+    // The late response must not reach the released updater
+    response(1, nullptr, 0);
+    EXPECT_FALSE(completionRecorded());
 }
 
 TEST_F(PackageIntakeTest, RejectsEmptyImage)
