@@ -1,5 +1,6 @@
 #include "numeric_sensor.hpp"
 
+#include "common/pdr_value.hpp"
 #include "common/utils.hpp"
 
 #include <libpldm/platform.h>
@@ -74,37 +75,6 @@ inline double getSensorDataValue(uint8_t sensor_data_size,
             break;
         case PLDM_SENSOR_DATA_SIZE_SINT32:
             ret = value.value_s32;
-            break;
-    }
-    return ret;
-}
-
-inline double getRangeFieldValue(uint8_t range_field_format,
-                                 union_range_field_format& value)
-{
-    double ret = std::numeric_limits<double>::quiet_NaN();
-    switch (range_field_format)
-    {
-        case PLDM_RANGE_FIELD_FORMAT_UINT8:
-            ret = value.value_u8;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT8:
-            ret = value.value_s8;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_UINT16:
-            ret = value.value_u16;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT16:
-            ret = value.value_s16;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_UINT32:
-            ret = value.value_u32;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_SINT32:
-            ret = value.value_s32;
-            break;
-        case PLDM_RANGE_FIELD_FORMAT_REAL32:
-            ret = value.value_f32;
             break;
     }
     return ret;
@@ -251,40 +221,41 @@ NumericSensor::NumericSensor(const pldm_tid_t tid, const bool sensorDisabled,
     if (pdr->supported_thresholds.bits.bit0)
     {
         hasWarningThresholds = true;
-        warningHigh =
-            getRangeFieldValue(pdr->range_field_format, pdr->warning_high);
+        warningHigh = utils::getRangeFieldValue(pdr->range_field_format,
+                                                pdr->warning_high);
     }
 
     if (pdr->supported_thresholds.bits.bit3)
     {
         hasWarningThresholds = true;
-        warningLow =
-            getRangeFieldValue(pdr->range_field_format, pdr->warning_low);
+        warningLow = utils::getRangeFieldValue(pdr->range_field_format,
+                                               pdr->warning_low);
     }
 
     if (pdr->supported_thresholds.bits.bit1)
     {
         hasCriticalThresholds = true;
-        criticalHigh =
-            getRangeFieldValue(pdr->range_field_format, pdr->critical_high);
+        criticalHigh = utils::getRangeFieldValue(pdr->range_field_format,
+                                                 pdr->critical_high);
     }
 
     if (pdr->supported_thresholds.bits.bit4)
     {
         hasCriticalThresholds = true;
-        criticalLow =
-            getRangeFieldValue(pdr->range_field_format, pdr->critical_low);
+        criticalLow = utils::getRangeFieldValue(pdr->range_field_format,
+                                                pdr->critical_low);
     }
     if (pdr->supported_thresholds.bits.bit2)
     {
         hasFatalThresholds = true;
         fatalHigh =
-            getRangeFieldValue(pdr->range_field_format, pdr->fatal_high);
+            utils::getRangeFieldValue(pdr->range_field_format, pdr->fatal_high);
     }
     if (pdr->supported_thresholds.bits.bit5)
     {
         hasFatalThresholds = true;
-        fatalLow = getRangeFieldValue(pdr->range_field_format, pdr->fatal_low);
+        fatalLow =
+            utils::getRangeFieldValue(pdr->range_field_format, pdr->fatal_low);
     }
 
     resolution = pdr->resolution;
