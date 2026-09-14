@@ -456,9 +456,10 @@ class Terminus
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> inventoryItemInft = nullptr;
 
     /* @brief The Inventory.Item interface of the terminus, which holds the
-     *        PrettyName and Present properties
+     *        PrettyName and Present properties, and which the state sets that
+     *        publish on it share
      */
-    std::unique_ptr<InventoryItemIntf> terminusItemIntf = nullptr;
+    std::shared_ptr<InventoryItemIntf> terminusItemIntf = nullptr;
 
     /* @brief The pointer of FRU decorator D-Bus interfaces */
     std::unique_ptr<pldm::dbus_api::PldmFruDecorators> fruDecoratorsIntf =
