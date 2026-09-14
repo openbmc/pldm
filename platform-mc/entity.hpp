@@ -129,9 +129,10 @@ class Entity
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> typeItemIntf;
 
     /** @brief The Inventory.Item interface, which holds the PrettyName and
-     *         Present properties
+     *         Present properties, and which the state sets that publish on it
+     *         share
      */
-    std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
+    std::shared_ptr<InventoryItemIntf> inventoryItemIntf;
 
     /** @brief The pointer of the Association.Definitions interface */
     std::unique_ptr<AssociationsIntf> associationsIntf;
