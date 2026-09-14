@@ -24,6 +24,7 @@ platform_mc_test_lib = static_library(
         '../entity.cpp',
         '../state_sensor.cpp',
         '../state_set.cpp',
+        '../state_set_presence.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     implicit_include_directories: false,
