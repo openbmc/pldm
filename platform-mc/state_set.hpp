@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace pldm
 {
@@ -125,6 +126,20 @@ class StateSets
             intf = std::move(created);
         }
         return *std::static_pointer_cast<Intf>(intf);
+    }
+
+    /** @brief Add a D-Bus interface which the D-Bus object already implements
+     *
+     *  The state sets which publish on the interface then share it instead of
+     *  implementing it a second time.
+     *
+     *  @tparam Intf - sdbusplus::server::object_t of one D-Bus interface
+     *  @param[in] intf - the interface, which the state sets keep alive
+     */
+    template <typename Intf>
+    void addInterface(std::shared_ptr<Intf> intf)
+    {
+        interfaces[Intf::interface] = std::move(intf);
     }
 
   private:
