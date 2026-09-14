@@ -14,9 +14,10 @@ Entity::Entity(const EntityKey& key, const std::string& path,
     stateSets(std::make_shared<StateSets>(path))
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
-    inventoryItemIntf = std::make_unique<InventoryItemIntf>(bus, path.c_str());
+    inventoryItemIntf = std::make_shared<InventoryItemIntf>(bus, path.c_str());
     inventoryItemIntf->prettyName(name);
     inventoryItemIntf->present(true);
+    stateSets->addInterface(inventoryItemIntf);
 }
 
 bool Entity::addContainer(const std::string& containerPath)
