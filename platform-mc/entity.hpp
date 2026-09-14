@@ -99,8 +99,10 @@ class Entity
      */
     std::unique_ptr<pldm::dbus_api::PldmEntityBase> itemIntf;
 
-    /** @brief The pointer of the Inventory.Item interface */
-    std::unique_ptr<InventoryItemIntf> inventoryItemIntf;
+    /** @brief The pointer of the Inventory.Item interface, which the state
+     *         sets that publish on it share
+     */
+    std::shared_ptr<InventoryItemIntf> inventoryItemIntf;
 
     /** @brief The pointer of the Association.Definitions interface */
     std::unique_ptr<ContainerAssociationsIntf> containerAssociationsIntf;

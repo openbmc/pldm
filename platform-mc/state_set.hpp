@@ -3,10 +3,12 @@
 #include "common/types.hpp"
 
 #include <sdbusplus/bus.hpp>
+#include <xyz/openbmc_project/Inventory/Item/server.hpp>
 
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace pldm
 {
@@ -38,20 +40,30 @@ class StateSetBase
     virtual void setPresentState(uint8_t presentState) = 0;
 };
 
+using InventoryItemServer =
+    sdbusplus::xyz::openbmc_project::Inventory::server::Item;
+
 /** @brief Create the D-Bus interface which matches the given state set
  *
  *  The mapping is injective: two state sets do not share the property of a
  *  D-Bus interface, so the component sensors of one entity do not overwrite
  *  each other. A state set gets its case when its interface is added.
  *
+ *  A state set which publishes on Inventory.Item takes the interface the
+ *  entity D-Bus object already implements, so the state sets of one entity do
+ *  not implement it twice.
+ *
  *  @param[in] bus - D-Bus bus
  *  @param[in] path - D-Bus object path
+ *  @param[in] itemIntf - the Inventory.Item interface of the D-Bus object
  *  @param[in] stateSetId - DSP0249 state set ID
  *  @return unique_ptr to StateSetBase, nullptr when the state set has no
  *          matching D-Bus interface
  */
 std::unique_ptr<StateSetBase> createStateSet(
-    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId);
+    sdbusplus::bus_t& bus, const std::string& path,
+    const std::shared_ptr<InventoryItemServer>& itemIntf,
+    StateSetId stateSetId);
 
 /** @class StateSets
  *  @brief The state set interfaces implemented on one D-Bus object.
@@ -73,8 +85,13 @@ class StateSets
      *
      *  @param[in] path - the D-Bus object path the interfaces are
      *                    implemented on
+     *  @param[in] itemIntf - the Inventory.Item interface the D-Bus object
+     *                        already implements
      */
-    explicit StateSets(const std::string& path) : path(path) {}
+    StateSets(const std::string& path,
+              std::shared_ptr<InventoryItemServer> itemIntf) :
+        path(path), itemIntf(std::move(itemIntf))
+    {}
 
     /** @brief Get the D-Bus interface of the state set, implementing it on
      *         the D-Bus object when it is not implemented yet
@@ -88,6 +105,11 @@ class StateSets
   private:
     /** @brief The D-Bus object path the interfaces are implemented on */
     std::string path;
+
+    /** @brief The Inventory.Item interface of the D-Bus object, which the
+     *         state sets that publish on it share
+     */
+    std::shared_ptr<InventoryItemServer> itemIntf;
 
     /** @brief The interface of each implemented state set */
     std::map<StateSetId, std::unique_ptr<StateSetBase>> stateSets;

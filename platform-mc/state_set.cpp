@@ -1,5 +1,9 @@
 #include "state_set.hpp"
 
+#include "state_set_presence.hpp"
+
+#include <libpldm/state_set.h>
+
 #include <common/utils.hpp>
 #include <phosphor-logging/lg2.hpp>
 
@@ -11,11 +15,13 @@ namespace platform_mc
 {
 
 std::unique_ptr<StateSetBase> createStateSet(
-    [[maybe_unused]] sdbusplus::bus_t& bus,
-    [[maybe_unused]] const std::string& path, StateSetId stateSetId)
+    [[maybe_unused]] sdbusplus::bus_t& bus, const std::string& path,
+    const std::shared_ptr<InventoryItemServer>& itemIntf, StateSetId stateSetId)
 {
     switch (stateSetId)
     {
+        case PLDM_STATE_SET_PRESENCE:
+            return std::make_unique<StateSetPresence>(path, itemIntf);
         default:
             return nullptr;
     }
@@ -33,7 +39,7 @@ StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
     try
     {
         stateSet = createStateSet(pldm::utils::DBusHandler::getBus(), path,
-                                  stateSetId);
+                                  itemIntf, stateSetId);
     }
     catch (const sdbusplus::exception_t& e)
     {

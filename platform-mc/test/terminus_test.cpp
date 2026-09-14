@@ -3,6 +3,7 @@
 #include "platform-mc/terminus.hpp"
 
 #include <libpldm/entity.h>
+#include <libpldm/state_set.h>
 
 #include <sdbusplus/bus.hpp>
 
@@ -815,11 +816,23 @@ TEST(TerminusTest, addStateSensorTest)
     EXPECT_EQ(1, stateSensor->getTid());
     EXPECT_EQ(2, stateSensor->getCompositeSensorCount());
 
-    /* No state set has a D-Bus interface yet, so the entity D-Bus object
-     * carries none and a present state publishes nothing
+    /* The state sets this sensor reports have no D-Bus interface, so the
+     * entity D-Bus object carries none and a present state publishes nothing
      */
     auto stateSets = entity->getStateSets();
     EXPECT_EQ(nullptr, stateSets->getStateSet(healthStateSetId));
     EXPECT_EQ(nullptr, stateSets->getStateSet(unmappedStateSetId));
     stateSensor->updatePresentState(0, 1);
+
+    /* The presence state set publishes on the Inventory.Item interface the
+     * entity D-Bus object already implements, which the entity reports
+     * present on until a component sensor of the state set reports otherwise
+     */
+    auto* presence = dynamic_cast<pldm::platform_mc::StateSetPresence*>(
+        stateSets->getStateSet(PLDM_STATE_SET_PRESENCE));
+    ASSERT_NE(nullptr, presence);
+    EXPECT_EQ(true, presence->present());
+
+    presence->setPresentState(PLDM_STATE_SET_PRESENCE_NOT_PRESENT);
+    EXPECT_EQ(false, presence->present());
 }

@@ -11,6 +11,7 @@ test_src = declare_dependency(
         '../entity.cpp',
         '../state_sensor.cpp',
         '../state_set.cpp',
+        '../state_set_presence.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     include_directories: ['../../requester', '../../pldmd'],
@@ -25,6 +26,7 @@ tests = [
     'event_manager_test',
     'dbus_to_terminus_effecter_test',
     'dbus_impl_fru_test',
+    'state_set_test',
 ]
 
 foreach t : tests

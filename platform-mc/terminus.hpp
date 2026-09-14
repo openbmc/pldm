@@ -406,6 +406,9 @@ class Terminus
     /** @brief A list of entity D-Bus objects */
     std::vector<std::shared_ptr<Entity>> entities{};
 
+    /** @brief The Inventory.Item interface of the terminus inventory path */
+    std::shared_ptr<InventoryItemIntf> terminusInventoryItemIntf{};
+
     /** @brief The state set interfaces of the terminus inventory path, on
      *         which the state sensors of the overall terminus entity publish
      */
