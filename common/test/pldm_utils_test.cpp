@@ -4,6 +4,8 @@
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
 
+#include <chrono>
+
 #include <gtest/gtest.h>
 
 using namespace pldm::utils;
@@ -1507,4 +1509,21 @@ TEST(GenerateSwId, testRandomness)
     }
     // With 50 calls, we should get at least some different values
     EXPECT_GT(ids.size(), 1);
+}
+
+TEST(GetCurrentSystemTimeInMicroseconds, testWithinSystemClockBounds)
+{
+    auto toMicroseconds = [](std::chrono::system_clock::time_point tp) {
+        return static_cast<uint64_t>(
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                tp.time_since_epoch())
+                .count());
+    };
+
+    auto before = toMicroseconds(std::chrono::system_clock::now());
+    auto now = getCurrentSystemTimeInMicroseconds();
+    auto after = toMicroseconds(std::chrono::system_clock::now());
+
+    EXPECT_GE(now, before);
+    EXPECT_LE(now, after);
 }

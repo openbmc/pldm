@@ -4,6 +4,10 @@
 #include <libpldm/entity.h>
 #include <libpldm/platform.h>
 
+#include <chrono>
+#include <limits>
+#include <thread>
+
 #include <gtest/gtest.h>
 
 TEST(NumericSensor, conversionFormula)
@@ -268,4 +272,129 @@ TEST(NumericSensor, checkThreshold)
     lowAlarm = sensor.checkThreshold(lowAlarm, false, reading, lowThreshold,
                                      hysteresis);
     EXPECT_EQ(false, lowAlarm);
+}
+
+TEST(NumericSensor, updatedTime)
+{
+    std::vector<uint8_t> pdr1{
+        0x1,
+        0x0,
+        0x0,
+        0x0,                     // record handle
+        0x1,                     // PDRHeaderVersion
+        PLDM_NUMERIC_SENSOR_PDR, // PDRType
+        0x0,
+        0x0,                     // recordChangeNumber
+        PLDM_PDR_NUMERIC_SENSOR_PDR_FIXED_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_SENSOR_DATA_SIZE_MIN_LENGTH +
+            PLDM_PDR_NUMERIC_SENSOR_PDR_VARIED_RANGE_FIELD_MIN_LENGTH,
+        0,                             // dataLength
+        0,
+        0,                             // PLDMTerminusHandle
+        0x1,
+        0x0,                           // sensorID=1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,                             // entityType=Power Supply(120)
+        1,
+        0,                             // entityInstanceNumber
+        0x1,
+        0x0,                           // containerID=1
+        PLDM_NO_INIT,                  // sensorInit
+        false,                         // sensorAuxiliaryNamesPDR
+        PLDM_SENSOR_UNIT_DEGRESS_C,    // baseUint(2)=degrees C
+        1,                             // unitModifier = 1
+        0,                             // rateUnit
+        0,                             // baseOEMUnitHandle
+        0,                             // auxUnit
+        0,                             // auxUnitModifier
+        0,                             // auxRateUnit
+        0,                             // rel
+        0,                             // auxOEMUnitHandle
+        true,                          // isLinear
+        PLDM_RANGE_FIELD_FORMAT_SINT8, // sensorDataSize
+        0,
+        0,
+        0xc0,
+        0x3f, // resolution=1.5
+        0,
+        0,
+        0x80,
+        0x3f, // offset=1.0
+        0,
+        0,    // accuracy
+        0,    // plusTolerance
+        0,    // minusTolerance
+        2,    // hysteresis
+        0,    // supportedThresholds
+        0,    // thresholdAndHysteresisVolatility
+        0,
+        0,
+        0x80,
+        0x3f, // stateTransistionInterval=1.0
+        0,
+        0,
+        0x80,
+        0x3f,                          // updateInverval=1.0
+        255,                           // maxReadable
+        0,                             // minReadable
+        PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
+        0,                             // rangeFieldsupport
+        0,                             // nominalValue
+        0,                             // normalMax
+        0,                             // normalMin
+        0,                             // warningHigh
+        0,                             // warningLow
+        0,                             // criticalHigh
+        0,                             // criticalLow
+        0,                             // fatalHigh
+        0                              // fatalLow
+    };
+
+    auto numericSensorPdr = std::make_shared<pldm_numeric_sensor_value_pdr>();
+    auto rc = decode_numeric_sensor_pdr_data(pdr1.data(), pdr1.size(),
+                                             numericSensorPdr.get());
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    std::string sensorName{"test1"};
+    std::string inventoryPath{
+        "/xyz/openbmc_project/inventroy/Item/Board/PLDM_device_1"};
+    pldm::platform_mc::NumericSensor sensor(0x01, true, numericSensorPdr,
+                                            sensorName, inventoryPath);
+
+    // UpdatedTime stays 0 until the first successful reading
+    EXPECT_EQ(0, sensor.getUpdatedTime());
+
+    // A successful reading sets UpdatedTime to the current time
+    auto before = pldm::utils::getCurrentSystemTimeInMicroseconds();
+    sensor.updateReading(true, true, 40);
+    auto after = pldm::utils::getCurrentSystemTimeInMicroseconds();
+    auto lastUpdatedTime = sensor.getUpdatedTime();
+    EXPECT_GE(lastUpdatedTime, before);
+    EXPECT_LE(lastUpdatedTime, after);
+
+    // An unchanged reading still refreshes UpdatedTime
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    sensor.updateReading(true, true, 40);
+    EXPECT_GT(sensor.getUpdatedTime(), lastUpdatedTime);
+    lastUpdatedTime = sensor.getUpdatedTime();
+
+    // An unavailable sensor does not update UpdatedTime
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    sensor.updateReading(false, true, 40);
+    EXPECT_EQ(lastUpdatedTime, sensor.getUpdatedTime());
+
+    // A non-functional sensor does not update UpdatedTime
+    sensor.updateReading(true, false, 40);
+    EXPECT_EQ(lastUpdatedTime, sensor.getUpdatedTime());
+
+    // An invalid reading does not update UpdatedTime
+    sensor.updateReading(true, true, std::numeric_limits<double>::quiet_NaN());
+    EXPECT_EQ(lastUpdatedTime, sensor.getUpdatedTime());
+
+    // A failed sensor read does not update UpdatedTime
+    sensor.handleErrGetSensorReading();
+    EXPECT_EQ(lastUpdatedTime, sensor.getUpdatedTime());
+
+    // Recovering from a failure refreshes UpdatedTime
+    sensor.updateReading(true, true, 41);
+    EXPECT_GT(sensor.getUpdatedTime(), lastUpdatedTime);
 }

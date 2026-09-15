@@ -218,6 +218,23 @@ class NumericSensor
         }
     };
 
+    /** @brief Get the time of the last successful sensor reading
+     *
+     *  @return uint64_t - epoch time in microseconds, 0 if the sensor has not
+     *                     been successfully read or uses the Metric interface
+     */
+    uint64_t getUpdatedTime()
+    {
+        if (valueIntf)
+        {
+            return valueIntf->updatedTime();
+        }
+        else
+        {
+            return 0;
+        }
+    };
+
     /** @brief Get threshold given level and direction
      *
      * @param[in] level - The threshold level (WARNING/CRITICAL/etc)
@@ -422,6 +439,15 @@ class NumericSensor
      * Threshold interfaces accordingly
      */
     void updateThresholds();
+
+    /**
+     * @brief Set the UpdatedTime property of the Sensor.Value interface to the
+     * current epoch time in microseconds. Only called after the Value property
+     * has been successfully updated with a valid reading, so that clients can
+     * tell how stale the reading is. It stays at 0 until the first successful
+     * update.
+     */
+    void updateUpdatedTime();
 
     /**
      * @brief Update the object units based on the PDR baseUnit
