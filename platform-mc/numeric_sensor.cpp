@@ -743,6 +743,11 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             if (!useMetricInterface)
             {
                 valueIntf->value(newValue);
+                // Refresh timestamp only when the new value is valid.
+                if (std::isfinite(newValue))
+                {
+                    updateUpdatedTime();
+                }
                 updateThresholds();
             }
             else
@@ -766,6 +771,11 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             }
         }
     }
+}
+
+void NumericSensor::updateUpdatedTime()
+{
+    valueIntf->updatedTime(pldm::utils::getCurrentSystemTimeInMicroseconds());
 }
 
 void NumericSensor::handleErrGetSensorReading()
