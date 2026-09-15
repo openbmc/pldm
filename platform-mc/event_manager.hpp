@@ -224,6 +224,23 @@ class EventManager
                                  uint16_t eventId,
                                  std::vector<uint8_t>& eventMessage);
 
+    /**
+     * @brief Submit CPER content to CPER processing service.
+     *
+     * The helper converts the PLDM terminus identifier into the
+     * corresponding inventory object path and invokes the D-Bus
+     * Process() interface exposed by the CPER processing service.
+     *
+     * @param[in] fileName Path of file containing CPER binary payload.
+     * @param[in] tid PLDM terminus identifier that originated the CPER.
+     * @param[in] formatType Format type from pldm_platform_cper_event.
+     *
+     * @return PLDM_SUCCESS on successful submission.
+     * @return PLDM_ERROR on failure.
+     */
+    int submitCperForProcessing(const std::string& fileName, pldm_tid_t tid,
+                                uint8_t formatType);
+
     /** @brief Reference of terminusManager */
     TerminusManager& terminusManager;
 
