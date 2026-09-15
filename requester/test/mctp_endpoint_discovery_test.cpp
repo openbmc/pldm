@@ -200,6 +200,46 @@ TEST(MctpEndpointDiscoveryTest, goodSearchConfigurationFor)
     EXPECT_EQ(configuration.size(), 1);
 }
 
+TEST(MctpEndpointDiscoveryTest, routedEndpointSearchConfigurationFor)
+{
+    MockdBusHandler mockedDbusHandler;
+    auto& bus = mockedDbusHandler.getBus();
+    pldm::MockManager manager;
+    const pldm::MctpInfos& mctpInfos = {
+        pldm::MctpInfo(12, pldm::emptyUUID, "", 1, std::nullopt)};
+
+    constexpr auto mockedDbusPath =
+        "/xyz/openbmc_project/inventory/system/board/Mocked_Board_Slot_1/MockedDevice";
+    constexpr auto mockedService = "xyz.openbmc_project.EntityManager";
+    std::vector<std::string> mockedInterfaces{
+        "xyz.openbmc_project.Configuration.MCTPRoutedEndpoint"};
+
+    pldm::utils::GetAssociatedSubTreeResponse
+        mockedGetAssociatedSubTreeResponse{
+            {mockedDbusPath, {{mockedService, mockedInterfaces}}}};
+
+    EXPECT_CALL(mockedDbusHandler, getAssociatedSubTree(_, _, _, _))
+        .WillOnce(testing::Return(mockedGetAssociatedSubTreeResponse));
+
+    pldm::utils::PropertyMap mockGetRoutedEndpointPropertiesResponse{
+        {"Name", std::string("MockedDevice")}};
+
+    EXPECT_CALL(mockedDbusHandler, getDbusPropertiesVariant(_, _, _))
+        .WillOnce(testing::Return(mockGetRoutedEndpointPropertiesResponse));
+
+    auto mctpDiscoveryHandler = std::make_unique<pldm::MctpDiscovery>(
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
+    pldm::MctpInfo mctpInfo = mctpInfos.front();
+    TestMctpDiscovery::searchConfigurationFor(*mctpDiscoveryHandler,
+                                              mockedDbusHandler, mctpInfo);
+
+    EXPECT_EQ(std::get<4>(mctpInfo),
+              std::optional<std::string>("MockedDevice"));
+    const auto& configurations =
+        TestMctpDiscovery::getConfigurations(*mctpDiscoveryHandler);
+    EXPECT_TRUE(configurations.contains(mockedDbusPath));
+}
+
 TEST(MctpEndpointDiscoveryTest, badSearchConfigurationFor)
 {
     MockdBusHandler mockedDbusHandler;
