@@ -173,6 +173,21 @@ class Terminus
      */
     std::shared_ptr<NumericSensor> getSensorObject(SensorID id);
 
+    /**
+     * @brief Get inventory object path associated with this terminus.
+     *
+     * The inventory path is created when the terminus inventory object
+     * is instantiated and can be used by external services to associate
+     * events, logs, and telemetry with the originating hardware component.
+     *
+     * @return Inventory object path. Returns empty string if inventory
+     *         object has not yet been created.
+     */
+    const std::string& getInventoryPath() const
+    {
+        return inventoryPath;
+    }
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.

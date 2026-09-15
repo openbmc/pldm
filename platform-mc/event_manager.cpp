@@ -7,6 +7,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Dump/Create/common.hpp>
+#include <xyz/openbmc_project/Logging/CPER/Types/common.hpp>
 #include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <cerrno>
@@ -352,6 +353,11 @@ int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
                   cperEvent->event_data_length);
         ofs.close();
 
+        if (submitCperForProcessing(fileName, tid, cperEvent->format_type) !=
+            PLDM_SUCCESS)
+        {
+            lg2::warning("Failed to submit CPER payload for processing");
+        }
         if (cperEvent->format_type == PLDM_PLATFORM_CPER_EVENT_WITH_HEADER)
         {
             rc = createCperDumpEntry("CPER", fileName, terminusName);
@@ -636,5 +642,59 @@ exec::task<int> EventManager::pollForPlatformEventMessage(
     co_return completionCode;
 }
 
+int EventManager::submitCperForProcessing(const std::string& fileName,
+                                          pldm_tid_t tid, uint8_t formatType)
+{
+    constexpr auto cperObjPath = "/xyz/openbmc_project/logging/cper";
+    constexpr auto cperInterface = "xyz.openbmc_project.Logging.CPER";
+    constexpr auto defaultInventoryPath = "/xyz/openbmc_project/inventory";
+
+    auto cperFd = open(fileName.c_str(), O_RDONLY);
+    if (cperFd < 0)
+    {
+        lg2::error("Failed to open CPER file {FILE}, errno={ERR}", "FILE",
+                   fileName, "ERR", std::strerror(errno));
+        return PLDM_ERROR;
+    }
+
+    std::string inventoryPath = defaultInventoryPath;
+
+    auto terminusIt = termini.find(tid);
+    if (terminusIt != termini.end() && terminusIt->second)
+    {
+        const auto& path = terminusIt->second->getInventoryPath();
+        if (!path.empty())
+        {
+            inventoryPath = path;
+        }
+    }
+
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto service =
+            pldm::utils::DBusHandler().getService(cperObjPath, cperInterface);
+        auto method = bus.new_method_call(service.c_str(), cperObjPath,
+                                          cperInterface, "Process");
+        using ContentType = sdbusplus::common::xyz::openbmc_project::logging::
+            cper::Types::ContentType;
+        auto contentType = (formatType == PLDM_PLATFORM_CPER_EVENT_WITH_HEADER)
+                               ? ContentType::CPER
+                               : ContentType::CPERSection;
+        method.append(sdbusplus::object_path(inventoryPath), contentType,
+                      sdbusplus::message::unix_fd(cperFd));
+        bus.call_noreply(method);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to submit CPER for processing. Error={ERROR}",
+                   "ERROR", e);
+        close(cperFd);
+        return PLDM_ERROR;
+    }
+    close(cperFd);
+
+    return PLDM_SUCCESS;
+}
 } // namespace platform_mc
 } // namespace pldm
