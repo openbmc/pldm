@@ -424,6 +424,15 @@ class NumericSensor
     void updateThresholds();
 
     /**
+     * @brief Set the UpdatedTime property of the Sensor.Value interface to the
+     * current epoch time in microseconds. Only called after the Value property
+     * has been successfully updated with a valid reading, so that clients can
+     * tell how stale the reading is. It stays at 0 until the first successful
+     * update.
+     */
+    void updateUpdatedTime();
+
+    /**
      * @brief Update the object units based on the PDR baseUnit
      */
     void setSensorUnit(uint8_t baseUnit);

@@ -8,6 +8,8 @@
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
 
+#include <chrono>
+#include <cstdint>
 #include <limits>
 
 PHOSPHOR_LOG2_USING;
@@ -750,6 +752,13 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
                 metricIntf->value(newValue);
             }
         }
+
+        // Refresh the timestamp on every successful reading, including the
+        // ones where the value is unchanged.
+        if (std::isfinite(newValue))
+        {
+            updateUpdatedTime();
+        }
     }
     else
     {
@@ -766,6 +775,19 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             }
         }
     }
+}
+
+void NumericSensor::updateUpdatedTime()
+{
+    if (useMetricInterface || !valueIntf)
+    {
+        return;
+    }
+
+    valueIntf->updatedTime(static_cast<uint64_t>(
+        std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count()));
 }
 
 void NumericSensor::handleErrGetSensorReading()
