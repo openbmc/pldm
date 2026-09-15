@@ -632,6 +632,12 @@ std::vector<std::string> split(std::string_view srcStr, std::string_view delim,
  */
 std::string getCurrentSystemTime();
 
+/** @brief Get the current system time in microseconds
+ *
+ * @return - uint64_t equivalent of the system time in microseconds
+ */
+uint64_t getCurrentSystemTimeInMicroseconds();
+
 /** @brief checks if the FRU is actually present.
  *  @param[in] objPath - FRU object path.
  *
