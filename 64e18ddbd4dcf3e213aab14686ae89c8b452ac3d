@@ -52,6 +52,52 @@
       "parentUuid": "fb400c53_bbcb78fd",
       "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d884f8a_77f99c99",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-09-16T14:08:34Z",
+      "side": 1,
+      "message": "please try to use name constants (preferably from libpldm), rather than the magic numbers here.",
+      "range": {
+        "startLine": 301,
+        "startChar": 22,
+        "endLine": 301,
+        "endChar": 25
+      },
+      "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c32e6e_d3ba03e2",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-09-16T14:08:34Z",
+      "side": 1,
+      "message": "null check on value before dereferencing it",
+      "range": {
+        "startLine": 307,
+        "startChar": 7,
+        "endLine": 307,
+        "endChar": 23
+      },
+      "revId": "64e18ddbd4dcf3e213aab14686ae89c8b452ac3d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
