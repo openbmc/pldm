@@ -22,6 +22,30 @@
       },
       "revId": "69fea39fc7fe47701493a09ca21ac8724071e973",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cfbded8_87f7f815",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-16T09:10:42Z",
+      "side": 1,
+      "message": "I\u0027d prefer to keep `getStateSet()` as I have found no function has been named as this in pldm. \nFeel free to tell if you insist to have this and we can have more discussion for it.\n\nThanks for the reviewing!",
+      "parentUuid": "a1453a72_2cee8c50",
+      "range": {
+        "startLine": 13,
+        "startChar": 25,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "69fea39fc7fe47701493a09ca21ac8724071e973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
