@@ -22,6 +22,30 @@
       },
       "revId": "54930e71598d9ead4bbcae98a4a260d1a250bea4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ed83f52_0587d0bf",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-16T10:12:40Z",
+      "side": 1,
+      "message": "This was implementated according to the following design:\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/92069\n\nPS14 creates no D-Bus object for the state sensor itself.\n* The blocker is that we have no suitable PDI to associated it with the corresponding PLDM entity.\n\nIn this case, we have no place to publishes the `op_state`. \n* Perhaps adding logs is a possible option. I didn\u0027t do it at first because I found the logs is too much and can only be reduced by merging patches for each state set.\n\nIf you think this is bothering, I can add the logs for your concerns so that we can know what is happening for the state sensor, at least from the logs.",
+      "parentUuid": "32e5360d_64a84da9",
+      "range": {
+        "startLine": 727,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 5
+      },
+      "revId": "54930e71598d9ead4bbcae98a4a260d1a250bea4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
