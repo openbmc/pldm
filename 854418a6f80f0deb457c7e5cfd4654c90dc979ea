@@ -52,6 +52,24 @@
       "parentUuid": "6c76d82b_e7e47a55",
       "revId": "854418a6f80f0deb457c7e5cfd4654c90dc979ea",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9988c3f_60ac580d",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-09-16T08:12:12Z",
+      "side": 1,
+      "message": "\u003e U32 int string can be max length of 10 characters in base 10 or 8 characters in base 8. Assuming the calling function uses this and length is not 4, then the string returned would be of length greater of 10 characters. This could possibly cause overflow if the length check for returned string is not handled correctly.\n\nCorrection 8 characters for base 16 (hexadecimal).",
+      "parentUuid": "19b44681_183880a0",
+      "revId": "854418a6f80f0deb457c7e5cfd4654c90dc979ea",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
