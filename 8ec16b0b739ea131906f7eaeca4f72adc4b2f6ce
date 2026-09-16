@@ -22,6 +22,30 @@
       },
       "revId": "8ec16b0b739ea131906f7eaeca4f72adc4b2f6ce",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbc214a3_a3930450",
+        "filename": "platform-mc/state_set_health_state.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-16T14:51:52Z",
+      "side": 1,
+      "message": "Acknowledged, I have refined this part in PS23.\nThanks for the catching!",
+      "parentUuid": "42ac0a61_c6a29134",
+      "range": {
+        "startLine": 42,
+        "startChar": 10,
+        "endLine": 47,
+        "endChar": 13
+      },
+      "revId": "8ec16b0b739ea131906f7eaeca4f72adc4b2f6ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
