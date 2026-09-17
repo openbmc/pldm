@@ -2296,6 +2296,77 @@ class SetStateEffecter : public CommandInterface
     std::vector<uint8_t> effecterData;
 };
 
+class SetNumericEffecterEnable : public CommandInterface
+{
+  public:
+    ~SetNumericEffecterEnable() override = default;
+    SetNumericEffecterEnable() = delete;
+    SetNumericEffecterEnable(const SetNumericEffecterEnable&) = delete;
+    SetNumericEffecterEnable(SetNumericEffecterEnable&&) = default;
+    SetNumericEffecterEnable& operator=(const SetNumericEffecterEnable&) =
+        delete;
+    SetNumericEffecterEnable& operator=(SetNumericEffecterEnable&&) = delete;
+
+    explicit SetNumericEffecterEnable(const char* type, const char* name,
+                                      CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("-i, --effecter_id", effecterId,
+                        "A handle that is used to identify and access the "
+                        "effecter")
+            ->required()
+            ->check(CLI::Range(1, 65534));
+        app->add_option("-o, --op_state", opState,
+                        "The desired operational state for the effecter\n"
+                        "0=ENABLED\n"
+                        "2=DISABLED\n"
+                        "3=UNAVAILABLE")
+            ->required()
+            ->check(CLI::IsMember({0, 2, 3}));
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        size_t payloadLength = PLDM_SET_NUMERIC_EFFECTER_ENABLE_REQ_BYTES;
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLength);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        const pldm_set_numeric_effecter_enable_req req{
+            .effecter_id = effecterId,
+            .effecter_operational_state = opState,
+        };
+        auto rc = encode_set_numeric_effecter_enable_req(
+            instanceId, &req, request, &payloadLength);
+        if (rc == PLDM_SUCCESS)
+        {
+            requestMsg.resize(sizeof(pldm_msg_hdr) + payloadLength);
+        }
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        uint8_t completionCode = 0;
+        auto rc = decode_set_numeric_effecter_enable_resp(
+            responsePtr, payloadLength, &completionCode);
+        if (rc != PLDM_SUCCESS || completionCode != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: "
+                      << "rc=" << rc << ",cc="
+                      << static_cast<int>(completionCode) << std::endl;
+            throw CLI::RuntimeError(1);
+        }
+
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
+    }
+
+  private:
+    uint16_t effecterId = 0;
+    uint8_t opState = 0;
+};
+
 class SetNumericEffecterValue : public CommandInterface
 {
   public:
@@ -2844,6 +2915,11 @@ void registerCommand(CLI::App& app)
         "SetStateEffecterStates", "set effecter states");
     commands.push_back(std::make_unique<SetStateEffecter>(
         "platform", "setStateEffecterStates", setStateEffecterStates));
+
+    auto setNumericEffecterEnable = platform->add_subcommand(
+        "SetNumericEffecterEnable", "enable or disable a numeric effecter");
+    commands.push_back(std::make_unique<SetNumericEffecterEnable>(
+        "platform", "setNumericEffecterEnable", setNumericEffecterEnable));
 
     auto setNumericEffecterValue = platform->add_subcommand(
         "SetNumericEffecterValue", "set the value for a PLDM Numeric Effecter");
