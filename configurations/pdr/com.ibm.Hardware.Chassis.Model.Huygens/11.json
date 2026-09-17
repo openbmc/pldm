@@ -4285,6 +4285,25 @@
                             }
                         }
                     ]
+                },
+                {
+                    "entity_path": "/xyz/openbmc_project/inventory/system",
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 32782,
+                                "size": 1,
+                                "states": [1, 2]
+                            },
+                            "dbus": {
+                                "path": "/xyz/openbmc_project/software",
+                                "interface": "xyz.openbmc_project.Software.BootSide",
+                                "property_name": "NextBootSide",
+                                "property_type": "string",
+                                "property_values": ["Perm", "Temp"]
+                            }
+                        }
+                    ]
                 }
             ]
         }
