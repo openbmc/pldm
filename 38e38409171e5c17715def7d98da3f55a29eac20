@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b58e2238_b2da9247",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-09-17T06:27:56Z",
+      "side": 1,
+      "message": "Would suggest rebasing your patches that are standalone/independent on top of openbmc/pldm master branch\u0027s latest commit every time you push.",
+      "revId": "38e38409171e5c17715def7d98da3f55a29eac20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3f671d47_debe08f3",
         "filename": "libpldmresponder/bios_config.cpp",
         "patchSetId": 1
