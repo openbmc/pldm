@@ -45,6 +45,14 @@ enum pldm_oem_ibm_boot_state_set_values
     OEM_IBM_STATE_SET_BOOT_STATE_T_SIDE = 2,
 };
 
+/** @brief PLDM OEM IBM boot side state possible state set values
+ */
+enum pldm_oem_ibm_boot_side_state_set_values
+{
+    OEM_IBM_BOOT_SIDE_PERM = 1,
+    OEM_IBM_BOOT_SIDE_TEMP = 2,
+};
+
 /** @brief Map for PLDM OEM IBM Entity Types
  */
 extern const std::map<uint8_t, std::string> OemIBMEntityType{
@@ -59,7 +67,9 @@ extern const std::map<uint16_t, std::string> OemIBMstateSet{
     {PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, "OEM IBM Firmware Update State"},
     {PLDM_OEM_IBM_BOOT_STATE, "OEM IBM Boot State"},
     {PLDM_OEM_IBM_VERIFICATION_STATE, "OEM IBM Verification State"},
-    {PLDM_OEM_IBM_SYSTEM_POWER_STATE, "OEM IBM System Power State"}};
+    {PLDM_OEM_IBM_SYSTEM_POWER_STATE, "OEM IBM System Power State"},
+    {PLDM_OEM_IBM_NEXT_BOOT_SIDE, "OEM IBM Next Boot Side State"},
+    {PLDM_OEM_IBM_CURRENT_BOOT_SIDE, "OEM IBM Current Boot Side State"}};
 
 /** @brief Map for PLDM OEM IBM firmware update possible state values
  */
@@ -91,6 +101,11 @@ extern const std::map<uint8_t, std::string> SetOemIBMBootStateValues{
     {OEM_IBM_STATE_SET_BOOT_STATE_P_SIDE, "P Side"},
     {OEM_IBM_STATE_SET_BOOT_STATE_T_SIDE, "T side"}};
 
+/** @brief Map for PLDM OEM IBM boot side state possible values
+ */
+extern const std::map<uint8_t, std::string> SetOemIBMBootSideStateValues{
+    {OEM_IBM_BOOT_SIDE_PERM, "Perm"}, {OEM_IBM_BOOT_SIDE_TEMP, "Temp"}};
+
 /** @brief Map for populating PLDM OEM IBM state sets with possible state values
  */
 extern const std::map<uint16_t, const std::map<uint8_t, std::string>>
@@ -99,4 +114,6 @@ extern const std::map<uint16_t, const std::map<uint8_t, std::string>>
         {PLDM_OEM_IBM_SYSTEM_POWER_STATE, SetOemIBMSysPowerStatesValues},
         {PLDM_OEM_IBM_BOOT_STATE, SetOemIBMBootStateValues},
         {PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, SetOemIBMFWUpdateStateValues},
+        {PLDM_OEM_IBM_NEXT_BOOT_SIDE, SetOemIBMBootSideStateValues},
+        {PLDM_OEM_IBM_CURRENT_BOOT_SIDE, SetOemIBMBootSideStateValues},
     };
