@@ -46,6 +46,30 @@
       },
       "revId": "54930e71598d9ead4bbcae98a4a260d1a250bea4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60fe2af4_fcbeed91",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 1002838
+      },
+      "writtenOn": "2026-09-17T02:41:23Z",
+      "side": 1,
+      "message": "Understood on the D-Bus object. My concern is what the skip leaves behind.\n\n  Skipping an offset holds the last published state. Once the health state set\n  lands, a component sensor whose op_state read ENABLED with a non-critical\n  health state, and which later reports op_state FAILED, keeps `Functional`\n  true, so Redfish Health stays OK for a sensor that has stopped reporting.\n\n  On the log volume: I tested on a CX7 and op_state stayed at the same value\n  across many polls, so a log gated on a change from that offset\u0027s previous\n  op_state would not flood the journal. A log does not stop a consumer from\n  reading the stale value, but it does let someone debugging see that the\n  sensor stopped reporting, which nothing shows today. Worth having either way.\n\nThanks",
+      "parentUuid": "6ed83f52_0587d0bf",
+      "range": {
+        "startLine": 727,
+        "startChar": 0,
+        "endLine": 739,
+        "endChar": 5
+      },
+      "revId": "54930e71598d9ead4bbcae98a4a260d1a250bea4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
