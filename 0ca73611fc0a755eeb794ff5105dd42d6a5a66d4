@@ -22,6 +22,30 @@
       },
       "revId": "0ca73611fc0a755eeb794ff5105dd42d6a5a66d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13713566_1d3b4aea",
+        "filename": "platform-mc/state_set_link_state.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-17T09:54:17Z",
+      "side": 1,
+      "message": "Acknowledged, I have refined this in PS12.",
+      "parentUuid": "013f4e87_d0401634",
+      "range": {
+        "startLine": 32,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 18
+      },
+      "revId": "0ca73611fc0a755eeb794ff5105dd42d6a5a66d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
