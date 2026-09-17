@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a446e57_bd0b4b03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-09-17T08:46:59Z",
+      "side": 1,
+      "message": "Can this be updated to clearly call out that only fw-update package 1.1.0 support is being added by including downstream device ID records? \n\nThis will help preserve support for 1.1 and 1.3 when remaining fields in the package are enabled.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "3acbf1e84aea22a72e7b3f630778d92257228a36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
