@@ -2,6 +2,7 @@
 
 #include "activation.hpp"
 #include "common/start_lifetime_as.hpp"
+#include "events.hpp"
 #include "update_manager.hpp"
 
 #include <libpldm/firmware_update.h>
@@ -95,10 +96,13 @@ DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, std::istream& package,
     const FirmwareDeviceIDRecord& fwDeviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManagerBase* updateManager) :
+    uint32_t maxTransferSize, UpdateManagerBase* updateManager,
+    std::string_view pkgVersion,
+    std::optional<sdbusplus::object_path> targetPath) :
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
     compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager),
+    pkgVersion(pkgVersion), targetPath(std::move(targetPath)),
     activationComplete{false}
 {
     const auto& applicableComponents =
@@ -522,6 +526,7 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
             compCompatibilityRespCode);
+        events::generateUpdateNotApplicable(targetPath, pkgVersion);
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
 
         if (componentIndex == applicableComponents.size() - 1)
@@ -556,6 +561,7 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     info(
         "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
         "EID", eid, "COMPONENT_VERSION", compVersion);
+    events::generateTransferringToComponent(targetPath, pkgVersion);
     componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
     createRequestFwDataTimer();
     return true;
@@ -566,6 +572,7 @@ void DeviceUpdater::createRequestFwDataTimer()
     reqFwDataTimer = std::make_unique<sdbusplus::Timer>([this]() -> void {
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
+        events::generateTransferFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
     });
 }
@@ -748,6 +755,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' transfer complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        events::generateVerifyingAtComponent(targetPath, pkgVersion);
     }
     else
     {
@@ -755,6 +763,7 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "Failure in transfer of the component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - {RESULT}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             transferResult);
+        events::generateTransferFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
@@ -816,6 +825,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' verification complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        events::generateInstallingOnComponent(targetPath, pkgVersion);
     }
     else
     {
@@ -823,6 +833,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "Failed to verify component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - '{RESULT}'",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             verifyResult);
+        events::generateVerificationFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
@@ -923,6 +934,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "ERROR", applyResult);
         if (updateManager != nullptr)
         {
+            events::generateActivateFailed(targetPath, pkgVersion);
             updateManager->updateDeviceCompletion(eid, false);
         }
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
@@ -990,6 +1002,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "No response received for activate firmware for endpoint ID '{EID}'",
             "EID", eid);
+        events::generateActivateFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
@@ -1005,6 +1018,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode activate firmware response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        events::generateActivateFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
@@ -1014,6 +1028,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to activate firmware response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
+        events::generateActivateFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }

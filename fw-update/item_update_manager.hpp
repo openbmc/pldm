@@ -130,6 +130,14 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const Descriptors& descriptors);
 
+    /**
+     * @brief The software object the Software.Update events report against
+     */
+    auto eventTarget() const -> sdbusplus::object_path
+    {
+        return sdbusplus::object_path(objPathWithSwId);
+    }
+
   private:
     mctp_eid_t eid;
     std::string objPath;
