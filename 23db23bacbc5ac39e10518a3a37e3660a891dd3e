@@ -50,6 +50,24 @@
       "message": "This path is incorrect. Correct path is `xyz/openbmc_project/Configuration/Platform/common.hpp`",
       "revId": "23db23bacbc5ac39e10518a3a37e3660a891dd3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0a17002_838b757c",
+        "filename": "fw-update/firmware_inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-09-21T16:37:19Z",
+      "side": 1,
+      "message": "Ignore this comment, missed another patch review in between.",
+      "parentUuid": "435bbf7f_48f0c134",
+      "revId": "23db23bacbc5ac39e10518a3a37e3660a891dd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
