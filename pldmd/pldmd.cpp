@@ -344,7 +344,7 @@ int main(int argc, char** argv)
     MctpDiscovery mctpDiscoveryHandler(
         bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
                  fwManager.get(), platformManager.get()});
-    auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+    auto callback = [&verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
         {
@@ -450,10 +450,20 @@ int main(int argc, char** argv)
     }
 #endif
     stdplus::signal::block(SIGUSR1);
+    stdplus::signal::block(SIGHUP);
     sdeventplus::source::Signal sigUsr1(
         event, SIGUSR1,
         [](Signal& signal, const struct signalfd_siginfo* info) {
             interruptFlightRecorderCallBack(signal, info);
+        });
+    sdeventplus::source::Signal sigHup(
+        event, SIGHUP,
+        [&verbose, &reqHandler](Signal& /*signal*/,
+                                const struct signalfd_siginfo* /*signalInfo*/) {
+            verbose = !verbose;
+            reqHandler.setVerbose(verbose);
+            info("PLDM verbose logging {STATE}", "STATE",
+                 verbose ? "enabled" : "disabled");
         });
     int returnCode = event.loop();
     if (returnCode)

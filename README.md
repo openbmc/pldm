@@ -74,6 +74,15 @@ rm /etc/default/pldmd
 systemctl restart pldmd
 ```
 
+### To toggle pldm verbosity at runtime
+
+Send `SIGHUP` to the running daemon. Each signal toggles verbose message
+tracing without restarting `pldmd`:
+
+```bash
+systemctl kill --signal=SIGHUP pldmd
+```
+
 ## Documentation
 
 For complete documentation on the functionality and usage of this repository,

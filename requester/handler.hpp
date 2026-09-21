@@ -148,6 +148,12 @@ class Handler
         numRetries(numRetries), responseTimeOut(responseTimeOut)
     {}
 
+    /** @brief Enable or disable verbose PLDM message tracing at runtime. */
+    void setVerbose(bool value)
+    {
+        verbose = value;
+    }
+
     void instanceIdExpiryCallBack(RequestKey key)
     {
         auto eid = key.eid;
