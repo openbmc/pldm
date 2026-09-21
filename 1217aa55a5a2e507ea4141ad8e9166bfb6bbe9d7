@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "347d8e41_622d33e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-21T05:51:22Z",
+      "side": 1,
+      "message": "nit: this file can be named better I think.",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "1217aa55a5a2e507ea4141ad8e9166bfb6bbe9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cb1831f_00b70a3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-21T05:51:22Z",
+      "side": 1,
+      "message": "Add info about tests performed for this change.",
+      "revId": "1217aa55a5a2e507ea4141ad8e9166bfb6bbe9d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
