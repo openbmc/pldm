@@ -21,6 +21,7 @@ namespace fw_update
  */
 using ComponentUpdateStatusMap = std::map<size_t, bool>;
 
+class Events;
 class UpdateManagerBase;
 
 /** @class UpdateProgress
@@ -135,13 +136,15 @@ class DeviceUpdater
      *                               payload allowed to be requested by the FD
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
+     *  @param[in] pkgVersion - PackageVersionString of the fw update package,
+     *                          naming the image in the Software.Update events
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-                           const ComponentImageInfos& compImageInfos,
-                           const ComponentInfo& compInfo,
-                           uint32_t maxTransferSize,
-                           UpdateManagerBase* updateManager);
+    explicit DeviceUpdater(
+        mctp_eid_t eid, std::istream& package,
+        const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+        const ComponentImageInfos& compImageInfos,
+        const ComponentInfo& compInfo, uint32_t maxTransferSize,
+        UpdateManagerBase* updateManager, const std::string& pkgVersion = {});
 
     /** @brief Get the progress of updating this device as percentage
      *
@@ -282,6 +285,13 @@ class DeviceUpdater
      */
     void createRequestFwDataTimer();
 
+    /** @brief Software.Update events reported for this update
+     *
+     *  @return The events of the update, or nullptr when there is no update
+     *          manager or it does not report Software.Update events
+     */
+    Events* getEvents() const;
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
@@ -310,6 +320,9 @@ class DeviceUpdater
 
     /** @brief To update the status of fw update of the FD */
     UpdateManagerBase* updateManager;
+
+    /** @brief PackageVersionString naming the image in the reported events */
+    std::string pkgVersion;
 
     /** @brief Component index is used to track the current component being
      *         updated if multiple components are applicable for the FD.

@@ -41,6 +41,7 @@ bool ItemUpdateManager::processPackage()
             sizeof(pldm_package_header_information));
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
+        events->generateVerificationFailed({});
         packageMap.reset();
         return false;
     }
@@ -53,6 +54,7 @@ bool ItemUpdateManager::processPackage()
         error("Invalid PLDM package header information");
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
+        events->generateVerificationFailed({});
         packageMap.reset();
         return false;
     }
@@ -65,6 +67,7 @@ bool ItemUpdateManager::processPackage()
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
+        events->generateVerificationFailed({});
         parser.reset();
         packageMap.reset();
         return false;
@@ -77,6 +80,7 @@ bool ItemUpdateManager::processPackage()
         error("Failed to associate package to device");
         inProgressActivation->activation(
             software::Activation::Activations::Invalid);
+        events->generateUpdateNotApplicable(parser->pkgVersion);
         packageMap.reset();
         return false;
     }
@@ -90,8 +94,10 @@ bool ItemUpdateManager::processPackage()
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
-        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
+        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
+        parser->pkgVersion);
     inProgressActivation->activation(software::Activation::Activations::Ready);
+    events->generateTargetDetermined(parser->pkgVersion);
     if (!preConditionPath.empty())
     {
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
@@ -131,6 +137,10 @@ bool ItemUpdateManager::processPackage()
 std::string ItemUpdateManager::processFd(int fd)
 {
     objPathWithSwId = std::format("{}_{}", objPath, utils::generateSwId());
+    // Events are reported against the software object of this update, which
+    // only exists from here until the update is torn down. Any events of a
+    // previous update are dropped along with it.
+    events.emplace(sdbusplus::object_path(objPathWithSwId));
     auto rawDupFd = dup(fd);
     if (rawDupFd < 0)
     {
@@ -254,6 +264,11 @@ void ItemUpdateManager::completeUpdate(bool status)
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
                : software::Activation::Activations::Failed);
+    if (status)
+    {
+        events->generateUpdateSuccessful(
+            parser ? parser->pkgVersion : std::string{});
+    }
     teardownUpdate();
     if (taskCompletionCallback)
     {
@@ -264,6 +279,7 @@ void ItemUpdateManager::completeUpdate(bool status)
 void ItemUpdateManager::teardownUpdate()
 {
     deviceUpdater.reset();
+    events.reset();
     packageDataStream.reset();
     packageMap.reset();
     dupFd.reset();
@@ -319,6 +335,7 @@ void ItemUpdateManager::resetActivationState()
 {
     inProgressActivation.reset();
     activationProgress.reset();
+    events.reset();
     dupFd.reset();
     updateInProgress = false;
 }

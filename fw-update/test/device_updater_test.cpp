@@ -240,3 +240,32 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+// A DeviceUpdater reaches the Software.Update events through its update
+// manager. When updateManager is nullptr there are no events to generate, so
+// every call site that generates one has to skip it instead of dereferencing
+// the null pointer.
+TEST_F(DeviceUpdaterTest, ReportsNoEventsWithoutAnUpdateManager)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> transferComplete = {
+        0x8C, 0x05, 0x16, PLDM_FWUP_TRANSFER_SUCCESS};
+    auto requestMsg =
+        reinterpret_cast<const pldm_msg*>(transferComplete.data());
+    auto response = deviceUpdater.transferComplete(requestMsg, 1);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyComplete = {
+        0x8C, 0x05, 0x17, PLDM_FWUP_VERIFY_SUCCESS};
+    requestMsg = reinterpret_cast<const pldm_msg*>(verifyComplete.data());
+    response = deviceUpdater.verifyComplete(requestMsg, 1);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyComplete = {
+        0x8D, 0x05, 0x18, PLDM_FWUP_APPLY_SUCCESS, 0x0, 0x0};
+    requestMsg = reinterpret_cast<const pldm_msg*>(applyComplete.data());
+    response = deviceUpdater.applyComplete(requestMsg, 3);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+}

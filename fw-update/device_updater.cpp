@@ -94,11 +94,12 @@ DeviceUpdater::DeviceUpdater(
     mctp_eid_t eid, std::istream& package,
     const FirmwareDeviceIDRecord& fwDeviceIDRecord,
     const ComponentImageInfos& compImageInfos, const ComponentInfo& compInfo,
-    uint32_t maxTransferSize, UpdateManagerBase* updateManager) :
+    uint32_t maxTransferSize, UpdateManagerBase* updateManager,
+    const std::string& pkgVersion) :
     eid(eid), package(package), fwDeviceIDRecord(fwDeviceIDRecord),
     compImageInfos(compImageInfos), compInfo(compInfo),
     maxTransferSize(maxTransferSize), updateManager(updateManager),
-    activationComplete{false}
+    pkgVersion(pkgVersion), activationComplete{false}
 {
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
@@ -110,6 +111,11 @@ DeviceUpdater::DeviceUpdater(
             std::get<6>(compImageInfos[applicableComponent]);
         progress.emplace_back(componentSize, eid);
     }
+}
+
+Events* DeviceUpdater::getEvents() const
+{
+    return updateManager ? updateManager->getEvents() : nullptr;
 }
 
 void DeviceUpdater::startFwUpdateFlow()
@@ -516,6 +522,10 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' cannot be updated, response code '{RESP_CODE}', skipping",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESP_CODE",
             compCompatibilityRespCode);
+        if (auto* events = getEvents())
+        {
+            events->generateUpdateNotApplicable(pkgVersion);
+        }
         componentUpdateStatus[componentIndex] = false;
 
         if (componentIndex == applicableComponents.size() - 1)
@@ -548,6 +558,10 @@ void DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
     info(
         "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
         "EID", eid, "COMPONENT_VERSION", compVersion);
+    if (auto* events = getEvents())
+    {
+        events->generateTransferringToComponent(pkgVersion);
+    }
     componentUpdateStatus[componentIndex] = true;
     createRequestFwDataTimer();
 }
@@ -739,6 +753,10 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' transfer complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        if (auto* events = getEvents())
+        {
+            events->generateVerifyingAtComponent(pkgVersion);
+        }
     }
     else
     {
@@ -746,6 +764,10 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
             "Failure in transfer of the component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - {RESULT}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             transferResult);
+        if (auto* events = getEvents())
+        {
+            events->generateTransferFailed(pkgVersion);
+        }
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
@@ -807,6 +829,10 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         info(
             "Component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' verification complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
+        if (auto* events = getEvents())
+        {
+            events->generateInstallingOnComponent(pkgVersion);
+        }
     }
     else
     {
@@ -814,6 +840,10 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
             "Failed to verify component endpoint ID '{EID}' and version '{COMPONENT_VERSION}' with transfer result - '{RESULT}'",
             "EID", eid, "COMPONENT_VERSION", compVersion, "RESULT",
             verifyResult);
+        if (auto* events = getEvents())
+        {
+            events->generateVerificationFailed(pkgVersion);
+        }
         updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = false;
         sendCancelUpdateComponentRequest();
@@ -912,6 +942,10 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             "EID", eid, "COMPONENT_VERSION", compVersion, "ERROR", applyResult);
         if (updateManager != nullptr)
         {
+            if (auto* events = getEvents())
+            {
+                events->generateActivateFailed(pkgVersion);
+            }
             updateManager->updateDeviceCompletion(eid, false);
         }
         componentUpdateStatus[componentIndex] = false;
@@ -977,6 +1011,10 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "No response received for activate firmware for endpoint ID '{EID}'",
             "EID", eid);
+        if (auto* events = getEvents())
+        {
+            events->generateActivateFailed(pkgVersion);
+        }
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
@@ -992,6 +1030,10 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to decode activate firmware response for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        if (auto* events = getEvents())
+        {
+            events->generateActivateFailed(pkgVersion);
+        }
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
@@ -1001,6 +1043,10 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         error(
             "Failed to activate firmware response for endpoint ID '{EID}', completion code '{CC}'",
             "EID", eid, "CC", completionCode);
+        if (auto* events = getEvents())
+        {
+            events->generateActivateFailed(pkgVersion);
+        }
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }

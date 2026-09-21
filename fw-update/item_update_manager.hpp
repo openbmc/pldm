@@ -130,10 +130,20 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const Descriptors& descriptors);
 
+    Events* getEvents() override
+    {
+        return events ? &*events : nullptr;
+    }
+
   private:
     mctp_eid_t eid;
     std::string objPath;
     std::string objPathWithSwId;
+
+    /**
+     * @brief Software.Update events reported for the update in progress
+     */
+    std::optional<Events> events;
 
     /**
      * @brief The descriptors to match against

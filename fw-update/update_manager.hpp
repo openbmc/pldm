@@ -3,6 +3,7 @@
 #include "common/types.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
+#include "fw-update/events.hpp"
 #include "fw-update/update.hpp"
 
 #ifdef FW_UPDATE_INOTIFY_ENABLED
@@ -70,6 +71,20 @@ class UpdateManagerBase
     virtual void updateActivationProgress() = 0;
     virtual void activatePackage() = 0;
     virtual void resetActivationState() = 0;
+
+    /** @brief Software.Update events of the update this manager is driving
+     *
+     *  The events identify their target by object path, which only a manager
+     *  owning a single target can provide, so a manager that updates all the
+     *  devices matching one package reports no events.
+     *
+     *  @return The events of the update, or nullptr when the manager does not
+     *          report Software.Update events
+     */
+    virtual Events* getEvents()
+    {
+        return nullptr;
+    }
 
     Event& event;               //!< reference to PLDM daemon's main event loop
     pldm::requester::Handler<pldm::requester::Request>& handler;
