@@ -5,9 +5,14 @@
 #include <libpldm/base.h>
 #include <linux/mctp.h>
 
+#include <sdbusplus/message/native_types.hpp>
 #include <sdbusplus/timer.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
+
+#include <optional>
+#include <string>
+#include <string_view>
 
 namespace pldm
 {
@@ -135,13 +140,18 @@ class DeviceUpdater
      *                               payload allowed to be requested by the FD
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
+     *  @param[in] pkgVersion - PackageVersionString of the fw update package,
+     *                          naming the image in the Software.Update events
+     *  @param[in] targetPath - Software object the Software.Update events
+     *                          report against, nullopt to report none
      */
-    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
-                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-                           const ComponentImageInfos& compImageInfos,
-                           const ComponentInfo& compInfo,
-                           uint32_t maxTransferSize,
-                           UpdateManagerBase* updateManager);
+    explicit DeviceUpdater(
+        mctp_eid_t eid, std::istream& package,
+        const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+        const ComponentImageInfos& compImageInfos,
+        const ComponentInfo& compInfo, uint32_t maxTransferSize,
+        UpdateManagerBase* updateManager, std::string_view pkgVersion = {},
+        std::optional<sdbusplus::object_path> targetPath = std::nullopt);
 
     /** @brief Get the progress of updating this device as percentage
      *
@@ -310,6 +320,12 @@ class DeviceUpdater
 
     /** @brief To update the status of fw update of the FD */
     UpdateManagerBase* updateManager;
+
+    /** @brief PackageVersionString naming the image in the reported events */
+    std::string pkgVersion;
+
+    /** @brief Software object the reported events name as their target */
+    std::optional<sdbusplus::object_path> targetPath;
 
     /** @brief Component index is used to track the current component being
      *         updated if multiple components are applicable for the FD.
