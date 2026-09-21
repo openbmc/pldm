@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d25039e6_123bf5df",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-21T05:26:12Z",
+      "side": 1,
+      "message": "Ideally, this should be placed right next to the line where the sensor reading is being updated in the `updateReading` function.",
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4342313b_271bc777",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-21T05:26:12Z",
+      "side": 1,
+      "message": "Instead of this we should only call `updateUpdatedTime` from `updateReading` only if the object has the value interface.",
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2361b8a_a312e1da",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-09-21T05:26:12Z",
+      "side": 1,
+      "message": "don\u0027t we already have a function in utils file for this?",
+      "range": {
+        "startLine": 787,
+        "startChar": 27,
+        "endLine": 790,
+        "endChar": 21
+      },
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
