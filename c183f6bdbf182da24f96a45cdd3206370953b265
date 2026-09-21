@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d504f19_c77b345c",
+        "filename": "common/types.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-09-21T08:20:00Z",
+      "side": 1,
+      "message": "I think this can be kept for now and later changed if required.",
+      "parentUuid": "1461ab3d_865f1765",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "574ec6d5_8cdcf20e",
         "filename": "common/types.hpp",
         "patchSetId": 9
@@ -49,6 +67,24 @@
       "writtenOn": "2026-09-04T07:26:55Z",
       "side": 1,
       "message": "Can we have a single namespace section containing all the pkg types instead of opening the namespace twice?",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4971052b_59d30a85",
+        "filename": "common/types.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-09-21T08:20:00Z",
+      "side": 1,
+      "message": "Tested this change, seems to work fine.",
+      "parentUuid": "574ec6d5_8cdcf20e",
       "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
