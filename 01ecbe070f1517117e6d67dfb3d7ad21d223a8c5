@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7103ba79_88bf7549",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-09-21T18:03:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb06d60c_509cdf2a",
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4342313b_271bc777",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "Good call. Let me add it. Also, let me look into the redfish interface if it has a similar field for metric interfaces as well. If so, I will add an UpdatedTime for that as well.",
       "parentUuid": "4342313b_271bc777",
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c278d8af_34c65e44",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-09-21T18:03:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dd3d109_678b97c7",
       "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -108,6 +144,30 @@
       "side": 1,
       "message": "Yes, but it returns a string `std::string getCurrentSystemTime();`. Let me add one so it may be reused.",
       "parentUuid": "b2361b8a_a312e1da",
+      "range": {
+        "startLine": 787,
+        "startChar": 27,
+        "endLine": 790,
+        "endChar": 21
+      },
+      "revId": "01ecbe070f1517117e6d67dfb3d7ad21d223a8c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b35ab33_2170d909",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-09-21T18:03:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bd71d30_d6c69c3b",
       "range": {
         "startLine": 787,
         "startChar": 27,
