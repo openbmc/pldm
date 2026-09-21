@@ -23,6 +23,19 @@ using ItemUpdateIntf = sdbusplus::server::object_t<
 using ApplyTimeIntf =
     sdbusplus::xyz::openbmc_project::Software::server::ApplyTime;
 
+/**
+ * @brief Construct the firmware inventory path of a target
+ *
+ * @param[in] objPath - Inventory path of the target
+ * @param[in] generatedId - Identifier distinguishing the item
+ */
+inline auto constructFirmwareInventoryPath(const std::string& objPath,
+                                           const std::string& generatedId)
+    -> std::string
+{
+    return std::format("{}_{}", objPath, generatedId);
+}
+
 class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 {
   public:
@@ -57,10 +70,14 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
-        ItemUpdateIntf(pldm::utils::DBusHandler::getBus(),
-                       std::format("{}_{}", objPath, generatedId).c_str()),
-        eid(eid), objPath(objPath), descriptors(descriptors),
-        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
+        ItemUpdateIntf(
+            pldm::utils::DBusHandler::getBus(),
+            constructFirmwareInventoryPath(objPath, generatedId).c_str()),
+        eid(eid), objPath(objPath),
+        firmwareInventoryPath(
+            constructFirmwareInventoryPath(objPath, generatedId)),
+        descriptors(descriptors), componentInfo(componentInfo),
+        preConditionPath(conditionPathPair.first),
         postConditionPath(conditionPathPair.second),
         baseConditionArg(conditionArg), conditionArg(conditionArg),
         taskCompletionCallback(std::move(taskCompletionCallback))
@@ -137,6 +154,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
   private:
     mctp_eid_t eid;
     std::string objPath;
+    sdbusplus::object_path firmwareInventoryPath;
     std::string objPathWithSwId;
 
     /**

@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
+#include "events.hpp"
 #include "package_parser.hpp"
 #include "systemd_interface.hpp"
 
@@ -48,6 +49,7 @@ bool ItemUpdateManager::processPackage()
             "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
             "SIZE", packageMap->getSize(), "PACKAGE_HEADER_INFO_SIZE",
             sizeof(pldm_package_header_information));
+        events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
 
@@ -57,6 +59,7 @@ bool ItemUpdateManager::processPackage()
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
+        events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
     try
@@ -66,6 +69,7 @@ bool ItemUpdateManager::processPackage()
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
+        events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
 
@@ -74,6 +78,8 @@ bool ItemUpdateManager::processPackage()
     if (!deviceIdRecordOffset)
     {
         error("Failed to associate package to device");
+        events::generateUpdateNotApplicable(firmwareInventoryPath,
+                                            parser->pkgVersion);
         return failInvalidPackage();
     }
 
@@ -86,7 +92,9 @@ bool ItemUpdateManager::processPackage()
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
         eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
-        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this);
+        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
+        parser->pkgVersion, firmwareInventoryPath);
+    events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
@@ -247,6 +255,11 @@ void ItemUpdateManager::completeUpdate(bool status)
         info("Firmware update time: {DURATION}ms", "DURATION", dur);
     }
 
+    if (status)
+    {
+        events::generateUpdateSuccessful(
+            firmwareInventoryPath, parser ? parser->pkgVersion : std::string{});
+    }
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
                : software::Activation::Activations::Failed);
