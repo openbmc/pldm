@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "920d9960_5c7f3833",
+        "filename": "common/types.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-22T15:47:32Z",
+      "side": 1,
+      "message": "we have dependency chain\n`pkg::FirmwareDeviceIDRecord` -\u003e `Descriptors` -\u003e `pkg::DescriptorData`.\n\nSo the type aliases have to be defined in reverse order of that dependency chain.\n\nTo me it looks like it\u0027s not possible to define in a single `namespace pkg {...}` block.",
+      "parentUuid": "4971052b_59d30a85",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6fe5c00_fb4bbcf2",
         "filename": "fw-update/package_parser.hpp",
         "patchSetId": 9
@@ -102,6 +120,24 @@
       "writtenOn": "2026-09-04T07:26:55Z",
       "side": 1,
       "message": "I don\u0027t think we need the rename after introducing the new namespace",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f506cd1_7ae25775",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-22T15:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6fe5c00_fb4bbcf2",
       "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
