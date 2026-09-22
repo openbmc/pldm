@@ -22,6 +22,30 @@
       },
       "revId": "9871626bfd0ab84068c5dacedae14b98fc7aa337",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c8899ae_e5506c99",
+        "filename": "oem/meta/libpldmresponder/file_io_type_event_log.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1381,
+      "author": {
+        "id": 1002581
+      },
+      "writtenOn": "2026-09-22T10:08:47Z",
+      "side": 1,
+      "message": "Thanks for the feedback. I looked into this some more. Dispatching by `EventType` directly seems more straightforward than the alternative: `eventData[0]` comes straight from the FD and already tells you which ASIC sent the fault. I considered inferring the ASIC from `configPath` instead, so `RAINBOW_FAULT` and `ARKE_FAULT` could merge into one type. But that still needs some hardcoded way to recognize Rainbow vs Arke, just moved to a string match, and that signal seems less reliable than `eventData[0]`.",
+      "parentUuid": "74120821_34251ca2",
+      "range": {
+        "startLine": 1379,
+        "startChar": 0,
+        "endLine": 1381,
+        "endChar": 58
+      },
+      "revId": "9871626bfd0ab84068c5dacedae14b98fc7aa337",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
