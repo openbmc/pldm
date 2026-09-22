@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af331fba_c901335e",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-09-22T13:57:10Z",
+      "side": 1,
+      "message": "It\u0027s up to you if you want to call mapper for this or you want to go direct to the service.  This is a dbus interface update I gave:\n\n```\n$ git show a4d082406f7f90309dd2adfb872229b9692e50d7\ncommit a4d082406f7f90309dd2adfb872229b9692e50d7\nAuthor: Patrick Williams \u003cpatrick@stwcx.xyz\u003e\nDate:   Fri Sep 18 18:32:35 2026 -0400\n\n    CPER.Processor: add singleton service and path\n    \n    Add a singleton path for the typical case of a single CPER processor,\n    which matches the design document.  This makes it easier to find the\n    CPER processor by clients and trivial to instantiate it.\n    \n    Signed-off-by: Patrick Williams \u003cpatrick@stwcx.xyz\u003e\n    Change-Id: I0bda51c284c29ed26dea8b85b4f6ae49bbe0ece5\n\ndiff --git a/yaml/xyz/openbmc_project/Logging/CPER/Processor.interface.yaml b/yaml/xyz/openbmc_project/Logging/CPER/Processor.interface.yaml\nindex 43c38a0b..c378c936 100644\n--- a/yaml/xyz/openbmc_project/Logging/CPER/Processor.interface.yaml\n+++ b/yaml/xyz/openbmc_project/Logging/CPER/Processor.interface.yaml\n@@ -37,3 +37,9 @@ methods:\n             type: unixfd\n             description: \u003e\n                 File descriptor containing CPER binary data.\n+\n+service_names:\n+    - default: xyz.openbmc_project.Logging.CPER.Processor\n+\n+paths:\n+    - instance: /xyz/openbmc_project/logging/cper\n```",
+      "revId": "7caf2e2bac7812f42695788bf0e73c5b6e9c41e7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
