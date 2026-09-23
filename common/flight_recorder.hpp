@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -80,6 +81,37 @@ class FlightRecorder
             index =
                 (currentIndex == FLIGHT_RECORDER_MAX_ENTRIES - 1) ? 0 : index;
         }
+    }
+
+    /** @brief Serialize populated flight recorder entries as JSON. */
+    std::string serialize() const
+    {
+        nlohmann::json records = nlohmann::json::array();
+
+        for (const auto& record : tapeRecorder)
+        {
+            const auto& timestamp = std::get<FlightRecorderTimeStamp>(record);
+            const auto isRequest = std::get<ReqOrResponse>(record);
+            const auto& data = std::get<FlightRecorderData>(record);
+
+            if (timestamp.empty() || data.empty())
+            {
+                continue;
+            }
+
+            std::ostringstream encodedData;
+            encodedData << std::hex << std::setfill('0');
+            for (const auto byte : data)
+            {
+                encodedData << std::setw(2) << static_cast<unsigned>(byte);
+            }
+
+            records.push_back({{"time", timestamp},
+                               {"direction", isRequest ? "Tx" : "Rx"},
+                               {"data", encodedData.str()}});
+        }
+
+        return records.dump();
     }
 
     /** @brief play flight recorder
