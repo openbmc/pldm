@@ -1,5 +1,6 @@
 #include "utils.hpp"
 
+#include "common/flight_recorder.hpp"
 #include "common/start_lifetime_as.hpp"
 
 #include <fcntl.h>
@@ -331,6 +332,13 @@ void reportError(const char* errorMsg)
             LoggingCreate::interface, LoggingCreate::method_names::create);
 
         std::map<std::string, std::string> addlData{};
+        const auto flightRecorder =
+            pldm::flightrecorder::FlightRecorder::GetInstance().serialize();
+        if (!flightRecorder.empty())
+        {
+            addlData.emplace("PLDM_FLIGHT_RECORDER", flightRecorder);
+        }
+
         method.append(errorMsg, severity, addlData);
         bus.call_noreply(method, dbusTimeout);
     }
