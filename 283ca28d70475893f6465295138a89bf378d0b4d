@@ -16,6 +16,108 @@
       "message": "Tested:\nDeployed on a Yosemite4, driving a firmware update of a Sentinel Dome BIC over MCTP successfully:\n\n  Update.1.2.TargetDetermined\n  Update.1.2.TransferringToComponent\n  Update.1.2.VerifyingAtComponent\n  Update.1.2.InstallingOnComponent\n  Update.1.2.UpdateSuccessful\n\nLogs:\n```\n{\n  \"Id\": \"17473\",\n  \"Created\": \"2026-09-22T19:02:37.672-07:00\",\n  \"Message\": \"The target device \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027 will be updated with image \u0027Test SB fw update\u0027.\",\n  \"MessageArgs\": [\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\",\n    \"Test SB fw update\"\n  ],\n  \"MessageId\": \"Update.1.2.TargetDetermined\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17474\",\n  \"Created\": \"2026-09-22T19:02:37.704-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being transferred to \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.TransferringToComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17475\",\n  \"Created\": \"2026-09-22T19:02:44.406-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being verified at \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.VerifyingAtComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17476\",\n  \"Created\": \"2026-09-22T19:02:44.426-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being installed on \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.InstallingOnComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17477\",\n  \"Created\": \"2026-09-22T19:02:45.432-07:00\",\n  \"Message\": \"Device \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027 successfully updated with image \u0027Test SB fw update\u0027.\",\n  \"MessageArgs\": [\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\",\n    \"Test SB fw update\"\n  ],\n  \"MessageId\": \"Update.1.2.UpdateSuccessful\",\n  \"Severity\": \"OK\"\n}\n```",
       "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "352ec2cf_e1f7503c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "A lot of failure paths (UpdateComponent, PassComponentTable, RequestFWData, etc) don\u0027t have an events generated. Do we have a fallback event showing the update has failed at least?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a701b3e5_5c7349ec",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "nit: Can we use std::optional here instead?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd52dd20_ebab26e2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "Missing transfer failed event here",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f5407f6_3cec7ca5",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "Can this be moved to before line 43 so that bmcweb doesn\u0027t finish the task before the below events are caught?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ec6c49d_1f35779c",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "Please fix all such cases where the events are generated after the final activation state is set",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0862d4b_61c87767",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-09-23T11:22:10Z",
+      "side": 1,
+      "message": "Can this be moved to before line 264 so that bmcweb doesn\u0027t finish the task before the below events are caught?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
