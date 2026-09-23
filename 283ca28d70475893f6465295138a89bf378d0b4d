@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dccefd49_448f9053",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-09-23T02:32:16Z",
+      "side": 1,
+      "message": "Tested:\nDeployed on a Yosemite4, driving a firmware update of a Sentinel Dome BIC over MCTP successfully:\n\n  Update.1.2.TargetDetermined\n  Update.1.2.TransferringToComponent\n  Update.1.2.VerifyingAtComponent\n  Update.1.2.InstallingOnComponent\n  Update.1.2.UpdateSuccessful\n\nLogs:\n```\n{\n  \"Id\": \"17473\",\n  \"Created\": \"2026-09-22T19:02:37.672-07:00\",\n  \"Message\": \"The target device \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027 will be updated with image \u0027Test SB fw update\u0027.\",\n  \"MessageArgs\": [\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\",\n    \"Test SB fw update\"\n  ],\n  \"MessageId\": \"Update.1.2.TargetDetermined\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17474\",\n  \"Created\": \"2026-09-22T19:02:37.704-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being transferred to \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.TransferringToComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17475\",\n  \"Created\": \"2026-09-22T19:02:44.406-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being verified at \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.VerifyingAtComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17476\",\n  \"Created\": \"2026-09-22T19:02:44.426-07:00\",\n  \"Message\": \"Image \u0027Test SB fw update\u0027 is being installed on \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027.\",\n  \"MessageArgs\": [\n    \"Test SB fw update\",\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\"\n  ],\n  \"MessageId\": \"Update.1.2.InstallingOnComponent\",\n  \"Severity\": \"OK\"\n}\n{\n  \"Id\": \"17477\",\n  \"Created\": \"2026-09-22T19:02:45.432-07:00\",\n  \"Message\": \"Device \u0027/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027 successfully updated with image \u0027Test SB fw update\u0027.\",\n  \"MessageArgs\": [\n    \"/xyz/openbmc_project/software/Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\",\n    \"Test SB fw update\"\n  ],\n  \"MessageId\": \"Update.1.2.UpdateSuccessful\",\n  \"Severity\": \"OK\"\n}\n```",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
