@@ -115,6 +115,49 @@ Options:
   -v,--verbose
 ```
 
+## SetStateEffecterEnables
+
+Configure operational state and event generation for 1 to 8 component effecters.
+The effecter ID must be in the range 1 to 65534. Supply exactly two data values
+per component: operational state followed by event enable.
+
+- Operational state: `0` enabled, `2` disabled, `3` unavailable.
+- Event enable: `0` enable events, `1` disable events, `255` leave unchanged.
+
+For example, enable component 0 and its events, and disable component 1 without
+changing its event setting:
+
+```sh
+pldmtool platform SetStateEffecterEnables -m <EID> -i <effecter-ID> -c 2 -d 0 0 2 255
+```
+
+Use the target's actual endpoint and effecter IDs. This command changes device
+settings; it does not set effecter state values (`SetStateEffecterStates`). A
+successful completion prints `{"Response": "SUCCESS"}`. Invalid requests,
+transport failures, malformed responses and device completion errors return a
+nonzero exit status. Add `-v` for request/response bytes, or `--help` to inspect
+options without sending a request.
+
+The command requires libpldm's
+`encode_pldm_platform_set_state_effecter_enables_req` and
+`decode_pldm_platform_set_state_effecter_enables_resp` APIs. During development,
+use the library revision from
+[review 94681](https://gerrit.openbmc.org/c/openbmc/libpldm/+/94681) with the
+testing ABI enabled (`-Dabi=deprecated,stable,testing`). A stable-only library
+does not yet export these APIs. Both the headers and linked library must come
+from that build; a `Depends-On` commit trailer alone does not change the
+installed dependency.
+
+With tests enabled, run the hardware-free CLI integration suite using:
+
+```sh
+meson test -C build pldmtool-state-effecter-enables --print-errorlogs
+```
+
+The test executable uses the real CLI and libpldm codecs, an isolated instance
+database and a simulated transport. It does not access MCTP endpoints or verify
+target hardware behavior.
+
 ## pldmtool raw command usage
 
 pldmtool raw command option accepts request message in the hexadecimal bytes and

@@ -2198,6 +2198,120 @@ class GetPDR : public CommandInterface
     bool isFirstPDR = true;
 };
 
+class SetStateEffecterEnables : public CommandInterface
+{
+  public:
+    ~SetStateEffecterEnables() override = default;
+    SetStateEffecterEnables() = delete;
+    SetStateEffecterEnables(const SetStateEffecterEnables&) = delete;
+    SetStateEffecterEnables(SetStateEffecterEnables&&) = default;
+    SetStateEffecterEnables& operator=(const SetStateEffecterEnables&) = delete;
+    SetStateEffecterEnables& operator=(SetStateEffecterEnables&&) = delete;
+
+    explicit SetStateEffecterEnables(const char* type, const char* name,
+                                     CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option(
+               "-i,--effecter_id", effecterId,
+               "Effecter ID that is used to identify and access the effecter")
+            ->required()
+            ->check(CLI::Range(1, 65534));
+        app->add_option("-c,--count", effecterCount,
+                        "Number of component effecters")
+            ->required()
+            ->check(CLI::Range(
+                1, PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_MAX_COUNT));
+        app->add_option(
+               "-d,--data", fieldData,
+               "Operational-state/event-enable pairs for each component\n"
+               "Operational state: 0=ENABLED, 2=DISABLED, 3=UNAVAILABLE\n"
+               "Event enable: 0=ENABLE, 1=DISABLE, 255=NO_CHANGE")
+            ->required()
+            ->expected(2,
+                       2 * PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_MAX_COUNT)
+            ->check(CLI::Range(0, UINT8_MAX));
+    }
+
+    void exec() override
+    {
+        responseSuccess = false;
+        CommandInterface::exec();
+        if (!responseSuccess)
+        {
+            throw CLI::RuntimeError(1);
+        }
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        if (effecterCount < 1 ||
+            effecterCount >
+                PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_MAX_COUNT ||
+            fieldData.size() != static_cast<size_t>(effecterCount) * 2)
+        {
+            std::cerr
+                << "Request Message Error: expected two data values per component effecter\n";
+            return {PLDM_ERROR_INVALID_DATA, {}};
+        }
+
+        pldm_platform_set_state_effecter_enables_req req{};
+        req.effecter_id = effecterId;
+        req.composite_effecter_count = effecterCount;
+        for (size_t index = 0; index < effecterCount; ++index)
+        {
+            req.op_fields[index].effecter_operational_state =
+                fieldData[2 * index];
+            req.op_fields[index].event_msg_enable = fieldData[2 * index + 1];
+        }
+
+        size_t payloadLength =
+            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_REQ_MAX_BYTES;
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr) + payloadLength);
+        auto request = new (requestMsg.data()) pldm_msg;
+        auto rc = encode_pldm_platform_set_state_effecter_enables_req(
+            instanceId, &req, request, &payloadLength);
+        if (rc == 0)
+        {
+            requestMsg.resize(sizeof(pldm_msg_hdr) + payloadLength);
+        }
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        responseSuccess = false;
+        if (payloadLength !=
+            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_RESP_BYTES)
+        {
+            std::cerr << "Response Message Error: invalid payload length "
+                      << payloadLength << '\n';
+            return;
+        }
+
+        pldm_platform_set_state_effecter_enables_resp response{};
+        auto rc = decode_pldm_platform_set_state_effecter_enables_resp(
+            responsePtr, payloadLength, &response);
+        if (rc != 0 || response.completion_code != PLDM_SUCCESS)
+        {
+            std::cerr << "Response Message Error: rc=" << rc << ",cc="
+                      << static_cast<int>(response.completion_code) << '\n';
+            return;
+        }
+
+        ordered_json data;
+        data["Response"] = "SUCCESS";
+        pldmtool::helper::DisplayInJson(data);
+        responseSuccess = true;
+    }
+
+  private:
+    uint16_t effecterId = 0;
+    uint8_t effecterCount = 0;
+    std::vector<uint8_t> fieldData;
+    bool responseSuccess = false;
+};
+
 class SetStateEffecter : public CommandInterface
 {
   public:
@@ -2839,6 +2953,11 @@ void registerCommand(CLI::App& app)
     auto getPDR =
         platform->add_subcommand("GetPDR", "get platform descriptor records");
     commands.push_back(std::make_unique<GetPDR>("platform", "getPDR", getPDR));
+
+    auto setStateEffecterEnables = platform->add_subcommand(
+        "SetStateEffecterEnables", "configure state effecter enables");
+    commands.push_back(std::make_unique<SetStateEffecterEnables>(
+        "platform", "setStateEffecterEnables", setStateEffecterEnables));
 
     auto setStateEffecterStates = platform->add_subcommand(
         "SetStateEffecterStates", "set effecter states");
