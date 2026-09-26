@@ -149,7 +149,7 @@ class SystemdInterface
      *  A slot has to outlive the call it belongs to, so an entry is only erased
      *  once its reply has been handled.
      */
-    std::map<uint64_t, sdbusplus::slot_t> asyncSlots;
+    std::map<uint64_t, sdbusplus::slot> asyncSlots;
 
     /** @brief Ids of the entries in asyncSlots whose reply has been handled */
     std::vector<uint64_t> completedSlots;
