@@ -90,6 +90,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d7364c3_b8543b19",
+        "filename": "common/types.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:18:31Z",
+      "side": 1,
+      "message": "\u003e sounds good, but can it be pushed as a different patch?\n\nplease provide reasoning for this. I don\u0027t see a concrete reasoning why we need one patch per namespace that is introduced. For now i implemented the idea in this same patch but i am open to change if there is a good reason or maintainer preference.\n\n\u003e would it be accoptable to define a new namespace pldm::fw_update::base for the types also used outside of the pkg context?\n\nSince there was no further response i went ahead with this solution, please let me know in case it does not work for you.",
+      "parentUuid": "fce7f65d_78b15179",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "574ec6d5_8cdcf20e",
@@ -139,6 +157,24 @@
       "side": 1,
       "message": "we have dependency chain\n`pkg::FirmwareDeviceIDRecord` -\u003e `Descriptors` -\u003e `pkg::DescriptorData`.\n\nSo the type aliases have to be defined in reverse order of that dependency chain.\n\nTo me it looks like it\u0027s not possible to define in a single `namespace pkg {...}` block.",
       "parentUuid": "4971052b_59d30a85",
+      "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71670a3f_7f412b42",
+        "filename": "common/types.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:18:31Z",
+      "side": 1,
+      "message": "Thanks for pointing this out and thanks for your review 👍.\n\nwith latest patchset and introduction of `pldm::fw_update::base` the `pkg` namespace is not openend twice anymore.",
+      "parentUuid": "920d9960_5c7f3833",
       "revId": "c183f6bdbf182da24f96a45cdd3206370953b265",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
