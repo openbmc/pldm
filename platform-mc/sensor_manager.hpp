@@ -6,10 +6,13 @@
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
 namespace pldm
 {
@@ -19,6 +22,16 @@ namespace platform_mc
 using namespace pldm::pdr;
 
 inline constexpr uint64_t SENSOR_POLLING_TIME = 249;
+
+/** @brief Notification fired whenever a numeric sensor reports a valid
+ *  (available and functional) reading, regardless of the OEM. `value` is
+ *  the same converted reading published to D-Bus, not the raw pre-
+ *  conversion value. Consumers identify sensors of interest by the
+ *  `(terminusName, sensorName)` pair, since sensor names are only unique
+ *  within a terminus. */
+using SensorUpdateHandler = std::function<void(
+    pldm_tid_t tid, const std::string& terminusName, uint16_t sensorId,
+    const std::string& sensorName, double value)>;
 
 /**
  * @brief SensorManager
@@ -77,6 +90,16 @@ class SensorManager
         return it->second;
     };
 
+    /** @brief Register a callback invoked after every valid (available and
+     *  functional) numeric sensor reading. Lets any code, such as OEM
+     *  code, consume sensor values without the sensor handling in
+     *  platform-mc needing to know about it or being modified.
+     */
+    void registerSensorUpdateHandler(SensorUpdateHandler handler)
+    {
+        sensorUpdateHandlers.emplace_back(std::move(handler));
+    }
+
   protected:
     /** @brief start a coroutine for polling all sensors.
      */
@@ -103,6 +126,17 @@ class SensorManager
      *  @return true if the terminus has a running polling timer
      */
     bool isSensorPollTimerRunning(pldm_tid_t tid) const;
+
+    /** @brief Update a sensor's reading and notify registered
+     *  sensor update handlers.
+     *
+     *  @param[in] sensor - the sensor to be updated
+     *  @param[in] available - availability state
+     *  @param[in] functional - functional state
+     *  @param[in] value - new sensor reading
+     */
+    void updateSensorReading(const std::shared_ptr<NumericSensor>& sensor,
+                             bool available, bool functional, double value);
 
     /** @brief Reference to to PLDM daemon's main event loop.
      */
@@ -143,6 +177,9 @@ class SensorManager
 
     /** @brief pointer to Manager */
     Manager* manager;
+
+    /** @brief Handlers notified after every numeric sensor reading update */
+    std::vector<SensorUpdateHandler> sensorUpdateHandlers;
 };
 } // namespace platform_mc
 } // namespace pldm

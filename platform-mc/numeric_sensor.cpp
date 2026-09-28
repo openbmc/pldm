@@ -715,7 +715,8 @@ double NumericSensor::unitModifier(double value) const
     return value * std::pow(10, baseUnitModifier);
 }
 
-void NumericSensor::updateReading(bool available, bool functional, double value)
+double NumericSensor::updateReading(bool available, bool functional,
+                                    double value)
 {
     if (!availabilityIntf || !operationalStatusIntf ||
         (!useMetricInterface && !valueIntf) ||
@@ -724,7 +725,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
         lg2::error(
             "Failed to update sensor {NAME} D-Bus interface don't exist.",
             "NAME", sensorName);
-        return;
+        return std::numeric_limits<double>::quiet_NaN();
     }
     availabilityIntf->available(available);
     operationalStatusIntf->functional(functional);
@@ -779,6 +780,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             }
         }
     }
+    return newValue;
 }
 
 void NumericSensor::handleErrGetSensorReading()

@@ -5,6 +5,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <cmath>
 #include <exception>
 
 namespace pldm
@@ -87,8 +88,36 @@ void SensorManager::disableTerminusSensors(pldm_tid_t tid)
 
     for (auto& sensor : terminus->numericSensors)
     {
-        sensor->updateReading(true, false,
-                              std::numeric_limits<double>::quiet_NaN());
+        updateSensorReading(sensor, true, false,
+                            std::numeric_limits<double>::quiet_NaN());
+    }
+}
+
+void SensorManager::updateSensorReading(
+    const std::shared_ptr<NumericSensor>& sensor, bool available,
+    bool functional, double value)
+{
+    auto convertedValue = sensor->updateReading(available, functional, value);
+    if (sensorUpdateHandlers.empty() || !std::isfinite(convertedValue))
+    {
+        /* No handlers, or no valid reading to report. */
+        return;
+    }
+
+    std::string terminusName;
+    if (auto it = termini.find(sensor->tid); it != termini.end() && it->second)
+    {
+        auto name = it->second->getTerminusName();
+        if (name)
+        {
+            terminusName = std::string(*name);
+        }
+    }
+
+    for (const auto& handler : sensorUpdateHandlers)
+    {
+        handler(sensor->tid, terminusName, sensor->sensorId, sensor->sensorName,
+                convertedValue);
     }
 }
 
@@ -377,14 +406,14 @@ exec::task<int> SensorManager::getSensorReading(
         case PLDM_SENSOR_ENABLED:
             break;
         case PLDM_SENSOR_DISABLED:
-            sensor->updateReading(false, true, value);
+            updateSensorReading(sensor, false, true, value);
             co_return completionCode;
         case PLDM_SENSOR_FAILED:
-            sensor->updateReading(true, false, value);
+            updateSensorReading(sensor, true, false, value);
             co_return completionCode;
         case PLDM_SENSOR_UNAVAILABLE:
         default:
-            sensor->updateReading(false, false, value);
+            updateSensorReading(sensor, false, false, value);
             co_return completionCode;
     }
 
@@ -413,7 +442,7 @@ exec::task<int> SensorManager::getSensorReading(
             break;
     }
 
-    sensor->updateReading(true, true, value);
+    updateSensorReading(sensor, true, true, value);
     co_return completionCode;
 }
 

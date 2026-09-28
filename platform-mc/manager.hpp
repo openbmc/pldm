@@ -237,6 +237,18 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         eventManager.registerPolledEventHandler(eventClass, handlers);
     }
 
+    /** @brief Register a callback invoked after every valid (available and
+     *         functional) numeric sensor reading. Used by OEM code to
+     *         observe readings of sensors it cares about, identified by
+     *         the (terminusName, sensorName) pair.
+     *
+     *  @param[in] handler - Sensor update handler
+     */
+    void registerSensorUpdateHandler(SensorUpdateHandler handler)
+    {
+        sensorManager.registerSensorUpdateHandler(std::move(handler));
+    }
+
     /** @brief Register OEM flow to poll the PLDM Event use
      *         PollForPlatformEventMessage command
      *

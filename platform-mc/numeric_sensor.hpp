@@ -72,8 +72,11 @@ class NumericSensor
     void handleErrGetSensorReading();
 
     /** @brief Updating the sensor status to D-Bus interface
+     *
+     *  @return the converted value applied (same as published to D-Bus),
+     *          or NaN if the sensor is unavailable/non-functional.
      */
-    void updateReading(bool available, bool functional, double value = 0);
+    double updateReading(bool available, bool functional, double value = 0);
 
     /** @brief ConversionFormula is used to convert raw value to the unit
      * specified in PDR

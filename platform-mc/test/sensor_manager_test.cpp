@@ -158,3 +158,41 @@ TEST_F(SensorManagerTest, sensorPollingTest)
 
     sensorManager.stopPolling(tid);
 }
+
+// Mimics an OEM: observes one sensor by (terminusName, sensorName).
+TEST_F(SensorManagerTest, sensorUpdateHandlerTest)
+{
+    pldm_tid_t tid = 1;
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(tid, 0, event);
+    termini[tid]->pdrs.push_back(pdr1);
+    termini[tid]->pdrs.push_back(pdr2);
+    termini[tid]->parseTerminusPDRs();
+    // Sensor creation is deferred to the event loop.
+    utils::runEventLoopForSeconds(event, 1);
+    ASSERT_EQ(termini[tid]->numericSensors.size(), 1u);
+    auto sensor = termini[tid]->numericSensors[0];
+    auto terminusName = std::string(*termini[tid]->getTerminusName());
+
+    std::vector<double> seen;
+    sensorManager.registerSensorUpdateHandler(
+        [&](pldm_tid_t, const std::string& tn, uint16_t, const std::string& sn,
+            double v) {
+            if (tn == terminusName && sn == sensor->sensorName)
+            {
+                seen.push_back(v);
+            }
+        });
+
+    // raw 10 -> (10 * 1.5 + 1.0) * 10^unitModifier(1) = 160
+    sensorManager.updateSensorReading(sensor, true, true, 10);
+    EXPECT_EQ(seen, std::vector<double>{160.0});
+
+    // Invalid readings must not notify.
+    sensorManager.updateSensorReading(sensor, false, true, 10);
+    sensorManager.updateSensorReading(sensor, true, false, 10);
+    sensorManager.disableTerminusSensors(tid);
+    EXPECT_EQ(seen.size(), 1u);
+
+    sensorManager.updateSensorReading(sensor, true, true, 20);
+    EXPECT_EQ(seen, (std::vector<double>{160.0, 310.0}));
+}

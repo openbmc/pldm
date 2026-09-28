@@ -17,6 +17,8 @@ class MockSensorManager : public SensorManager
                       Manager* manager) :
         SensorManager(event, terminusManager, termini, manager) {};
 
+    using SensorManager::updateSensorReading;
+
     MOCK_METHOD(void, doSensorPolling, (pldm_tid_t tid), (override));
 };
 
