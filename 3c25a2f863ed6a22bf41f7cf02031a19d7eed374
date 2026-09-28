@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "855d9f75_3e6ec6c7",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:35:39Z",
+      "side": 1,
+      "message": "does not work as `make_unique` requires the constructor to be public",
+      "parentUuid": "0e59873c_2b5d3acc",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d1a6f48_29abda77",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-09-06T21:25:44Z",
       "side": 1,
       "message": "Can you update the doxygen comment here? Function no longer returns nullptr on failure",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d230e2_b2df36a1",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:35:39Z",
+      "side": 1,
+      "message": "right, good catch, i updated it to document the new exception throwing behavior.",
+      "parentUuid": "7d1a6f48_29abda77",
       "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c306cfb_7b301027",
+        "filename": "fw-update/package_parser.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:35:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69569b38_7366afbc",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44525c80_cd8c0d7c",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-09-06T21:25:44Z",
       "side": 1,
       "message": "I don\u0027t think this check does anything meaningful anymore, please remove the check from all the tests",
+      "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "437e12f1_e9c0074c",
+        "filename": "fw-update/test/package_parser_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-09-28T10:35:39Z",
+      "side": 1,
+      "message": "right, with the subclasses it made sense but we no longer have that. Removed it.",
+      "parentUuid": "44525c80_cd8c0d7c",
       "revId": "3c25a2f863ed6a22bf41f7cf02031a19d7eed374",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
