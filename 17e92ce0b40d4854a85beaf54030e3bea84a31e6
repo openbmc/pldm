@@ -51,6 +51,29 @@
       "parentUuid": "cbbbfcc8_23a2de62",
       "revId": "17e92ce0b40d4854a85beaf54030e3bea84a31e6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f500ef8b_b6bbeb57",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000274
+      },
+      "writtenOn": "2026-09-28T13:59:28Z",
+      "side": 1,
+      "message": "with this, getPLDMTypes is doing more than just getting the PLDM types. I would suggest to refactor this. \n\n1. getPLDMTypes command to move to common layer - and it should return the uint64_t SupportedPLDMTypes command.\n2. discoverFDs() can invoke getPLDMTypes and check if PLDM_FWUP is supported and inititate sendQueryDeviceIdentifiersRequest as below..\n\nvoid InventoryManager::discoverFDs(const std::vector\u003cmctp_eid_t\u003e\u0026 eids)\n{\n    for (const auto\u0026 eid : eids)\n    {\n        try\n        {\n            uint64_t supportedTypes \u003d common::getPLDMTypes(eid);\n            if ( supportedTypes \u0026 (1 \u003c\u003c PLDM_FWUP) )\n            {\n                 sendQueryDeviceIdentifiersRequest(eid);\n            }\n        }\n       ...\n    }\n}",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 100,
+        "endChar": 37
+      },
+      "revId": "17e92ce0b40d4854a85beaf54030e3bea84a31e6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
