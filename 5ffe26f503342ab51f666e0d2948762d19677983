@@ -16,6 +16,24 @@
       "message": "why ? how is this consumed in dbus ? and is this propagaed all the way back to redfish ? please use more words in the commit message.",
       "revId": "5ffe26f503342ab51f666e0d2948762d19677983",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d67b6fea_de6d728e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-09-28T08:54:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dff0095f_b0b88a3f",
+      "revId": "5ffe26f503342ab51f666e0d2948762d19677983",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
