@@ -191,6 +191,14 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
             "ERROR", e);
         return;
     }
+
+    // mctpd also emits InterfacesAdded for non-endpoint objects (e.g. network
+    // interfaces), which carry neither Connectivity nor UUID properties.
+    if (!interfaces.contains(MCTPEndpoint::interface))
+    {
+        return;
+    }
+
     Availability availability = getEndpointConnectivityProp(objPath.str);
 
     /* Get UUID */
