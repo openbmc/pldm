@@ -197,6 +197,11 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
         sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES);
     auto request = new (requestMsg.data()) pldm_msg;
     uint32_t recordHandle{};
+    if (!nextRecordHandle)
+    {
+        // Start of a fresh fetch cycle: reset the continuation counter.
+        hostPDRFetchCount = 0;
+    }
     if (!nextRecordHandle && (!modifiedPDRRecordHandles.empty()) &&
         isHostPdrModified)
     {
@@ -210,6 +215,19 @@ void HostPDRHandler::getHostPDR(uint32_t nextRecordHandle)
     }
     else
     {
+        // Bound a terminus that keeps returning a non-zero nextRecordHandle so
+        // it cannot stream PDRs into the repo without end (DoS).
+        if (nextRecordHandle)
+        {
+            static constexpr size_t maxHostPDRFetches = 65535;
+            if (++hostPDRFetchCount > maxHostPDRFetches)
+            {
+                error(
+                    "Aborting GetPDR fetch after '{MAX}' records in one cycle from EID '{EID}'",
+                    "MAX", maxHostPDRFetches, "EID", mctp_eid);
+                return;
+            }
+        }
         recordHandle = nextRecordHandle;
     }
     auto instanceIdResult = instanceIdDb.next(mctp_eid);
@@ -553,6 +571,16 @@ void HostPDRHandler::processHostPDRs(
         }
         else
         {
+            // respCount is wire-declared and sizes the pdr buffer; ensure it is
+            // at least a PDR header before the struct fields below are read
+            // (OOB read / empty-buffer deref otherwise).
+            if (respCount < sizeof(pldm_pdr_hdr))
+            {
+                error("GetPDR response too short: respCount='{COUNT}'", "COUNT",
+                      respCount);
+                return;
+            }
+
             // when nextRecordHandle is 0, we need the recordHandle of the last
             // PDR and not 0-1.
             if (!nextRecordHandle)
@@ -579,6 +607,13 @@ void HostPDRHandler::processHostPDRs(
             {
                 if (pdrHdr->type == PLDM_TERMINUS_LOCATOR_PDR)
                 {
+                    if (respCount < sizeof(pldm_terminus_locator_pdr))
+                    {
+                        error(
+                            "Terminus locator PDR too short: respCount='{COUNT}'",
+                            "COUNT", respCount);
+                        return;
+                    }
                     pdrTerminusHandle =
                         extractTerminusHandle<pldm_terminus_locator_pdr>(pdr);
                     auto tlpdr =

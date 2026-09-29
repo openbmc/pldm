@@ -244,6 +244,12 @@ int BIOSConfig::checkAttributeTable(const Table& table)
 
                 for (size_t i = 0; i < defIndices.size(); i++)
                 {
+                    // defIndices are wire-supplied bytes (0-255) indexing the
+                    // pvNum-element pvHandls; bound before use (OOB read).
+                    if (defIndices[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     auto stringEntry = pldm_bios_table_string_find_by_handle(
                         stringTable->data(), stringTable->size(),
                         pvHandls[defIndices[i]]);
@@ -399,6 +405,12 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get current_value
                 for (size_t i = 0; i < handles.size(); i++)
                 {
+                    // handles are wire-supplied indices into the pvNum-element
+                    // pvHandls; bound before use (OOB read).
+                    if (handles[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     currentValue = getValue(pvHandls[handles[i]], *stringTable);
                 }
 
@@ -413,6 +425,12 @@ int BIOSConfig::checkAttributeValueTable(const Table& table)
                 // get default_value
                 for (size_t i = 0; i < defIndices.size(); i++)
                 {
+                    // defIndices are wire-supplied indices into the
+                    // pvNum-element pvHandls; bound before use (OOB read).
+                    if (defIndices[i] >= pvHandls.size())
+                    {
+                        return PLDM_INVALID_BIOS_ATTR_HANDLE;
+                    }
                     defaultValue =
                         getValue(pvHandls[defIndices[i]], *stringTable);
                 }
@@ -743,6 +761,13 @@ std::string BIOSConfig::displayStringHandle(
     // Preconditions are upheld therefore no error check necessary
     pldm_bios_table_attr_entry_enum_decode_pv_hdls(attrEntry, pvHandls.data(),
                                                    pvHandls.size());
+
+    // index is a wire-derived value indexing the pvNum-element pvHandls; bound
+    // it before use (OOB read otherwise).
+    if (index >= pvHandls.size())
+    {
+        return std::string{};
+    }
 
     std::string displayString = std::to_string(pvHandls[index]);
 

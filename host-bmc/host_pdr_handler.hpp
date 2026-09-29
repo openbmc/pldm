@@ -319,6 +319,11 @@ class HostPDRHandler
 
     /** @brief list of PDR record handles pointing to host's PDRs */
     PDRRecordHandles pdrRecordHandles;
+    /** @brief number of GetPDR continuations in the current fetch cycle; used
+     *  to bound a terminus that returns a non-zero nextRecordHandle forever
+     *  (unbounded PDR streaming / memory-exhaustion DoS).
+     */
+    size_t hostPDRFetchCount = 0;
     /** @brief maps an entity type to parent pldm_entity from the BMC's entity
      *  association tree
      */
