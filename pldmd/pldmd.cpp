@@ -108,6 +108,14 @@ static std::optional<Response> processRxMsg(
 {
     uint8_t eid = tid;
 
+    if (requestMsg.size() < sizeof(pldm_msg_hdr))
+    {
+        error(
+            "PLDM request message length '{LEN}' is shorter than header size, TID '{TID}'",
+            "LEN", requestMsg.size(), "TID", tid);
+        return std::nullopt;
+    }
+
     pldm_header_info hdrFields{};
     auto hdr = reinterpret_cast<const pldm_msg_hdr*>(requestMsg.data());
     if (PLDM_SUCCESS != unpack_pldm_header(hdr, &hdrFields))
