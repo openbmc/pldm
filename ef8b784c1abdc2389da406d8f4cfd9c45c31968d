@@ -16,6 +16,24 @@
       "message": "This commit can be squashed into parent commit since we are essentially moving this function to a utils namespace.",
       "revId": "ef8b784c1abdc2389da406d8f4cfd9c45c31968d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78391fbb_7688214c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-09-29T02:17:08Z",
+      "side": 0,
+      "message": "Understood, I have updated the parent commit and have the implementation squashed into it.\nThanks for acknowledging this!",
+      "parentUuid": "314630d1_3156d317",
+      "revId": "ef8b784c1abdc2389da406d8f4cfd9c45c31968d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
