@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "138411da_855d3aad",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-29T10:44:48Z",
+      "side": 1,
+      "message": "Do you need a change here?",
+      "revId": "5d249b24e4c9c5fef9df9337524adfee7b75bb37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "263d4f41_02907a6f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-29T10:44:48Z",
+      "side": 1,
+      "message": "Not sure if you need all these checks if you\u0027re just looking up by path.",
+      "range": {
+        "startLine": 360,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 9
+      },
+      "revId": "5d249b24e4c9c5fef9df9337524adfee7b75bb37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0a363e8_d8029b57",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-29T10:44:48Z",
+      "side": 1,
+      "message": "I\u0027m not following why we can\u0027t look up by path. I understand the path is not API but this is implementation. Do we expect the path to change between an interfacesAdded and interfacesRemoved signal?",
+      "revId": "5d249b24e4c9c5fef9df9337524adfee7b75bb37",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
