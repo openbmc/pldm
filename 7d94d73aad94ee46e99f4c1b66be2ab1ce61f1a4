@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d73d01a3_702a24e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-30T18:06:43Z",
+      "side": 1,
+      "message": "This sounds incomplete - rephrase?",
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac083ba_54f78e80",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-30T18:06:43Z",
+      "side": 1,
+      "message": "Based on what FRU information the device has, empty interfaces can still be created?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 25
+      },
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdc30516_3a6023d9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-30T18:06:43Z",
+      "side": 1,
+      "message": "Is there a way the caller doesn\u0027t need to do this check and is instead handled in the class?",
+      "range": {
+        "startLine": 750,
+        "startChar": 0,
+        "endLine": 753,
+        "endChar": 21
+      },
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b731645_a3cb3a7b",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-09-30T18:06:43Z",
+      "side": 1,
+      "message": "DO we need a test to make sure we don\u0027t have empty interfaces?",
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
