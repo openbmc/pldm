@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f24d135_1bd379c8",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T08:44:48Z",
+      "side": 1,
+      "message": "Not sure if this bound is enough?\nWhat if `recordCount \u003d\u003d 0xFFFFFFF0`?",
+      "range": {
+        "startLine": 334,
+        "startChar": 4,
+        "endLine": 334,
+        "endChar": 60
+      },
+      "revId": "ab5355550f1eabf55bee579469a08a3d742478af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb53042f_a4f2b3f6",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T08:44:48Z",
+      "side": 1,
+      "message": "Same here, should we narrow down the bounding check here as well?",
+      "range": {
+        "startLine": 370,
+        "startChar": 12,
+        "endLine": 373,
+        "endChar": 13
+      },
+      "revId": "ab5355550f1eabf55bee579469a08a3d742478af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5bd9e6e_b7bdbb54",
+        "filename": "platform-mc/platform_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T08:44:48Z",
+      "side": 1,
+      "message": "Isn\u0027t `decode_event_message_supported_resp()` already covers this cases?",
+      "range": {
+        "startLine": 662,
+        "startChar": 4,
+        "endLine": 662,
+        "endChar": 66
+      },
+      "revId": "ab5355550f1eabf55bee579469a08a3d742478af",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
