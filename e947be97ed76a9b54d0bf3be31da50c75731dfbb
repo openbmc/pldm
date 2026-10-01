@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed7978b1_1b8ca48c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T05:53:58Z",
+      "side": 1,
+      "message": "Should we do logs if the new value is invalid?",
+      "range": {
+        "startLine": 746,
+        "startChar": 16,
+        "endLine": 750,
+        "endChar": 17
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d8cc40f_e8a359f8",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T05:53:58Z",
+      "side": 1,
+      "message": "Also, can we have some unit test for this behavioural changes?",
+      "range": {
+        "startLine": 746,
+        "startChar": 16,
+        "endLine": 750,
+        "endChar": 17
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a67f53ed_4caeb84c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-01T05:53:58Z",
+      "side": 1,
+      "message": "Since the implementation is only oneline, why don\u0027t we simply uses it at the call site?",
+      "range": {
+        "startLine": 776,
+        "startChar": 0,
+        "endLine": 779,
+        "endChar": 1
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
