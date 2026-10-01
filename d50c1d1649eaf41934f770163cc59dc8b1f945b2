@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03d5f9bd_7a014596",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-01T10:00:31Z",
+      "side": 1,
+      "message": "Fixed the bmcweb patch.",
+      "parentUuid": "2a490dc0_acc8923b",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 56
+      },
+      "revId": "d50c1d1649eaf41934f770163cc59dc8b1f945b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd249a12_c66413d0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-09-09T08:42:01Z",
       "side": 1,
       "message": "Can we use `auto requestMsg \u003d new (request.data()) pldm_msg` here?",
+      "range": {
+        "startLine": 173,
+        "startChar": 4,
+        "endLine": 173,
+        "endChar": 66
+      },
+      "revId": "d50c1d1649eaf41934f770163cc59dc8b1f945b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cb04093_2bb78183",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-01T10:00:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd249a12_c66413d0",
       "range": {
         "startLine": 173,
         "startChar": 4,
@@ -83,6 +131,30 @@
       "writtenOn": "2026-09-09T08:42:01Z",
       "side": 1,
       "message": "Should we add `return` after this line?",
+      "range": {
+        "startLine": 732,
+        "startChar": 8,
+        "endLine": 732,
+        "endChar": 34
+      },
+      "revId": "d50c1d1649eaf41934f770163cc59dc8b1f945b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccf2af13_7ac85562",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-01T10:00:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b90ecd5_7b210823",
       "range": {
         "startLine": 732,
         "startChar": 8,
