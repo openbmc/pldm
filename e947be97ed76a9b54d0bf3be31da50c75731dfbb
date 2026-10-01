@@ -47,6 +47,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e9daed7_53e8180b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-10-01T21:03:27Z",
+      "side": 1,
+      "message": "We do have https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Sensor.events.yaml#L4 defined for this case. But I would consider that as a commit of its own instead of doing that in this one. It would need some work to track and resolve the error log. But it is doable.",
+      "parentUuid": "ed7978b1_1b8ca48c",
+      "range": {
+        "startLine": 746,
+        "startChar": 16,
+        "endLine": 750,
+        "endChar": 17
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a67f53ed_4caeb84c",
@@ -60,6 +84,30 @@
       "writtenOn": "2026-10-01T05:53:58Z",
       "side": 1,
       "message": "Since the implementation is only oneline, why don\u0027t we simply uses it at the call site?",
+      "range": {
+        "startLine": 776,
+        "startChar": 0,
+        "endLine": 779,
+        "endChar": 1
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1609406_b2307b4c",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 779,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-10-01T21:03:27Z",
+      "side": 1,
+      "message": "Agreed. I just copy-pasted from a similar commit for dbus-sensors. Updates coming up.",
+      "parentUuid": "a67f53ed_4caeb84c",
       "range": {
         "startLine": 776,
         "startChar": 0,
