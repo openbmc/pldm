@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3ca5c1a_79a118f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-02T04:31:34Z",
+      "side": 1,
+      "message": "Do we have a corresponding bmcweb patch?",
+      "revId": "57e65f874dfab34d45718146a81ff0c0c02c5f3b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
