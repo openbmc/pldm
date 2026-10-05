@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a704940_54b5de5f",
+        "filename": "platform-mc/state_set.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T04:25:24Z",
+      "side": 1,
+      "message": "Please remove references to the Redfish since this code should only use the contract specified in the phosphor-dbus-interfaces.",
+      "range": {
+        "startLine": 64,
+        "startChar": 53,
+        "endLine": 64,
+        "endChar": 61
+      },
+      "revId": "0de7b9a99d9c1d29ba1611edd737f918c8bb348d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b995377f_552add29",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T04:25:24Z",
+      "side": 1,
+      "message": "Can we put this in separate file? Same for other State Set Derived Classes.",
+      "revId": "0de7b9a99d9c1d29ba1611edd737f918c8bb348d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
