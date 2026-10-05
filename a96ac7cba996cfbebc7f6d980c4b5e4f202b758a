@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99a2d6b0_1c4fd03f",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-05T11:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4436f3c_5db72020",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 35
+      },
+      "revId": "a96ac7cba996cfbebc7f6d980c4b5e4f202b758a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efbb4e3c_4a60a2d6",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-05T06:10:11Z",
       "side": 1,
       "message": "Could this lookup move to the top of the Connectivity branch? For an endpoint that\u0027s already tracked, `existingIt-\u003esecond` is all you need, so the `getService`, `props`, `UUID` and `searchConfigurationFor` calls above just get thrown away on every Connectivity change.",
+      "range": {
+        "startLine": 343,
+        "startChar": 12,
+        "endLine": 343,
+        "endChar": 75
+      },
+      "revId": "a96ac7cba996cfbebc7f6d980c4b5e4f202b758a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e497215d_5a0ea321",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-05T11:19:54Z",
+      "side": 1,
+      "message": "Thanks for your suggestion. I moved the lookup earlier so that tracked endpoints have their availability updated immediately, and the D-Bus reads are now only performed for endpoints that are not tracked yet.\n\nThis also fixes a small issue along the way: a failed property read used to cause the availability update to be dropped.\n\nOne side effect is that tracked endpoints no longer run `searchConfigurationFor` on a Connectivity change. Only fw-update uses configurations, and only during endpoint discovery. Newly discovered endpoints still run `searchConfigurationFor`.",
+      "parentUuid": "efbb4e3c_4a60a2d6",
       "range": {
         "startLine": 343,
         "startChar": 12,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04ef35dd_08a748c7",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-05T11:19:54Z",
+      "side": 1,
+      "message": "Thanks for pointing that out, updated. The comment now covers all three uses: skipping duplicates, the Connectivity lookup, and removal (which still matches on the path too).",
+      "parentUuid": "60c4ab44_42e1d50d",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 63
+      },
+      "revId": "a96ac7cba996cfbebc7f6d980c4b5e4f202b758a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1194c05d_529dcc6c",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-05T06:10:11Z",
       "side": 1,
       "message": "Please add a test that `addToExistingMctpInfos` matches by path.",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 65
+      },
+      "revId": "a96ac7cba996cfbebc7f6d980c4b5e4f202b758a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6eab12e_473d8400",
+        "filename": "requester/test/mctp_endpoint_discovery_test.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-05T11:19:54Z",
+      "side": 1,
+      "message": "Done. It checks that the same path with a different MctpInfo isn\u0027t added twice, and that a different path with the same MctpInfo is.\n\nThe second case isn\u0027t expected to happen in practice. It is only there to show that the path alone determines whether an endpoint is already tracked.",
+      "parentUuid": "1194c05d_529dcc6c",
       "range": {
         "startLine": 102,
         "startChar": 4,
