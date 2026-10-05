@@ -16,6 +16,24 @@
       "message": "Could we use `sizeof(v)` in both the if condition and here for consistency?",
       "revId": "88e1fc5d5180f63777a7d25295d238f13e95c980",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d86a034_d0d31e3a",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-05T09:55:51Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "004bccab_9af6fc03",
+      "revId": "88e1fc5d5180f63777a7d25295d238f13e95c980",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
