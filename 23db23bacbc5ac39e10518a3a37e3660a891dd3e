@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "16c5827f_5add2b2e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-10-05T03:25:13Z",
+      "side": 1,
+      "message": "@andy.chung@amd.com Can this patch be dropped?",
+      "parentUuid": "403df563_ede39748",
+      "revId": "23db23bacbc5ac39e10518a3a37e3660a891dd3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "435bbf7f_48f0c134",
         "filename": "fw-update/firmware_inventory_manager.cpp",
         "patchSetId": 2
