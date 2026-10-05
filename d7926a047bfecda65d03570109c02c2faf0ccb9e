@@ -16,6 +16,24 @@
       "message": "The mctpreactor patch for MCTP over USB support (https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/80452) is not yet merged. Without that, I\u0027m not sure how this can be functional.",
       "revId": "d7926a047bfecda65d03570109c02c2faf0ccb9e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cf9d6f8_e077bb1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-10-05T02:54:37Z",
+      "side": 1,
+      "message": "mctpreactor patch for MCTP over USB is merged now.",
+      "parentUuid": "042fc130_24d4e5a7",
+      "revId": "d7926a047bfecda65d03570109c02c2faf0ccb9e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
