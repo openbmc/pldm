@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "004bccab_9af6fc03",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T05:14:07Z",
+      "side": 1,
+      "message": "Could we use `sizeof(v)` in both the if condition and here for consistency?",
+      "revId": "88e1fc5d5180f63777a7d25295d238f13e95c980",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
