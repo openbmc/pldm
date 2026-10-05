@@ -143,6 +143,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a79374e7_e7fed194",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-10-05T20:41:15Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com https://gerrit.openbmc.org/c/openbmc/bmcweb/+/93642 is the change. @andhsieh@nvidia.com already did that which I just discovered.",
+      "parentUuid": "27bff359_cafffd0d",
+      "range": {
+        "startLine": 746,
+        "startChar": 16,
+        "endLine": 750,
+        "endChar": 17
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a67f53ed_4caeb84c",
