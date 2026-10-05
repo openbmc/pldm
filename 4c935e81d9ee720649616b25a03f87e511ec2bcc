@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "124b7e43_3bb46a2f",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T04:16:32Z",
+      "side": 0,
+      "message": "Shouldn\u0027t this be part the of the parent patches in the relation chain?",
+      "revId": "4c935e81d9ee720649616b25a03f87e511ec2bcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8266fd7e_14e21813",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T04:16:32Z",
+      "side": 0,
+      "message": "Same comment as above.",
+      "revId": "4c935e81d9ee720649616b25a03f87e511ec2bcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
