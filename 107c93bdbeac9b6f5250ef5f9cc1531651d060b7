@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c88eb12_e68fc025",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T04:26:58Z",
+      "side": 1,
+      "message": "The relation chain is broken for this patch.",
+      "revId": "107c93bdbeac9b6f5250ef5f9cc1531651d060b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc39fa49_822ff8c0",
         "filename": "platform-mc/state_set_performance.cpp",
         "patchSetId": 10
