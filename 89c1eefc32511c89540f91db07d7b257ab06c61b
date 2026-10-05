@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e03e286_87d2471c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-05T10:38:23Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "8b669a9f_8c04c747",
+      "revId": "89c1eefc32511c89540f91db07d7b257ab06c61b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21425e94_a6f3382b",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4245b807_8bbd7381",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-05T10:38:23Z",
+      "side": 1,
+      "message": "added",
+      "parentUuid": "21425e94_a6f3382b",
+      "range": {
+        "startLine": 113,
+        "startChar": 51,
+        "endLine": 113,
+        "endChar": 59
+      },
+      "revId": "89c1eefc32511c89540f91db07d7b257ab06c61b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6608dfc_dacf68e0",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-10-05T04:38:17Z",
       "side": 1,
       "message": "can we add tid to the log?",
+      "revId": "89c1eefc32511c89540f91db07d7b257ab06c61b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8440835_777e4ca1",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-05T10:38:23Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "f6608dfc_dacf68e0",
       "revId": "89c1eefc32511c89540f91db07d7b257ab06c61b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
