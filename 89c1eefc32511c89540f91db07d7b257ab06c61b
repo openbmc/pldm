@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4476217_72b43096",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-05T11:52:57Z",
+      "side": 1,
+      "message": "Are we using width of 70 here? Doesn\u0027t seem that way.",
+      "parentUuid": "7e03e286_87d2471c",
+      "revId": "89c1eefc32511c89540f91db07d7b257ab06c61b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21425e94_a6f3382b",
         "filename": "pldmd/pldmd.cpp",
         "patchSetId": 2
