@@ -119,6 +119,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27bff359_cafffd0d",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 1000212
+      },
+      "writtenOn": "2026-10-05T18:48:11Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/telemetry/commit/36d66940a30d61fd6a60de982afe532515d7a0be switched over to this. So, at least the telemetry service\u0027s metric reports could start getting this, if not bmcweb. I can start the hack for that.",
+      "parentUuid": "cdb5902f_e269b9d6",
+      "range": {
+        "startLine": 746,
+        "startChar": 16,
+        "endLine": 750,
+        "endChar": 17
+      },
+      "revId": "e947be97ed76a9b54d0bf3be31da50c75731dfbb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a67f53ed_4caeb84c",
