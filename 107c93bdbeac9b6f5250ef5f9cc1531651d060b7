@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae1805c_8d429e81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T05:24:34Z",
+      "side": 1,
+      "message": "The diverged pattern is intended as the implementation between different state set (performance, link state, and health) should be independent.",
+      "parentUuid": "5c88eb12_e68fc025",
+      "revId": "107c93bdbeac9b6f5250ef5f9cc1531651d060b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc39fa49_822ff8c0",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2cfb8b_cc1bfc15",
+        "filename": "platform-mc/state_set_performance.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T05:24:34Z",
+      "side": 1,
+      "message": "Done.\nMoved them in PS 11.",
+      "parentUuid": "dc39fa49_822ff8c0",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 37
+      },
+      "revId": "107c93bdbeac9b6f5250ef5f9cc1531651d060b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f75c2a6_a3acbdcd",
@@ -54,6 +96,24 @@
       "writtenOn": "2026-10-05T04:16:32Z",
       "side": 1,
       "message": "Is this function being called anywhere?",
+      "revId": "107c93bdbeac9b6f5250ef5f9cc1531651d060b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0796d79_b4c4570c",
+        "filename": "platform-mc/state_set_performance.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T05:24:34Z",
+      "side": 1,
+      "message": "Only the unit tests call it, to read the property. Same as functional() in the health state set.",
+      "parentUuid": "7f75c2a6_a3acbdcd",
       "revId": "107c93bdbeac9b6f5250ef5f9cc1531651d060b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }

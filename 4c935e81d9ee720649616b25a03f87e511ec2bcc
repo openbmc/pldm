@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "755f4817_cf65a726",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T05:24:34Z",
+      "side": 0,
+      "message": "Thanks for the catching, I have move the implementation to the parent patch.",
+      "parentUuid": "124b7e43_3bb46a2f",
+      "revId": "4c935e81d9ee720649616b25a03f87e511ec2bcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8266fd7e_14e21813",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-05T04:16:32Z",
       "side": 0,
       "message": "Same comment as above.",
+      "revId": "4c935e81d9ee720649616b25a03f87e511ec2bcc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4efac0c9_24cb697a",
+        "filename": "platform-mc/state_set.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T05:24:34Z",
+      "side": 0,
+      "message": "Done, please check in PS 11.",
+      "parentUuid": "8266fd7e_14e21813",
       "revId": "4c935e81d9ee720649616b25a03f87e511ec2bcc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
