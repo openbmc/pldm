@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a1f4652a_fb396713",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "The scope of this change and testing is limited to Single Device image packages.\n\nSure, will be great if you can help test this with a bundle update to make sure it doesn\u0027t introduce any issue.",
+      "parentUuid": "d2d598c3_80e1cc8b",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "dccefd49_448f9053",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf31078_fed642b4",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "The scope of this change is limited to the Redfish events as per https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Update.events.yaml .",
+      "parentUuid": "352ec2cf_e1f7503c",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a701b3e5_5c7349ec",
@@ -65,6 +101,24 @@
       "writtenOn": "2026-09-23T11:22:10Z",
       "side": 1,
       "message": "nit: Can we use std::optional here instead?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "401c55c0_343ef4ae",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "This comment doesn\u0027t apply as per latest patch changes.",
+      "parentUuid": "a701b3e5_5c7349ec",
       "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +140,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee2cdf8_0d3b17d2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd52dd20_ebab26e2",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc38f929_7e3da329",
@@ -99,6 +171,30 @@
       "writtenOn": "2026-09-23T12:58:01Z",
       "side": 1,
       "message": "Can this be a string_view?",
+      "range": {
+        "startLine": 147,
+        "startChar": 42,
+        "endLine": 147,
+        "endChar": 60
+      },
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "017837ff_6895315e",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc38f929_7e3da329",
       "range": {
         "startLine": 147,
         "startChar": 42,
@@ -132,6 +228,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a35d73b4_54fcaca5",
+        "filename": "fw-update/events.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Thats as per Redfish message registry.",
+      "parentUuid": "03bb4e17_42011a1a",
+      "range": {
+        "startLine": 16,
+        "startChar": 47,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20998932_b838be3f",
@@ -145,6 +265,24 @@
       "writtenOn": "2026-09-23T12:58:01Z",
       "side": 1,
       "message": "Does this need to be a class member? Why can\u0027t this be an input like the imageIdentifier?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cb3171a_42beb29a",
+        "filename": "fw-update/events.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20998932_b838be3f",
       "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -166,6 +304,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf5566de_312ea07d",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done, fixed at other places too.",
+      "parentUuid": "3f5407f6_3cec7ca5",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ec6c49d_1f35779c",
@@ -179,6 +335,24 @@
       "writtenOn": "2026-09-23T11:22:10Z",
       "side": 1,
       "message": "Please fix all such cases where the events are generated after the final activation state is set",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e176a21_d443fc34",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ec6c49d_1f35779c",
       "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -200,6 +374,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bcdc70a_6f964c4e",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "There can be different type of events depending on different type of failure and at end one would still need to call the other API which can be missed, so i don\u0027t think it will be much useful/practical in that sense.",
+      "parentUuid": "b604a889_f93f431b",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c0862d4b_61c87767",
@@ -213,6 +405,24 @@
       "writtenOn": "2026-09-23T11:22:10Z",
       "side": 1,
       "message": "Can this be moved to before line 264 so that bmcweb doesn\u0027t finish the task before the below events are caught?",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "261febe8_0442eeeb",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-06T21:01:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0862d4b_61c87767",
       "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
