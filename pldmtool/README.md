@@ -115,6 +115,40 @@ Options:
   -v,--verbose
 ```
 
+## SetNumericSensorEnable
+
+This command configures a numeric sensor's operational state and event-message
+generation. Use the MCTP endpoint and sensor ID from the target's PDRs. For
+example, to enable sensor 4660 and its events on endpoint 9:
+
+```bash
+pldmtool platform SetNumericSensorEnable -m 9 -i 4660 -o 0 -e 2
+```
+
+- `-i, --sensor_id`: required 16-bit sensor identifier.
+- `-o, --op_state`: required; 0 enables, 1 disables, 2 sets unavailable.
+- `-e, --event_enable`: required; 0 selects no event generation, 1 disables
+  events, 2 enables events, 3 enables operational events only, 4 enables state
+  events only.
+- `-n, --retry-count`: number of additional transport attempts, from 0 to 255.
+- `-v, --verbose`: display transmitted and received bytes.
+
+The CLI passes these fields to libpldm's
+`encode_pldm_platform_set_numeric_sensor_enable_req`. The PLDM platform request
+uses command 0x10 and a four-byte payload: little-endian sensor ID, operational
+state, and event setting. The one-byte completion response is decoded by
+`decode_pldm_platform_set_numeric_sensor_enable_resp`.
+
+Successful responses print `{"Response": "SUCCESS"}`. Invalid arguments,
+encoding errors, transport failures, malformed responses, and nonzero completion
+codes produce a nonzero process exit status. The instance ID is released before
+reporting command failure.
+
+Both libpldm functions currently use the testing ABI. Local builds need a
+libpldm build exposing that ABI; a production-ABI-only build cannot link this
+command until the APIs are stabilized. Do not change ABI classifications just to
+bypass this dependency.
+
 ## pldmtool raw command usage
 
 pldmtool raw command option accepts request message in the hexadecimal bytes and
