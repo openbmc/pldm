@@ -33,6 +33,24 @@
       "message": "Patch seems fine, but want to make sure you\u0027ve tested MCTP object add flows as well as you\u0027ve touched the add flows.",
       "revId": "17e296654843551fd9e2acfec36d14f14f4af6ed",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b85058d_0e592734",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-06T08:14:26Z",
+      "side": 1,
+      "message": "Thanks for checking.\nYes, I exercised the add flows on a Yosemite 4 platform with this change, using temporary debug logs that are not part of the change. For cases that apply to a single endpoint, I used slot 7 (EID 70) as the representative.\n\n- Startup scan (`GetSubtree`): I restarted pldmd while mctpd already had the endpoints published. All endpoints found by the scan except EID 70 (left out on purpose, see the not-tracked case below) were added keyed by their object path, and sensors were created for the slot endpoints among them.\n\n- `InterfacesAdded`: at boot, every slot endpoint was added through the signal and its sensors were created.\n\n- `propertiesChanged` on an endpoint that is not tracked yet: the startup scan only tracks `Available` endpoints, so this path is reached for an endpoint that was `Degraded` during the scan. To exercise this path, I added a temporary test-only change to the startup loop that skips slot 7 (EID 70). The scan still found it as `Available`, but the loop executed a `continue` before adding it to `existingMctpInfos` or passing it to the handlers, so pldmd neither tracked the endpoint nor initialized its terminus (no sensors for slot 7 after that restart). `Recover` on it then produced a `Degraded` signal followed by an `Available` signal for the untracked endpoint. The `Available` signal caused the endpoint to be added from the `propertiesChanged` handler, and its sensors were created.\n\n- `propertiesChanged` on a tracked endpoint: with slot 7 (EID 70) now tracked from the previous step, I toggled it to `Degraded` and back to `Available` using the `Recover` method of mctpd. The availability was updated from the stored entry, polling stopped on `Degraded`, and resumed after `Available`.\n\n- `InterfacesRemoved` followed by `InterfacesAdded`: I power-cycled slot 7 (EID 70). The removal was identified by the signal\u0027s object path, and the subsequent `InterfacesAdded` signal added the endpoint again and re-created its sensors.\n\nAfter the `Connectivity` changes and the power cycle, I also verified that sensor polling was still working by writing a test value to a temperature sensor of each slot. Every test value was replaced by a new reading within 10 seconds.\n\nIf you would like, I can add this to the Tested section of the commit message, or cover any additional cases you would like to see.",
+      "parentUuid": "234edc8a_a6ccf66f",
+      "revId": "17e296654843551fd9e2acfec36d14f14f4af6ed",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
