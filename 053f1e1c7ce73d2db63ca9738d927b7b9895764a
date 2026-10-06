@@ -16,6 +16,24 @@
       "message": "Just a question: with ConditionPathExists now working correctly, the service won\u0027t run once PHYP-SECURITY exists. Does that mean the file size validation/recreation logic will no longer run on later boots if the file becomes corrupted? Is that intended?",
       "revId": "053f1e1c7ce73d2db63ca9738d927b7b9895764a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd804c4f_9543103c",
+        "filename": "oem/ibm/service_files/scripts/create-PHYP-SECURITY-file",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-10-06T05:26:03Z",
+      "side": 1,
+      "message": "Right! fixed that.",
+      "parentUuid": "f5b9c90b_bef24e97",
+      "revId": "053f1e1c7ce73d2db63ca9738d927b7b9895764a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
