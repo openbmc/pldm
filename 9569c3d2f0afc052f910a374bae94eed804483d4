@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ba1156_144610f7",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T19:12:37Z",
+      "side": 1,
+      "message": "Can we add similar coverage for ItemUpdateManager? The new test only exercises UpdateManager, so the initialization and teardown changes here aren\u0027t covered.",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a770595_ea934d3f",
+        "filename": "fw-update/test/update_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T19:12:37Z",
+      "side": 1,
+      "message": "nit: Use ASSERT_EQ here since the remaining checks depend on processPackage() succeeding",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd62153_2ddd0e5f",
+        "filename": "fw-update/test/update_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T19:12:37Z",
+      "side": 1,
+      "message": "Can we also test a second update using the same manager after resetActivationState()? Stop the first update at 48%, then verify the first chunk of the next update reports 48% again. This would exercise the reset added here.",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
