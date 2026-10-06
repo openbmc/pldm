@@ -16,6 +16,24 @@
       "message": "Can this be made part of the patch that added this file?",
       "revId": "2a01dc8b9907390274d12f4f765c643b376c49fe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d840bd65_2e62618a",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T09:24:01Z",
+      "side": 0,
+      "message": "The alias no longer move as `state_set.hpp` uses the `Item server` type instead.",
+      "parentUuid": "1148e74c_23ea26e0",
+      "revId": "2a01dc8b9907390274d12f4f765c643b376c49fe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
