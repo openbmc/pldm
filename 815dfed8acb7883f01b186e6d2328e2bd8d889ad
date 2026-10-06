@@ -1,0 +1,256 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fab8307_f6c2d3c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "This is a bit confusing - what did you mean by this in relation to force update?",
+      "range": {
+        "startLine": 7,
+        "startChar": 35,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3186142c_14c233cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "We should say what current behavior is.",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 31
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27871f12_c6be884f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "Should we list the bmcweb patch as well?",
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9fd6f4_8bf829dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "We should test single device update as well.",
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4339b13_237d0ecd",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "Is there value in distinguishing the 2 cases in terms of logging?",
+      "range": {
+        "startLine": 585,
+        "startChar": 0,
+        "endLine": 607,
+        "endChar": 9
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad01c923_4c4f2d46",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "Seems a bit odd to add this here...",
+      "range": {
+        "startLine": 609,
+        "startChar": 0,
+        "endLine": 612,
+        "endChar": 9
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bf9ef9b_fef13feb",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1316,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "This is not as per spec... UA can send CancelUpdate any any point of time during the update flow?",
+      "range": {
+        "startLine": 1315,
+        "startChar": 0,
+        "endLine": 1316,
+        "endChar": 14
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acde4195_cb44c8c2",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "Needs rephrasing; it\u0027s a bit confusing what we want to do here.",
+      "range": {
+        "startLine": 1317,
+        "startChar": 0,
+        "endLine": 1320,
+        "endChar": 46
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdef91b0_22009004",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "I\u0027m not sure why you need to base this patch on cancel update...",
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff786383_e1c326ea",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "Do we really need this?",
+      "range": {
+        "startLine": 350,
+        "startChar": 0,
+        "endLine": 352,
+        "endChar": 38
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "604b95ec_2a14c674",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "How can we hardcode this?",
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5086cd37_2f27f7f6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T12:41:46Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 38
+      },
+      "revId": "815dfed8acb7883f01b186e6d2328e2bd8d889ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
