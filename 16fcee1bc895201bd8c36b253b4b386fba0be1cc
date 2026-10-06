@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6254b51_1309193c",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 986,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T13:08:27Z",
+      "side": 1,
+      "message": "Any impact of force update or cancel update patches impacting the behavior you intend to implement here?",
+      "revId": "16fcee1bc895201bd8c36b253b4b386fba0be1cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "456646de_752c2f5f",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 987,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T13:08:27Z",
+      "side": 1,
+      "message": "Are we ok to set componentIndex to 0 though here?",
+      "revId": "16fcee1bc895201bd8c36b253b4b386fba0be1cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fae3f84_d6f908ab",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1124,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T13:08:27Z",
+      "side": 1,
+      "message": "Do we not need to clear component update status anymore?",
+      "revId": "16fcee1bc895201bd8c36b253b4b386fba0be1cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
