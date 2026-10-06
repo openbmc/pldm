@@ -31,3 +31,34 @@ executable(
     install: true,
     install_dir: get_option('bindir'),
 )
+
+if get_option('tests').allowed()
+    test_pldmtool = executable(
+        'pldmtool-test',
+        sources,
+        '../common/utils.cpp',
+        'test/transport.cpp',
+        implicit_include_directories: false,
+        include_directories: include_directories('..', libpldm_headers),
+        dependencies: [
+            CLI11_dep,
+            libpldm_dep,
+            nlohmann_json_dep,
+            phosphor_dbus_interfaces,
+            phosphor_logging_dep,
+            sdbusplus,
+        ],
+        link_args: [
+            '-Wl,--wrap=pldm_instance_db_init_default',
+            '-Wl,--wrap=pldm_instance_id_alloc',
+            '-Wl,--wrap=pldm_instance_id_free',
+            '-Wl,--wrap=pldm_instance_db_destroy',
+        ],
+    )
+    test(
+        'pldmtool-numeric-sensor-enable',
+        find_program('python3'),
+        args: [files('test/numeric-sensor-enable.py'), test_pldmtool],
+        timeout: 180,
+    )
+endif
