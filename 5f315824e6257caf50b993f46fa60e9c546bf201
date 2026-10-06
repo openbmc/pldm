@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e397fec_7419dc77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T07:08:26Z",
+      "side": 1,
+      "message": "While the FD is in update mode it rejects RequestUpdate with ALREADY_IN_UPDATE_MODE, so any retry or follow-up update of that device fails until FD_T1 expires. Here the UA knows the update is over, so it should end it with CancelUpdate. I\u0027ve added this to the commit message.",
+      "parentUuid": "3e0a883e_e1c59829",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f2bfd6_480a30b1",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-06T05:55:58Z",
       "side": 1,
       "message": "I feel like this needs to be done in the caller, OR we need some sort of RAII-like behavior than adding this in all error paths and also remembering to do this in yet to be added error paths.",
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e0e8651_5207902a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T07:08:26Z",
+      "side": 1,
+      "message": "Done — moved it to the caller. passCompTable() and updateComponent() now return bool, and the registerRequest callback calls failAndCancelUpdate() once when a handler returns false. Existing and future error paths only need to return false. A declined component still returns true and moves on to the next one. I also added a unit test for the contract.",
+      "parentUuid": "40f2bfd6_480a30b1",
       "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -111,6 +153,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0547fbe_97a0d76b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1227,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T07:08:26Z",
+      "side": 1,
+      "message": "Done — cancelUpdate() now logs the specific CancelUpdate error and reports the device completion from one place at the end.",
+      "parentUuid": "a0836175_7ab35a4b",
+      "range": {
+        "startLine": 1227,
+        "startChar": 12,
+        "endLine": 1227,
+        "endChar": 62
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec75da2c_d2abc165",
@@ -124,6 +190,30 @@
       "writtenOn": "2026-10-06T05:55:58Z",
       "side": 1,
       "message": "This is not restricted to just this cause, right?",
+      "range": {
+        "startLine": 275,
+        "startChar": 49,
+        "endLine": 276,
+        "endChar": 42
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dadc1fc3_201f3a61",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-06T07:08:26Z",
+      "side": 1,
+      "message": "Right. It\u0027s also sent when no component was updated because the component updates failed, and when a PassComponentTable/UpdateComponent response can\u0027t be handled. I\u0027ve updated the docs and the commit subject to cover all of them.",
+      "parentUuid": "ec75da2c_d2abc165",
       "range": {
         "startLine": 275,
         "startChar": 49,
