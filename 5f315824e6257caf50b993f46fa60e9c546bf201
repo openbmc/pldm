@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3e0a883e_e1c59829",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T05:55:58Z",
+      "side": 1,
+      "message": "What\u0027s the concern waiting for this?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 13
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f2bfd6_480a30b1",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T05:55:58Z",
+      "side": 1,
+      "message": "I feel like this needs to be done in the caller, OR we need some sort of RAII-like behavior than adding this in all error paths and also remembering to do this in yet to be added error paths.",
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e434125_b64d0e29",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 8
@@ -19,6 +59,52 @@
         "startChar": 10,
         "endLine": 1141,
         "endChar": 61
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0836175_7ab35a4b",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1227,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T05:55:58Z",
+      "side": 1,
+      "message": "This seems like a common action so likely need to write this just once.",
+      "range": {
+        "startLine": 1227,
+        "startChar": 12,
+        "endLine": 1227,
+        "endChar": 62
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec75da2c_d2abc165",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T05:55:58Z",
+      "side": 1,
+      "message": "This is not restricted to just this cause, right?",
+      "range": {
+        "startLine": 275,
+        "startChar": 49,
+        "endLine": 276,
+        "endChar": 42
       },
       "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
