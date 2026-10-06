@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3683943_2500f0ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-06T06:05:24Z",
+      "side": 1,
+      "message": "no libpldm changes inside pldm. Pls correct the commit message.",
+      "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9252f69_50f0f99e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-06T06:05:24Z",
+      "side": 1,
+      "message": "I would suggest separating this from this patch.\n\n`A good commit does exactly one thing`\nhttps://github.com/openbmc/docs/blob/master/CONTRIBUTING.md#organizing-commits",
+      "range": {
+        "startLine": 8,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c873e92_c011ca82",
+        "filename": "pldmtool/test/numeric-sensor-enable.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-06T06:05:24Z",
+      "side": 1,
+      "message": "We don\u0027t need unit tests for pldmtool. This just adds extra maintenance effort for things that can be directly tested using plmdmtool.",
+      "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
