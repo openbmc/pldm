@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "299171fc_9b46c052",
+        "filename": "oem/nvidia/inventory_event_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Acknowledged, I have modified this in PS4.",
+      "parentUuid": "613d16ae_fee971fd",
+      "range": {
+        "startLine": 92,
+        "startChar": 4,
+        "endLine": 92,
+        "endChar": 9
+      },
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2015d5b_b91dcdb9",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-05T04:07:29Z",
       "side": 1,
       "message": "Shouldn\u0027t we use async method call here?",
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8348f229_3615ecfa",
+        "filename": "oem/nvidia/inventory_event_handler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Done, switched to call_async in PS4.",
+      "parentUuid": "b2015d5b_b91dcdb9",
       "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81953c68_456ce06f",
+        "filename": "oem/nvidia/inventory_event_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Acknowledged, I have moved them to the corresponding call sites.",
+      "parentUuid": "0686060b_08ea8357",
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce67391d_3a1edbde",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-10-05T04:07:29Z",
       "side": 1,
       "message": "Can these be moved to source file?",
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3891bc82_93c1a7d7",
+        "filename": "oem/nvidia/inventory_event_handler.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Done, the strings are now inline in the source file.",
+      "parentUuid": "ce67391d_3a1edbde",
       "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +176,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1983926_8a324b41",
+        "filename": "oem/nvidia/oem_nvidia.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Acknowledged, add `const` in PS4.",
+      "parentUuid": "d9068177_94e385e0",
+      "range": {
+        "startLine": 76,
+        "startChar": 63,
+        "endLine": 76,
+        "endChar": 76
+      },
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf0660fe_37a258cc",
@@ -111,6 +213,30 @@
       "writtenOn": "2026-10-05T04:07:29Z",
       "side": 1,
       "message": "can we avoid using auto here?",
+      "range": {
+        "startLine": 82,
+        "startChar": 16,
+        "endLine": 82,
+        "endChar": 21
+      },
+      "revId": "715b1328a807e5bb7e5d6f72afcf76807384cd08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1a20a05_95ed9bdd",
+        "filename": "oem/nvidia/oem_nvidia.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-06T03:47:58Z",
+      "side": 1,
+      "message": "Sure, I have remove `auto` in PS4.",
+      "parentUuid": "bf0660fe_37a258cc",
       "range": {
         "startLine": 82,
         "startChar": 16,
