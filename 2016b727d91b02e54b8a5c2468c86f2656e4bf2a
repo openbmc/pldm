@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8194c30f_ab0407e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T06:07:05Z",
+      "side": 1,
+      "message": "Where is the source of this requirement? Please quote that.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 7
+      },
+      "revId": "2016b727d91b02e54b8a5c2468c86f2656e4bf2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b66f29_866f7719",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T06:07:05Z",
+      "side": 1,
+      "message": "Should this be API or internal state?",
+      "revId": "2016b727d91b02e54b8a5c2468c86f2656e4bf2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96be55b1_37fdc3b6",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T06:07:05Z",
+      "side": 1,
+      "message": "Do we need any unit tests?",
+      "revId": "2016b727d91b02e54b8a5c2468c86f2656e4bf2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac4e5de4_adbbbfcf",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T06:07:05Z",
+      "side": 1,
+      "message": "Why do you need this?",
+      "revId": "2016b727d91b02e54b8a5c2468c86f2656e4bf2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f84914_c8f91fda",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-06T06:07:05Z",
+      "side": 1,
+      "message": "Can this handle progress complete setting?",
+      "revId": "2016b727d91b02e54b8a5c2468c86f2656e4bf2a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
