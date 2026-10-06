@@ -136,7 +136,7 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
 
     auto tid = mctp_eid;
     PldmTransport pldmTransport(false);
-    uint8_t retry = 0;
+    uint16_t retry = 0;
     int rc = PLDM_ERROR;
 
     while (PLDM_REQUESTER_SUCCESS != rc && retry <= numRetries)
@@ -153,6 +153,13 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
                       << rc << std::endl;
             retry++;
             continue;
+        }
+
+        if (responseMessage == nullptr ||
+            responseMessageSize < sizeof(pldm_msg_hdr))
+        {
+            free(responseMessage);
+            return PLDM_ERROR_INVALID_LENGTH;
         }
 
         responseMsg.resize(responseMessageSize);
