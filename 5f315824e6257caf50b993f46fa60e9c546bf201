@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e434125_b64d0e29",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-06T05:31:55Z",
+      "side": 1,
+      "message": "What if multiple components of a device are being updated, and the 1st component fails in UpdateComponent command - do we continue with 2nd component update ?",
+      "range": {
+        "startLine": 1140,
+        "startChar": 10,
+        "endLine": 1141,
+        "endChar": 61
+      },
+      "revId": "5f315824e6257caf50b993f46fa60e9c546bf201",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
