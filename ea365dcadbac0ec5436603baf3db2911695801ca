@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7076048_c98d3991",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1003102
+      },
+      "writtenOn": "2026-10-06T11:11:27Z",
+      "side": 0,
+      "message": "Could we abort or defer publishing inventory when a component entry fails to decode? This break falls through to creating the image-level entry and updating componentInfoMap from a partial table. A malformed response can therefore be treated as valid inventory, potentially leaving firmware update logic with incomplete component information.",
+      "revId": "ea365dcadbac0ec5436603baf3db2911695801ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
