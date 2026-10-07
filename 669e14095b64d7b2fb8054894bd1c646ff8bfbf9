@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64817c9e_b271a2b3",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T06:44:30Z",
+      "side": 1,
+      "message": "Don\u0027t we want to exit here? Or do we intentionally continue the rest of the while loop?",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b803144_a4e7e1d5",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T06:44:30Z",
+      "side": 1,
+      "message": "Same question here.",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d4d91f6_966ab619",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T06:44:30Z",
+      "side": 1,
+      "message": "Should we print an error msg?",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
