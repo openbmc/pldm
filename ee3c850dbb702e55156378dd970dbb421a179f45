@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d83fd5a_01c03176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 38
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "Hi Harshit, I backported 85434 + 85852 + 86196 and tested them on hardware. Discovery, the PowerCap D-Bus interface and Redfish Controls work well, thanks! I left a few inline comments from testing. happy to push fixes",
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be9ff26_3f3d1a5f",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "could we also reject min \u003e max, and use ceil(min)/floor(max) before the cast?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d08cfcd_9276f8bc",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "The PDI default for PowerCap is maxint (\"not set\"), and 86196 maps maxint to SetPoint null. Initialising to 0 reports a 0 W cap until the first successful read. Should this be std::numeric_limits\u003cuint32_t\u003e::max()?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 34
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ffb378_f87a66e8",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "The reading comes from the device and goes through rawToBase(), so a signed effecter size or a negative offset can give a negative value, and a resolution \u003e 1 can exceed UINT32_MAX. Casting such a value to uint32 is undefined behaviour. Suggest skipping the update with an error log when the value is outside [0, UINT32_MAX].",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 12
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "957b656f_e97ef95d",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "MinPowerCapValue/MaxPowerCapValue are writable on D-Bus, so this check alone can be widened from outside. If a client lowers MinPowerCapValue below the PDR minSettable, a PowerCap below minSettable passes this check and is sent via setNumericEffecterValue(). Suggest also checking the raw value from baseToRaw() against the PDR minSettable/maxSettable.",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 4
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de90550_9dcf1044",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:33:55Z",
+      "side": 1,
+      "message": "Cap.interface.yaml declares no errors for PowerCap, so the generated setter only has catch (const std::exception\u0026) { ...; return 1; } and sd-bus replies success. On hardware, bmcweb answered an out-of-range PATCH with 204. Declaring xyz.openbmc_project.Common.Error.InvalidArgument on PowerCap in PDI makes it a proper D-Bus error, and we then got 400",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 8
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
