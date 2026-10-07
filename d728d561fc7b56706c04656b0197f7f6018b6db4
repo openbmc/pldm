@@ -16,6 +16,23 @@
       "message": "LGTM, thanks for the patch!",
       "revId": "d728d561fc7b56706c04656b0197f7f6018b6db4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2ecfa0b_a2869bb6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T09:07:41Z",
+      "side": 1,
+      "message": "Can someone from Ampere sign-off on this?",
+      "revId": "d728d561fc7b56706c04656b0197f7f6018b6db4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
