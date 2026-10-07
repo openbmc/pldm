@@ -94,6 +94,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "775cb14d_c3801910",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-10-07T08:53:42Z",
+      "side": 1,
+      "message": "Done, removed the pldm_cmd_helper.cpp fix from this commit entirely",
+      "parentUuid": "a9252f69_50f0f99e",
+      "range": {
+        "startLine": 8,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c873e92_c011ca82",
@@ -107,6 +131,24 @@
       "writtenOn": "2026-10-06T06:05:24Z",
       "side": 1,
       "message": "We don\u0027t need unit tests for pldmtool. This just adds extra maintenance effort for things that can be directly tested using plmdmtool.",
+      "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2830b1b1_a26560a5",
+        "filename": "pldmtool/test/numeric-sensor-enable.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-10-07T08:53:42Z",
+      "side": 1,
+      "message": "Done, removed the test suite (test/numeriDone, removed the test suite (test/numeric-sensor-enable.py,\ntest/transport.cpp) and the corresponding meson.build test block.",
+      "parentUuid": "5c873e92_c011ca82",
       "revId": "eee236ada3382ad74eb50a09962e7e152fdf643e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
