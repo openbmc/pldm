@@ -163,6 +163,15 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     bool processPackage();
 
     /**
+     * @brief Marks the in-progress package activation as Invalid and
+     *        discards the package parser and package map. Used by
+     *        processPackage() on an unrecoverable package error.
+     *
+     * @return false, for convenience as a processPackage() return value
+     */
+    bool failInvalidPackage();
+
+    /**
      * @brief Send the defer request of the firmware update package
      *
      * @param[in] fd - The firmware update package file descriptor
