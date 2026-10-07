@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "606af5c7_9742f138",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T07:03:50Z",
+      "side": 1,
+      "message": "Done, the parameter is const now.",
+      "parentUuid": "efa6f5f3_8fd2662d",
+      "range": {
+        "startLine": 23,
+        "startChar": 22,
+        "endLine": 23,
+        "endChar": 40
+      },
+      "revId": "a628089e41ebb9c1c229f6e6d229489c3c5e593d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f8cac43_e8def7ba",
@@ -54,6 +78,24 @@
       "writtenOn": "2026-10-07T05:14:20Z",
       "side": 1,
       "message": "do we need this local? can\u0027t use existingMctpInfos?",
+      "revId": "a628089e41ebb9c1c229f6e6d229489c3c5e593d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0058754_2efa2dd1",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T07:03:50Z",
+      "side": 1,
+      "message": "Yes, it can.\n`handleMctpEndpoints` now takes the `MctpInfosWithPath` and drops the object paths itself before it notifies the handlers, so the constructor passes `existingMctpInfos` like it did before this change. `discoverEndpoints` no longer needs its own conversion loop either.",
+      "parentUuid": "5f8cac43_e8def7ba",
       "revId": "a628089e41ebb9c1c229f6e6d229489c3c5e593d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -75,6 +117,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52f0b74a_46a696e5",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T07:03:50Z",
+      "side": 1,
+      "message": "`getMctpInfos` fills mctpInfoMap, so it is an output parameter and cannot be const. The doc comment said @param[in], which was wrong (it has been since the function was added). Changed it to @param[out].\nIf you meant something else, please let me know.",
+      "parentUuid": "b18e3de6_7e76745f",
+      "revId": "a628089e41ebb9c1c229f6e6d229489c3c5e593d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eba9fd94_9c798841",
@@ -88,6 +148,30 @@
       "writtenOn": "2026-10-07T05:14:20Z",
       "side": 1,
       "message": "const?",
+      "range": {
+        "startLine": 170,
+        "startChar": 27,
+        "endLine": 171,
+        "endChar": 56
+      },
+      "revId": "a628089e41ebb9c1c229f6e6d229489c3c5e593d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8da153a1_21107bf4",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T07:03:50Z",
+      "side": 1,
+      "message": "Same here, `getAddedMctpInfos` appends to mctpInfos, so it cannot be const. Fixed the doc to @param[out].",
+      "parentUuid": "eba9fd94_9c798841",
       "range": {
         "startLine": 170,
         "startChar": 27,
