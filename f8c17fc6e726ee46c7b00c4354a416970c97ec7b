@@ -104,6 +104,24 @@
       "parentUuid": "fee3a202_f0fc907a",
       "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dcc5c72_905ec073",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T11:45:11Z",
+      "side": 1,
+      "message": "std::any_of would sit outside of this loop just before it. The reason I suggested this is because otherwise you could do some processing on valid indices to then just throw away everything once you get an invalid index.",
+      "parentUuid": "66b2bc5a_1a9b7fac",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
