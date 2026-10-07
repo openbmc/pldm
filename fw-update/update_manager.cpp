@@ -40,7 +40,6 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         return 0;
     }
 
-    namespace software = sdbusplus::xyz::openbmc_project::Software::server;
     // If a firmware activation of a package is in progress, don't proceed with
     // package processing
     if (activation)
@@ -85,6 +84,14 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         return 0;
     }
     catch (sdbusplus::exception_t& e)
+    {
+        error("Exception occurred while processing the package: {ERROR}",
+              "ERROR", e);
+        package.close();
+        std::filesystem::remove(packageFilePath);
+        return -1;
+    }
+    catch (const std::exception& e)
     {
         error("Exception occurred while processing the package: {ERROR}",
               "ERROR", e);
@@ -269,7 +276,6 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
 
         completeUpdate(true);
     }
-    return;
 }
 
 Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,

@@ -1130,7 +1130,6 @@ void DeviceUpdater::cancelUpdateComponent(
             std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
                       componentIndex));
     }
-    return;
 }
 
 void DeviceUpdater::failAndCancelUpdate()
