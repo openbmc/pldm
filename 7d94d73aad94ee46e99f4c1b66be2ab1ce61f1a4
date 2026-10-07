@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b67e12ab_cdcdd894",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T12:22:43Z",
+      "side": 1,
+      "message": "Done. The subject is now \"platform-mc: Lazily create FRU decorator interfaces\".",
+      "parentUuid": "d73d01a3_702a24e1",
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ac083ba_54f78e80",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-09-30T18:06:43Z",
       "side": 1,
       "message": "Based on what FRU information the device has, empty interfaces can still be created?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 25
+      },
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34718fa8_a6a95ab6",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T12:22:43Z",
+      "side": 1,
+      "message": "Yes, in PS14 they could, since the four interfaces were created together. Now each `Decorator` interface is created only when a property that belongs to it is set, so empty values and field types with no `Decorator` property (`Vendor`, `Chassis`, ...) never create one. `Decorator.Asset` has several properties, so those without a field are still empty.",
+      "parentUuid": "2ac083ba_54f78e80",
       "range": {
         "startLine": 97,
         "startChar": 0,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bf918b6_fb0d5453",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T12:22:43Z",
+      "side": 1,
+      "message": "Yes, the check is gone. `PldmFruDecorators` creates each interface on first use, so the caller only sets the property. If creating an interface fails, the class logs it once, removes the interfaces it already created for that terminus and creates no more.\n\nIt does not report the failure to the caller, which has nothing useful to do with it; `createInventoryPath` likewise only logs a failure, and its callers do not act on it.",
+      "parentUuid": "cdc30516_3a6023d9",
+      "range": {
+        "startLine": 750,
+        "startChar": 0,
+        "endLine": 753,
+        "endChar": 21
+      },
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b731645_a3cb3a7b",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-09-30T18:06:43Z",
       "side": 1,
       "message": "DO we need a test to make sure we don\u0027t have empty interfaces?",
+      "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2103a829_f677661e",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-07T12:22:43Z",
+      "side": 1,
+      "message": "Yes, added. The tests pass a FRU record to `updateInventoryWithFru` and check which interfaces exist: only `Vendor`, `Chassis` and an empty `Asset Tag`; only `Model`; `Part Number` and `Version`; `Asset Tag` and `Name`; every mapped field; and a creation failure.",
+      "parentUuid": "9b731645_a3cb3a7b",
       "revId": "7d94d73aad94ee46e99f4c1b66be2ab1ce61f1a4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
