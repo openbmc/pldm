@@ -50,6 +50,29 @@
       "message": "Should we print an error msg?",
       "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba144d8e_34fa0803",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1001076
+      },
+      "writtenOn": "2026-10-07T08:22:45Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/91807 covers similar changes as well.",
+      "range": {
+        "startLine": 319,
+        "startChar": 4,
+        "endLine": 329,
+        "endChar": 5
+      },
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
