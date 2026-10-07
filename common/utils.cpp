@@ -324,8 +324,7 @@ void reportError(const char* errorMsg)
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
-                    Error);
+                Entry::Level::Error);
         auto method = bus.new_method_call(
             LoggingCreate::default_service, LoggingCreate::instance_path,
             LoggingCreate::interface, LoggingCreate::method_names::create);
@@ -341,6 +340,38 @@ void reportError(const char* errorMsg)
             "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
             "INTERFACE", LoggingCreate::interface, "ERROR", e);
     }
+}
+
+sdbusplus::object_path createLogEntry(const char* errorMsg)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    using LoggingCreate =
+        sdbusplus::client::xyz::openbmc_project::logging::Create<>;
+    try
+    {
+        using namespace sdbusplus::xyz::openbmc_project::Logging::server;
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                Entry::Level::Error);
+        auto method = bus.new_method_call(
+            LoggingCreate::default_service, LoggingCreate::instance_path,
+            LoggingCreate::interface, LoggingCreate::method_names::create);
+
+        std::map<std::string, std::string> addlData{};
+        method.append(errorMsg, severity, addlData);
+        auto resp = bus.call(method, dbusTimeout);
+        sdbusplus::object_path logEntryPath;
+        resp.read(logEntryPath);
+        return logEntryPath;
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to do dbus call for creating error log for '{ERRMSG}' at path '{PATH}' and interface '{INTERFACE}', error - {ERROR}",
+            "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
+            "INTERFACE", LoggingCreate::interface, "ERROR", e);
+    }
+    return sdbusplus::object_path{};
 }
 
 void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,
