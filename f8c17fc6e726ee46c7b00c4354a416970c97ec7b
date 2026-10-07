@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dce7cf4_89795a8e",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-07T11:35:52Z",
+      "side": 1,
+      "message": "Fail right away — consistent with the stringEntry \u003d\u003d nullptr check right above.",
+      "parentUuid": "7b0e4ec1_0efc8cf7",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c847d70_9a948c81",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2e4a896_398c51b4",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-07T11:35:52Z",
+      "side": 1,
+      "message": "Same as above — fail right away, consistent with the rest of this function.",
+      "parentUuid": "7c847d70_9a948c81",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fee3a202_f0fc907a",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-07T09:07:00Z",
       "side": 1,
       "message": "If you really want to fail if any of the index is bad, then you could use std::any_of",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66b2bc5a_1a9b7fac",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-07T11:35:52Z",
+      "side": 1,
+      "message": "This loop also uses defIndex to compute defaultValue, not just to validate, so std::any_of would need a second pass. Keeping the combined check-and-use loop for simplicity and consistency with the currentValue loop above.",
+      "parentUuid": "fee3a202_f0fc907a",
       "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
