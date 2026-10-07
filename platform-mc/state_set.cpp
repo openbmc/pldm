@@ -1,6 +1,5 @@
 #include "state_set.hpp"
 
-#include <common/utils.hpp>
 #include <phosphor-logging/lg2.hpp>
 
 PHOSPHOR_LOG2_USING;
@@ -11,8 +10,7 @@ namespace platform_mc
 {
 
 std::unique_ptr<StateSetBase> createStateSet(
-    [[maybe_unused]] sdbusplus::bus_t& bus,
-    [[maybe_unused]] const std::string& path, StateSetId stateSetId)
+    [[maybe_unused]] StateSets& stateSets, StateSetId stateSetId)
 {
     switch (stateSetId)
     {
@@ -32,8 +30,7 @@ StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
     std::unique_ptr<StateSetBase> stateSet{};
     try
     {
-        stateSet = createStateSet(pldm::utils::DBusHandler::getBus(), path,
-                                  stateSetId);
+        stateSet = createStateSet(*this, stateSetId);
     }
     catch (const sdbusplus::exception_t& e)
     {
