@@ -314,7 +314,7 @@ GetAncestorsResponse DBusHandler::getAncestors(
     return response;
 }
 
-void reportError(const char* errorMsg)
+sdbusplus::object_path reportError(const char* errorMsg)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
     using LoggingCreate =
@@ -324,15 +324,17 @@ void reportError(const char* errorMsg)
         using namespace sdbusplus::xyz::openbmc_project::Logging::server;
         auto severity =
             sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
-                sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level::
-                    Error);
+                Entry::Level::Error);
         auto method = bus.new_method_call(
             LoggingCreate::default_service, LoggingCreate::instance_path,
             LoggingCreate::interface, LoggingCreate::method_names::create);
 
         std::map<std::string, std::string> addlData{};
         method.append(errorMsg, severity, addlData);
-        bus.call_noreply(method, dbusTimeout);
+        auto resp = bus.call(method, dbusTimeout);
+        sdbusplus::object_path logEntryPath;
+        resp.read(logEntryPath);
+        return logEntryPath;
     }
     catch (const std::exception& e)
     {
@@ -341,6 +343,7 @@ void reportError(const char* errorMsg)
             "ERRMSG", errorMsg, "PATH", LoggingCreate::instance_path,
             "INTERFACE", LoggingCreate::interface, "ERROR", e);
     }
+    return sdbusplus::object_path{};
 }
 
 void DBusHandler::setDbusProperty(const DBusMapping& dBusMap,

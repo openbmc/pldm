@@ -137,10 +137,11 @@ std::optional<std::vector<set_effecter_state_field>> parseEffecterData(
     const std::vector<uint8_t>& effecterData, uint8_t effecterCount);
 
 /**
- *  @brief creates an error log
+ *  @brief Creates an error log and returns the entry object path.
  *  @param[in] errorMsg - the error message
+ *  @return object path of the created log entry, empty path on failure
  */
-void reportError(const char* errorMsg);
+sdbusplus::object_path reportError(const char* errorMsg);
 
 /** @brief Convert any Decimal number to BCD
  *
