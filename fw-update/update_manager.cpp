@@ -116,6 +116,14 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
     return objPath;
 }
 
+void UpdateManager::markPackageInvalid()
+{
+    activation = std::make_unique<Activation>(
+        pldm::utils::DBusHandler::getBus(), objPath,
+        software::Activation::Activations::Invalid, this);
+    parser.reset();
+}
+
 void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
 {
     startTime = std::chrono::steady_clock::now();
@@ -125,10 +133,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
             "SIZE", packageSize, "PACKAGE_HEADER_INFO_SIZE",
             sizeof(pldm_package_header_information));
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
+        markPackageInvalid();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -141,10 +146,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
+        markPackageInvalid();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -157,10 +159,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
+        markPackageInvalid();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             InvalidImage();
     }
@@ -172,10 +171,7 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
     {
         error(
             "No matching devices found with the PLDM firmware update package");
-        activation = std::make_unique<Activation>(
-            pldm::utils::DBusHandler::getBus(), objPath,
-            software::Activation::Activations::Invalid, this);
-        parser.reset();
+        markPackageInvalid();
         throw sdbusplus::error::xyz::openbmc_project::software::update::
             Incompatible();
     }

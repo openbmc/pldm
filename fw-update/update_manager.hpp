@@ -177,6 +177,12 @@ class UpdateManager : public UpdateManagerBase
     std::unique_ptr<Activation> activation;
 
   private:
+    /** @brief Marks the in-progress package activation as Invalid and
+     *         discards the package parser. Used by processStream() before
+     *         throwing on an unrecoverable package error.
+     */
+    void markPackageInvalid();
+
     /** @brief Starts firmware activation for all associated devices.
      */
     void startFirmwareUpdate();
