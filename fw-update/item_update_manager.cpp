@@ -27,6 +27,15 @@ namespace pldm::fw_update
 
 constexpr auto APPLY_TIME_ARG_KEY = "applyTime";
 
+bool ItemUpdateManager::failInvalidPackage()
+{
+    inProgressActivation->activation(
+        software::Activation::Activations::Invalid);
+    parser.reset();
+    packageMap.reset();
+    return false;
+}
+
 bool ItemUpdateManager::processPackage()
 {
     inProgressActivation = std::make_unique<Activation>(
@@ -39,10 +48,7 @@ bool ItemUpdateManager::processPackage()
             "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
             "SIZE", packageMap->getSize(), "PACKAGE_HEADER_INFO_SIZE",
             sizeof(pldm_package_header_information));
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
+        return failInvalidPackage();
     }
 
     auto buffer = std::vector<uint8_t>(packageMap->getBytes().begin(),
@@ -51,10 +57,7 @@ bool ItemUpdateManager::processPackage()
     if (parser == nullptr)
     {
         error("Invalid PLDM package header information");
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
+        return failInvalidPackage();
     }
     try
     {
@@ -63,11 +66,7 @@ bool ItemUpdateManager::processPackage()
     catch (const std::exception& e)
     {
         error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        parser.reset();
-        packageMap.reset();
-        return false;
+        return failInvalidPackage();
     }
 
     auto deviceIdRecordOffset =
@@ -75,10 +74,7 @@ bool ItemUpdateManager::processPackage()
     if (!deviceIdRecordOffset)
     {
         error("Failed to associate package to device");
-        inProgressActivation->activation(
-            software::Activation::Activations::Invalid);
-        packageMap.reset();
-        return false;
+        return failInvalidPackage();
     }
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
