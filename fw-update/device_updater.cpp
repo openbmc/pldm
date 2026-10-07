@@ -253,20 +253,19 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
             comp);
     // ComponentClassificationIndex
-    CompClassificationIndex compClassificationIndex{};
     auto compKey = std::make_pair(compClassification, compIdentifier);
-    if (compInfo.contains(compKey))
+    auto compInfoIter = compInfo.find(compKey);
+    if (compInfoIter == compInfo.end())
     {
-        auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
-    }
-    else
-    {
-        // Handle error scenario
+        updateManager->instanceIdDb.free(eid, instanceId);
         error(
-            "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}'",
-            "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier);
+            "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}' for endpoint ID '{EID}'",
+            "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier,
+            "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
     }
+    CompClassificationIndex compClassificationIndex = compInfoIter->second;
     // ComponentComparisonStamp
     CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
         ComponentImageInfoPos::CompComparisonStampPos)>(comp);
@@ -394,20 +393,19 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         std::get<static_cast<size_t>(ComponentImageInfoPos::CompIdentifierPos)>(
             comp);
     // ComponentClassificationIndex
-    CompClassificationIndex compClassificationIndex{};
     auto compKey = std::make_pair(compClassification, compIdentifier);
-    if (compInfo.contains(compKey))
+    auto compInfoIter = compInfo.find(compKey);
+    if (compInfoIter == compInfo.end())
     {
-        auto search = compInfo.find(compKey);
-        compClassificationIndex = search->second;
-    }
-    else
-    {
-        // Handle error scenario
+        updateManager->instanceIdDb.free(eid, instanceId);
         error(
-            "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}'",
-            "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier);
+            "Failed to find component classification '{CLASSIFICATION}' and identifier '{IDENTIFIER}' for endpoint ID '{EID}'",
+            "CLASSIFICATION", compClassification, "IDENTIFIER", compIdentifier,
+            "EID", eid);
+        updateManager->updateDeviceCompletion(eid, false);
+        return;
     }
+    CompClassificationIndex compClassificationIndex = compInfoIter->second;
 
     // UpdateOptionFlags
     bitfield32_t updateOptionFlags;
