@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b0e4ec1_0efc8cf7",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T09:07:00Z",
+      "side": 1,
+      "message": "Do we want to fail and continue or error out right away?",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c847d70_9a948c81",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T09:07:00Z",
+      "side": 1,
+      "message": "Same question as above.",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee3a202_f0fc907a",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T09:07:00Z",
+      "side": 1,
+      "message": "If you really want to fail if any of the index is bad, then you could use std::any_of",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
