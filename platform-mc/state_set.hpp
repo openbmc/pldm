@@ -1,12 +1,15 @@
 #pragma once
 
 #include "common/types.hpp"
+#include "common/utils.hpp"
 
 #include <sdbusplus/bus.hpp>
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 
 namespace pldm
 {
@@ -38,20 +41,21 @@ class StateSetBase
     virtual void setPresentState(uint8_t presentState) = 0;
 };
 
+class StateSets;
+
 /** @brief Create the D-Bus interface which matches the given state set
  *
- *  The mapping is injective: two state sets do not share the property of a
- *  D-Bus interface, so the component sensors of one entity do not overwrite
- *  each other. A state set gets its case when its interface is added.
+ *  Two state sets may share a D-Bus interface, but not a property of it, so
+ *  the component sensors of one entity do not overwrite each other. A state
+ *  set gets its case when its interface is added.
  *
- *  @param[in] bus - D-Bus bus
- *  @param[in] path - D-Bus object path
+ *  @param[in] stateSets - the state set interfaces of the D-Bus object
  *  @param[in] stateSetId - DSP0249 state set ID
  *  @return unique_ptr to StateSetBase, nullptr when the state set has no
  *          matching D-Bus interface
  */
-std::unique_ptr<StateSetBase> createStateSet(
-    sdbusplus::bus_t& bus, const std::string& path, StateSetId stateSetId);
+std::unique_ptr<StateSetBase> createStateSet(StateSets& stateSets,
+                                             StateSetId stateSetId);
 
 /** @class StateSets
  *  @brief The state set interfaces implemented on one D-Bus object.
@@ -85,9 +89,53 @@ class StateSets
      */
     StateSetBase* getStateSet(StateSetId stateSetId);
 
+    /** @brief The getter to return the D-Bus object path the interfaces are
+     *         implemented on
+     */
+    const std::string& getPath() const
+    {
+        return path;
+    }
+
+    /** @brief Get a D-Bus interface of the D-Bus object, implementing it when
+     *         it is not implemented yet
+     *
+     *  The state sets which publish on properties of the same D-Bus interface
+     *  share one instance of it, as a D-Bus object implements an interface
+     *  once.
+     *
+     *  @tparam Intf - sdbusplus::server::object_t of one D-Bus interface
+     *  @param[in] init - sets the initial properties of the interface when
+     *                    this call implements it, and is ignored when the
+     *                    interface is already implemented
+     *  @return the interface
+     */
+    template <typename Intf>
+    Intf& getInterface(const std::function<void(Intf&)>& init = {})
+    {
+        auto& intf = interfaces[Intf::interface];
+        if (!intf)
+        {
+            auto created = std::make_shared<Intf>(
+                pldm::utils::DBusHandler::getBus(), path.c_str());
+            if (init)
+            {
+                init(*created);
+            }
+            intf = std::move(created);
+        }
+        return *std::static_pointer_cast<Intf>(intf);
+    }
+
   private:
     /** @brief The D-Bus object path the interfaces are implemented on */
     std::string path;
+
+    /** @brief The D-Bus interfaces implemented on the D-Bus object, keyed by
+     *         interface name. Declared before stateSets, so it outlives the
+     *         state sets which refer to the interfaces.
+     */
+    std::map<std::string_view, std::shared_ptr<void>> interfaces;
 
     /** @brief The interface of each implemented state set */
     std::map<StateSetId, std::unique_ptr<StateSetBase>> stateSets;
