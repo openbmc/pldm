@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "004ec78b_6d0531f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-07T09:09:04Z",
+      "side": 1,
+      "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/90202 is the older patch and has additional fixes; we\u0027d rather merge that.",
+      "revId": "281cbeec204f93014ac7d36885694caf334f6a6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
