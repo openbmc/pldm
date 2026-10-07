@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f502f1b9_4a1dffc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:39:50Z",
+      "side": 1,
+      "message": "Hi Harshit, tested this together with 85852/86196 on hardware. Effecter discovery, naming from the Effecter Auxiliary Names PDR, and Set/GetNumericEffecterValue / SetNumericEffecterEnable all work. I left one finding and a nit inline.",
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2accc155_c35bde37",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:39:50Z",
+      "side": 1,
+      "message": "The request is allocated with maxReqSize (7, or 11 for a 1.3 terminus) and the whole buffer is sent (L290), but only payloadLength bytes are encoded. Smaller data sizes therefore carry trailing zero bytes; for example, a uint32 effecter on a 1.3 terminus sends 11 bytes instead of 7. Per DSP0248 1.3.0 Table 48, the request length follows effecterDataSize, and a strict responder may reject the extra bytes. Suggest request.resize(sizeof(pldm_msg_hdr) + payloadLength); after encoding.",
+      "range": {
+        "startLine": 245,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 4
+      },
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d2a07a8_39eb38d0",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-07T10:39:50Z",
+      "side": 1,
+      "message": "Nit: the PowerCap setter discards the return code of setNumericEffecterValue()/setNumericEffecterEnable(), so logging tid/effecterId/rc on failure here (and at L195) would make a failed set easy to attribute.",
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
