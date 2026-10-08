@@ -11,6 +11,7 @@
 
 #include <sdbusplus/async.hpp>
 
+#include <deque>
 #include <memory>
 
 #include <gmock/gmock.h>
@@ -74,6 +75,43 @@ class HandlerTest : public testing::Test
         }
         callbackCount++;
     }
+};
+
+class ControlledRequest
+{
+  public:
+    ControlledRequest(PldmTransport* /*pldmTransport*/, mctp_eid_t /*eid*/,
+                      sdeventplus::Event& /*event*/,
+                      pldm::Request&& /*requestMsg*/, uint8_t /*numRetries*/,
+                      std::chrono::milliseconds /*responseTimeOut*/,
+                      bool /*verbose*/)
+    {}
+
+    int start()
+    {
+        if (startResults.empty())
+        {
+            return PLDM_SUCCESS;
+        }
+
+        auto rc = startResults.front();
+        startResults.pop_front();
+        return rc;
+    }
+
+    void stop()
+    {
+        stopCount++;
+    }
+
+    static void reset()
+    {
+        startResults.clear();
+        stopCount = 0;
+    }
+
+    static inline std::deque<int> startResults{};
+    static inline int stopCount = 0;
 };
 
 TEST_F(HandlerTest, singleRequestResponseScenario)
@@ -217,6 +255,68 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         reinterpret_cast<const pldm_msg*>(mockResponse.data());
     reqHandler.handleResponse(eid, instanceId, 0, 0, mockResponsePtr,
                               mockResponse.size() - sizeof(pldm_msg_hdr));
+
+    stdexec::sync_wait(scope.on_empty());
+}
+
+TEST_F(HandlerTest, pendingRequestSendFailureCompletesCoroutine)
+{
+    ControlledRequest::reset();
+    ControlledRequest::startResults = {PLDM_SUCCESS, PLDM_ERROR};
+
+    exec::async_scope scope;
+    Handler<ControlledRequest> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
+
+    auto instanceIdResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdResult);
+    auto instanceId = instanceIdResult.value();
+    EXPECT_EQ(instanceId, 0);
+
+    auto instanceIdNxtResult = instanceIdDb.next(eid);
+    ASSERT_TRUE(instanceIdNxtResult);
+    auto instanceIdNxt = instanceIdNxtResult.value();
+    EXPECT_EQ(instanceIdNxt, 1);
+
+    int rc = PLDM_ERROR;
+    int rcNxt = PLDM_SUCCESS;
+    size_t responseLen = 0;
+    size_t responseLenNxt = 1;
+    bool requestDone = false;
+    bool requestNxtDone = false;
+
+    auto sendRequest =
+        [&](uint8_t requestInstanceId, int& requestRc,
+            size_t& requestResponseLen, bool& done) -> exec::task<void> {
+        pldm::Request request(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+        auto requestPtr = std::start_lifetime_as<pldm_msg>(request.data());
+        requestPtr->hdr.instance_id = requestInstanceId;
+
+        const pldm_msg* responseMsg = nullptr;
+        std::tie(requestRc, responseMsg, requestResponseLen) =
+            co_await reqHandler.sendRecvMsg(eid, std::move(request));
+        done = true;
+    };
+
+    scope.spawn(sendRequest(instanceId, rc, responseLen, requestDone),
+                exec::default_task_context<void>(stdexec::inline_scheduler{}));
+    scope.spawn(sendRequest(instanceIdNxt, rcNxt, responseLenNxt,
+                            requestNxtDone),
+                exec::default_task_context<void>(stdexec::inline_scheduler{}));
+
+    pldm::Response mockResponse(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
+    auto mockResponsePtr =
+        reinterpret_cast<const pldm_msg*>(mockResponse.data());
+    reqHandler.handleResponse(eid, instanceId, 0, 0, mockResponsePtr,
+                              mockResponse.size());
+
+    EXPECT_TRUE(requestDone);
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+    EXPECT_NE(responseLen, 0);
+    EXPECT_TRUE(requestNxtDone);
+    EXPECT_EQ(rcNxt, PLDM_ERROR_NOT_READY);
+    EXPECT_EQ(responseLenNxt, 0);
 
     stdexec::sync_wait(scope.on_empty());
 }
