@@ -122,6 +122,24 @@
       "parentUuid": "66b2bc5a_1a9b7fac",
       "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3e4a50_be2376b9",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-08T07:40:42Z",
+      "side": 1,
+      "message": "Thanks for the review - Moved the validation to a pre-loop std::any_of pass in all three locations (checkAttributeTable defIndices, and checkAttributeValueTable current_value/default_value loops) so invalid handles are detected before any getValue() processing. Updated in Patchset 3.",
+      "parentUuid": "8dcc5c72_905ec073",
+      "revId": "f8c17fc6e726ee46c7b00c4354a416970c97ec7b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
