@@ -361,7 +361,7 @@ static const std::map<uint16_t, const std::map<uint8_t, std::string>>
         {PLDM_STATE_SET_OPERATIONAL_RUNNING_STATUS, setOperationalRunningState},
         {PLDM_STATE_SET_DEVICE_POWER_STATE, setPowerDeviceState},
         {PLDM_STATE_SET_ACPI_POWER_STATE, setACPIPowerState},
-    };
+};
 
 std::vector<std::string> getStateSetPossibleStateNames(
     uint16_t stateId, const std::vector<uint8_t>& value)

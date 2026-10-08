@@ -67,7 +67,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             0x0, 0x1,  0x0,  0x0,                    // repositorySize
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
-        };
+    };
     auto rc = mockTerminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPDRRepositoryInfoResp.data()),
         sizeof(getPDRRepositoryInfoResp));
@@ -178,7 +178,7 @@ TEST_F(PlatformManagerTest, initTerminusTest)
             0x00, // Language Tag "en"
             0x53, 0x00, 0x30, 0x00,
             0x00  // Entity Name "S0"
-        };
+    };
     rc = mockTerminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPdrAuxNameResp.data()),
         sizeof(getPdrAuxNameResp));
@@ -235,7 +235,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
             0x0, 0x1,  0x0,  0x0,                    // repositorySize
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
-        };
+    };
     auto rc = mockTerminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPDRRepositoryInfoResp.data()),
         sizeof(getPDRRepositoryInfoResp));
@@ -346,7 +346,7 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
             0x00, // Language Tag "en"
             0x53, 0x00, 0x30, 0x00,
             0x00  // Entity Name "S0"
-        };
+    };
     rc = mockTerminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPdrAuxNameResp.data()),
         sizeof(getPdrAuxNameResp));
@@ -395,7 +395,7 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
             0x0, 0x1,  0x0,  0x0,                    // repositorySize
             59,  0x0,  0x0,  0x0,                    // largestRecordSize
             0x0 // dataTransferHandleTimeout
-        };
+    };
     auto rc = mockTerminusManager.enqueueResponse(
         std::start_lifetime_as<pldm_msg>(getPDRRepositoryInfoResp.data()),
         sizeof(getPDRRepositoryInfoResp));

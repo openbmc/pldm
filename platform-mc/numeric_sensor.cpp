@@ -1046,7 +1046,7 @@ void NumericSensor::createThresholdLog(
             {{pldm::utils::Level::HARDSHUTDOWN, pldm::utils::Direction::LOW},
              &logThresholdHelper<
                  Errors::ReadingBelowLowerHardShutdownThreshold>},
-        };
+    };
 
     std::string sensorObjPath = sensorNameSpace + sensorName;
     double threshold = getThreshold(level, direction);
