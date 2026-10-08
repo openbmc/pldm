@@ -123,7 +123,7 @@ int triggerNumericSensorThresholdEvent(NumericSensorThresholdHandler handler,
              {pldm::utils::Level::CRITICAL, pldm::utils::Direction::LOW}},
             {PLDM_SENSOR_LOWERFATAL,
              {pldm::utils::Level::HARDSHUTDOWN, pldm::utils::Direction::LOW}},
-        };
+    };
     static const std::array<uint8_t, 7> stateOrder = {
         PLDM_SENSOR_LOWERFATAL,   PLDM_SENSOR_LOWERCRITICAL,
         PLDM_SENSOR_LOWERWARNING, PLDM_SENSOR_NORMAL,

@@ -184,7 +184,7 @@ class GetBIOSTableHandler : public CommandInterface
             {PLDM_BIOS_INTEGER, "BIOSInteger"},
             {PLDM_BIOS_INTEGER_READ_ONLY, "BIOSIntegerReadOnly"},
 
-        };
+    };
 
     std::pair<int, std::vector<uint8_t>> createRequestMsg() override
     {

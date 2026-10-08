@@ -99,4 +99,4 @@ extern const std::map<uint16_t, const std::map<uint8_t, std::string>>
         {PLDM_OEM_IBM_SYSTEM_POWER_STATE, SetOemIBMSysPowerStatesValues},
         {PLDM_OEM_IBM_BOOT_STATE, SetOemIBMBootStateValues},
         {PLDM_OEM_IBM_FIRMWARE_UPDATE_STATE, SetOemIBMFWUpdateStateValues},
-    };
+};

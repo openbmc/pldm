@@ -85,7 +85,7 @@ const std::map<const char*, pldm_self_contained_activation_req>
     pldmSelfContainedActivation{
         {"False", PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS},
         {"True", PLDM_ACTIVATE_SELF_CONTAINED_COMPONENTS},
-    };
+};
 
 /*
  * Convert PLDM Firmware String Type to uint8_t
@@ -104,7 +104,7 @@ uint8_t convertStringTypeToUInt8(std::string compImgVerStrType)
             {"UTF_16", PLDM_STR_TYPE_UTF_16},
             {"UTF_16LE", PLDM_STR_TYPE_UTF_16LE},
             {"UTF_16BE", PLDM_STR_TYPE_UTF_16BE},
-        };
+    };
 
     if (pldmFirmwareUpdateStringType.contains(compImgVerStrType))
     {

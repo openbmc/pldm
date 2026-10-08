@@ -139,7 +139,7 @@ enum ddr_status
     BOOT_FAILURE_NO_VALID_CONFIG = 0x08,
     FAILSAFE_ACTIVATED_NEXT_BOOT_SUCCESS = 0x09,
 };
-}
+} // namespace status
 } // namespace ddr
 
 namespace dimm
