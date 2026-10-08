@@ -16,6 +16,24 @@
       "message": "Is this change dependent on review of the design doc that was pushed?",
       "revId": "095c9f96ccd236631ab096b5b2bf33cc11ed0e75",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac89fa69_89e4deff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-08T06:27:55Z",
+      "side": 1,
+      "message": "Yes. This is written in the design docs.\nI have updated the commit message in PS9 to mention the design docs as well.",
+      "parentUuid": "74657a7b_efa835cf",
+      "revId": "095c9f96ccd236631ab096b5b2bf33cc11ed0e75",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
