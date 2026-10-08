@@ -31,6 +31,22 @@ exec::task<int> Manager::afterDiscoverTerminus()
     co_return rc;
 }
 
+exec::task<int> Manager::afterDiscoverTerminus(
+    const std::vector<pldm_tid_t>& tids)
+{
+    auto rc = co_await platformManager.initTerminus(tids);
+    if (rc != PLDM_SUCCESS)
+    {
+        lg2::error("Failed to initialize platform manager, error {RC}", "RC",
+                   rc);
+    }
+    else
+    {
+        lg2::info("Successfully initialized platform manager");
+    }
+    co_return rc;
+}
+
 exec::task<int> Manager::pollForPlatformEvent(
     pldm_tid_t tid, uint16_t /* pollEventId */, uint32_t pollDataTransferHandle)
 {

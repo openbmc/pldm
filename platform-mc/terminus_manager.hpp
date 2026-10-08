@@ -6,6 +6,7 @@
 #include <libpldm/platform.h>
 #include <libpldm/pldm.h>
 
+#include <cstdint>
 #include <limits>
 #include <map>
 #include <memory>
@@ -179,6 +180,28 @@ class TerminusManager
         const std::string& terminusName);
 
   private:
+    struct MctpEndpointKey
+    {
+        mctp_eid_t eid;
+        NetworkId networkId;
+
+        bool operator<(const MctpEndpointKey& other) const
+        {
+            if (eid != other.eid)
+            {
+                return eid < other.eid;
+            }
+
+            return networkId < other.networkId;
+        }
+    };
+
+    struct QueuedMctpInfos
+    {
+        MctpInfos mctpInfos;
+        std::map<MctpEndpointKey, uint64_t> generations;
+    };
+
     /** @brief Find the terminus object pointer in termini list.
      *
      *  @param[in] mctpInfos - list information of the MCTP endpoints
@@ -190,6 +213,34 @@ class TerminusManager
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> discoverMctpTerminusTask();
+
+    /** @brief Build an endpoint key from an MCTP endpoint. */
+    MctpEndpointKey getMctpEndpointKey(const MctpInfo& mctpInfo) const;
+
+    /** @brief Mark endpoint discovery generation as present/current. */
+    uint64_t markMctpEndpointPresent(const MctpInfo& mctpInfo);
+
+    /** @brief Mark endpoint discovery generation as removed/stale. */
+    void markMctpEndpointRemoved(const MctpInfo& mctpInfo);
+
+    /** @brief Build a queued discovery batch and capture endpoint generations.
+     */
+    QueuedMctpInfos makeQueuedMctpInfos(const MctpInfos& mctpInfos,
+                                        bool refreshGenerations);
+
+    /** @brief Check if a queued endpoint still matches the current generation.
+     */
+    bool isQueuedMctpInfoCurrent(const QueuedMctpInfos& queuedMctpInfos,
+                                 const MctpInfo& mctpInfo) const;
+
+    /** @brief Remove stale endpoints from pending discovery queue entries. */
+    void cleanupQueuedMctpInfos(const MctpInfos& mctpInfos);
+
+    /** @brief Cancel all requester operations for the supplied endpoints. */
+    void cancelMctpEndpointRequests(const MctpInfos& mctpInfos);
+
+    /** @brief Remove a newly-created terminus if its queued entry is stale. */
+    void removeStaleDiscoveredTerminus(const MctpInfo& mctpInfo);
 
     /** @brief Initialize terminus and then instantiate terminus object to keeps
      *         the data fetched from terminus
@@ -271,7 +322,7 @@ class TerminusManager
     std::map<pldm_tid_t, MctpInfo> mctpInfoTable;
 
     /** @brief A queue of MctpInfos to be discovered **/
-    std::queue<MctpInfos> queuedMctpInfos{};
+    std::queue<QueuedMctpInfos> queuedMctpInfos{};
 
     /** @brief coroutine handle of discoverTerminusTask */
     std::optional<std::pair<exec::async_scope, std::optional<int>>>
@@ -285,6 +336,12 @@ class TerminusManager
 
     /** @brief MCTP Endpoint available status mapping */
     std::map<MctpInfo, Availability> mctpInfoAvailTable;
+
+    /** @brief Endpoint generations used to stale queued discovery work. */
+    std::map<MctpEndpointKey, uint64_t> mctpEndpointGenerations;
+
+    /** @brief Current endpoint presence by EID/network. */
+    std::map<MctpEndpointKey, bool> mctpEndpointPresent;
 
     /** @brief reference of main event loop of pldmd, primarily used to schedule
      *  work

@@ -1,8 +1,14 @@
+#include "manager.hpp"
 #include "terminus_manager.hpp"
 
-#include "manager.hpp"
-
 #include <phosphor-logging/lg2.hpp>
+
+#include <algorithm>
+#include <chrono>
+#include <optional>
+#include <set>
+#include <stdexcept>
+#include <string>
 
 PHOSPHOR_LOG2_USING;
 
@@ -10,6 +16,31 @@ namespace pldm
 {
 namespace platform_mc
 {
+
+namespace
+{
+constexpr auto terminusDiscoveryTaskTimeout = std::chrono::seconds(120);
+
+std::string eidsToString(const MctpInfos& mctpInfos)
+{
+    std::string eids;
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        if (!eids.empty())
+        {
+            eids += ",";
+        }
+        eids += std::to_string(static_cast<unsigned>(std::get<0>(mctpInfo)));
+    }
+
+    if (eids.empty())
+    {
+        return "<none>";
+    }
+
+    return eids;
+}
+} // namespace
 
 std::optional<MctpInfo> TerminusManager::toMctpInfo(const pldm_tid_t& tid)
 {
@@ -148,9 +179,137 @@ std::string TerminusManager::constructEndpointObjPath(const MctpInfo& mctpInfo)
                        eidStr);
 }
 
+TerminusManager::MctpEndpointKey TerminusManager::getMctpEndpointKey(
+    const MctpInfo& mctpInfo) const
+{
+    return MctpEndpointKey{std::get<0>(mctpInfo), std::get<3>(mctpInfo)};
+}
+
+uint64_t TerminusManager::markMctpEndpointPresent(const MctpInfo& mctpInfo)
+{
+    auto key = getMctpEndpointKey(mctpInfo);
+    auto wasPresent = mctpEndpointPresent[key];
+    mctpEndpointPresent[key] = true;
+    auto& generation = mctpEndpointGenerations[key];
+    if (!wasPresent)
+    {
+        generation++;
+    }
+    return generation;
+}
+
+void TerminusManager::markMctpEndpointRemoved(const MctpInfo& mctpInfo)
+{
+    auto key = getMctpEndpointKey(mctpInfo);
+    mctpEndpointPresent[key] = false;
+    mctpEndpointGenerations[key]++;
+}
+
+TerminusManager::QueuedMctpInfos TerminusManager::makeQueuedMctpInfos(
+    const MctpInfos& mctpInfos, bool refreshGenerations)
+{
+    QueuedMctpInfos queuedMctpInfos;
+    queuedMctpInfos.mctpInfos = mctpInfos;
+
+    for (const auto& mctpInfo : queuedMctpInfos.mctpInfos)
+    {
+        auto key = getMctpEndpointKey(mctpInfo);
+        auto generation = refreshGenerations ? markMctpEndpointPresent(mctpInfo)
+                                             : mctpEndpointGenerations[key];
+        queuedMctpInfos.generations[key] = generation;
+    }
+
+    return queuedMctpInfos;
+}
+
+bool TerminusManager::isQueuedMctpInfoCurrent(
+    const QueuedMctpInfos& queuedMctpInfos, const MctpInfo& mctpInfo) const
+{
+    auto key = getMctpEndpointKey(mctpInfo);
+    auto queuedGeneration = queuedMctpInfos.generations.find(key);
+    auto currentGeneration = mctpEndpointGenerations.find(key);
+    auto endpointPresent = mctpEndpointPresent.find(key);
+
+    return queuedGeneration != queuedMctpInfos.generations.end() &&
+           currentGeneration != mctpEndpointGenerations.end() &&
+           endpointPresent != mctpEndpointPresent.end() &&
+           endpointPresent->second &&
+           queuedGeneration->second == currentGeneration->second;
+}
+
+void TerminusManager::cleanupQueuedMctpInfos(const MctpInfos& mctpInfos)
+{
+    std::set<MctpEndpointKey> removedEndpoints;
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        removedEndpoints.emplace(getMctpEndpointKey(mctpInfo));
+    }
+
+    std::queue<QueuedMctpInfos> filteredQueue;
+    while (!queuedMctpInfos.empty())
+    {
+        auto queuedMctpInfo = std::move(queuedMctpInfos.front());
+        queuedMctpInfos.pop();
+
+        std::erase_if(queuedMctpInfo.mctpInfos, [&](const auto& mctpInfo) {
+            return removedEndpoints.contains(getMctpEndpointKey(mctpInfo));
+        });
+
+        for (const auto& endpoint : removedEndpoints)
+        {
+            queuedMctpInfo.generations.erase(endpoint);
+        }
+
+        if (!queuedMctpInfo.mctpInfos.empty())
+        {
+            filteredQueue.emplace(std::move(queuedMctpInfo));
+        }
+    }
+
+    queuedMctpInfos = std::move(filteredQueue);
+}
+
+void TerminusManager::cancelMctpEndpointRequests(const MctpInfos& mctpInfos)
+{
+    std::set<mctp_eid_t> eids;
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        eids.emplace(std::get<0>(mctpInfo));
+    }
+
+    for (auto eid : eids)
+    {
+        handler.cancelEndpointRequests(eid);
+    }
+}
+
+void TerminusManager::removeStaleDiscoveredTerminus(const MctpInfo& mctpInfo)
+{
+    auto tid = toTid(mctpInfo);
+    if (!tid)
+    {
+        mctpInfoAvailTable.erase(mctpInfo);
+        return;
+    }
+
+    if (manager)
+    {
+        manager->stopSensorPolling(tid.value());
+        manager->updateAvailableState(tid.value(), false);
+    }
+
+    auto termIt = termini.find(tid.value());
+    if (termIt != termini.end())
+    {
+        termini.erase(termIt);
+    }
+    unmapTid(tid.value());
+    mctpInfoAvailTable.erase(mctpInfo);
+}
+
 void TerminusManager::discoverMctpTerminus(const MctpInfos& mctpInfos)
 {
-    queuedMctpInfos.emplace(mctpInfos);
+    queuedMctpInfos.emplace(makeQueuedMctpInfos(mctpInfos, true));
     if (discoverMctpTerminusTaskHandle.has_value())
     {
         auto& [scope, rcOpt] = *discoverMctpTerminusTaskHandle;
@@ -185,24 +344,78 @@ TerminiMapper::iterator TerminusManager::findTerminusPtr(
 
 exec::task<int> TerminusManager::discoverMctpTerminusTask()
 {
-    std::vector<pldm_tid_t> addedTids;
-
+    bool terminusInitFailed = false;
     while (!queuedMctpInfos.empty())
     {
-        bool terminusInitFailed = false;
+        auto queuedMctpInfo = std::move(queuedMctpInfos.front());
+        queuedMctpInfos.pop();
+        const auto& mctpInfos = queuedMctpInfo.mctpInfos;
+
         if (manager)
         {
             co_await manager->beforeDiscoverTerminus();
         }
 
-        const MctpInfos& mctpInfos = queuedMctpInfos.front();
+        std::vector<pldm_tid_t> addedTids;
+        std::set<mctp_eid_t> timeoutEids;
         for (const auto& mctpInfo : mctpInfos)
         {
+            timeoutEids.emplace(std::get<0>(mctpInfo));
+        }
+
+        std::unique_ptr<sdbusplus::Timer> discoveryTimeoutGuard;
+        if (!timeoutEids.empty())
+        {
+            auto timeoutEidsString = eidsToString(mctpInfos);
+            discoveryTimeoutGuard = std::make_unique<
+                sdbusplus::Timer>(event.get(), [this, timeoutEids,
+                                                timeoutEidsString]() {
+                lg2::warning(
+                    "Terminus discovery timeout for EIDs {EIDS}; cancelling requester operations",
+                    "EIDS", timeoutEidsString);
+                for (auto eid : timeoutEids)
+                {
+                    handler.cancelEndpointRequests(eid);
+                }
+            });
+
+            try
+            {
+                discoveryTimeoutGuard->start(
+                    std::chrono::duration_cast<std::chrono::microseconds>(
+                        terminusDiscoveryTaskTimeout));
+            }
+            catch (const std::runtime_error& e)
+            {
+                lg2::error(
+                    "Failed to start terminus discovery timeout guard, error - {ERROR}",
+                    "ERROR", e);
+                discoveryTimeoutGuard.reset();
+            }
+        }
+
+        for (const auto& mctpInfo : mctpInfos)
+        {
+            if (!isQueuedMctpInfoCurrent(queuedMctpInfo, mctpInfo))
+            {
+                lg2::info(
+                    "Skipping stale discovery entry for EID {EID}, networkId {NETWORK}",
+                    "EID", std::get<0>(mctpInfo), "NETWORK",
+                    std::get<3>(mctpInfo));
+                continue;
+            }
+
             auto it = findTerminusPtr(mctpInfo);
             if (it == termini.end())
             {
                 mctpInfoAvailTable[mctpInfo] = true;
                 auto rc = co_await initMctpTerminus(mctpInfo);
+                if (!isQueuedMctpInfoCurrent(queuedMctpInfo, mctpInfo))
+                {
+                    removeStaleDiscoveredTerminus(mctpInfo);
+                    continue;
+                }
+
                 if (rc != PLDM_SUCCESS)
                 {
                     lg2::error(
@@ -213,6 +426,12 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
                     terminusInitFailed = true;
                     continue;
                 }
+            }
+
+            if (!isQueuedMctpInfoCurrent(queuedMctpInfo, mctpInfo))
+            {
+                removeStaleDiscoveredTerminus(mctpInfo);
+                continue;
             }
 
             /* Get TID of initialized terminus */
@@ -230,17 +449,39 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             addedTids.push_back(tid.value());
         }
 
-        if (manager)
+        std::sort(addedTids.begin(), addedTids.end());
+        addedTids.erase(std::unique(addedTids.begin(), addedTids.end()),
+                        addedTids.end());
+
+        if (manager && !addedTids.empty())
         {
-            co_await manager->afterDiscoverTerminus();
+            co_await manager->afterDiscoverTerminus(addedTids);
+
+            for (const auto& mctpInfo : mctpInfos)
+            {
+                if (!isQueuedMctpInfoCurrent(queuedMctpInfo, mctpInfo))
+                {
+                    removeStaleDiscoveredTerminus(mctpInfo);
+                    continue;
+                }
+            }
         }
 
-        if (terminusInitFailed)
+        if (discoveryTimeoutGuard)
         {
-            co_return PLDM_ERROR;
+            auto rc = discoveryTimeoutGuard->stop();
+            if (rc)
+            {
+                lg2::warning(
+                    "Failed to stop terminus discovery timeout guard, response code {RC}",
+                    "RC", rc);
+            }
         }
+    }
 
-        queuedMctpInfos.pop();
+    if (terminusInitFailed)
+    {
+        co_return PLDM_ERROR;
     }
 
     co_return PLDM_SUCCESS;
@@ -248,6 +489,14 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
 
 void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
 {
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        markMctpEndpointRemoved(mctpInfo);
+        mctpInfoAvailTable[mctpInfo] = false;
+    }
+
+    cleanupQueuedMctpInfos(mctpInfos);
+
     // remove terminus
     for (const auto& mctpInfo : mctpInfos)
     {
@@ -257,15 +506,28 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
             continue;
         }
 
+        auto mappedMctpInfo = toMctpInfo(it->first);
+        if (mappedMctpInfo)
+        {
+            mctpInfoAvailTable[mappedMctpInfo.value()] = false;
+        }
+
         if (manager)
         {
+            manager->updateAvailableState(it->second->getTid(), false);
             manager->stopSensorPolling(it->second->getTid());
         }
 
         unmapTid(it->first);
         termini.erase(it);
         mctpInfoAvailTable.erase(mctpInfo);
+        if (mappedMctpInfo)
+        {
+            mctpInfoAvailTable.erase(mappedMctpInfo.value());
+        }
     }
+
+    cancelMctpEndpointRequests(mctpInfos);
 }
 
 exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
