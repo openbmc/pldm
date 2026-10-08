@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a54a4a88_dd68060d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T16:45:40Z",
+      "side": 1,
+      "message": "I think we can move this check to before RequestUpdate() is sent since these values are known before the update begins",
+      "revId": "cf49475c634962cd32132b7d8a3a727f682f6cae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d769263_9ce6e390",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T16:45:40Z",
+      "side": 1,
+      "message": "Could you call the recently added `failAndCancelUpdate()` here?",
+      "revId": "cf49475c634962cd32132b7d8a3a727f682f6cae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc0b8175_336acb38",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T16:45:40Z",
+      "side": 1,
+      "message": "Rhis check looks identical to the one in PassCompTable, maybe we can carve it out as a function?",
+      "revId": "cf49475c634962cd32132b7d8a3a727f682f6cae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295a84f8_327a0a60",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T16:45:40Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "cf49475c634962cd32132b7d8a3a727f682f6cae",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
