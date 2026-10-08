@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb9999ff_887c8d96",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T15:18:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a0ba1156_144610f7",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a770595_ea934d3f",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb7d5c7f_dee0b66c",
+        "filename": "fw-update/test/update_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T15:18:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0a770595_ea934d3f",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdd62153_2ddd0e5f",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-06T19:12:37Z",
       "side": 1,
       "message": "Can we also test a second update using the same manager after resetActivationState()? Stop the first update at 48%, then verify the first chunk of the next update reports 48% again. This would exercise the reset added here.",
+      "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3533fe78_56efb650",
+        "filename": "fw-update/test/update_manager_test.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T15:18:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cdd62153_2ddd0e5f",
       "revId": "9569c3d2f0afc052f910a374bae94eed804483d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
