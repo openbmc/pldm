@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fae932ad_29af7a5a",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-08T15:50:39Z",
+      "side": 1,
+      "message": "nit: Duplicated in `teardownUpdate()`",
+      "revId": "93fada0acbbb7f9985fd4f8d6b685272a8c720ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
