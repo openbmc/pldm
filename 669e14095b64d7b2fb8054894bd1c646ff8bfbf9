@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1e64aee_5ae3a470",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-08T08:19:18Z",
+      "side": 1,
+      "message": "Yes it was intentional. I wanted it to ignore (but also report) the unparseable ones while trying to get the rest of the possibly parseable info.",
+      "parentUuid": "64817c9e_b271a2b3",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b803144_a4e7e1d5",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-07T06:44:30Z",
       "side": 1,
       "message": "Same question here.",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "431f63d7_c82b0265",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-08T08:19:18Z",
+      "side": 1,
+      "message": "Yes intentional. Justification in https://gerrit.openbmc.org/c/openbmc/pldm/+/90202/comment/64817c9e_b271a2b3/",
+      "parentUuid": "3b803144_a4e7e1d5",
       "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbaa105_00830f47",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-08T08:19:18Z",
+      "side": 1,
+      "message": "Empty/all-null is a valid value, so I don\u0027t think we need to print an error msg - it will just add to `stderr` noise. Consumers can clearly see that it\u0027s empty from the `\"\"`",
+      "parentUuid": "2d4d91f6_966ab619",
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba144d8e_34fa0803",
@@ -65,6 +119,30 @@
       "writtenOn": "2026-10-07T08:22:45Z",
       "side": 1,
       "message": "https://gerrit.openbmc.org/c/openbmc/pldm/+/91807 covers similar changes as well.",
+      "range": {
+        "startLine": 319,
+        "startChar": 4,
+        "endLine": 329,
+        "endChar": 5
+      },
+      "revId": "669e14095b64d7b2fb8054894bd1c646ff8bfbf9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1390a034_c4063312",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-08T08:19:18Z",
+      "side": 1,
+      "message": "I think Deepak\u0027s comment in that patch will help address this https://gerrit.openbmc.org/c/openbmc/pldm/+/91807/comments/004ec78b_6d0531f8",
+      "parentUuid": "ba144d8e_34fa0803",
       "range": {
         "startLine": 319,
         "startChar": 4,
