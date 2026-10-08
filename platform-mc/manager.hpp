@@ -9,6 +9,7 @@
 #include "terminus_manager.hpp"
 
 #include <libpldm/pldm.h>
+#include <vector>
 
 namespace pldm
 {
@@ -54,6 +55,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      *  @return coroutine return_value - PLDM completion code
      */
     exec::task<int> afterDiscoverTerminus();
+
+    /** @brief Helper function to do the actions after discovering selected
+     *         termini
+     *
+     *  @param[in] tids - TIDs discovered by the current discovery batch
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> afterDiscoverTerminus(const std::vector<pldm_tid_t>& tids);
 
     /** @brief Helper function to invoke registered handlers for
      *         the added MCTP endpoints
