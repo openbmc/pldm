@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51bd1930_c8b2759f",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-09T12:54:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84e3c01f_ea6321df",
+      "range": {
+        "startLine": 1401,
+        "startChar": 0,
+        "endLine": 1406,
+        "endChar": 52
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3455a3c4_dc6641ad",
@@ -88,6 +112,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd5e4bb_8599ecd5",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-09T12:54:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c4d6b8c_b59b6936",
+      "range": {
+        "startLine": 1529,
+        "startChar": 24,
+        "endLine": 1529,
+        "endChar": 33
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67c67243_f22c3ae9",
@@ -101,6 +149,30 @@
       "writtenOn": "2026-03-03T06:13:45Z",
       "side": 1,
       "message": "```suggestion\n                output[\"fatalLow\"] \u003d fatalLow;\n```",
+      "range": {
+        "startLine": 1551,
+        "startChar": 24,
+        "endLine": 1551,
+        "endChar": 33
+      },
+      "revId": "17932d4ff1a5eae8fbbdee674f8684742ac271e9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f8b764_4b278bb9",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-09T12:54:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67c67243_f22c3ae9",
       "range": {
         "startLine": 1551,
         "startChar": 24,
