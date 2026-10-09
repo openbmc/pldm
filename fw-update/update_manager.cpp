@@ -5,12 +5,17 @@
 #include "package_parser.hpp"
 #include "systemd_interface.hpp"
 
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <cassert>
 #include <filesystem>
 #include <fstream>
+#include <spanstream>
 #include <string>
 
 PHOSPHOR_LOG2_USING;
@@ -23,6 +28,9 @@ namespace fw_update
 
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+using InvalidArgument =
+    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+using Unavailable = sdbusplus::xyz::openbmc_project::Common::Error::Unavailable;
 
 std::string UpdateManager::getSwId()
 {
@@ -99,6 +107,53 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
         std::filesystem::remove(packageFilePath);
         return -1;
     }
+}
+
+std::string UpdateManager::processFd(int fd)
+{
+    // The D-Bus message owns fd and closes it once the method returns
+    auto rawDupFd = dup(fd);
+    if (rawDupFd < 0)
+    {
+        error("Failed to duplicate the package descriptor, error - {ERRNO}",
+              "ERRNO", errno);
+        throw Unavailable();
+    }
+    auto dupFd = std::make_unique<pldm::utils::CustomFD>(rawDupFd);
+
+    struct stat sb{};
+    if (fstat(rawDupFd, &sb) != 0)
+    {
+        error("Failed to stat the package file descriptor, error - {ERRNO}",
+              "ERRNO", errno);
+        throw Unavailable();
+    }
+    if (!S_ISREG(sb.st_mode) || sb.st_size <= 0)
+    {
+        error("Package file descriptor is not a non-empty regular file");
+        throw InvalidArgument();
+    }
+
+    std::unique_ptr<pldm::utils::MMapHandler> map;
+    try
+    {
+        map = std::make_unique<pldm::utils::MMapHandler>(rawDupFd);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to map the package file descriptor, error - {ERROR}",
+              "ERROR", e);
+        throw Unavailable();
+    }
+
+    auto stream =
+        std::make_unique<std::ispanstream>(map->getChars(), std::ios::binary);
+    // A package that is not accepted for processing is released with these
+    auto softwarePath = processStreamDefer(*stream, map->getSize());
+    packageFd = std::move(dupFd);
+    packageMap = std::move(map);
+    packageStream = std::move(stream);
+    return softwarePath;
 }
 
 std::string UpdateManager::processStreamDefer(std::istream& package,
@@ -422,6 +477,9 @@ void UpdateManager::releasePackage()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
+    packageStream.reset();
+    packageMap.reset();
+    packageFd.reset();
     if (package.is_open())
     {
         package.close();
