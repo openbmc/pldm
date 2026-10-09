@@ -8,6 +8,9 @@
 
 #include <chrono>
 #include <fstream>
+#include <memory>
+#include <optional>
+#include <type_traits>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -15,16 +18,21 @@
 using namespace pldm;
 using namespace pldm::fw_update;
 
-/** @brief Minimal no-op UpdateManagerBase for tests without D-Bus */
+/** @brief Records device completion without D-Bus */
 class TestUpdateManager : public UpdateManagerBase
 {
   public:
     using UpdateManagerBase::UpdateManagerBase;
 
-    void updateDeviceCompletion(mctp_eid_t /*eid*/, bool /*status*/) override {}
+    void updateDeviceCompletion(mctp_eid_t eid, bool status) override
+    {
+        completions.emplace_back(eid, status);
+    }
     void updateActivationProgress() override {}
     void activatePackage() override {}
     void resetActivationState() override {}
+
+    std::vector<std::pair<mctp_eid_t, bool>> completions;
 };
 
 class DeviceUpdaterTest : public testing::Test
@@ -45,6 +53,19 @@ class DeviceUpdaterTest : public testing::Test
         compImageInfos = {
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
+    }
+
+    // Response handler the requester keeps for a request of the updater
+    static DeviceUpdater::ResponseHandler outstandingResponse(
+        DeviceUpdater& deviceUpdater)
+    {
+        return deviceUpdater.guarded(&DeviceUpdater::requestUpdate);
+    }
+
+    static DeviceUpdater::ResponseHandler outstandingCheckedResponse(
+        DeviceUpdater& deviceUpdater)
+    {
+        return deviceUpdater.guarded(&DeviceUpdater::passCompTable);
     }
 
     int fd = -1;
@@ -314,3 +335,73 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST_F(DeviceUpdaterTest, DropsResponsesForAReleasedUpdater)
+{
+    auto event = sdeventplus::Event::get_new();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
+    std::optional<DeviceUpdater> deviceUpdater(
+        std::in_place, 0, package, fwDeviceIDRecord, compImageInfos, compInfo,
+        512, &updateManager);
+    auto response = outstandingResponse(*deviceUpdater);
+    auto checkedResponse = outstandingCheckedResponse(*deviceUpdater);
+
+    // Reuse the same storage for a subsequent update. A late callback must
+    // neither complete that update nor schedule CancelUpdate for it. Reusing
+    // live storage also makes a missing guard observable without a sanitizer.
+    deviceUpdater.reset();
+    deviceUpdater.emplace(0, package, fwDeviceIDRecord, compImageInfos,
+                          compInfo, 512, &updateManager);
+
+    response(0, nullptr, 0);
+    EXPECT_TRUE(updateManager.completions.empty());
+    checkedResponse(0, nullptr, 0);
+    EXPECT_EQ(sd_event_run(event.get(), 0), 0);
+    EXPECT_TRUE(updateManager.completions.empty());
+}
+
+TEST_F(DeviceUpdaterTest, DeliversResponsesForALiveUpdater)
+{
+    auto event = sdeventplus::Event::get_new();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, &updateManager);
+
+    outstandingResponse(deviceUpdater)(0, nullptr, 0);
+    ASSERT_EQ(updateManager.completions.size(), 1);
+    EXPECT_EQ(updateManager.completions.front().first, 0);
+    EXPECT_FALSE(updateManager.completions.front().second);
+}
+
+TEST_F(DeviceUpdaterTest, CancelsAfterAnUnhandledResponseForALiveUpdater)
+{
+    auto event = sdeventplus::Event::get_new();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, &updateManager);
+
+    outstandingCheckedResponse(deviceUpdater)(0, nullptr, 0);
+    EXPECT_TRUE(updateManager.completions.empty());
+    // CancelUpdate is deferred; with no transport, its send reports failure.
+    EXPECT_GT(sd_event_run(event.get(), 0), 0);
+    ASSERT_EQ(updateManager.completions.size(), 1);
+    EXPECT_EQ(updateManager.completions.front().first, 0);
+    EXPECT_FALSE(updateManager.completions.front().second);
+}
+
+static_assert(!std::is_copy_constructible_v<DeviceUpdater>);
+static_assert(!std::is_move_constructible_v<DeviceUpdater>);
+static_assert(!std::is_copy_assignable_v<DeviceUpdater>);
+static_assert(!std::is_move_assignable_v<DeviceUpdater>);
