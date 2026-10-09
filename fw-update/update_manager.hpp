@@ -194,6 +194,9 @@ class UpdateManager : public UpdateManagerBase
      */
     void completeUpdate(bool status);
 
+    void emitAwaitActivationEvent(mctp_eid_t eid, const std::string& method,
+                                  uint16_t estimatedTimeSeconds);
+
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
     /** @brief Component information needed for the update of the managed FDs */
