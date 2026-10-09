@@ -128,7 +128,7 @@ void UpdateManager::markPackageInvalid()
     activation = std::make_unique<Activation>(
         pldm::utils::DBusHandler::getBus(), objPath,
         software::Activation::Activations::Invalid, this);
-    parser.reset();
+    releasePackage();
 }
 
 void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
@@ -393,25 +393,40 @@ void UpdateManager::completeUpdate(bool status)
     {
         taskCompletionCallback();
     }
+
+    // The completing DeviceUpdater may still be executing; release its
+    // package from the event loop instead
+    releaseDeferHandler = std::make_unique<sdeventplus::source::Defer>(
+        event, [this](sdeventplus::source::EventBase&) {
+            releaseDeferHandler.reset();
+            releasePackage();
+        });
 }
 
 void UpdateManager::resetActivationState()
 {
+    // Deferred work of the previous update must not touch the next package
+    releaseDeferHandler.reset();
+    updateDeferHandler.reset();
     updateInProgress = false;
     lastProgress = 0;
     activation.reset();
     activationProgress.reset();
     objPath.clear();
+    releasePackage();
+    totalNumComponentUpdates = 0;
+}
 
+void UpdateManager::releasePackage()
+{
+    deviceUpdaterMap.clear();
+    deviceUpdateCompletionMap.clear();
+    parser.reset();
     if (package.is_open())
     {
         package.close();
     }
-    deviceUpdaterMap.clear();
-    deviceUpdateCompletionMap.clear();
-    parser.reset();
     std::filesystem::remove(fwPackageFilePath);
-    totalNumComponentUpdates = 0;
 }
 
 void UpdateManager::updateActivationProgress()
