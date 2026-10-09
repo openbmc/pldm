@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aede659_bfe4b352",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-09T06:22:13Z",
+      "side": 1,
+      "message": "Could you add a Tested: section to the commit message describing how the timeout path and dump creation flow were validated?",
+      "revId": "cf4ed750b36ab397f8a76f6600557bb171c44c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cea35951_7b442498",
+        "filename": "common/utils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-09T06:22:13Z",
+      "side": 1,
+      "message": "reportError() is a shared helper used by multiple callers. This change switches its internal D-Bus operation from call_noreply() to a blocking call() and changes its contract to return an object path. Could we keep the existing helper unchanged and introduce a dedicated helper for the object-path-returning use case instead? Otherwise all existing callers will now incur a synchronous D-Bus round trip.",
+      "revId": "cf4ed750b36ab397f8a76f6600557bb171c44c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "277c385e_7535e003",
+        "filename": "softoff/main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-09T06:22:13Z",
+      "side": 1,
+      "message": "consider using DumpCreate::method_names::create_dump instead of the raw \"CreateDump\" string literal for consistency with existing usage in the codebase.",
+      "revId": "cf4ed750b36ab397f8a76f6600557bb171c44c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1593590a_dce0bb0b",
+        "filename": "softoff/main.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-09T06:22:13Z",
+      "side": 1,
+      "message": "Could this be broadened to catch (const std::exception\u0026 e)? This would align with similar dump-creation paths and avoid unexpected exception types propagating uncaught.",
+      "revId": "cf4ed750b36ab397f8a76f6600557bb171c44c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
