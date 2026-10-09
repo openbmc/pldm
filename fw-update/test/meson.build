@@ -10,6 +10,7 @@ tests = [
     'condition_collector_test',
     'systemd_interface_test',
     'item_update_manager_test',
+    'package_intake_test',
 ]
 
 foreach t : tests

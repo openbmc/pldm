@@ -5,8 +5,11 @@
 #include "package_parser.hpp"
 #include "systemd_interface.hpp"
 
+#include <sys/stat.h>
+
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <cassert>
 #include <filesystem>
@@ -23,6 +26,9 @@ namespace fw_update
 
 namespace fs = std::filesystem;
 namespace software = sdbusplus::xyz::openbmc_project::Software::server;
+using InvalidArgument =
+    sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument;
+using Unavailable = sdbusplus::xyz::openbmc_project::Common::Error::Unavailable;
 
 std::string UpdateManager::getSwId()
 {
@@ -101,6 +107,51 @@ int UpdateManager::processPackage(const std::filesystem::path& packageFilePath)
     }
 }
 
+std::string UpdateManager::processFd(int fd)
+{
+    // The mapping stays valid after the D-Bus message closes fd
+    struct stat sb{};
+    if (fstat(fd, &sb) != 0)
+    {
+        error("Failed to stat the package file descriptor, error - {ERRNO}",
+              "ERRNO", errno);
+        throw Unavailable();
+    }
+    if (!S_ISREG(sb.st_mode))
+    {
+        error(
+            "Package file descriptor is not a regular file, file mode - {MODE}",
+            "MODE", lg2::hex, sb.st_mode);
+        throw InvalidArgument();
+    }
+    if (sb.st_size <= 0)
+    {
+        error("Package image is empty");
+        throw sdbusplus::error::xyz::openbmc_project::software::update::
+            InvalidImage();
+    }
+
+    std::unique_ptr<pldm::utils::MMapHandler> map;
+    try
+    {
+        map = std::make_unique<pldm::utils::MMapHandler>(fd);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to map the package file descriptor, error - {ERROR}",
+              "ERROR", e);
+        throw Unavailable();
+    }
+
+    auto stream =
+        std::make_unique<std::ispanstream>(map->getChars(), std::ios::binary);
+    // If processStreamDefer throws, the locals unmap the package
+    auto softwarePath = processStreamDefer(*stream, map->getSize());
+    packageMap = std::move(map);
+    packageStream = std::move(stream);
+    return softwarePath;
+}
+
 std::string UpdateManager::processStreamDefer(std::istream& package,
                                               uintmax_t packageSize)
 {
@@ -112,7 +163,7 @@ std::string UpdateManager::processStreamDefer(std::istream& package,
     {
         error(
             "No devices discovered, cannot process the PLDM fw update package.");
-        throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+        throw Unavailable();
     }
 
     updateDeferHandler = std::make_unique<sdeventplus::source::Defer>(
@@ -422,6 +473,8 @@ void UpdateManager::releasePackage()
     deviceUpdaterMap.clear();
     deviceUpdateCompletionMap.clear();
     parser.reset();
+    packageStream.reset();
+    packageMap.reset();
     if (package.is_open())
     {
         package.close();

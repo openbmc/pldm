@@ -7,6 +7,8 @@ namespace pldm
 namespace fw_update
 {
 
+using Unavailable = sdbusplus::xyz::openbmc_project::Common::Error::Unavailable;
+
 sdbusplus::object_path Update::startUpdate(
     sdbusplus::message::unix_fd image,
     ApplyTimeIntf::RequestedApplyTimes applyTime [[maybe_unused]])
@@ -19,7 +21,7 @@ sdbusplus::object_path Update::startUpdate(
         if (updateManager->activation->activation() ==
             software::Activation::Activations::Activating)
         {
-            throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
+            throw Unavailable();
         }
         else
         {
@@ -28,22 +30,7 @@ sdbusplus::object_path Update::startUpdate(
     }
 
     info("Starting update for image {FD}", "FD", image.fd);
-    char buffer[4096];
-    ssize_t bytesRead = 0;
-    imageStream.str(std::string());
-
-    while ((bytesRead = read(image, buffer, sizeof(buffer))) > 0)
-    {
-        imageStream.write(buffer, bytesRead);
-    }
-
-    if (bytesRead < 0)
-    {
-        throw std::runtime_error("Failed to read image file descriptor");
-    }
-
-    return sdbusplus::object_path(updateManager->processStreamDefer(
-        imageStream, imageStream.str().size()));
+    return sdbusplus::object_path(updateManager->processFd(image.fd));
 }
 
 } // namespace fw_update
