@@ -9,6 +9,11 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <functional>
+#include <memory>
+
+class DeviceUpdaterTest;
+
 namespace pldm
 {
 
@@ -339,6 +344,30 @@ class DeviceUpdater
      */
     void createRequestFwDataTimer();
 
+    using ResponseHandler =
+        std::function<void(mctp_eid_t, const pldm_msg*, size_t)>;
+    using ResponseMethod = void (DeviceUpdater::*)(mctp_eid_t, const pldm_msg*,
+                                                   size_t);
+    using CheckedResponseMethod =
+        bool (DeviceUpdater::*)(mctp_eid_t, const pldm_msg*, size_t);
+
+    /** @brief Response handler for a request of this updater that drops
+     *         the response once the updater is gone. A released updater can
+     *         still have a request outstanding, for example the
+     *         CancelUpdateComponent sent after a failed transfer.
+     *
+     *  @param[in] method - the member function handling the response
+     *
+     *  @return handler to register with the requester
+     */
+    ResponseHandler guarded(ResponseMethod method);
+
+    /** @brief As above for a handler that returns false when the response
+     *         could not be handled, in which case the update is abandoned
+     *         with failAndCancelUpdate()
+     */
+    ResponseHandler guarded(CheckedResponseMethod method);
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
@@ -401,6 +430,11 @@ class DeviceUpdater
      *         applicable to this device
      */
     std::vector<UpdateProgress> progress;
+
+    /** @brief Expires with this updater, watched by the guarded handlers */
+    std::shared_ptr<bool> aliveToken = std::make_shared<bool>(true);
+
+    friend class ::DeviceUpdaterTest;
     /**
      * @brief Whether this device has gone through application. Needed because
      *        UpdateProgress handles each component but application happens at
