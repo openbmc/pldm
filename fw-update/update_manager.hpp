@@ -1,6 +1,7 @@
 #pragma once
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
+#include "common/utils.hpp"
 #include "device_updater.hpp"
 #include "fw-update/activation.hpp"
 #include "fw-update/update.hpp"
@@ -21,9 +22,11 @@
 #include <filesystem>
 #include <fstream>
 #include <functional>
+#include <spanstream>
 #include <unordered_map>
 #include <utility>
 
+class PackageIntakeTest;
 class UpdateManagerTest;
 
 namespace pldm
@@ -129,6 +132,15 @@ class UpdateManager : public UpdateManagerBase
 
     int processPackage(const std::filesystem::path& packageFilePath);
 
+    /** @brief Map the package behind a StartUpdate file descriptor and defer
+     *         its processing
+     *
+     *  @param[in] fd - Package file descriptor owned by the caller
+     *
+     *  @return Object path of the created Software object as a string
+     */
+    std::string processFd(int fd);
+
     /** @brief Process the firmware update package
      *
      *  @param[in] packageStream - Stream of the firmware update package
@@ -197,8 +209,8 @@ class UpdateManager : public UpdateManagerBase
     void completeUpdate(bool status);
 
     /** @brief Release the package and everything reading it: device
-     *         updaters, parser and the inotify package file. The Software
-     *         object is left in place. */
+     *         updaters, parser, stream, mapping, descriptor and the inotify
+     *         package file. The Software object is left in place. */
     void releasePackage();
 
     /** @brief Device identifiers of the managed FDs */
@@ -216,6 +228,13 @@ class UpdateManager : public UpdateManagerBase
     std::filesystem::path fwPackageFilePath;
     std::unique_ptr<PackageParser> parser;
     std::ifstream package;
+
+    /** @brief Package handed over by StartUpdate: duplicated descriptor, its
+     *         read-only mapping and the stream the device updaters read.
+     *         Declared before the updaters so it outlives them. */
+    std::unique_ptr<pldm::utils::CustomFD> packageFd;
+    std::unique_ptr<pldm::utils::MMapHandler> packageMap;
+    std::unique_ptr<std::ispanstream> packageStream;
 
     std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
         deviceUpdaterMap;
@@ -242,6 +261,7 @@ class UpdateManager : public UpdateManagerBase
      */
     uint8_t lastProgress = 0;
 
+    friend class ::PackageIntakeTest;
     friend class ::UpdateManagerTest;
 };
 
