@@ -56,6 +56,12 @@ class UpdateManagerTest : public testing::Test
             sizeof(pldm_request_firmware_data_req));
     }
 
+    // The package parser and the device updaters reading the package are gone
+    bool packageReleased() const
+    {
+        return updateManager.deviceUpdaterMap.empty() && !updateManager.parser;
+    }
+
     static constexpr mctp_eid_t eid = 1;
     const DescriptorMap descriptorMap{
         {eid,
@@ -135,4 +141,46 @@ TEST_F(UpdateManagerTest, activationProgressRestartsAfterReset)
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(updateManager.activationProgress->progress(), 48);
+}
+
+TEST_F(UpdateManagerTest, ReleasesPackageAfterCompletion)
+{
+    ASSERT_FALSE(packageReleased());
+
+    updateManager.updateDeviceCompletion(eid, true);
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              Activation::Activations::Active);
+    // Released on the next loop iteration: the completing DeviceUpdater may
+    // still be executing when the update completes
+    EXPECT_FALSE(packageReleased());
+
+    event.run(std::nullopt);
+    EXPECT_TRUE(packageReleased());
+    // The Software object stays so clients can read the final state
+    ASSERT_NE(updateManager.activation, nullptr);
+    EXPECT_EQ(updateManager.activation->activation(),
+              Activation::Activations::Active);
+
+    // A late FD command is refused instead of being served from a released
+    // package
+    auto response = requestFwData(0);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
+}
+
+TEST_F(UpdateManagerTest, StartsTheNextUpdateBeforeAPendingRelease)
+{
+    updateManager.updateDeviceCompletion(eid, true);
+    ASSERT_FALSE(packageReleased());
+
+    // The next StartUpdate is dispatched before the pending release runs
+    updateManager.resetActivationState();
+    processPackage();
+    // Drain whatever else is pending: a stale release must not run now
+    event.run(milliseconds(50));
+
+    EXPECT_FALSE(packageReleased());
+    ASSERT_NE(updateManager.activationProgress, nullptr);
+    EXPECT_EQ(updateManager.activationProgress->progress(), 0);
 }
