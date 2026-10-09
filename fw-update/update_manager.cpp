@@ -7,6 +7,9 @@
 
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
+#include <systemd/sd-journal.h>
+#include <syslog.h>
+#include <xyz/openbmc_project/Logging/Entry/server.hpp>
 
 #include <cassert>
 #include <filesystem>
@@ -386,12 +389,76 @@ void UpdateManager::completeUpdate(bool status)
     // activation state, which ends the update for a client such as bmcweb.
     activationProgress->progress(100);
     lastProgress = 100;
-    activation->activation(status ? software::Activation::Activations::Active
-                                  : software::Activation::Activations::Failed);
+    auto finalState = status ? software::Activation::Activations::Active
+                             : software::Activation::Activations::Failed;
+    if (status)
+    {
+        for (const auto& [deviceEid, updater] : deviceUpdaterMap)
+        {
+            const auto methods = updater->pendingActivationMethods();
+            if (!methods.empty())
+            {
+                finalState = software::Activation::Activations::Staged;
+                emitAwaitActivationEvent(deviceEid, methods,
+                                         updater->estimatedActivationSeconds());
+            }
+        }
+    }
+    activation->activation(finalState);
 
     if (taskCompletionCallback)
     {
         taskCompletionCallback();
+    }
+}
+
+void UpdateManager::emitAwaitActivationEvent(
+    mctp_eid_t eid, const std::string& method, uint16_t estimatedTimeSeconds)
+{
+    static constexpr auto logObjPath = "/xyz/openbmc_project/logging";
+    static constexpr auto logInterface = "xyz.openbmc_project.Logging.Create";
+    static constexpr auto messageID = "Update.1.2.AwaitToActivate";
+    using Level =
+        sdbusplus::xyz::openbmc_project::Logging::server::Entry::Level;
+
+    const auto& image = deviceUpdaterMap.at(eid)->imageSetVersion();
+    const std::string target = "MCTP EID " + std::to_string(eid);
+    const std::string messageArgs = image + "," + target;
+
+    sd_journal_send(
+        "MESSAGE=Firmware image %s on %s awaiting %s to activate",
+        image.c_str(), target.c_str(), method.c_str(), "PRIORITY=%i", LOG_INFO,
+        "REDFISH_MESSAGE_ID=%s", messageID, "REDFISH_MESSAGE_ARGS=%s",
+        messageArgs.c_str(), "REQUIRED_ACTIVATION_METHOD=%s", method.c_str(),
+        "ESTIMATED_ACTIVATION_TIME_S=%u",
+        static_cast<unsigned>(estimatedTimeSeconds), NULL);
+
+    try
+    {
+        auto& bus = pldm::utils::DBusHandler::getBus();
+        auto service =
+            pldm::utils::DBusHandler().getService(logObjPath, logInterface);
+
+        std::map<std::string, std::string> addData;
+        addData["REDFISH_MESSAGE_ID"] = messageID;
+        addData["REDFISH_MESSAGE_ARGS"] = messageArgs;
+        addData["REQUIRED_ACTIVATION_METHOD"] = method;
+        addData["ESTIMATED_ACTIVATION_TIME_S"] =
+            std::to_string(estimatedTimeSeconds);
+
+        auto severity =
+            sdbusplus::xyz::openbmc_project::Logging::server::convertForMessage(
+                Level::Informational);
+        auto methodCall = bus.new_method_call(service.c_str(), logObjPath,
+                                              logInterface, "Create");
+        methodCall.append(std::string{messageID}, severity, addData);
+        bus.call_noreply(methodCall);
+    }
+    catch (const std::exception& error)
+    {
+        lg2::error(
+            "Failed to create Redfish log entry for awaiting activation, error - {ERROR}",
+            "ERROR", error);
     }
 }
 
