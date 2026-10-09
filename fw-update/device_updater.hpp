@@ -10,9 +10,14 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <functional>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits>
+
+class DeviceUpdaterTest;
 
 namespace pldm
 {
@@ -134,7 +139,7 @@ class DeviceUpdater
   public:
     DeviceUpdater() = delete;
     DeviceUpdater(const DeviceUpdater&) = delete;
-    DeviceUpdater(DeviceUpdater&&) = default;
+    DeviceUpdater(DeviceUpdater&&) = delete;
     DeviceUpdater& operator=(const DeviceUpdater&) = delete;
     DeviceUpdater& operator=(DeviceUpdater&&) = delete;
     ~DeviceUpdater() = default;
@@ -349,6 +354,48 @@ class DeviceUpdater
      */
     void createRequestFwDataTimer();
 
+    using ResponseHandler =
+        std::function<void(mctp_eid_t, const pldm_msg*, size_t)>;
+
+    /** @brief Response handler for a request of this updater that drops
+     *         the response once the updater is gone. A released updater can
+     *         still have a request outstanding, for example the
+     *         CancelUpdateComponent sent after a failed transfer.
+     *         A bool handler returning false abandons the update only if
+     *         the updater is still alive after handling the response.
+     *
+     *  @param[in] method - the member function handling the response
+     *
+     *  @return handler to register with the requester
+     */
+    template <typename Result>
+    ResponseHandler guarded(
+        Result (DeviceUpdater::*method)(mctp_eid_t, const pldm_msg*, size_t))
+    {
+        static_assert(std::is_same_v<Result, void> ||
+                      std::is_same_v<Result, bool>);
+        return [this, method, alive = std::weak_ptr(aliveToken)](
+                   mctp_eid_t eid, const pldm_msg* response,
+                   size_t respMsgLen) {
+            if (alive.expired())
+            {
+                return;
+            }
+            if constexpr (std::is_same_v<Result, bool>)
+            {
+                const bool handled = (this->*method)(eid, response, respMsgLen);
+                if (!handled && !alive.expired())
+                {
+                    failAndCancelUpdate();
+                }
+            }
+            else
+            {
+                (this->*method)(eid, response, respMsgLen);
+            }
+        };
+    }
+
     /** @brief Endpoint ID of the firmware device */
     mctp_eid_t eid;
 
@@ -417,6 +464,14 @@ class DeviceUpdater
      *         applicable to this device
      */
     std::vector<UpdateProgress> progress;
+
+    /** @brief Expires with this non-copyable, non-movable updater */
+    struct LifetimeToken
+    {};
+    std::shared_ptr<LifetimeToken> aliveToken =
+        std::make_shared<LifetimeToken>();
+
+    friend class ::DeviceUpdaterTest;
     /**
      * @brief Whether this device has gone through application. Needed because
      *        UpdateProgress handles each component but application happens at
