@@ -14,7 +14,12 @@
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <sdeventplus/event.hpp>
 
+#include <cstdlib>
+#include <filesystem>
+#include <fstream>
 #include <memory>
+
+namespace fs = std::filesystem;
 
 using namespace pldm::pdr;
 using namespace pldm::utils;
@@ -790,6 +795,167 @@ TEST(StateSensorHandler, allScenarios)
         StateSensorEntry entry{0, 0, 0, 0, 1, false};
         ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
     }
+}
+
+class TestStateSensorHandler : public testing::Test
+{
+  public:
+    void SetUp() override
+    {
+        char tmpdir[] = "/tmp/pldm_event_parser.XXXXXX";
+        dir = fs::path(mkdtemp(tmpdir));
+    }
+
+    void TearDown() override
+    {
+        fs::remove_all(dir);
+    }
+
+    fs::path dir;
+};
+
+TEST_F(TestStateSensorHandler, NonExistentDirectoryYieldsEmptyMap)
+{
+    using namespace pldm::responder::events;
+
+    StateSensorHandler handler{(dir / "does_not_exist").string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+}
+
+TEST_F(TestStateSensorHandler, EmptyDirectoryYieldsEmptyMap)
+{
+    using namespace pldm::responder::events;
+
+    StateSensorHandler handler{dir.string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+}
+
+TEST_F(TestStateSensorHandler, MalformedJsonFileIsSkipped)
+{
+    using namespace pldm::responder::events;
+
+    std::ofstream jsonFile(dir / "bad.json");
+    jsonFile << "{ not valid json";
+    jsonFile.close();
+
+    StateSensorHandler handler{dir.string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+}
+
+TEST_F(TestStateSensorHandler, InvalidDbusConfigEntryIsSkipped)
+{
+    using namespace pldm::responder::events;
+
+    std::ofstream jsonFile(dir / "config.json");
+    jsonFile << R"({
+        "entries": [
+            {
+                "containerID": 1,
+                "entityType": 64,
+                "entityInstance": 1,
+                "sensorOffset": 0,
+                "stateSetId": 1,
+                "event_states": [0, 1],
+                "dbus": {
+                    "object_path": "/xyz/abc/def",
+                    "interface": "xyz.openbmc_project.example.value",
+                    "property_name": "value",
+                    "property_type": "unsupported_type",
+                    "property_values": [0, 1]
+                }
+            }
+        ]
+    })";
+    jsonFile.close();
+
+    StateSensorHandler handler{dir.string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+}
+
+TEST_F(TestStateSensorHandler, MismatchedStateAndValueSizeEntryIsSkipped)
+{
+    using namespace pldm::responder::events;
+
+    std::ofstream jsonFile(dir / "config.json");
+    jsonFile << R"({
+        "entries": [
+            {
+                "containerID": 1,
+                "entityType": 64,
+                "entityInstance": 1,
+                "sensorOffset": 0,
+                "stateSetId": 1,
+                "event_states": [0, 1, 2],
+                "dbus": {
+                    "object_path": "/xyz/abc/def",
+                    "interface": "xyz.openbmc_project.example.value",
+                    "property_name": "value",
+                    "property_type": "uint8_t",
+                    "property_values": [0, 1]
+                }
+            }
+        ]
+    })";
+    jsonFile.close();
+
+    StateSensorHandler handler{dir.string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_THROW(handler.getEventInfo(entry), std::out_of_range);
+}
+
+TEST_F(TestStateSensorHandler, EventActionUnknownEntryReturnsSuccess)
+{
+    using namespace pldm::responder::events;
+
+    StateSensorHandler handler{dir.string()};
+
+    // No config was loaded, so any entry is unknown to the handler. This is
+    // the "no BMC action defined for this PLDM event" case.
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    ASSERT_EQ(handler.eventAction(entry, 0), PLDM_SUCCESS);
+}
+
+TEST_F(TestStateSensorHandler, EventActionUnknownStateReturnsInvalidData)
+{
+    using namespace pldm::responder::events;
+
+    std::ofstream jsonFile(dir / "config.json");
+    jsonFile << R"({
+        "entries": [
+            {
+                "containerID": 1,
+                "entityType": 64,
+                "entityInstance": 1,
+                "sensorOffset": 0,
+                "stateSetId": 1,
+                "event_states": [0, 1],
+                "dbus": {
+                    "object_path": "/xyz/abc/def",
+                    "interface": "xyz.openbmc_project.example.value",
+                    "property_name": "value",
+                    "property_type": "uint8_t",
+                    "property_values": [0, 1]
+                }
+            }
+        ]
+    })";
+    jsonFile.close();
+
+    StateSensorHandler handler{dir.string()};
+
+    StateSensorEntry entry{1, 64, 1, 0, 1, false};
+    constexpr uint8_t unknownState = 0xFF;
+    ASSERT_EQ(handler.eventAction(entry, unknownState),
+              PLDM_ERROR_INVALID_DATA);
 }
 
 TEST(TerminusLocatorPDR, BMCTerminusLocatorPDR)
