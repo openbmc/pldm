@@ -4,6 +4,7 @@
 #include <libpldm/firmware_update.h>
 
 #include <fstream>
+#include <memory>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -29,6 +30,13 @@ class DeviceUpdaterTest : public testing::Test
         compImageInfos = {
             {10, 100, 0xFFFFFFFF, 0, 0, 139, 1024, "VersionString3"}};
         compInfo = {{std::make_pair(10, 100), 1}};
+    }
+
+    // Response handler the requester keeps for a request of the updater
+    static DeviceUpdater::ResponseHandler outstandingResponse(
+        DeviceUpdater& deviceUpdater)
+    {
+        return deviceUpdater.guarded(&DeviceUpdater::requestUpdate);
     }
 
     int fd = -1;
@@ -263,4 +271,19 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
         reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data());
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterTest, DropsResponsesForAReleasedUpdater)
+{
+    auto deviceUpdater = std::make_unique<DeviceUpdater>(
+        0, package, fwDeviceIDRecord, compImageInfos, compInfo, 512, nullptr);
+    auto response = outstandingResponse(*deviceUpdater);
+
+    // The update manager releases the updater while the request is still
+    // outstanding, for example for the next StartUpdate
+    deviceUpdater.reset();
+
+    // The late response must not reach the released updater: the sanitizer
+    // and valgrind runs catch a use after free here
+    response(0, nullptr, 0);
 }
