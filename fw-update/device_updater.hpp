@@ -1,5 +1,6 @@
 #pragma once
 
+#include "activation_methods.hpp"
 #include "common/types.hpp"
 
 #include <libpldm/base.h>
@@ -295,6 +296,21 @@ class DeviceUpdater
     void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
                       size_t respMsgLen);
 
+    const ComponentImageSetVersion& imageSetVersion() const
+    {
+      return std::get<ComponentImageSetVersion>(fwDeviceIDRecord);
+    }
+
+    std::string pendingActivationMethods() const
+    {
+      return componentActivation.pendingMethods(selfContainedActivationReq);
+    }
+
+    uint16_t estimatedActivationSeconds() const
+    {
+      return activationEstimateSeconds;
+    }
+
   private:
     /** @brief Send PassComponentTable command request
      *
@@ -407,6 +423,10 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    ComponentActivationMethods componentActivation;
+    bool selfContainedActivationReq = false;
+    uint16_t activationEstimateSeconds = 0;
 };
 
 } // namespace fw_update

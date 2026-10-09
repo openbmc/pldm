@@ -1,3 +1,12 @@
+test(
+    'activation_methods_test',
+    executable(
+        'activation_methods_test',
+        'activation_methods_test.cpp',
+        dependencies: [gtest, libpldm_dep],
+    ),
+)
+
 fw_update_test_src = declare_dependency(sources: fw_update_sources)
 
 tests = [
