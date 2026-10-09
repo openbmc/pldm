@@ -16,6 +16,24 @@
       "message": "Please fix CI failures (clang-format-23) and merge conflicts.",
       "revId": "23dcd0eb4946ea3cfd388a510c1817005e8a3da4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfce2c93_5325e1f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-09T06:46:27Z",
+      "side": 1,
+      "message": "Fixed, please re review",
+      "parentUuid": "fbe9486b_1a8e63d0",
+      "revId": "23dcd0eb4946ea3cfd388a510c1817005e8a3da4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
