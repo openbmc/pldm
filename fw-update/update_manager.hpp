@@ -24,6 +24,8 @@
 #include <unordered_map>
 #include <utility>
 
+class UpdateManagerTest;
+
 namespace pldm
 {
 
@@ -179,8 +181,8 @@ class UpdateManager : public UpdateManagerBase
 
   private:
     /** @brief Marks the in-progress package activation as Invalid and
-     *         discards the package parser. Used by processStream() before
-     *         throwing on an unrecoverable package error.
+     *         releases the package. Used by processStream() before throwing
+     *         on an unrecoverable package error.
      */
     void markPackageInvalid();
 
@@ -193,6 +195,11 @@ class UpdateManager : public UpdateManagerBase
      *  @param[in] status - Overall update status, true on success
      */
     void completeUpdate(bool status);
+
+    /** @brief Release the package and everything reading it: device
+     *         updaters, parser and the inotify package file. The Software
+     *         object is left in place. */
+    void releasePackage();
 
     /** @brief Device identifiers of the managed FDs */
     const DescriptorMap& descriptorMap;
@@ -221,6 +228,7 @@ class UpdateManager : public UpdateManagerBase
 
     decltype(std::chrono::steady_clock::now()) startTime;
     std::unique_ptr<sdeventplus::source::Defer> updateDeferHandler;
+    std::unique_ptr<sdeventplus::source::Defer> releaseDeferHandler;
 
     std::string preConditionPath;
     std::string postConditionPath;
@@ -233,6 +241,8 @@ class UpdateManager : public UpdateManagerBase
      *
      */
     uint8_t lastProgress = 0;
+
+    friend class ::UpdateManagerTest;
 };
 
 } // namespace fw_update
