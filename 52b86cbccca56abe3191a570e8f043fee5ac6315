@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b4bf6b3_876b85e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T12:55:44Z",
+      "side": 1,
+      "message": "How is this patch tested? If the child patch tests this, please state so.",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860b0c1c_14980306",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T12:55:44Z",
+      "side": 1,
+      "message": "Is it necessary to have this here as opposed to having it in some lookup table? Multiple instances of the same entity type will have this duplicated.",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a24bb795_87816796",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T12:55:44Z",
+      "side": 1,
+      "message": "What was the need to switch from switch case to this?",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf484629_527e011d",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T12:55:44Z",
+      "side": 1,
+      "message": "Not used in this patch.",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
