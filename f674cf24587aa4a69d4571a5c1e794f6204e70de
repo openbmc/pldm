@@ -1,0 +1,238 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e023d5b9_5f7016aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "Don\u0027t we end up matching to Item.Board in such case?",
+      "range": {
+        "startLine": 11,
+        "startChar": 68,
+        "endLine": 12,
+        "endChar": 69
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3cd07e0_df33dbf1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "Some of the patches are merged; some irrelevant - please clean up.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 60
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a44b7a6d_744ae370",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "How about associations? Can you show those getting created (proper hierarchy) as well?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cde8aae7_990ef7d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "I think we can remove this.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 80
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53cd5c2b_5f4b5dca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "iner",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa59ef6_63810369",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "What happens if addContainer is called a second time on an entity?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da714e0d_ca31d00e",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "Is this the immediate containment or hierarchical? The next API is plural, so I am asking.",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7189e0_df11e0c4",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "The previous patch added PldmEntityItem. Do we need that and this class? Are we duplicating some fields?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc23fea7_b9732619",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "How is this different from the previous one?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11df0272_4db37d49",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "This is the entity\u0027s parent as well as its children; what about the entity itself?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20d8b0bf_1e75506e",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "Name is input as well as the output is also a name. It\u0027s not very clear what the two are.",
+      "range": {
+        "startLine": 290,
+        "startChar": 23,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edefb3ce_6f180ec3",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-10T13:55:15Z",
+      "side": 1,
+      "message": "Do you need tests for addEntity/addEntities/addAssociations?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
