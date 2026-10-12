@@ -7,6 +7,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <memory>
 
 PHOSPHOR_LOG2_USING;
@@ -18,28 +19,40 @@ namespace platform_mc
 
 exec::task<int> PlatformManager::initTerminus()
 {
-    /* Snapshot TIDs before iterating. The termini map can be modified (entries
-     * erased) by removeMctpTerminus() while this coroutine is suspended at a
-     * co_await point, which would invalidate range-for iterators and references
-     * into the map, causing use-after-free. */
     std::vector<pldm_tid_t> tids;
     for (auto& [tid, _] : termini)
     {
         tids.push_back(tid);
     }
 
+    auto rc = co_await initTerminus(tids);
+    co_return rc;
+}
+
+exec::task<int> PlatformManager::initTerminus(
+    const std::vector<pldm_tid_t>& targetTids)
+{
+    auto tids = targetTids;
+    std::sort(tids.begin(), tids.end());
+    tids.erase(std::unique(tids.begin(), tids.end()), tids.end());
+
     for (const auto tid : tids)
     {
         // termini[tid] would auto-insert if the TID was erased after the
         // snapshot above.
-        if (!termini.contains(tid))
+        auto terminusIt = termini.find(tid);
+        if (terminusIt == termini.end())
         {
             continue;
         }
 
         /* Take a local shared_ptr copy so the Terminus object stays alive even
          * if the map entry is erased while this coroutine is suspended. */
-        auto terminus = termini[tid];
+        auto terminus = terminusIt->second;
+        auto isCurrentTerminus = [&]() {
+            auto currentIt = termini.find(tid);
+            return currentIt != termini.end() && currentIt->second == terminus;
+        };
 
         if (terminus->initialized)
         {
@@ -65,7 +78,7 @@ exec::task<int> PlatformManager::initTerminus()
             }
         }
 
-        if (!termini.contains(tid))
+        if (!isCurrentTerminus())
         {
             continue;
         }
@@ -84,7 +97,7 @@ exec::task<int> PlatformManager::initTerminus()
             }
         }
 
-        if (!termini.contains(tid))
+        if (!isCurrentTerminus())
         {
             continue;
         }
@@ -100,7 +113,7 @@ exec::task<int> PlatformManager::initTerminus()
                 continue; // Continue to next terminus
             }
 
-            if (!termini.contains(tid))
+            if (!isCurrentTerminus())
             {
                 continue;
             }
@@ -138,7 +151,7 @@ exec::task<int> PlatformManager::initTerminus()
             }
         }
 
-        if (!termini.contains(tid))
+        if (!isCurrentTerminus())
         {
             continue;
         }
@@ -148,7 +161,7 @@ exec::task<int> PlatformManager::initTerminus()
 
         auto rc = co_await configEventReceiver(tid);
 
-        if (!termini.contains(tid))
+        if (!isCurrentTerminus())
         {
             continue;
         }

@@ -41,6 +41,13 @@ class PlatformManager
      */
     exec::task<int> initTerminus();
 
+    /** @brief Initialize selected termini which support PLDM Type 2
+     *
+     *  @param[in] tids - selected terminus IDs
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> initTerminus(const std::vector<pldm_tid_t>& tids);
+
     /** @brief Helper to get the supported event messages and set event receiver
      *
      *  @param[in] tid - Destination TID
