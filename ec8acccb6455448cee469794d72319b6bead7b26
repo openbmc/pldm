@@ -141,6 +141,30 @@
       },
       "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1296a296_b3b73f2a",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-12T10:07:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5d6ed6d5_653ac811",
+      "range": {
+        "startLine": 189,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 59
+      },
+      "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
