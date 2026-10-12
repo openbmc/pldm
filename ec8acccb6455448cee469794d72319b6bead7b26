@@ -117,6 +117,30 @@
       },
       "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d6ed6d5_653ac811",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-10-12T09:34:12Z",
+      "side": 1,
+      "message": "Added PLDM_FRU_OEM_FIELD_TYPE_VENDOR_IANA to include/libpldm/fru.h in\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/95574\n\nI\u0027ll switch this change to use it once that merges, since pldm CI\nbuilds against libpldm HEAD.",
+      "parentUuid": "a61fb94d_2cc532c4",
+      "range": {
+        "startLine": 189,
+        "startChar": 37,
+        "endLine": 189,
+        "endChar": 59
+      },
+      "revId": "ec8acccb6455448cee469794d72319b6bead7b26",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
