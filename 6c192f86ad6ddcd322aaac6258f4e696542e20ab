@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0329a58b_e4b3733d",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-12T10:59:52Z",
+      "side": 1,
+      "message": "I think we can move this to after the package has been validated. Maybe line 127?",
+      "revId": "6c192f86ad6ddcd322aaac6258f4e696542e20ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb6b999_b0156566",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-12T10:59:52Z",
+      "side": 1,
+      "message": "Why are we tieing postCondition to applyTime? Could you add a comment explaining this?",
+      "revId": "6c192f86ad6ddcd322aaac6258f4e696542e20ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d2316e3_d93ca9a4",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-12T10:59:52Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we call `completeUpdate` in all cases?",
+      "revId": "6c192f86ad6ddcd322aaac6258f4e696542e20ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71cd9380_fa6ebf68",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-12T10:59:52Z",
+      "side": 1,
+      "message": "Missing `completeUpdate` call",
+      "revId": "6c192f86ad6ddcd322aaac6258f4e696542e20ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "284399dc_0dcd4c9b",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-12T10:59:52Z",
+      "side": 1,
+      "message": "Doesn\u0027t this destroy the association object immediately after its created in completeUpdate?",
+      "revId": "6c192f86ad6ddcd322aaac6258f4e696542e20ab",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
