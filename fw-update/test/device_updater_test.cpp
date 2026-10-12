@@ -650,3 +650,45 @@ TEST_F(DeviceUpdaterManagerTest,
     EXPECT_TRUE(manager.completionCalled);
     EXPECT_FALSE(manager.completionStatus);
 }
+
+TEST_F(DeviceUpdaterManagerTest, CancelledFirstComponentContinuesWithNext)
+{
+    // Applying the first component fails and it is cancelled with
+    // CancelUpdateComponent. The update continues with the next component,
+    // which is applied and activated, but the overall device update fails.
+    FirmwareDeviceIDRecord record;
+    ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyFailedReq = {
+        0x8D, 0x05, 0x18, PLDM_FWUP_APPLY_FAILURE_MEMORY_ISSUE, 0x00, 0x00};
+    deviceUpdater.updateComponent(
+        0,
+        reinterpret_cast<const pldm_msg*>(
+            updateComponentCanBeUpdatedResp.data()),
+        updateComponentCanBeUpdatedResp.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.applyComplete(
+        reinterpret_cast<const pldm_msg*>(applyFailedReq.data()),
+        applyFailedReq.size() - sizeof(pldm_msg_hdr));
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1>
+        cancelUpdateComponentResp = {0x0A, 0x05, PLDM_CANCEL_UPDATE_COMPONENT,
+                                     PLDM_SUCCESS};
+    deviceUpdater.cancelUpdateComponent(
+        0, reinterpret_cast<const pldm_msg*>(cancelUpdateComponentResp.data()),
+        cancelUpdateComponentResp.size() - sizeof(pldm_msg_hdr));
+
+    // The second component is applied successfully
+    applyComponentSuccessfully(deviceUpdater);
+
+    // Only check the completion reported once the firmware is activated
+    manager.completionCalled = false;
+    deviceUpdater.activateFirmware(
+        0, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_TRUE(manager.completionCalled);
+    EXPECT_FALSE(manager.completionStatus);
+}

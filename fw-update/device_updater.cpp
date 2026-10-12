@@ -8,6 +8,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <functional>
 #include <string_view>
 
@@ -601,33 +602,7 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
                 ComponentUpdateStatus::Failed;
         }
 
-        if (componentIndex == applicableComponents.size() - 1)
-        {
-            for (const auto& compStatus : componentUpdateStatus)
-            {
-                if (compStatus.second == ComponentUpdateStatus::Accepted)
-                {
-                    pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                        updateManager->event,
-                        std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
-                                  this));
-                    return true;
-                }
-            }
-            // No component was transferred to the firmware device, so abandon
-            // the update. The device update is still successful if every
-            // component was skipped because its image is identical to the
-            // active image.
-            failAndCancelUpdate();
-        }
-        else
-        {
-            componentIndex++;
-            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                updateManager->event,
-                std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                          componentIndex));
-        }
+        proceedToNextComponent();
         return true;
     }
 
@@ -969,30 +944,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         // successfully. Record it against the current component rather than
         // the next one so the per-component status stays accurate.
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
-        if (componentIndex == applicableComponents.size() - 1)
-        {
-            // All components have been processed. Keep the status of every
-            // component so that activateFirmware can determine the overall
-            // device result.
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
-                              this));
-            }
-        }
-        else
-        {
-            componentIndex++;
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                              componentIndex));
-            }
-        }
+        proceedToNextComponent();
     }
     else
     {
@@ -1188,37 +1140,47 @@ void DeviceUpdater::cancelUpdateComponent(
         return;
     }
 
+    // The cancelled component stays failed, so the device update is reported
+    // as failed even if another component is activated.
+    proceedToNextComponent();
+}
+
+void DeviceUpdater::proceedToNextComponent()
+{
     const auto& applicableComponents =
         std::get<ApplicableComponents>(fwDeviceIDRecord);
-    // Check if this is the last component being cancelled
-    if (componentIndex == applicableComponents.size() - 1)
+    if (componentIndex + 1 < applicableComponents.size())
     {
-        for (auto& compStatus : componentUpdateStatus)
-        {
-            if (compStatus.second == ComponentUpdateStatus::Accepted)
-            {
-                // If at least one component update succeeded, proceed with
-                // activation. The cancelled component stays failed, so the
-                // device update is reported as failed.
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
-                              this));
-                return;
-            }
-        }
-        // No component update succeeded, so abandon the update.
-        failAndCancelUpdate();
-    }
-    else
-    {
-        // Move to next component
         componentIndex++;
-        pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-            updateManager->event,
-            std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                      componentIndex));
+        if (updateManager != nullptr)
+        {
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                          componentIndex));
+        }
+        return;
     }
+
+    // Every component has been handled. Keep the status of every component so
+    // that activateFirmware can determine the overall device result.
+    if (std::ranges::any_of(componentUpdateStatus, [](const auto& compStatus) {
+            return compStatus.second == ComponentUpdateStatus::Accepted;
+        }))
+    {
+        if (updateManager != nullptr)
+        {
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendActivateFirmwareRequest, this));
+        }
+        return;
+    }
+
+    // No component was applied, so abandon the update. The device update is
+    // still successful if every component was skipped because its image is
+    // identical to the active image.
+    failAndCancelUpdate();
 }
 
 void DeviceUpdater::failAndCancelUpdate()
