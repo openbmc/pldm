@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd48384b_6a2f03f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "No, according to the design docs only the terminus inventory object still falls back to `Item.Board`.",
+      "parentUuid": "e023d5b9_5f7016aa",
+      "range": {
+        "startLine": 11,
+        "startChar": 68,
+        "endLine": 12,
+        "endChar": 69
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3cd07e0_df33dbf1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-10T13:55:15Z",
       "side": 1,
       "message": "Some of the patches are merged; some irrelevant - please clean up.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 60
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77798c7_92f01425",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "Done, I have removed the merged/irrelevant patches.\nThanks for acknowledging this.",
+      "parentUuid": "a3cd07e0_df33dbf1",
       "range": {
         "startLine": 19,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efe7bd15_2ccacea9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "Sure, I have added the logs in the \"Tested\" section in PS31.",
+      "parentUuid": "a44b7a6d_744ae370",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cde8aae7_990ef7d1",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-10-10T13:55:15Z",
       "side": 1,
       "message": "I think we can remove this.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 80
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba9f587_e3baafbc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 30
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "Understood, done removing these.",
+      "parentUuid": "cde8aae7_990ef7d1",
       "range": {
         "startLine": 73,
         "startChar": 0,
@@ -121,6 +211,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "649b25ba_8d34610b",
+        "filename": "platform-mc/entity.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "An entity now keeps a single container. Adding the same container again does nothing, and a different one is refused: `addContainer()` returns false and `addEntityAssociations()` logs it.",
+      "parentUuid": "4aa59ef6_63810369",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da714e0d_ca31d00e",
@@ -134,6 +242,24 @@
       "writtenOn": "2026-10-10T13:55:15Z",
       "side": 1,
       "message": "Is this the immediate containment or hierarchical? The next API is plural, so I am asking.",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdc5bb73_b63fef76",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "Immediate.",
+      "parentUuid": "da714e0d_ca31d00e",
       "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -155,6 +281,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45044cab_d43a54da",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "I have removed `PldmEntityItem` from the parent patch and uses switch-case as suggested.",
+      "parentUuid": "5c7189e0_df11e0c4",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc23fea7_b9732619",
@@ -172,6 +316,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b7b638_2210ad74",
+        "filename": "platform-mc/entity.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "`itemIntf` was the type-specific interface (`Inventory.Item.Cpu`, …), and `inventoryItemIntf` is `Inventory.Item` with `PrettyName`/`Present`. I renamed the first to `typeItemIntf` and reworded both docs.",
+      "parentUuid": "cc23fea7_b9732619",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11df0272_4db37d49",
@@ -185,6 +347,30 @@
       "writtenOn": "2026-10-10T13:55:15Z",
       "side": 1,
       "message": "This is the entity\u0027s parent as well as its children; what about the entity itself?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9546a922_39a77fd8",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "`EntityAssociation` is not an entity.\nIt is one parsed Entity Association PDR which is only used to build the entity object.",
+      "parentUuid": "11df0272_4db37d49",
       "range": {
         "startLine": 35,
         "startChar": 0,
@@ -218,6 +404,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a9282e_73b44c55",
+        "filename": "platform-mc/terminus.hpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "The input is the entity type label (\"Cpu\") and the output is the entity\u0027s D-Bus object name\nTo avoid confusion, I have renamed it to `getEntityObjectName(key, entityTypeName)`.",
+      "parentUuid": "20d8b0bf_1e75506e",
+      "range": {
+        "startLine": 290,
+        "startChar": 23,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edefb3ce_6f180ec3",
@@ -231,6 +441,24 @@
       "writtenOn": "2026-10-10T13:55:15Z",
       "side": 1,
       "message": "Do you need tests for addEntity/addEntities/addAssociations?",
+      "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5aead327_b68aaa90",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T09:05:50Z",
+      "side": 1,
+      "message": "As they\u0027re private and have been tested through `parseTerminusPDRs()` in `parseEntityAssociationPDRTest`, `terminusEntityWithoutAuxNamesTest` and `nestedEntityContainerTest`, I thought it was fine for them.",
+      "parentUuid": "edefb3ce_6f180ec3",
       "revId": "f674cf24587aa4a69d4571a5c1e794f6204e70de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
