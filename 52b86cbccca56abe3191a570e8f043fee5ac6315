@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22d9fa16_8fe3c75c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T06:17:27Z",
+      "side": 1,
+      "message": "Acknowledged, I have added a \"Tested\" section explicitly mentioning this.",
+      "parentUuid": "6b4bf6b3_876b85e6",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "860b0c1c_14980306",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-10T12:55:44Z",
       "side": 1,
       "message": "Is it necessary to have this here as opposed to having it in some lookup table? Multiple instances of the same entity type will have this duplicated.",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f70c687f_cb76d066",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T06:17:27Z",
+      "side": 1,
+      "message": "Understood, I have removed it from the patch so that duplicated cases won\u0027t be conflict.",
+      "parentUuid": "860b0c1c_14980306",
       "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55a720c7_6cda767c",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T06:17:27Z",
+      "side": 1,
+      "message": "Acknowledged, reverted to uses switch case now.",
+      "parentUuid": "a24bb795_87816796",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf484629_527e011d",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-10-10T12:55:44Z",
       "side": 1,
       "message": "Not used in this patch.",
+      "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a675512_62388efe",
+        "filename": "platform-mc/dbus_impl_fru.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-12T06:17:27Z",
+      "side": 1,
+      "message": "Understood, I have removed this from the patch and will add it in the child patch where it has its consumer.",
+      "parentUuid": "cf484629_527e011d",
       "revId": "52b86cbccca56abe3191a570e8f043fee5ac6315",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
