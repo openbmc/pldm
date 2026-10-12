@@ -367,6 +367,20 @@ class DeviceUpdater
     void failAndCancelUpdate();
 
     /**
+     * @brief Continue with the next component, or end the UpdateComponent
+     *        phase after the last component
+     *
+     *  Called once the current component has been handled and its status
+     *  recorded: skipped or declined in the UpdateComponent response, applied,
+     *  or cancelled with CancelUpdateComponent. Sends UpdateComponent for the
+     *  next component. After the last component, sends ActivateFirmware if any
+     *  component was applied and otherwise abandons the update. This is the
+     *  only place that advances componentIndex during the UpdateComponent
+     *  phase.
+     */
+    void proceedToNextComponent();
+
+    /**
      * @brief Create a timer to handle RequestFirmwareData timeout (UA_T2)
      */
     void createRequestFwDataTimer();
