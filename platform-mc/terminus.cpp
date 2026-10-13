@@ -700,8 +700,8 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
 
         if (record->record_type != PLDM_FRU_RECORD_TYPE_GENERAL)
         {
-            lg2::error(
-                "Does not support Fru Record ID Type {TYPE} of terminus {TID}",
+            lg2::info(
+                "Skipping unsupported FRU Record type {TYPE} of terminus {TID}",
                 "TYPE", record->record_type, "TID", tid);
 
             for ([[maybe_unused]] const auto& idx :
