@@ -229,7 +229,7 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
     }
 
     double value = static_cast<double>(presentReading);
-    lg2::error(
+    lg2::info(
         "processNumericSensorEvent tid {TID}, sensorID {SID} value {VAL} previousState {PSTATE} eventState {ESTATE}",
         "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,
         "ESTATE", eventState);

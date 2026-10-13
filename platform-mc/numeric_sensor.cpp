@@ -1138,7 +1138,7 @@ int NumericSensor::triggerThresholdEvent(
     }
 
     auto value = unitModifier(conversionFormula(rawValue));
-    lg2::error(
+    lg2::info(
         "triggerThresholdEvent eventType {TID}, direction {SID} value {VAL} newAlarm {PSTATE} assert {ESTATE}",
         "TID", eventType, "SID", direction, "VAL", value, "PSTATE", newAlarm,
         "ESTATE", assert);
