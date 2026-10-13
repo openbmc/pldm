@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a37a953_c6a72b04",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2622,
+      "author": {
+        "id": 1003102
+      },
+      "writtenOn": "2026-10-13T12:00:14Z",
+      "side": 1,
+      "message": "Could you avoid dereferencing presentReading as a uint64_t*? It is byte storage with no guaranteed 64-bit alignment, so this can be undefined behavior or fault on strict-alignment targets. Copy the bytes into an aligned integer with memcpy before using the value. The SINT64 case below needs the same fix.",
+      "revId": "6179b0511f088996f6775fd1278edd91f38885b2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
