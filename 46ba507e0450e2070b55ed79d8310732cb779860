@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d4d922_94eea109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-10-13T02:15:03Z",
+      "side": 1,
+      "message": "Deployed on a Yosemite4 BMC and drove firmware updates of a Sentinel Dome BIC over MCTP\nthrough the Software.Update interface. Redfish EventLog (Managers/bmc) showed:\n\n  Successful update:  Update.1.2.TargetDetermined, TransferringToComponent,\n                      VerifyingAtComponent, InstallingOnComponent, UpdateSuccessful\n  WF package to SD:   Update.1.2.UpdateNotApplicable\n  Non-PLDM file:      Update.1.2.VerificationFailed (image \u0027\u0027 as the header is not parsed)",
+      "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
