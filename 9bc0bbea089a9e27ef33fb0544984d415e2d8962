@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c3e434_985b1f05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-10-13T17:46:52Z",
+      "side": 1,
+      "message": "The change is marked private (is this intentional?) and has merge conflict. Both of those prevent merges. Private also prevents other reviewers (not the ones already added to the patch) from reviewing.",
+      "revId": "9bc0bbea089a9e27ef33fb0544984d415e2d8962",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
