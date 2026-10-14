@@ -59,7 +59,9 @@ void Logger(bool pldmverbose, const char* msg, const T& data)
  */
 static inline void DisplayInJson(const ordered_json& data)
 {
-    std::cout << data.dump(4) << std::endl;
+    std::cout << data.dump(4, ' ', false,
+                           nlohmann::json::error_handler_t::replace)
+              << std::endl;
 }
 
 /**

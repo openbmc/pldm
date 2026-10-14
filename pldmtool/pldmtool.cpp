@@ -67,6 +67,8 @@ int main(int argc, char** argv)
 {
     CLI::App app{"PLDM requester tool for OpenBMC"};
     app.require_subcommand(1)->ignore_case();
+    app.footer(
+        "Note: a '\xef\xbf\xbd' (replacement character) in pldmtool output means a non-UTF-8 string was passed - and the display helper function couldn't parse it.");
 
     pldmtool::raw::registerCommand(app);
     pldmtool::base::registerCommand(app);
