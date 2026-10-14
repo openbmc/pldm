@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b7e071_bd08fe1b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-14T18:26:42Z",
+      "side": 1,
+      "message": "@arunpapannagari23@gmail.com \n\nWhat do you mean by \"sends duplicate events for devices with multiple components\"? Its suppose to send events for each component.\n\nPlease do your testing based on Redfish event logs rather than using above referenced bmcweb patch. For example, like https://gerrit.openbmc.org/c/openbmc/pldm/+/94762/comments/dccefd49_448f9053 .\n\nBMCWeb patch is work in progress and Redfish events should exist in log entries irrespective of that.",
+      "parentUuid": "c19d9aa0_c926aa82",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dccefd49_448f9053",

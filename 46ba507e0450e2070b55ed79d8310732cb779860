@@ -33,6 +33,24 @@
       "message": "We would be generating events on temporary objects that have no correspondance in FirmwareInventory, can we use same dbus object path that we create the ItemUpdater object on (` std::format(\"{}_{}\", objPath, generatedId).c_str()`)",
       "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32893e2c_4ee41ca2",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-14T18:26:42Z",
+      "side": 1,
+      "message": "This object path is the same one as in firmware inventory. Refer to the test in https://gerrit.openbmc.org/c/openbmc/pldm/+/94762/comments/dccefd49_448f9053 .",
+      "parentUuid": "bef0241a_7509fc5b",
+      "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
