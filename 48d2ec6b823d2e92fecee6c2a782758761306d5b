@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c3cb0f_4e6ba72b",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-14T15:40:14Z",
+      "side": 1,
+      "message": "Could you add a log line (e.g. error(...)) when invalid UTF-8 is actually replaced, so it\u0027s recorded rather than only visible as a stray in the output?",
+      "revId": "48d2ec6b823d2e92fecee6c2a782758761306d5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
