@@ -67,6 +67,8 @@ int main(int argc, char** argv)
 {
     CLI::App app{"PLDM requester tool for OpenBMC"};
     app.require_subcommand(1)->ignore_case();
+    app.footer(
+        "Strings containing invalid UTF-8 are displayed with replacement characters (U+FFFD \xef\xbf\xbd). Use --verbose to inspect raw response bytes instead");
 
     pldmtool::raw::registerCommand(app);
     pldmtool::base::registerCommand(app);
