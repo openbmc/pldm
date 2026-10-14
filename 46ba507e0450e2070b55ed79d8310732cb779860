@@ -16,6 +16,23 @@
       "message": "Deployed on a Yosemite4 BMC and drove firmware updates of a Sentinel Dome BIC over MCTP\nthrough the Software.Update interface. Redfish EventLog (Managers/bmc) showed:\n\n  Successful update:  Update.1.2.TargetDetermined, TransferringToComponent,\n                      VerifyingAtComponent, InstallingOnComponent, UpdateSuccessful\n  WF package to SD:   Update.1.2.UpdateNotApplicable\n  Non-PLDM file:      Update.1.2.VerificationFailed (image \u0027\u0027 as the header is not parsed)",
       "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bef0241a_7509fc5b",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-14T10:26:28Z",
+      "side": 1,
+      "message": "We would be generating events on temporary objects that have no correspondance in FirmwareInventory, can we use same dbus object path that we create the ItemUpdater object on (` std::format(\"{}_{}\", objPath, generatedId).c_str()`)",
+      "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

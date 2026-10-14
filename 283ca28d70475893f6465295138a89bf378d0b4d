@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c19d9aa0_c926aa82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-14T10:26:28Z",
+      "side": 1,
+      "message": "I have follow up patches to handle aggregated updates which I\u0027ve tested on top of this commit and the bmcweb patch https://gerrit.openbmc.org/c/openbmc/bmcweb/+/91029 \n\n@paligill@gmail.com this patch currently sends duplicate events for devices with multiple components, can we make it so that events are generated per component?",
+      "parentUuid": "48b649ad_5bad552f",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dccefd49_448f9053",
