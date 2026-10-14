@@ -16,6 +16,24 @@
       "message": "can you please add even a negative testcase ?",
       "revId": "8a9d6762cdc6a4b2aa1a0baf2245c0f2b30582e3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75f406d_27cdb299",
+        "filename": "platform-mc/test/terminus_manager_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-14T03:54:54Z",
+      "side": 1,
+      "message": "Done. Added terminus name without entity instance number and terminus name with wrong entity instance number.",
+      "parentUuid": "456c28e7_f01f1de2",
+      "revId": "8a9d6762cdc6a4b2aa1a0baf2245c0f2b30582e3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
