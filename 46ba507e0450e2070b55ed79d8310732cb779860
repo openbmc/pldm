@@ -51,6 +51,24 @@
       "parentUuid": "bef0241a_7509fc5b",
       "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1138bd40_8354f648",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-15T17:50:22Z",
+      "side": 1,
+      "message": "They are not the same. `objPathWithSwId` is created for every update as `objPath + \"_\" + utils::generateSwId()`. If we have the FirmwareInventory GET alongside the results, we could confirm that they\u0027re not the same",
+      "parentUuid": "32893e2c_4ee41ca2",
+      "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

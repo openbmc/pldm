@@ -90,6 +90,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee20a82_09346c1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-15T17:50:22Z",
+      "side": 1,
+      "message": "What I meant by duplicate was that it sends the same event for each component with no change in the target name. That\u0027s N TargetDetermined, TransferringToComponent, etc events (with the same version and target) for each of the N components.\n\nRegarding using the bmcweb patch, I have used both the RF events and the task messages in bmcweb to test this feature.",
+      "parentUuid": "88b7e071_bd08fe1b",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dccefd49_448f9053",
