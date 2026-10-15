@@ -16,6 +16,24 @@
       "message": "Could you add a log line (e.g. error(...)) when invalid UTF-8 is actually replaced, so it\u0027s recorded rather than only visible as a stray in the output?",
       "revId": "48d2ec6b823d2e92fecee6c2a782758761306d5b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43ed9fce_91841006",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-15T07:33:09Z",
+      "side": 1,
+      "message": "I have expanded the explanation in the comment. Technically, not all strings must be UTF-8 under DSP0248_v1.3.0 Table 1, and some valid encodings can cause json::dump() to throw an error. \n\nRather than treating this strictly as an error, I have updated the pldmtool help text footer to clarify that incompatible characters are replaced. \n\nThis way we can make sure users understand the output without being misled.",
+      "parentUuid": "e6c3cb0f_4e6ba72b",
+      "revId": "48d2ec6b823d2e92fecee6c2a782758761306d5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
