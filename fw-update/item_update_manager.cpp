@@ -126,7 +126,8 @@ bool ItemUpdateManager::processPackage()
 
 std::string ItemUpdateManager::processFd(int fd)
 {
-    objPathWithSwId = std::format("{}_{}", objPath, utils::generateSwId());
+    swId = std::to_string(utils::generateSwId());
+    objPathWithSwId = std::format("{}_{}", objPath, swId);
     auto rawDupFd = dup(fd);
     if (rawDupFd < 0)
     {
@@ -251,6 +252,14 @@ void ItemUpdateManager::completeUpdate(bool status)
         status ? software::Activation::Activations::Active
                : software::Activation::Activations::Failed);
     teardownUpdate();
+
+    if (status)
+    {
+        // Hand this object's path to the entry the query below creates.
+        updatedSwId = swId;
+        inProgressActivation.reset();
+    }
+
     if (taskCompletionCallback)
     {
         taskCompletionCallback();

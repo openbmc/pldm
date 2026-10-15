@@ -57,6 +57,12 @@ class FirmwareInventory
         const std::string& associatedEndpoint,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Other);
 
+    /** @brief The identifier distinguishing this entry's object path */
+    auto getId() const -> const std::string&
+    {
+        return generatedId;
+    }
+
   private:
     /**
      * @brief Reference to the sdbusplus bus
@@ -67,6 +73,9 @@ class FirmwareInventory
      * @brief Software identifier containing EID and component identifier
      */
     SoftwareIdentifier softwareIdentifier;
+
+    /** @brief The identifier distinguishing this entry's object path */
+    std::string generatedId;
 
     /**
      * @brief The D-Bus object path for the firmware inventory entry, obtained

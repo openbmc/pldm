@@ -44,7 +44,17 @@ void FirmwareInventoryManager::createFirmwareEntry(
 
     const auto softwarePath = std::format(
         "{}/{}_{}", SoftwareVersion::namespace_path, boardName, softwareName);
-    const auto generatedId = std::to_string(utils::generateSwId());
+
+    // Take over the object a completed update reported on, otherwise keep
+    // the path this entry already has.
+    auto generatedId = updateManager.updatedSwId(softwareIdentifier);
+    if (generatedId.empty())
+    {
+        auto existing = softwareMap.find(softwareIdentifier);
+        generatedId = (existing != softwareMap.end())
+                          ? existing->second->getId()
+                          : std::to_string(utils::generateSwId());
+    }
 
     auto conditions = conditionConfigManager.conditions(softwareName);
     auto conditionArg = generateArg(boardName);
@@ -54,10 +64,12 @@ void FirmwareInventoryManager::createFirmwareEntry(
         generatedId, conditions, conditionArg,
         std::move(taskCompletionCallback));
 
-    softwareMap.insert_or_assign(softwareIdentifier,
-                                 std::make_unique<FirmwareInventory>(
-                                     softwareIdentifier, softwarePath,
-                                     generatedId, activeVersion, boardPath));
+    // Owns the D-Bus objects on the path being reclaimed.
+    softwareMap.erase(softwareIdentifier);
+    softwareMap.emplace(softwareIdentifier,
+                        std::make_unique<FirmwareInventory>(
+                            softwareIdentifier, softwarePath, generatedId,
+                            activeVersion, boardPath));
 }
 
 void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
