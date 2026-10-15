@@ -102,3 +102,62 @@ TEST(GetBoardPath_WithMockHandler, ReturnsExpectedBoardPath)
               std::string::npos);
     EXPECT_EQ(inventory->getVersion().version(), firmwareVersion);
 }
+
+// Being rediscovered is not on its own a new version, so the entry keeps the
+// path it already has and only reports the version that was read.
+TEST(CreateFirmwareEntry_Rediscovered, KeepsPathAndReportsNewVersion)
+{
+    MockdBusHandler mockHandler;
+    InventoryPath inventoryPath =
+        "/xyz/openbmc_project/inventory/system/board/PLDM_Device";
+    pldm::utils::GetAncestorsResponse fakeResponse = {{inventoryPath, {}}};
+    EXPECT_CALL(mockHandler, getAncestors)
+        .WillRepeatedly(::testing::Return(fakeResponse));
+
+    Configurations configurations;
+    pldm::eid endpointId = 1;
+    pldm::MctpInfo endpointInfo = std::make_tuple(
+        endpointId, pldm::UUID{"uuid"}, pldm::MctpMedium{"medium"},
+        pldm::NetworkId{0}, pldm::MctpInfoName{"BMC"});
+    configurations["/xyz/openbmc_project/inventory/system/board/PLDM_Device"] =
+        endpointInfo;
+
+    Event event(sdeventplus::Event::get_default());
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> handler(
+        nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
+
+    DescriptorMap descriptorMap{};
+    ComponentInfoMap componentInfoMap{};
+    AggregateUpdateManager updateManager(event, handler, instanceIdDb,
+                                         descriptorMap, componentInfoMap);
+    FirmwareInventoryManagerTest inventoryManager(&mockHandler, configurations,
+                                                  updateManager);
+
+    SoftwareIdentifier softwareIdentifier{endpointId, 100};
+    SoftwareName softwareName{"TestDevice"};
+    Descriptors firmwareDescriptors;
+    ComponentInfo firmwareComponentInfo;
+
+    auto pathOf = [&]() {
+        auto it = inventoryManager.getSoftwareMap().find(softwareIdentifier);
+        return static_cast<FirmwareInventoryTestInstance*>(it->second.get())
+            ->getSoftwarePath();
+    };
+
+    inventoryManager.createFirmwareEntry(
+        softwareIdentifier, softwareName, "1.0.0", firmwareDescriptors,
+        firmwareComponentInfo, nullptr);
+    const auto pathBefore = pathOf();
+
+    inventoryManager.createFirmwareEntry(
+        softwareIdentifier, softwareName, "2.0.0", firmwareDescriptors,
+        firmwareComponentInfo, nullptr);
+
+    EXPECT_EQ(pathOf(), pathBefore);
+
+    auto it = inventoryManager.getSoftwareMap().find(softwareIdentifier);
+    const auto* inventory =
+        static_cast<FirmwareInventoryTestInstance*>(it->second.get());
+    EXPECT_EQ(inventory->getVersion().version(), "2.0.0");
+}

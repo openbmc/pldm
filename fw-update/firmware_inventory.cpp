@@ -7,7 +7,7 @@ FirmwareInventory::FirmwareInventory(
     SoftwareIdentifier softwareIdentifier, const std::string& softwarePath,
     const std::string& generatedId, const std::string& softwareVersion,
     const std::string& associatedEndpoint, SoftwareVersionPurpose purpose) :
-    softwareIdentifier(softwareIdentifier),
+    softwareIdentifier(softwareIdentifier), generatedId(generatedId),
     softwarePath(std::format("{}_{}", softwarePath, generatedId)),
     association(this->bus, this->softwarePath.c_str()),
     version(this->bus, this->softwarePath.c_str(),

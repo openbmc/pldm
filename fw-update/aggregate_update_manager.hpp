@@ -98,6 +98,15 @@ class AggregateUpdateManager : public UpdateManager
     void eraseUpdateManager(const SoftwareIdentifier& softwareIdentifier);
 
     /**
+     * @brief Software id of the update that completed on the given target
+     *
+     * @param[in] softwareIdentifier - The target
+     *
+     * @return The id, empty when no update has completed on it
+     */
+    std::string updatedSwId(const SoftwareIdentifier& softwareIdentifier) const;
+
+    /**
      * @brief Erase UpdateManager instances that satisfy a given predicate
      *
      * This function iterates through the stored UpdateManager instances and

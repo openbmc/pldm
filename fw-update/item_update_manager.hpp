@@ -134,10 +134,23 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const Descriptors& descriptors);
 
+    /**
+     * @brief Software id of the update that completed on this target
+     *
+     * Empty until one succeeds. The entry created by the query that follows
+     * takes it, so the object the update reported on becomes the current one.
+     */
+    auto getUpdatedSwId() const -> const std::string&
+    {
+        return updatedSwId;
+    }
+
   private:
     mctp_eid_t eid;
     std::string objPath;
+    std::string swId;
     std::string objPathWithSwId;
+    std::string updatedSwId;
 
     /**
      * @brief The descriptors to match against

@@ -34,16 +34,32 @@ void AggregateUpdateManager::createUpdateManager(
 {
     auto eid = softwareIdentifier.first;
 
+    // The manager being replaced owns the Software.Update object on the path
+    // its replacement is about to claim, and holds references into the maps
+    // below, so it goes first.
+    updateManagers.erase(softwareIdentifier);
+
     descriptorMap[softwareIdentifier] =
         std::make_unique<Descriptors>(descriptors);
     componentInfoMap[softwareIdentifier] =
         std::make_unique<ComponentInfo>(componentInfo);
 
-    updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
-        eid, event, handler, instanceIdDb, updateObjPath, generatedId,
-        *descriptorMap[softwareIdentifier],
-        *componentInfoMap[softwareIdentifier], conditionPathPair, conditionArg,
-        std::move(taskCompletionCallback));
+    updateManagers.emplace(
+        softwareIdentifier,
+        std::make_unique<ItemUpdateManager>(
+            eid, event, handler, instanceIdDb, updateObjPath, generatedId,
+            *descriptorMap[softwareIdentifier],
+            *componentInfoMap[softwareIdentifier], conditionPathPair,
+            conditionArg, std::move(taskCompletionCallback)));
+}
+
+std::string AggregateUpdateManager::updatedSwId(
+    const SoftwareIdentifier& softwareIdentifier) const
+{
+    auto updateManager = updateManagers.find(softwareIdentifier);
+    return updateManager != updateManagers.end()
+               ? updateManager->second->getUpdatedSwId()
+               : std::string{};
 }
 
 void AggregateUpdateManager::eraseUpdateManager(
