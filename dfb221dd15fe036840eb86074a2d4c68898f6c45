@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc574772_b4574a5c",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-15T01:49:58Z",
+      "side": 1,
+      "message": "With the latest master, `addToExistingMctpInfos` keeps the first entry for a path. If the endpoint is already tracked when the association resolves, the stored entry would keep the pre-association MctpInfo, while `handleMctpEndpoints` receives the resolved one.\n\nSince the `Connectivity` handler applies changes from the stored entry, would it make sense to replace the tracked entry with the resolved one before notifying the handlers?",
+      "revId": "dfb221dd15fe036840eb86074a2d4c68898f6c45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
