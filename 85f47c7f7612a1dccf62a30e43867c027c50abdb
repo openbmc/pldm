@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77385ab8_00adbdfd",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T12:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6b020f9_841b663b",
+      "range": {
+        "startLine": 141,
+        "startChar": 20,
+        "endLine": 143,
+        "endChar": 64
+      },
+      "revId": "85f47c7f7612a1dccf62a30e43867c027c50abdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd44b94e_282dfea1",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "706cc98e_2141cc4f",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T12:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd44b94e_282dfea1",
+      "range": {
+        "startLine": 138,
+        "startChar": 2,
+        "endLine": 138,
+        "endChar": 10
+      },
+      "revId": "85f47c7f7612a1dccf62a30e43867c027c50abdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c795d40_461ea909",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-16T02:46:55Z",
       "side": 1,
       "message": "nit:\nI think this can be removed?",
+      "range": {
+        "startLine": 140,
+        "startChar": 31,
+        "endLine": 140,
+        "endChar": 77
+      },
+      "revId": "85f47c7f7612a1dccf62a30e43867c027c50abdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bff46f7_4c89ed20",
+        "filename": "platform-mc/sensor_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T12:03:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c795d40_461ea909",
       "range": {
         "startLine": 140,
         "startChar": 31,
