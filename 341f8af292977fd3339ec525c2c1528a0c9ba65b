@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4c04f4e8_9a8aefa2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-16T16:43:28Z",
+      "side": 1,
+      "message": "```\n/xyz/openbmc_project/inventory/system/Terminus_19\n/xyz/openbmc_project/inventory/system/Terminus_19/Terminus_19_Sensor_4103\n/xyz/openbmc_project/inventory/system/Terminus_19/Terminus_19_Sensor_4104\n...\n/xyz/openbmc_project/inventory/system/Terminus_19_Container_32_Cpu_1\n/xyz/openbmc_project/inventory/system/Terminus_19_Container_32_PowerSupply_1\n/xyz/openbmc_project/inventory/system/Terminus_19_Container_100_PowerSupply_1\n/xyz/openbmc_project/inventory/system/Terminus_19_Container_100_PowerSupply_2\n...\n/xyz/openbmc_project/inventory/system/Terminus_19_Container_100_PowerSupply_6\n/xyz/openbmc_project/sensors/power/Terminus_12_Sensor_50\n```\n\nHi @vishnunithyasoundhar.s@intel.com, \nplease find the above-attached is a no aux name version. To have more details with aux name, please kindly checkout any patch after https://gerrit.openbmc.org/c/openbmc/pldm/+/85039 in the corresponding relation chain.",
+      "parentUuid": "5ddf34c0_fb386f5c",
+      "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45030d4c_e2812a6b",
         "filename": "platform-mc/terminus.cpp",
         "patchSetId": 14
