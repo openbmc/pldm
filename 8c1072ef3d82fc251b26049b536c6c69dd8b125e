@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d91caa_4dfe00b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T09:19:01Z",
+      "side": 1,
+      "message": "Suggest doing this in a separate patch. Please add more information on simulated transport in that patch\u0027s commit message.",
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314e3928_b0e03665",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T09:19:01Z",
+      "side": 1,
+      "message": "This is critical. Ideally commit message should contain only this under tested section since rest of the current text in tested section is evident from CI status.",
+      "range": {
+        "startLine": 25,
+        "startChar": 31,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc29e636_9b2a9cd9",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2250,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T09:19:01Z",
+      "side": 1,
+      "message": "Do we need this since we already added a check for it at line 2223?",
+      "range": {
+        "startLine": 2248,
+        "startChar": 12,
+        "endLine": 2250,
+        "endChar": 66
+      },
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc86c3db_d2cc1f50",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2297,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-16T09:19:01Z",
+      "side": 1,
+      "message": "Even though rest of the pldmtool uses std iostream, for new commands should we use std::format? @deepak.kodihalli.83@gmail.com, your thoughts on this?",
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
