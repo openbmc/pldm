@@ -2,6 +2,8 @@
 
 #include <libpldm/edac.h>
 
+#include <xyz/openbmc_project/Common/error.hpp>
+
 #include <typeinfo>
 
 #include <gmock/gmock.h>
@@ -21,6 +23,38 @@ void imageInsert(std::vector<uint8_t>& fwPkgHdr, std::vector<uint8_t>& image)
 {
     // Insert the image at the end of the package header
     fwPkgHdr.insert(fwPkgHdr.end(), image.begin(), image.end());
+}
+
+std::vector<uint8_t> makeSingleComponentPackageWithBitmap(
+    uint8_t applicableComponents)
+{
+    std::vector<uint8_t> fwPkgHdr{
+        0xF0, 0x18, 0x87, 0x8C, 0xCB, 0x7D, 0x49, 0x43, 0x98,
+        0x00, 0xA0, 0x2F, 0x05, 0x9A, 0xCA, 0x02, 0x01, 0x8B,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x19, 0x0C, 0xE5, 0x07, 0x00, 0x08, 0x00, 0x01, 0x0E,
+        0x56, 0x65, 0x72, 0x73, 0x69, 0x6F, 0x6E, 0x53, 0x74,
+        0x72, 0x69, 0x6E, 0x67, 0x31, 0x01, 0x2E, 0x00, 0x01,
+        0x01, 0x00, 0x00, 0x00, 0x01, 0x0E, 0x00, 0x00, applicableComponents,
+        0x56, 0x65, 0x72, 0x73, 0x69, 0x6F, 0x6E, 0x53, 0x74,
+        0x72, 0x69, 0x6E, 0x67, 0x32, 0x02, 0x00, 0x10, 0x00,
+        0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15, 0x95,
+        0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6, 0x75, 0x01, 0x00,
+        0x0A, 0x00, 0x64, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x00,
+        0x00, 0x00, 0x00, 0x8B, 0x00, 0x00, 0x00, 0x1B, 0x00,
+        0x00, 0x00, 0x01, 0x0E, 0x56, 0x65, 0x72, 0x73, 0x69,
+        0x6F, 0x6E, 0x53, 0x74, 0x72, 0x69, 0x6E, 0x67, 0x33};
+
+    const uint32_t check = pldm_edac_crc32(fwPkgHdr.data(), fwPkgHdr.size());
+    const auto checksum =
+        std::bit_cast<std::array<uint8_t, sizeof(check)>>(check);
+    fwPkgHdr.insert(fwPkgHdr.end(), checksum.begin(), checksum.end());
+
+    constexpr uintmax_t pkgSize = 166;
+    std::vector<uint8_t> compImage;
+    imageGenerate(compImage, pkgSize - fwPkgHdr.size());
+    imageInsert(fwPkgHdr, compImage);
+    return fwPkgHdr;
 }
 
 TEST(PackageParser, ValidPkgSingleDescriptorSingleComponent)
@@ -216,4 +250,36 @@ TEST(PackageParser, InvalidPkgBadChecksum)
     imageGenerate(compImage, pkgImageSize);
     imageInsert(fwPkgHdr, compImage);
     EXPECT_EQ(parsePkgHeader(fwPkgHdr), nullptr);
+}
+
+TEST(PackageParser, ValidPkgApplicableComponentIndexInBounds)
+{
+    auto fwPkgHdr = makeSingleComponentPackageWithBitmap(0x01);
+    auto parser = parsePkgHeader(fwPkgHdr);
+    ASSERT_NE(parser, nullptr);
+    EXPECT_NO_THROW(parser->parse(fwPkgHdr));
+    const auto& records = parser->getFwDeviceIDRecords();
+    ASSERT_EQ(records.size(), 1);
+    EXPECT_EQ(std::get<ApplicableComponents>(records[0]),
+              ApplicableComponents{0});
+}
+
+TEST(PackageParser, InvalidPkgApplicableComponentIndexOutOfBounds)
+{
+    auto fwPkgHdr = makeSingleComponentPackageWithBitmap(0x02);
+    auto parser = parsePkgHeader(fwPkgHdr);
+    ASSERT_NE(parser, nullptr);
+    EXPECT_THROW(
+        parser->parse(fwPkgHdr),
+        sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure);
+}
+
+TEST(PackageParser, InvalidPkgNoApplicableComponents)
+{
+    auto fwPkgHdr = makeSingleComponentPackageWithBitmap(0x00);
+    auto parser = parsePkgHeader(fwPkgHdr);
+    ASSERT_NE(parser, nullptr);
+    EXPECT_THROW(
+        parser->parse(fwPkgHdr),
+        sdbusplus::xyz::openbmc_project::Common::Error::InternalFailure);
 }

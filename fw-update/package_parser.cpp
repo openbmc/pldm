@@ -269,6 +269,33 @@ void PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
         throw InternalFailure();
     }
 
+    // Consumers require at least one applicable component, and every index
+    // must reference componentImageInfos.
+    for (size_t recordIndex = 0; recordIndex < fwDeviceIDRecords.size();
+         ++recordIndex)
+    {
+        const auto& record = fwDeviceIDRecords[recordIndex];
+        const auto& componentsList = std::get<ApplicableComponents>(record);
+        if (componentsList.empty())
+        {
+            error(
+                "Firmware device ID record at index '{RECORD_INDEX}' has no applicable components",
+                "RECORD_INDEX", recordIndex);
+            throw InternalFailure();
+        }
+        for (const auto& componentIndex : componentsList)
+        {
+            if (componentIndex >= componentImageInfos.size())
+            {
+                error(
+                    "Applicable component index '{INDEX}' in firmware device ID record at index '{RECORD_INDEX}' is out of bounds (component count '{COUNT}')",
+                    "INDEX", componentIndex, "RECORD_INDEX", recordIndex,
+                    "COUNT", componentImageInfos.size());
+                throw InternalFailure();
+            }
+        }
+    }
+
     if (offset + sizeof(PackageHeaderChecksum) != pkgHeaderSize)
     {
         error("Failed to parse package header of size '{PKG_HDR_SIZE}'",
