@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2efec37_c84431b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-16T07:04:07Z",
+      "side": 1,
+      "message": "Ack, we will now mark the task as failed but still update all possible devices",
+      "parentUuid": "27192f9f_66ba1179",
+      "range": {
+        "startLine": 21,
+        "startChar": 19,
+        "endLine": 21,
+        "endChar": 65
+      },
+      "revId": "e89db89f868f771c4c10fddc03cb47137ff1fefa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2646a0eb_685c1d05",
         "filename": "fw-update/update_manager.cpp",
         "patchSetId": 2
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-16T05:50:50Z",
       "side": 1,
       "message": "nit - can we improve this log ? We should not say No matching devices found when every matched device was skipped",
+      "revId": "e89db89f868f771c4c10fddc03cb47137ff1fefa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21a352d_ee9e088e",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-16T07:04:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2646a0eb_685c1d05",
       "revId": "e89db89f868f771c4c10fddc03cb47137ff1fefa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
