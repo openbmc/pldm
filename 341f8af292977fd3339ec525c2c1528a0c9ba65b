@@ -16,6 +16,24 @@
       "message": "Hi @vishnunithyasoundhar.s@intel.com,\n\nI am working on State Sensor Infra that will creates multiple D-Bus object within a single terminus (ideally it will create D-Bus object for each mention entity within the PDR).\n\nDesign docs:\nhttps://gerrit.openbmc.org/c/openbmc/docs/+/92069\n\nPLDM Implementation:\nhttps://gerrit.openbmc.org/q/topic:%22pldm_state_sensor_support%22\n\nUnder such circumstances, adding Entity Instance Number as suffix doesn\u0027t resolves the naming problem. Instead, I have proposed to use suffix with the following format:\n```\n/\u003cTerminusName\u003e_Container_\u003cContainerID\u003e_\u003cEntityType\u003e_\u003cEntityInstanceNumber\u003e\n```\nwhere `\u003cTerminusName\u003e` will be `Terminus_\u003cTID\u003e` if no aux name has given. \n\nCould we align on that rule there instead of appending the instance number to every terminus name?",
       "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ddf34c0_fb386f5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-16T07:53:28Z",
+      "side": 1,
+      "message": "Hi @jvoon@nvidia.com Could you provide me a sample of how the dbus tree of pldm will look after your change? I want to see which part of the tree is affected and which part isnt.",
+      "parentUuid": "ace3c99d_ac68c105",
+      "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
