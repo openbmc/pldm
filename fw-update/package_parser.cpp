@@ -269,6 +269,31 @@ void PackageParser::parse(const std::vector<uint8_t>& pkgHdr)
         throw InternalFailure();
     }
 
+    // The ApplicableComponents bitfield in each firmware device ID record
+    // indexes into componentImageInfos (DSP0267 Table 4). The bitfield
+    // length is attacker-controlled and independent of ComponentImageCount,
+    // so expanded indices must be validated against the actual component
+    // count before any consumer indexes componentImageInfos with them.
+    // Without this check, a crafted package whose device ID record sets an
+    // applicable-component bit beyond the component count causes
+    // out-of-bounds vector indexing at the consumption sites (e.g.
+    // DeviceUpdater::sendPassCompTableRequest).
+    for (const auto& record : fwDeviceIDRecords)
+    {
+        const auto& componentsList = std::get<ApplicableComponents>(record);
+        for (const auto& componentIndex : componentsList)
+        {
+            if (componentIndex >= componentImageInfos.size())
+            {
+                error(
+                    "Applicable component index '{INDEX}' in firmware device ID record is out of bounds (component count '{COUNT}')",
+                    "INDEX", componentIndex, "COUNT",
+                    componentImageInfos.size());
+                throw InternalFailure();
+            }
+        }
+    }
+
     if (offset + sizeof(PackageHeaderChecksum) != pkgHeaderSize)
     {
         error("Failed to parse package header of size '{PKG_HDR_SIZE}'",
