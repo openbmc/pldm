@@ -6,6 +6,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <chrono>
 #include <format>
 
 PHOSPHOR_LOG2_USING;
@@ -42,6 +43,7 @@ void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
         downstreamDescriptorMap.erase(eid);
         componentInfoMap.erase(eid);
         firmwareInventoryManager.deleteFirmwareEntry(eid);
+        completionCodeRetryTimers.erase(eid);
     }
 }
 
@@ -116,6 +118,39 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "Failed to query device identifiers response for endpoint ID {EID}, completion code {CC}",
             "EID", eid, "CC", completionCode);
+
+        // The FD may fail the request transiently, e.g. while it is busy
+        // with other PLDM traffic. The response arrives immediately, so defer
+        // the retry to give the FD time to recover. The retry budget is shared
+        // with the timeout retries and consumed when the timer expires.
+        auto retryIt = refreshRetriesRemaining.find(eid);
+        if ((completionCode == PLDM_ERROR ||
+             completionCode == PLDM_ERROR_NOT_READY) &&
+            retryIt != refreshRetriesRemaining.end() && retryIt->second)
+        {
+            constexpr auto completionCodeRetryBaseDelay =
+                std::chrono::seconds(5);
+            const auto delay =
+                completionCodeRetryBaseDelay *
+                (refreshFirmwareParametersRetryCount - retryIt->second + 1);
+            auto& timer = completionCodeRetryTimers[eid];
+            if (!timer)
+            {
+                timer = std::make_unique<RetryTimer>(
+                    sdeventplus::Event::get_default(),
+                    [this, eid](RetryTimer&) {
+                        retryFirmwareInventoryRequest(
+                            eid,
+                            "QueryDeviceIdentifiers after completion code failure",
+                            &InventoryManager::
+                                sendQueryDeviceIdentifiersRequest);
+                    });
+            }
+            warning(
+                "Scheduling QueryDeviceIdentifiers retry for endpoint ID {EID} in {DELAY} seconds",
+                "EID", eid, "DELAY", delay.count());
+            timer->restartOnce(delay);
+        }
         return;
     }
 
