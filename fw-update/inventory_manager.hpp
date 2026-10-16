@@ -6,6 +6,11 @@
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/utility/timer.hpp>
+
+#include <memory>
+
 namespace pldm
 {
 
@@ -243,6 +248,14 @@ class InventoryManager
 
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, SoftwareName> firmwareDeviceNameMap;
+
+    using RetryTimer =
+        sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic>;
+
+    /** @brief Timers deferring QueryDeviceIdentifiers retries after a
+     *         retryable completion code, per endpoint
+     */
+    std::map<eid, std::unique_ptr<RetryTimer>> completionCodeRetryTimers;
 
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
