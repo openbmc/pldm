@@ -25,7 +25,8 @@ class InventoryManagerTest : public testing::Test
                       outComponentInfoMap),
         inventoryManager(&dBusHandler, reqHandler, instanceIdDb,
                          outDescriptorMap, outDownstreamDescriptorMap,
-                         outComponentInfoMap, configurations, updateManager)
+                         outComponentInfoMap, configurations, updateManager,
+                         event)
     {}
 
     int fd = -1;

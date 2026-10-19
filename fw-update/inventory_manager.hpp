@@ -6,6 +6,12 @@
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/utility/timer.hpp>
+
+#include <memory>
+#include <optional>
+
 namespace pldm
 {
 
@@ -41,6 +47,7 @@ class InventoryManager
      *                                        by the BMC.
      *  @param[out] componentInfoMap - Populate the component info for the FDs
      *                                 managed by the BMC.
+     *  @param[in] event - PLDM daemon's main event loop
      */
     explicit InventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
@@ -49,12 +56,13 @@ class InventoryManager
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
         const Configurations& configurations,
-        AggregateUpdateManager& updateManager) :
+        AggregateUpdateManager& updateManager, sdeventplus::Event& event) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap), configurations(configurations),
-        firmwareInventoryManager(dbusHandler, configurations, updateManager)
+        firmwareInventoryManager(dbusHandler, configurations, updateManager),
+        event(event)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -185,6 +193,19 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Schedule a delayed QueryDeviceIdentifiers retry after a
+     *         retryable completion code
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void scheduleQueryDeviceIdentifiersRetry(mctp_eid_t eid);
+
+    /** @brief Send a scheduled QueryDeviceIdentifiers retry
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void sendQueryDeviceIdentifiersRetry(mctp_eid_t eid);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -197,6 +218,25 @@ class InventoryManager
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, SoftwareName> firmwareDeviceNameMap;
 
+    using RetryTimer =
+        sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic>;
+
+    /** @brief State of QueryDeviceIdentifiers retries for an endpoint */
+    struct QueryDeviceIdentifiersRetry
+    {
+        std::unique_ptr<RetryTimer> timer;
+        uint8_t count = 0;
+        /** @brief Instance ID of the in-flight QueryDeviceIdentifiers */
+        std::optional<uint8_t> instanceId;
+    };
+
+    /** @brief QueryDeviceIdentifiers retries per endpoint
+     *
+     *  An entry exists from discoverFDs() until removeFDs(). Retries are only
+     *  scheduled for endpoints that have an entry.
+     */
+    std::map<eid, QueryDeviceIdentifiersRetry> queryDeviceIdentifiersRetries;
+
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
 
@@ -208,6 +248,9 @@ class InventoryManager
 
     /** @brief Dbus Inventory Item Manager */
     FirmwareInventoryManager firmwareInventoryManager;
+
+    /** @brief PLDM daemon's main event loop */
+    sdeventplus::Event& event;
 };
 
 /**
