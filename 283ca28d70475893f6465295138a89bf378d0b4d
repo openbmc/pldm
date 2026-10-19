@@ -108,6 +108,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec5614a4_7cb0daa5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-19T21:34:53Z",
+      "side": 1,
+      "message": "@arunpapannagari23@gmail.com We haven\u0027t noticed this with our testing using single image packages https://gerrit.openbmc.org/c/openbmc/pldm/+/94762/comments/dccefd49_448f9053 , so probably its happening when you are adding the changes for bundle packages. Can you please confirm that ? If yes, then its better you add the handling in your patch so you can test and verify this as we don\u0027t use bundle images at Meta.",
+      "parentUuid": "7ee20a82_09346c1d",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dccefd49_448f9053",

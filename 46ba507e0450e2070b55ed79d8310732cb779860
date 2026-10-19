@@ -69,6 +69,24 @@
       "parentUuid": "32893e2c_4ee41ca2",
       "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed1288f3_7a5034fe",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-19T21:34:53Z",
+      "side": 1,
+      "message": "In general, we need to use the new objectPath which is created for the new firmware update -\n1. Because these events are related to the new FirmwareInventory which will become active.\n2. Thats the same path which is returned to BMCWeb as part of StartUpdate and thats the one which BMCWeb tracks for the new update and event log matching.\n\nSo, based on what you mentioned above, i looked at the code. The issue is pldmd creates a temp objectpath for update and then just releases it and that\u0027s something which needs to be fixed on pldmd side. I have raised a patch to fix that behavior via https://gerrit.openbmc.org/c/openbmc/pldm/+/96019 .",
+      "parentUuid": "1138bd40_8354f648",
+      "revId": "46ba507e0450e2070b55ed79d8310732cb779860",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
