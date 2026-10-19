@@ -22,6 +22,30 @@
       },
       "revId": "9ba758991bd33d997b36c5dd8ee5196954b76b53",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2889583_df3541ad",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-19T09:33:53Z",
+      "side": 1,
+      "message": "If we use contains we have to do `sensorPollTimers.contains(tid) \u0026\u0026 sensorPollTimers[tid]` and it would need two look ups into the map, one for contains and one for operator[], as oppose to only map look up needed for the current implementation.",
+      "parentUuid": "ece9a86e_9815f30e",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 35
+      },
+      "revId": "9ba758991bd33d997b36c5dd8ee5196954b76b53",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
