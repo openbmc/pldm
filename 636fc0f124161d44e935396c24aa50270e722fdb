@@ -1,0 +1,152 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a65ffa1_847a8b0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "Is there a change for that migration? If so, please link its Change-Id otherwise this reads as open-ended future work.",
+      "range": {
+        "startLine": 19,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a8618a8_040a5da1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "So at peak there are still two copies of the package  -processStream() still copies the whole package into a vector (update_manager.cpp:204).\n\nNow that the package is mapped, could the parser take a span over the mapping instead? The parser only uses the vector\u0027s contents up to pkgHeaderSize, so this would remove the copy.",
+      "range": {
+        "startLine": 35,
+        "startChar": 37,
+        "endLine": 35,
+        "endChar": 67
+      },
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72280086_3b3426c5",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "nit - now that there\u0027s an Unavailable alias in this file, let\u0027s use it here as well",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8c7608_1d298a9f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "It\u0027s already included in the header file, let\u0027s remove it here.",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973c70fe_39ccd477",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "Do we need the dup here? We map the fd right away, and the mapping stays valid after the D-Bus message closes the original.",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde32a15_a8ed343b",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "It\u0027s nice to reject an empty image up front. It should be InvalidImage instead of InvalidArgument, though?",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73c1b23_371422a9",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "Can we log the mode and size here? Right now, we can\u0027t tell from the journal which of the two checks failed.",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dcd6b71_daa8ab25",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-10-19T07:17:24Z",
+      "side": 1,
+      "message": "What does this comment mean ?",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
