@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e6042d4_e677b6df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:15:16Z",
+      "side": 1,
+      "message": "Thanks for fixing the issue.",
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa00c009_5c5a82fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:15:16Z",
+      "side": 1,
+      "message": "pldmtool provides best-effort diagnostic output; issue reports should include the command, and raw response",
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f909125a_306a4bd3",
+        "filename": "pldmtool/pldmtool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:15:16Z",
+      "side": 1,
+      "message": "I would rather say \n\n\"Strings containing invalid UTF-8 are displayed with replacement characters (U+FFFD). Use --verbose to inspect raw response bytes instead.\"",
+      "range": {
+        "startLine": 70,
+        "startChar": 1,
+        "endLine": 71,
+        "endChar": 166
+      },
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
