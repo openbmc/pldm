@@ -6,6 +6,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <chrono>
 #include <format>
 
 PHOSPHOR_LOG2_USING;
@@ -14,11 +15,18 @@ namespace pldm
 {
 namespace fw_update
 {
+namespace
+{
+constexpr uint8_t queryDeviceIdentifiersMaxRetries = 3;
+constexpr auto queryDeviceIdentifiersRetryBaseDelay = std::chrono::seconds(5);
+} // namespace
+
 void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
     for (const auto& mctpInfo : mctpInfos)
     {
         auto eid = std::get<pldm::eid>(mctpInfo);
+        queryDeviceIdentifiersRetries.erase(eid);
         try
         {
             sendQueryDeviceIdentifiersRequest(eid);
@@ -42,6 +50,47 @@ void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
         downstreamDescriptorMap.erase(eid);
         componentInfoMap.erase(eid);
         firmwareInventoryManager.deleteFirmwareEntry(eid);
+        queryDeviceIdentifiersRetries.erase(eid);
+    }
+}
+
+void InventoryManager::scheduleQueryDeviceIdentifiersRetry(mctp_eid_t eid)
+{
+    auto& retry = queryDeviceIdentifiersRetries[eid];
+    if (retry.count >= queryDeviceIdentifiersMaxRetries)
+    {
+        error(
+            "Giving up QueryDeviceIdentifiers for endpoint ID {EID} after {COUNT} retries",
+            "EID", eid, "COUNT", retry.count);
+        return;
+    }
+
+    ++retry.count;
+    const auto delay = queryDeviceIdentifiersRetryBaseDelay * retry.count;
+    if (!retry.timer)
+    {
+        retry.timer = std::make_unique<RetryTimer>(
+            sdeventplus::Event::get_default(),
+            [this, eid](RetryTimer&) { retryQueryDeviceIdentifiers(eid); });
+    }
+
+    warning(
+        "Retrying QueryDeviceIdentifiers for endpoint ID {EID} in {DELAY} seconds, attempt {COUNT}",
+        "EID", eid, "DELAY", delay.count(), "COUNT", retry.count);
+    retry.timer->restartOnce(delay);
+}
+
+void InventoryManager::retryQueryDeviceIdentifiers(mctp_eid_t eid)
+{
+    try
+    {
+        sendQueryDeviceIdentifiersRequest(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error(
+            "Failed to retry QueryDeviceIdentifiers for endpoint ID {EID} with {ERROR}",
+            "EID", eid, "ERROR", e);
     }
 }
 
@@ -116,8 +165,19 @@ void InventoryManager::queryDeviceIdentifiers(
         error(
             "Failed to query device identifiers response for endpoint ID {EID}, completion code {CC}",
             "EID", eid, "CC", completionCode);
+
+        // The FD may fail the request transiently, e.g. while it is busy
+        // with other PLDM traffic. The response arrives immediately, so defer
+        // the retry to give the FD time to recover.
+        if (completionCode == PLDM_ERROR ||
+            completionCode == PLDM_ERROR_NOT_READY)
+        {
+            scheduleQueryDeviceIdentifiersRetry(eid);
+        }
         return;
     }
+
+    queryDeviceIdentifiersRetries.erase(eid);
 
     Descriptors descriptors{};
     while (descriptorCount-- && (deviceIdentifiersLen > 0))

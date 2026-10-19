@@ -6,6 +6,11 @@
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/utility/timer.hpp>
+
+#include <memory>
+
 namespace pldm
 {
 
@@ -185,6 +190,19 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Schedule a delayed QueryDeviceIdentifiers retry after a
+     *         retryable completion code
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void scheduleQueryDeviceIdentifiersRetry(mctp_eid_t eid);
+
+    /** @brief Send a scheduled QueryDeviceIdentifiers retry
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void retryQueryDeviceIdentifiers(mctp_eid_t eid);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -196,6 +214,19 @@ class InventoryManager
 
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, SoftwareName> firmwareDeviceNameMap;
+
+    using RetryTimer =
+        sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic>;
+
+    /** @brief State of QueryDeviceIdentifiers retries for an endpoint */
+    struct QueryDeviceIdentifiersRetry
+    {
+        std::unique_ptr<RetryTimer> timer;
+        uint8_t count = 0;
+    };
+
+    /** @brief QueryDeviceIdentifiers retries per endpoint */
+    std::map<eid, QueryDeviceIdentifiersRetry> queryDeviceIdentifiersRetries;
 
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
