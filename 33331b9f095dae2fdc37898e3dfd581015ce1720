@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc72caf_2407c7a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:27:07Z",
+      "side": 1,
+      "message": "Please document that generateAttributeEntry() clears attrValueEntry on rejection and callers must check for an empty result before using it. Since this is now part of the method’s contract.",
+      "revId": "33331b9f095dae2fdc37898e3dfd581015ce1720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b406deb_56ce4871",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:27:07Z",
+      "side": 1,
+      "message": "Please add caller-level coverage verifying that rejected values neither reach setAttrValue() nor contribute notification handles. A mixed batch should still apply valid attributes and notify only their handles.",
+      "revId": "33331b9f095dae2fdc37898e3dfd581015ce1720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efa9b9aa_b400fcb3",
+        "filename": "libpldmresponder/bios_config.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1136,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:27:07Z",
+      "side": 1,
+      "message": "The rejected attribute’s handle has already been added to listOfHandles at line 1155. This continue skips applying the value but still allows an OEM IBM BIOS update event for it. Please move handle insertion after successful generation and application.",
+      "revId": "33331b9f095dae2fdc37898e3dfd581015ce1720",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
