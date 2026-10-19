@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91e5c69e_e45dba84",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-19T08:09:18Z",
+      "side": 1,
+      "message": "The core purpose of this function is to guarantee successful inventory creation - `configured_by` association failure is not a critical failure for that purpose.",
+      "parentUuid": "7c0602a0_6b8dcc1b",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0fc9285_5d07cc8d",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0664f08e_f59bcd31",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-19T08:09:18Z",
+      "side": 1,
+      "message": "That is intended design. `Termini without Entity-Manager configuration are unaffected`",
+      "parentUuid": "a0fc9285_5d07cc8d",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f48ecd89_7e7657f7",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-08-18T09:06:52Z",
       "side": 1,
       "message": "For empty response, error log be added?",
+      "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370f2302_f1267474",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-19T08:09:18Z",
+      "side": 1,
+      "message": "EM config is not mandatory - so this is not an error.",
+      "parentUuid": "f48ecd89_7e7657f7",
       "revId": "97c04ff2d43a57da9068ebb7fd13ff1c0271b05a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
