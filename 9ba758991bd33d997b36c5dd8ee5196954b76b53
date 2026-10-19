@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ece9a86e_9815f30e",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T08:45:40Z",
+      "side": 1,
+      "message": "use map.contains() for more redability.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 35
+      },
+      "revId": "9ba758991bd33d997b36c5dd8ee5196954b76b53",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
