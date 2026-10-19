@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88966aec_1f89cf30",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:45:57Z",
+      "side": 1,
+      "message": "Please account for the time resolution before formatting all date/time fields. \n\nCurrently, only the null resolution is handled. For a timestamp with year resolution, the remaining fields are not significant, but this code still prints them. For example, year 2026 with zeroed lower fields produces 2026-00-00T00:00:00.000000. Please display only the known precision or explicitly mark the unknown components.",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cbca842_42aff494",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:45:57Z",
+      "side": 1,
+      "message": "`datetime` make this a const",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "613b92e3_91972629",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-19T09:45:57Z",
+      "side": 1,
+      "message": "I am now feeling that ,we should have automated tests for year, month, day, and second resolutions, as well as positive/negative UTC offsets, unspecified UTC, null resolution, and invalid length. Coarse resolution cases would catch the formatting issue above.\n\nWhen we started the project pldmtool was very tiny, and was just a developer only tool to test only the bmc pldm stack. Now that this has been instrumental in catching issues even from devices \u0026 pldm stack has been scaled to various companies , i think its time to get the tests added.",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
