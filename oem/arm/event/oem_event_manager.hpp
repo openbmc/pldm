@@ -47,11 +47,11 @@ class OemEventManager
                           size_t eventDataOffset);
 
   private:
-    /** @brief Check whether a terminus is the PHX terminus
+    /** @brief Check whether a terminus name starts with PHX
      *
      *  @param[in] tid - Terminus ID
      *
-     *  @return true if the terminus name is PHX, false otherwise
+     *  @return true for a PHX-prefixed name, false otherwise
      */
     bool isPhxTerminus(pldm_tid_t tid) const;
 

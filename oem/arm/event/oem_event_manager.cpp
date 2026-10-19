@@ -90,7 +90,7 @@ int OemEventManager::handleSensorEvent(
     if (!isPhxTerminus(tid))
     {
         lg2::info("Ignoring Arm OEM sensor event from terminus {TID}; "
-                  "Arm OEM handles only sensor events from the PHX terminus",
+                  "Arm OEM handles only PHX-prefixed sensor events",
                   "TID", tid);
         return PLDM_SUCCESS;
     }
@@ -122,7 +122,7 @@ bool OemEventManager::isPhxTerminus(pldm_tid_t tid) const
     lg2::debug("Resolved Arm terminus {TID} to name {NAME}", "TID", tid, "NAME",
                terminusName.value());
 
-    return terminusName.value() == bootProgressTerminusName;
+    return terminusName.value().starts_with(bootProgressTerminusName);
 }
 
 int OemEventManager::decodeSensorEvent(pldm_tid_t tid, const uint8_t* eventData,
