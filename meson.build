@@ -129,6 +129,12 @@ conf_data.set_quoted(
     get_option('fw-update-targets-json'),
 )
 
+# Terminus D-Bus object toggle
+conf_data.set(
+    'ENABLE_TERMINUS_DBUS',
+    get_option('enable-terminus-dbus').allowed(),
+)
+
 configure_file(output: 'config.h', configuration: conf_data)
 
 add_project_arguments(

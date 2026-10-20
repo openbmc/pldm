@@ -111,6 +111,9 @@ uint16_t Terminus::findTerminusEntityType()
 
 bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
 {
+#ifndef ENABLE_TERMINUS_DBUS
+    return false;
+#else
     if (tName.empty())
     {
         return false;
@@ -137,6 +140,7 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
     }
 
     return false;
+#endif
 }
 
 void Terminus::parseTerminusPDRs()
@@ -248,6 +252,10 @@ void Terminus::addNextSensorFromPDRs()
 {
     sensorCreationEvent.reset();
 
+#ifndef ENABLE_TERMINUS_DBUS
+    sensorPdrIt = 0;
+    return;
+#else
     if (terminusName.empty())
     {
         lg2::error(
@@ -283,6 +291,7 @@ void Terminus::addNextSensorFromPDRs()
 
     // Move the iteration to the next sensor PDR
     sensorPdrIt++;
+#endif
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
