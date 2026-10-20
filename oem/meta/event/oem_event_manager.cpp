@@ -18,6 +18,16 @@ namespace oem_meta
 int OemEventManager::processOemMetaEvent(
     pldm_tid_t tid, const uint8_t* eventData, size_t eventDataSize) const
 {
+    // Highest index read by handleSystemEvent/handleUnifiedBIOSEvent (13) plus one
+    constexpr size_t metaEventMinSize = 14;
+    if (eventDataSize < metaEventMinSize)
+    {
+        lg2::error(
+            "OEM Meta event data too short: {SIZE} bytes, expected at least {MIN}",
+            "SIZE", eventDataSize, "MIN", metaEventMinSize);
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
     RecordType recordType = static_cast<RecordType>(eventData[0]);
     std::string errorLog;
     switch (recordType)
@@ -60,27 +70,31 @@ int OemEventManager::processOemMetaEvent(
                                             "RAW_EVENT", rawLog));
     }
 
-    return 0;
+    return PLDM_SUCCESS;
 }
 
 int OemEventManager::handleOemEvent(
     const pldm_msg* request, size_t payloadLength, uint8_t /* formatVersion */,
     pldm_tid_t tid, size_t eventDataOffset) const
 {
+    if (eventDataOffset > payloadLength)
+    {
+        lg2::error(
+            "OEM Meta event data offset {OFFSET} exceeds payload length {LEN}",
+            "OFFSET", eventDataOffset, "LEN", payloadLength);
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    auto eventDataSize = payloadLength - eventDataOffset;
     auto eventData =
         reinterpret_cast<const uint8_t*>(request->payload) + eventDataOffset;
-    auto eventDataSize = payloadLength - eventDataOffset;
     if (!pldm::oem_meta::checkMetaIana(tid))
     {
         lg2::error("Receive OEM Meta event from not Meta specific device");
         return PLDM_ERROR;
     }
-    if (!processOemMetaEvent(tid, eventData, eventDataSize))
-    {
-        return PLDM_ERROR;
-    }
 
-    return PLDM_SUCCESS;
+    return processOemMetaEvent(tid, eventData, eventDataSize);
 }
 
 void OemEventManager::handleSystemEvent(const uint8_t* eventData,
@@ -342,6 +356,14 @@ void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
             uint8_t cpuNumber = (eventData[7] >> 5) & 0x07;
             uint8_t coreNumber = eventData[7] & 0x1F;
             uint8_t machineCheckBankNumber = eventData[8];
+            if (mcaSeverity >= errorSeverityDetail.size())
+            {
+                mcaSeverity = errorSeverityDetail.size() - 1;
+            }
+            if (machineCheckBankNumber >= machineCheckBank.size())
+            {
+                machineCheckBankNumber = machineCheckBank.size() - 1;
+            }
             uint32_t errorInfo = (static_cast<uint32_t>(eventData[9]) << 16) |
                                  (static_cast<uint32_t>(eventData[10]) << 8) |
                                  static_cast<uint32_t>(eventData[11]);
@@ -366,6 +388,14 @@ void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
             uint8_t cpuNumber = (eventData[7] >> 5) & 0x07;
             uint8_t coreNumber = eventData[7] & 0x1F;
             uint8_t machineCheckBankNumber = eventData[8];
+            if (mcaSeverity >= errorSeverityDetail.size())
+            {
+                mcaSeverity = errorSeverityDetail.size() - 1;
+            }
+            if (machineCheckBankNumber >= machineCheckBank.size())
+            {
+                machineCheckBankNumber = machineCheckBank.size() - 1;
+            }
             uint16_t errorCode = (eventData[9] << 8) | eventData[10];
 
             errorLog +=
@@ -528,6 +558,10 @@ void OemEventManager::handleUnifiedBIOSEvent(const uint8_t* eventData,
         case UnifiedError::UNIFIED_PPR_EVENT:
         {
             uint8_t eventType = eventData[6] & 0x0F;
+            if (eventType >= pprEvent.size())
+            {
+                eventType = pprEvent.size() - 1;
+            }
             errorLog +=
                 "GeneralInfo: PPR Events(0x" + to_hex_string(generalInfo) +
                 "), " + pprEvent[eventType] + ". DIMM Info: (" +
