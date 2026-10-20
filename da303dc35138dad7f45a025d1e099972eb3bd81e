@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5647913_392e0639",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-20T10:34:35Z",
+      "side": 1,
+      "message": "In what case will `sensorPdrIt` become non-zero if we uses this configuration?\nIf no I think we can simply remove this line.",
+      "range": {
+        "startLine": 256,
+        "startChar": 4,
+        "endLine": 256,
+        "endChar": 20
+      },
+      "revId": "da303dc35138dad7f45a025d1e099972eb3bd81e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f167cd05_b605e3bd",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-20T10:34:35Z",
+      "side": 1,
+      "message": "With the option disabled, the terminus still gets Set Event Receiver and so every numeric sensor event lands here and logs this at error level. \n\nShould event receiver setup be skipped too?",
+      "range": {
+        "startLine": 635,
+        "startChar": 4,
+        "endLine": 640,
+        "endChar": 5
+      },
+      "revId": "da303dc35138dad7f45a025d1e099972eb3bd81e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84fd4641_0a965edf",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-20T10:34:35Z",
+      "side": 1,
+      "message": "It seems like `updateInventoryWithFru()` ignores the return value from `createInventoryPath()`.\n\nShould we modify this function as well?",
+      "range": {
+        "startLine": 682,
+        "startChar": 4,
+        "endLine": 683,
+        "endChar": 54
+      },
+      "revId": "da303dc35138dad7f45a025d1e099972eb3bd81e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
