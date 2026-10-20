@@ -37,7 +37,6 @@ owners:
 - manojkiran.eda@gmail.com
 
 reviewers:
-- liuxiwei@ieisystem.com
 - pavithrabarithaya07@gmail.com
 - thu@os.amperecomputing.com
 
@@ -60,9 +59,6 @@ openbmc:
 - name: Deepak Kodihalli
   email: deepak.kodihalli.83@gmail.com
   discord: dkodihal
-- name: George Liu
-  email: liuxiwei@ieisystem.com
-  discord: George Liu
 - name: Jagpal Singh Gill
   email: paligill@gmail.com
   discord: jagpalgill
