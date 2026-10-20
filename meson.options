@@ -139,3 +139,11 @@ option(
     value: '/var/lib/pldmd/fw-update-targets.json',
     description: 'Path to firmware update targets configuration JSON file',
 )
+
+# Control whether terminus inventory/sensor objects are exported on D-Bus.
+option(
+    'enable-terminus-dbus',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Expose terminus numeric sensors and inventory objects on D-Bus.',
+)

@@ -234,13 +234,13 @@ void Terminus::parseTerminusPDRs()
     {
         terminusName = std::format("Terminus_{}", tid);
     }
-
+#ifdef ENABLE_TERMINUS_DBUS
     if (createInventoryPath(terminusName, findTerminusEntityType()))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path {PATH}.", "TID",
                   tid, "PATH", inventoryPath);
     }
-
+#endif
     addNextSensorFromPDRs();
 }
 
@@ -248,6 +248,9 @@ void Terminus::addNextSensorFromPDRs()
 {
     sensorCreationEvent.reset();
 
+#ifndef ENABLE_TERMINUS_DBUS
+    return;
+#else
     if (terminusName.empty())
     {
         lg2::error(
@@ -283,6 +286,7 @@ void Terminus::addNextSensorFromPDRs()
 
     // Move the iteration to the next sensor PDR
     sensorPdrIt++;
+#endif
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
@@ -625,8 +629,10 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
     }
     if (!numericSensors.size())
     {
+#ifdef ENABLE_TERMINUS_DBUS
         lg2::error("Terminus ID {TID} name {NAME}: DOES NOT have sensor.",
                    "TID", tid, "NAME", terminusName);
+#endif
         return nullptr;
     }
 
@@ -669,13 +675,15 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             "TID", tid);
         return;
     }
-
+#ifdef ENABLE_TERMINUS_DBUS
     if (createInventoryPath(static_cast<std::string>(tmp.value()),
                             findTerminusEntityType()))
     {
         lg2::info("Terminus ID {TID}: Created Inventory path.", "TID", tid);
     }
-
+#else
+    return;
+#endif
     if (!fruDecoratorsIntf)
     {
         fruDecoratorsIntf = std::make_unique<pldm::dbus_api::PldmFruDecorators>(
