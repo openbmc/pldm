@@ -68,6 +68,30 @@
       },
       "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b7d4af_e3640cf9",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-21T06:08:57Z",
+      "side": 1,
+      "message": "The use case here is mainly to hand off the CPER payload for processing and return. Do you happen to have any measurements or traces showing that call_noreply() is blocking in this path? It would also be helpful to understand any fd ownership/lifetime considerations before switching to call_async().",
+      "parentUuid": "8150a460_f22dcb7b",
+      "range": {
+        "startLine": 684,
+        "startChar": 7,
+        "endLine": 684,
+        "endChar": 33
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
