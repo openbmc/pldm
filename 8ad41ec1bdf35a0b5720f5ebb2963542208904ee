@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90cbb470_a000c332",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002135
+      },
+      "writtenOn": "2026-10-21T02:53:12Z",
+      "side": 1,
+      "message": "Tested with patchset 6:\nDeployed on a Yosemite4 BMC and drove real firmware updates of a Sentinel Dome\nBIC (Slot 1) over MCTP through Software.Update.StartUpdate. Each successful\nupdate produced, in the Redfish EventLog, Update.1.2.TargetDetermined,\nTransferringToComponent, VerifyingAtComponent, InstallingOnComponent and\nUpdateSuccessful, with IMAGE_IDENTIFIER \u003d the PackageVersionString and\nTARGET_NAME \u003d the updated FirmwareInventory entry.\nA package for another device class gave Update.1.2.UpdateNotApplicable and a\nnon-PLDM file gave Update.1.2.VerificationFailed.",
+      "revId": "8ad41ec1bdf35a0b5720f5ebb2963542208904ee",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
