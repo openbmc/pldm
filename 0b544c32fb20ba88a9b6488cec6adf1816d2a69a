@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ff2a513_01e323ed",
+        "filename": "requester/handler.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-21T09:23:32Z",
+      "side": 1,
+      "message": "On repeated send failures this recurses into pollEndpointQueue once per queued request rather than looping — could this be rewritten as a while loop to avoid stack growth on a persistently broken transport with a deep backlog?",
+      "revId": "0b544c32fb20ba88a9b6488cec6adf1816d2a69a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
