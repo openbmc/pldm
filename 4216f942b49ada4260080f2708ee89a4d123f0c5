@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "945c6c8b_11f0ebfa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-21T09:40:43Z",
+      "side": 1,
+      "message": "Thanks for the review.",
+      "parentUuid": "4e6042d4_e677b6df",
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa00c009_5c5a82fc",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0c7cbb4_1ebe3320",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-21T09:40:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa00c009_5c5a82fc",
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f909125a_306a4bd3",
@@ -48,6 +84,30 @@
       "writtenOn": "2026-10-19T09:15:16Z",
       "side": 1,
       "message": "I would rather say \n\n\"Strings containing invalid UTF-8 are displayed with replacement characters (U+FFFD). Use --verbose to inspect raw response bytes instead.\"",
+      "range": {
+        "startLine": 70,
+        "startChar": 1,
+        "endLine": 71,
+        "endChar": 166
+      },
+      "revId": "4216f942b49ada4260080f2708ee89a4d123f0c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "666bea1f_6434164f",
+        "filename": "pldmtool/pldmtool.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-21T09:40:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f909125a_306a4bd3",
       "range": {
         "startLine": 70,
         "startChar": 1,
