@@ -116,6 +116,30 @@
       },
       "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39918f86_07f9d9cc",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-21T11:11:32Z",
+      "side": 1,
+      "message": "Agreed that call_noreply() is synchronous. Do we have any data showing this is a real issue in practice? The CPER processor daemon already takes ownership of the payload and handles processing. I\u0027d prefer to avoid additional async complexity without evidence of a bottleneck. Reference: https://gerrit.openbmc.org/q/topic:%22cper-processor-daemon%22",
+      "parentUuid": "c9e4a2a4_a714a155",
+      "range": {
+        "startLine": 684,
+        "startChar": 7,
+        "endLine": 684,
+        "endChar": 33
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
