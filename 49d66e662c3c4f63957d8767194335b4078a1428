@@ -92,6 +92,30 @@
       },
       "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9e4a2a4_a714a155",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-21T09:55:22Z",
+      "side": 1,
+      "message": "No measurements, but I follows the code in the following link:\nhttps://github.com/openbmc/sdbusplus/blob/c6176961f4a2db9a78653b990db0fad4aaecf325/include/sdbusplus/bus.hpp#L366\n\n`sd_bus_call()` polls until the matching reply or the 25s default timeout. Just thinking if this would become a blocker under some critical situation.",
+      "parentUuid": "b0b7d4af_e3640cf9",
+      "range": {
+        "startLine": 684,
+        "startChar": 7,
+        "endLine": 684,
+        "endChar": 33
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
