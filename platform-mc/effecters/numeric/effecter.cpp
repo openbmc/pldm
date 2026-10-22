@@ -86,6 +86,8 @@ NumericEffecter::NumericEffecter(
     entityInfo = {ContainerID(pdr->container_id), EntityType(pdr->entity_type),
                   EntityInstance(pdr->entity_instance)};
 
+    needsUpdate = true;
+
     dataSize = pdr->effecter_data_size;
     resolution = pdr->resolution;
     offset = pdr->offset;
