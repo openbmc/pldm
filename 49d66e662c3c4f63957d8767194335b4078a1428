@@ -140,6 +140,30 @@
       },
       "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61c3faf0_651c9daa",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-22T02:39:03Z",
+      "side": 1,
+      "message": "Thanks for the details for `phosphor-logging`.\nI think it should be fine to keep `call_noreply()` here if the only consumer is replying quick.",
+      "parentUuid": "39918f86_07f9d9cc",
+      "range": {
+        "startLine": 684,
+        "startChar": 7,
+        "endLine": 684,
+        "endChar": 33
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
