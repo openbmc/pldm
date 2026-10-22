@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f29ff045_0b9fbe1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T16:10:07Z",
+      "side": 1,
+      "message": "Can we have persistent objects so that the firmware inventory entries don\u0027t change across updates? The doc at https://github.com/openbmc/phosphor-dbus-interfaces/tree/master/yaml/xyz/openbmc_project/Software#image-identifier states that the only D-Bus object should come from a reasonable algorithm but that doesn\u0027t necessarily apply to the FirmwareInventory URI collection\n\ncc @deepak.kodihalli.83@gmail.com",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "705ed012_ecd47ef8",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T16:10:07Z",
+      "side": 1,
+      "message": "Can we update it after new entry is actually created, since the Activation object is reset on the very next line and there might be no objects present for a device which fail QueryDeviceIdentifiers?",
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a75f3b01_13e3eec7",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T16:10:07Z",
+      "side": 1,
+      "message": "This doesn\u0027t exactly solve the issue from https://gerrit.openbmc.org/c/openbmc/pldm/+/94762. The events are created for objects that don\u0027t exist on the FirmwareInventory URI yet (which are only created after a successful update and successful inventory commands)",
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
