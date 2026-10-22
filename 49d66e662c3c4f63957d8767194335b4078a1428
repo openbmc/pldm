@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3bca595_d2a7dbc2",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T05:14:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dc200de0_de5dafca",
+      "range": {
+        "startLine": 648,
+        "startChar": 4,
+        "endLine": 651,
+        "endChar": 75
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17c8544b_e58c124c",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-20T10:18:48Z",
       "side": 1,
       "message": "nit:\nMove this `using` to file scope next to `DumpCreate`?",
+      "range": {
+        "startLine": 675,
+        "startChar": 8,
+        "endLine": 676,
+        "endChar": 68
+      },
+      "revId": "49d66e662c3c4f63957d8767194335b4078a1428",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eea7dcd_e9feb243",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T05:14:07Z",
+      "side": 1,
+      "message": "Prefer to keep the using declaration local since it\u0027s only used in this function.",
+      "parentUuid": "17c8544b_e58c124c",
       "range": {
         "startLine": 675,
         "startChar": 8,
