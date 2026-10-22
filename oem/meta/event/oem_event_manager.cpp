@@ -15,9 +15,22 @@ namespace pldm
 namespace oem_meta
 {
 
+// Both handlers read up to eventData[13], so they need 14 bytes.
+constexpr size_t oemMetaEventSize = 14;
+
 int OemEventManager::processOemMetaEvent(
     pldm_tid_t tid, const uint8_t* eventData, size_t eventDataSize) const
 {
+    // The generic event-message decode only requires 3 header bytes, so a
+    // shorter payload can reach this point.
+    if (eventDataSize < oemMetaEventSize)
+    {
+        lg2::error(
+            "OEM Meta event from TID {TID} is too short: {SIZE} bytes, need {NEED}",
+            "TID", tid, "SIZE", eventDataSize, "NEED", oemMetaEventSize);
+        return PLDM_ERROR;
+    }
+
     RecordType recordType = static_cast<RecordType>(eventData[0]);
     std::string errorLog;
     switch (recordType)
