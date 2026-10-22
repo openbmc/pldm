@@ -161,6 +161,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e3b7a7_4f4dd896",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-22T16:37:48Z",
+      "side": 1,
+      "message": "This is based on the PDI definition which uses objectPath https://github.com/openbmc/phosphor-dbus-interfaces/blob/master/yaml/xyz/openbmc_project/Software/Update.events.yaml and the reasoning for using objectPath is because this is still at the Dbus level (not client facing agent). This is true for any other events as well such as Sensor events.",
+      "parentUuid": "fc5d0444_ead692c3",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "352ec2cf_e1f7503c",
