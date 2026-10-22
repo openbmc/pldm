@@ -18,6 +18,17 @@ namespace oem_meta
 int OemEventManager::processOemMetaEvent(
     pldm_tid_t tid, const uint8_t* eventData, size_t eventDataSize) const
 {
+    // Both record-type handlers index eventData[0..13]; a short event
+    // payload must be rejected before any field is read. The generic
+    // event-message decode only requires 3 header bytes, so a payload
+    // with no event data at all reaches this point.
+    if (eventDataSize < 14)
+    {
+        lg2::error(
+            "Oem Meta event payload too short: {EVENTDATASIZE} bytes, need 14",
+            "EVENTDATASIZE", eventDataSize);
+        return PLDM_ERROR;
+    }
     RecordType recordType = static_cast<RecordType>(eventData[0]);
     std::string errorLog;
     switch (recordType)
