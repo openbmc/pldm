@@ -361,6 +361,60 @@ TEST(TerminusTest, parseSensorAuxiliaryNamesMultiSensorsPDRTest)
     EXPECT_EQ("S0", t1.getTerminusName().value());
 }
 
+TEST(TerminusTest, parseEffecterAuxiliaryNamesPDRTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    std::vector<uint8_t> pdr1{
+        0x1,
+        0x0,
+        0x0,
+        0x0,                               // record handle
+        0x1,                               // PDRHeaderVersion
+        PLDM_EFFECTER_AUXILIARY_NAMES_PDR, // PDRType
+        0x0,
+        0x0,                               // recordChangeNumber
+        19,
+        0x0,                               // dataLength
+        0x0,
+        0x0,                               // PLDMTerminusHandle
+        0x2,
+        0x0,                               // effecterID
+        0x1,                               // effecterCount
+        0x1,                               // nameStringCount
+        'e',
+        'n',
+        0x0, // nameLanguageTag
+        0x0,
+        'C',
+        0x0,
+        'A',
+        0x0,
+        'P',
+        0x0,
+        '1',
+        0x0,
+        0x0 // effecterName
+    };
+
+    t1.pdrs.emplace_back(pdr1);
+    t1.parseTerminusPDRs();
+
+    EXPECT_EQ(nullptr, t1.getEffecterAuxiliaryNames(1));
+
+    auto effecterAuxNames = t1.getEffecterAuxiliaryNames(2);
+    ASSERT_NE(nullptr, effecterAuxNames);
+
+    const auto& [effecterId, effecterCnt, names] = *effecterAuxNames;
+    EXPECT_EQ(2, effecterId);
+    EXPECT_EQ(1, effecterCnt);
+    ASSERT_EQ(1, names.size());
+    ASSERT_EQ(1, names[0].size());
+    EXPECT_EQ("en", names[0][0].first);
+    EXPECT_EQ("CAP1", names[0][0].second);
+}
+
 TEST(TerminusTest, createPldmEntityTest)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();
