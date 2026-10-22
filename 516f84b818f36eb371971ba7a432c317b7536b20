@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f84447bf_17e22400",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-22T06:57:16Z",
+      "side": 1,
+      "message": "use RAII for fd management https://github.com/openbmc/pldm/blob/master/common/utils.hpp#L81 , there could be a possiblity for fd leaks in the existing code if something throws before us getting to close the fd.",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70381c5c_5461ce30",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-22T06:57:16Z",
+      "side": 1,
+      "message": "auto ?",
+      "range": {
+        "startLine": 658,
+        "startChar": 4,
+        "endLine": 658,
+        "endChar": 15
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aa2de93_e23b2f4b",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-22T06:57:16Z",
+      "side": 1,
+      "message": "use if with initializer to reduce this to just one if()",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 26
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2097402_2a26f3d4",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-22T06:57:16Z",
+      "side": 1,
+      "message": "do you need to have any timeouts on this dbus call ?",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973541ea_ee093cab",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-22T06:57:16Z",
+      "side": 1,
+      "message": "if it is path, why not make it filesystem::path ? rather than std::string ?",
+      "range": {
+        "startLine": 241,
+        "startChar": 32,
+        "endLine": 241,
+        "endChar": 50
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
