@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9af7b963_c5b16469",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4be9ff26_3f3d1a5f",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d08cfcd_9276f8bc",
@@ -54,6 +78,30 @@
       "writtenOn": "2026-10-07T10:33:55Z",
       "side": 1,
       "message": "The PDI default for PowerCap is maxint (\"not set\"), and 86196 maps maxint to SetPoint null. Initialising to 0 reports a 0 W cap until the first successful read. Should this be std::numeric_limits\u003cuint32_t\u003e::max()?",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 34
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c59e7fe_6feaaaef",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d08cfcd_9276f8bc",
       "range": {
         "startLine": 47,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "094c2826_516d1d40",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01ffb378_f87a66e8",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 12
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "957b656f_e97ef95d",
@@ -110,6 +182,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82a22603_ce6d732e",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "957b656f_e97ef95d",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 4
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0de90550_9dcf1044",
@@ -123,6 +219,30 @@
       "writtenOn": "2026-10-07T10:33:55Z",
       "side": 1,
       "message": "Cap.interface.yaml declares no errors for PowerCap, so the generated setter only has catch (const std::exception\u0026) { ...; return 1; } and sd-bus replies success. On hardware, bmcweb answered an out-of-range PATCH with 204. Declaring xyz.openbmc_project.Common.Error.InvalidArgument on PowerCap in PDI makes it a proper D-Bus error, and we then got 400",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 8
+      },
+      "revId": "ee3c850dbb702e55156378dd970dbb421a179f45",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2b06b74_34709e46",
+        "filename": "platform-mc/effecters/numeric/power_cap_dbus_intf.cpp",
+        "patchSetId": 38
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:20:27Z",
+      "side": 1,
+      "message": "We already throws InvalidArgument, with this https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/95775, bmcweb would get the error.",
+      "parentUuid": "0de90550_9dcf1044",
       "range": {
         "startLine": 136,
         "startChar": 0,
