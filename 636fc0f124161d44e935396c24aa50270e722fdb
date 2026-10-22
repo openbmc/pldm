@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8547b960_884ef029",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Ack, updated the commit message",
+      "parentUuid": "6a65ffa1_847a8b0a",
+      "range": {
+        "startLine": 19,
+        "startChar": 16,
+        "endLine": 20,
+        "endChar": 28
+      },
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a8618a8_040a5da1",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-19T07:17:24Z",
       "side": 1,
       "message": "So at peak there are still two copies of the package  -processStream() still copies the whole package into a vector (update_manager.cpp:204).\n\nNow that the package is mapped, could the parser take a span over the mapping instead? The parser only uses the vector\u0027s contents up to pkgHeaderSize, so this would remove the copy.",
+      "range": {
+        "startLine": 35,
+        "startChar": 37,
+        "endLine": 35,
+        "endChar": 67
+      },
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "729ac5d4_057b9cb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "This would require a signature change which would be made redundant by the parser migration, so I left it here",
+      "parentUuid": "0a8618a8_040a5da1",
       "range": {
         "startLine": 35,
         "startChar": 37,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c96a0723_8ddb5495",
+        "filename": "fw-update/update.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72280086_3b3426c5",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d8c7608_1d298a9f",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-10-19T07:17:24Z",
       "side": 1,
       "message": "It\u0027s already included in the header file, let\u0027s remove it here.",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8bcf5ba_c92cdd7f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d8c7608_1d298a9f",
       "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +182,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fce2622_03362dde",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "You\u0027re right, it isn\u0027t needed. I\u0027ve removed packageFd along with removing the dup",
+      "parentUuid": "973c70fe_39ccd477",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bde32a15_a8ed343b",
@@ -111,6 +213,24 @@
       "writtenOn": "2026-10-19T07:17:24Z",
       "side": 1,
       "message": "It\u0027s nice to reject an empty image up front. It should be InvalidImage instead of InvalidArgument, though?",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ebc9aa8_db01991f",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bde32a15_a8ed343b",
       "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -132,6 +252,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36cd34e4_3cec6432",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c73c1b23_371422a9",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dcd6b71_daa8ab25",
@@ -145,6 +283,24 @@
       "writtenOn": "2026-10-19T07:17:24Z",
       "side": 1,
       "message": "What does this comment mean ?",
+      "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfb52c5e_bdb922de",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T19:44:02Z",
+      "side": 1,
+      "message": "Reworded to make the intent clearer. It says that the local variables would\u0027ve cleaned up automatically when processStreamDefer failed instead of relying on member variables",
+      "parentUuid": "5dcd6b71_daa8ab25",
       "revId": "636fc0f124161d44e935396c24aa50270e722fdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
