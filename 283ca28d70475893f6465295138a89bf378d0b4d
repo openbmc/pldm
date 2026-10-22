@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc5d0444_ead692c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T16:16:33Z",
+      "side": 1,
+      "message": "Can we replace teh Target with the filename of the D-Bus object path? The D-Bus object itself is hidden from the user so we could just show the target name itself (Device \u0027Yosemite_4_Sentinel_Dome_T2_Slot_1_BIC_7610\u0027 successfully updated with image \u0027Test SB fw update\u0027.) from the above example",
+      "parentUuid": "dccefd49_448f9053",
+      "revId": "283ca28d70475893f6465295138a89bf378d0b4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "352ec2cf_e1f7503c",
         "filename": "fw-update/device_updater.cpp",
         "patchSetId": 1
