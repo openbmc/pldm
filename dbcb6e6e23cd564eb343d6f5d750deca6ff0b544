@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82b5f40e_baf6e8ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:17:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6a8c86b_403f5453",
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2accc155_c35bde37",
@@ -58,6 +76,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a383d0ba_21cdfb2b",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:17:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2accc155_c35bde37",
+      "range": {
+        "startLine": 245,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 4
+      },
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d2a07a8_39eb38d0",
@@ -71,6 +113,24 @@
       "writtenOn": "2026-10-07T10:39:50Z",
       "side": 1,
       "message": "Nit: the PowerCap setter discards the return code of setNumericEffecterValue()/setNumericEffecterEnable(), so logging tid/effecterId/rc on failure here (and at L195) would make a failed set easy to attribute.",
+      "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2b5671b_a141f8e3",
+        "filename": "platform-mc/effecters/numeric/effecter.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-10-22T07:17:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d2a07a8_39eb38d0",
       "revId": "dbcb6e6e23cd564eb343d6f5d750deca6ff0b544",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
