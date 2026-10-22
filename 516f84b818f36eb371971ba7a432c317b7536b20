@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af85c43c_1c42781b",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T07:45:57Z",
+      "side": 1,
+      "message": "I looked at the RAII option, but given the small scope of this function and that we\u0027re only managing a single FD with explicit cleanup on both success and error paths, I felt the current approach keeps the code straightforward.",
+      "parentUuid": "f84447bf_17e22400",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70381c5c_5461ce30",
         "filename": "platform-mc/event_manager.cpp",
         "patchSetId": 3
@@ -31,6 +49,30 @@
       "writtenOn": "2026-10-22T06:57:16Z",
       "side": 1,
       "message": "auto ?",
+      "range": {
+        "startLine": 658,
+        "startChar": 4,
+        "endLine": 658,
+        "endChar": 15
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98829145_1fb3b4bd",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T07:45:57Z",
+      "side": 1,
+      "message": "I tried auto, but it gets deduced as const char* from namespace_path. Since the value is updated later with a std::string, I kept it as std::string to avoid the type mismatch.",
+      "parentUuid": "70381c5c_5461ce30",
       "range": {
         "startLine": 658,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66950802_1df6a27e",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T07:45:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0aa2de93_e23b2f4b",
+      "range": {
+        "startLine": 664,
+        "startChar": 8,
+        "endLine": 665,
+        "endChar": 26
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2097402_2a26f3d4",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-10-22T06:57:16Z",
       "side": 1,
       "message": "do you need to have any timeouts on this dbus call ?",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d5f7ccb_96221b2c",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-10-22T07:45:57Z",
+      "side": 1,
+      "message": "default timeout is good now.",
+      "parentUuid": "a2097402_2a26f3d4",
       "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
