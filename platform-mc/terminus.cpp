@@ -160,6 +160,21 @@ void Terminus::parseTerminusPDRs()
                 sensorAuxiliaryNamesTbl.emplace_back(std::move(sensorAuxNames));
                 break;
             }
+            case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:
+            {
+                auto effecterAuxNames = parseEffecterAuxiliaryNamesPDR(pdr);
+                if (!effecterAuxNames)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                effecterAuxiliaryNamesTbl.emplace_back(
+                    std::move(effecterAuxNames));
+                break;
+            }
             case PLDM_NUMERIC_SENSOR_PDR:
             {
                 auto parsedPdr = parseNumericSensorPDR(pdr);
@@ -304,6 +319,25 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
     return nullptr;
 };
 
+std::shared_ptr<EffecterAuxiliaryNames> Terminus::getEffecterAuxiliaryNames(
+    EffecterID id)
+{
+    auto it = std::find_if(
+        effecterAuxiliaryNamesTbl.begin(), effecterAuxiliaryNamesTbl.end(),
+        [id](const std::shared_ptr<EffecterAuxiliaryNames>&
+                 effecterAuxiliaryNames) {
+            const auto& [effecterId, effecterCnt, effecterNames] =
+                *effecterAuxiliaryNames;
+            return effecterId == id;
+        });
+
+    if (it != effecterAuxiliaryNamesTbl.end())
+    {
+        return *it;
+    }
+    return nullptr;
+};
+
 std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
     const std::vector<uint8_t>& pdrData)
 {
@@ -371,6 +405,101 @@ std::shared_ptr<SensorAuxiliaryNames> Terminus::parseSensorAuxiliaryNamesPDR(
     }
     return std::make_shared<SensorAuxiliaryNames>(
         pdr->sensor_id, pdr->sensor_count, std::move(sensorAuxNames));
+}
+
+std::shared_ptr<EffecterAuxiliaryNames>
+    Terminus::parseEffecterAuxiliaryNamesPDR(
+        const std::vector<uint8_t>& pdrData)
+{
+    struct pldm_platform_effecter_auxiliary_names_pdr pdr;
+    struct pldm_platform_effecter_auxiliary_names_iter iter;
+
+    int rc = decode_pldm_platform_effecter_auxiliary_names_pdr(
+        pdrData.data(), pdrData.size(), &pdr, &iter);
+    if (rc)
+    {
+        lg2::error("Failed to decode Effecter Auxiliary Names PDR, error {RC}",
+                   "RC", rc);
+        return nullptr;
+    }
+
+    std::vector<AuxiliaryNames> effecterAuxNames{};
+    char16_t alignedBuffer[PLDM_STR_UTF_16_MAX_LEN];
+
+    struct pldm_platform_effecter_auxiliary_name effecter;
+
+    foreach_pldm_platform_effecter_auxiliary_name(iter, effecter, rc)
+    {
+        AuxiliaryNames nameStrings{};
+        struct pldm_platform_effecter_auxiliary_name_string name;
+
+        foreach_pldm_platform_effecter_auxiliary_name_string(iter, effecter,
+                                                             name, rc)
+        {
+            std::string_view nameLanguageTag(
+                reinterpret_cast<const char*>(name.tag.ptr),
+                name.tag.length - 1);
+
+            size_t u16Chars = name.name.length / sizeof(char16_t);
+            if (u16Chars > 0)
+            {
+                u16Chars--;
+            }
+
+            if (u16Chars > PLDM_STR_UTF_16_MAX_LEN)
+            {
+                lg2::error("Effecter name too long.");
+                return nullptr;
+            }
+
+            std::memcpy(alignedBuffer, name.name.ptr,
+                        u16Chars * sizeof(char16_t));
+            std::u16string u16NameString(alignedBuffer, u16Chars);
+            std::ranges::for_each(u16NameString, [](char16_t& c) {
+                c = be16toh(c);
+            });
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+            std::string nameString{};
+            try
+            {
+                nameString =
+                    std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                         char16_t>{}
+                        .to_bytes(u16NameString);
+            }
+            catch (const std::range_error& e)
+            {
+                lg2::error(
+                    "Exception while converting UTF-16 to UTF-8 for effecter auxiliary name: {ERROR}, Skipping this name.",
+                    "ERROR", e.what());
+                continue;
+            }
+#pragma GCC diagnostic pop
+            nameStrings.emplace_back(std::make_pair(
+                nameLanguageTag, pldm::utils::trimNameForDbus(nameString)));
+        }
+
+        if (rc)
+        {
+            lg2::error("Failed to decode effecter auxiliary name, error {RC}",
+                       "RC", rc);
+            return nullptr;
+        }
+
+        effecterAuxNames.emplace_back(std::move(nameStrings));
+    }
+
+    if (rc)
+    {
+        lg2::error(
+            "Failed to iterate through effecter auxiliary names, error {RC}",
+            "RC", rc);
+        return nullptr;
+    }
+
+    return std::make_shared<EffecterAuxiliaryNames>(
+        pdr.effecter_id, pdr.effecter_count, std::move(effecterAuxNames));
 }
 
 std::shared_ptr<EntityAuxiliaryNames> Terminus::parseEntityAuxiliaryNamesPDR(

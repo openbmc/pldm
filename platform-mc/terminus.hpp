@@ -174,6 +174,14 @@ class Terminus
      */
     std::shared_ptr<SensorAuxiliaryNames> getSensorAuxiliaryNames(SensorID id);
 
+    /** @brief Get effecter auxiliary names from the table
+     *
+     *  @param[in] id - effecter ID
+     *  @return effecter auxiliary names
+     */
+    std::shared_ptr<EffecterAuxiliaryNames> getEffecterAuxiliaryNames(
+        EffecterID id);
+
     /** @brief Get Numeric Sensor Object by sensorID
      *
      *  @param[in] id - sensor ID
@@ -212,6 +220,14 @@ class Terminus
      *  @return pointer to sensor Auxiliary name info struct
      */
     std::shared_ptr<SensorAuxiliaryNames> parseSensorAuxiliaryNamesPDR(
+        const std::vector<uint8_t>& pdrData);
+
+    /** @brief Parse the Effecter Auxiliary name PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to effecter Auxiliary name info struct
+     */
+    std::shared_ptr<EffecterAuxiliaryNames> parseEffecterAuxiliaryNamesPDR(
         const std::vector<uint8_t>& pdrData);
 
     /** @brief Parse the Entity Auxiliary name PDRs
@@ -303,6 +319,10 @@ class Terminus
     /* @brief Sensor Auxiliary Name list */
     std::vector<std::shared_ptr<SensorAuxiliaryNames>>
         sensorAuxiliaryNamesTbl{};
+
+    /* @brief Effecter Auxiliary Name list */
+    std::vector<std::shared_ptr<EffecterAuxiliaryNames>>
+        effecterAuxiliaryNamesTbl{};
 
     /* @brief Entity Auxiliary Name list */
     std::vector<std::shared_ptr<EntityAuxiliaryNames>>
