@@ -203,6 +203,9 @@ class NumericEffecter
     /** @brief  The PLDM defined effecterDataSize enum */
     uint8_t dataSize;
 
+    /** @brief flag to update the value once */
+    bool needsUpdate;
+
   private:
     std::unique_ptr<AssociationDefinitionsInft> associationDefinitionsIntf =
         nullptr;
