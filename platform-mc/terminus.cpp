@@ -16,10 +16,12 @@ namespace platform_mc
 {
 
 Terminus::Terminus(pldm_tid_t tid, uint64_t supportedTypes,
-                   sdeventplus::Event& event) :
+                   sdeventplus::Event& event,
+                   TerminusManager& terminusManager) :
     initialized(false), maxBufferSize(PLDM_PLATFORM_EVENT_MSG_MAX_BUFFER_SIZE),
     synchronyConfigurationSupported(0), tid(tid),
-    supportedTypes(supportedTypes), event(event)
+    supportedTypes(supportedTypes), event(event),
+    terminusManager(terminusManager)
 {}
 
 bool Terminus::doesSupportType(uint8_t type)
@@ -211,6 +213,20 @@ void Terminus::parseTerminusPDRs()
                 numericSensorPdrs.emplace_back(std::move(parsedPdr));
                 break;
             }
+            case PLDM_NUMERIC_EFFECTER_PDR:
+            {
+                auto parsedPdr = parseNumericEffecterPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse Effecter PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                numericEffecterPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             case PLDM_COMPACT_NUMERIC_SENSOR_PDR:
             {
                 auto parsedPdr = parseCompactNumericSensorPDR(pdr);
@@ -289,7 +305,7 @@ void Terminus::addNextSensorFromPDRs()
     if (terminusName.empty())
     {
         lg2::error(
-            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors.",
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding sensors/effecters.",
             "TID", tid);
         return;
     }
@@ -316,11 +332,41 @@ void Terminus::addNextSensorFromPDRs()
     else
     {
         sensorPdrIt = 0;
+        // All sensors are created, continue with the effecters
+        addNextEffecterFromPDRs();
         return;
     }
 
     // Move the iteration to the next sensor PDR
     sensorPdrIt++;
+}
+
+void Terminus::addNextEffecterFromPDRs()
+{
+    effecterCreationEvent.reset();
+
+    if (terminusName.empty())
+    {
+        lg2::error(
+            "Terminus ID {TID}: DOES NOT have name. Skip Adding effecters.",
+            "TID", tid);
+        return;
+    }
+
+    if (effecterPdrIt >= numericEffecterPdrs.size())
+    {
+        effecterPdrIt = 0;
+        return;
+    }
+
+    const auto& pdr = numericEffecterPdrs[effecterPdrIt];
+    // Defer adding the next Numeric Effecter
+    effecterCreationEvent = std::make_unique<sdeventplus::source::Defer>(
+        event,
+        std::bind(std::mem_fn(&Terminus::addNumericEffecter), this, pdr));
+
+    // Move the iteration to the next effecter PDR
+    effecterPdrIt++;
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::getSensorAuxiliaryNames(
@@ -573,6 +619,20 @@ std::shared_ptr<pldm_numeric_sensor_value_pdr> Terminus::parseNumericSensorPDR(
     return parsedPdr;
 }
 
+std::shared_ptr<pldm_numeric_effecter_value_pdr>
+    Terminus::parseNumericEffecterPDR(const std::vector<uint8_t>& pdr)
+{
+    const uint8_t* ptr = pdr.data();
+    auto parsedPdr = std::make_shared<pldm_numeric_effecter_value_pdr>();
+    auto rc =
+        decode_numeric_effecter_pdr_data(ptr, pdr.size(), parsedPdr.get());
+    if (rc)
+    {
+        return nullptr;
+    }
+    return parsedPdr;
+}
+
 void Terminus::addNumericSensor(
     const std::shared_ptr<pldm_numeric_sensor_value_pdr> pdr)
 {
@@ -614,6 +674,36 @@ void Terminus::addNumericSensor(
     }
 
     addNextSensorFromPDRs();
+}
+
+void Terminus::addNumericEffecter(
+    const std::shared_ptr<pldm_numeric_effecter_value_pdr> pdr)
+{
+    if (!pdr)
+    {
+        lg2::error(
+            "Terminus ID {TID}: Skip adding Numeric Effecter - invalid pointer to PDR.",
+            "TID", tid);
+        addNextEffecterFromPDRs();
+        return;
+    }
+
+    std::string effecterName = getEffecterName(pdr->effecter_id);
+
+    try
+    {
+        auto effecter = std::make_shared<NumericEffecter>(
+            tid, pdr, effecterName, inventoryPath, terminusManager);
+        lg2::info("Created NumericEffecter {NAME}", "NAME", effecterName);
+        numericEffecters.emplace_back(effecter);
+    }
+    catch (const std::exception& e)
+    {
+        lg2::error("Failed to create NumericEffecter:{EFFECTERNAME}, {ERROR}.",
+                   "EFFECTERNAME", effecterName, "ERROR", e);
+    }
+
+    addNextEffecterFromPDRs();
 }
 
 std::shared_ptr<SensorAuxiliaryNames> Terminus::parseCompactNumericSensorNames(
@@ -935,6 +1025,29 @@ std::vector<std::string> Terminus::getSensorNames(const SensorID& sensorId)
     }
 
     return sensorNames;
+}
+
+std::string Terminus::getEffecterName(const EffecterID& effecterId)
+{
+    auto effecterAuxiliaryNames = getEffecterAuxiliaryNames(effecterId);
+    if (effecterAuxiliaryNames)
+    {
+        // A numeric effecter PDR describes one effecter, so only the first
+        // set of names applies
+        const auto& [id, effecterCount, nameMap] = *effecterAuxiliaryNames;
+        if (!nameMap.empty())
+        {
+            for (const auto& [languageTag, name] : nameMap.front())
+            {
+                if (languageTag == "en" && !name.empty())
+                {
+                    return std::format("{}_{}", terminusName, name);
+                }
+            }
+        }
+    }
+
+    return std::format("{}_Effecter_{}", terminusName, unsigned(effecterId));
 }
 
 } // namespace platform_mc
