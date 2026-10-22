@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8feff07f_864c1441",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-22T16:15:02Z",
+      "side": 1,
+      "message": "The events are still being reported for objects that don\u0027t exist in the collection yet since they\u0027re only created after the update is successful",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 52
+      },
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "705ed012_ecd47ef8",
         "filename": "fw-update/item_update_manager.cpp",
         "patchSetId": 2
