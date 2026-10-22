@@ -727,7 +727,7 @@ int processCodeUpdateLid(const std::string& filePath)
         uint32_t lidSize;
         uint32_t headerSize;
     };
-    LidHeader header;
+    LidHeader header{};
 
     std::ifstream ifs(filePath, std::ios::in | std::ios::binary);
     if (!ifs)
@@ -737,10 +737,32 @@ int processCodeUpdateLid(const std::string& filePath)
     }
     ifs.seekg(0);
     ifs.read(reinterpret_cast<char*>(&header), sizeof(header));
+    if (!ifs || ifs.gcount() != sizeof(header))
+    {
+        // A truncated or empty LID must not leave the header fields
+        // uninitialized, and the file cannot be validated.
+        error("Failed to read LID header ({GCOUNT} of {HEADERSIZE} bytes) "
+              "from '{PATH}'",
+              "GCOUNT", ifs.gcount(), "HEADERSIZE", sizeof(header), "PATH",
+              filePath);
+        ifs.close();
+        return PLDM_ERROR;
+    }
 
     // File size should be the value of lid size minus the header size
     auto fileSize = fs::file_size(filePath);
-    fileSize -= htonl(header.headerSize);
+    auto headerSize = htonl(header.headerSize);
+    if (headerSize > fileSize)
+    {
+        // A header claiming to be larger than the file would underflow
+        // the subtraction and defeat the completeness check below.
+        error("LID header size {HEADERSIZE} exceeds file size {FILESIZE} "
+              "for '{PATH}'",
+              "HEADERSIZE", headerSize, "FILESIZE", fileSize, "PATH", filePath);
+        ifs.close();
+        return PLDM_ERROR;
+    }
+    fileSize -= headerSize;
     if (fileSize < htonl(header.lidSize))
     {
         // File is not completely written yet
