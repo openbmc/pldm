@@ -123,6 +123,12 @@ class NumericEffecter
      */
     void setEffecterUnit(uint8_t baseUnit);
 
+    /** @brief Set effecter interface based on baseUnit
+     *
+     *  @param[in] baseUnit - The PLDM defined baseUnit enum
+     */
+    void setEffecterInterface(uint8_t baseUnit);
+
     /** @brief Convert raw value to effecter unit value
      *  Raw value is the value stored in the PDR.
      *  Conversion: effecterUnit = raw * resolution + offset
@@ -177,6 +183,13 @@ class NumericEffecter
     {
         return unitToRaw(baseToUnit(value));
     }
+
+    /** @brief Check a raw value against the settable range of the PDR
+     *
+     *  @param[in] value - raw value
+     *  @return true if value is within [minSettable, maxSettable]
+     */
+    bool isSettable(double value) const;
 
     /** @brief Register a interface for effecter value changes
      *
