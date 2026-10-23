@@ -22,6 +22,19 @@ using stateSensorCacheMaps =
 
 namespace state_sensor
 {
+/** @brief Compare a live D-Bus property value against a sensor's configured
+ *         expected value, without throwing on a propertyType/variant mismatch
+ *  @param[in] propertyType - D-Bus property type configured for the sensor
+ *  @param[in] expected - value configured in the sensor's PDR JSON
+ *  @param[in] actual - value read from the D-Bus PropertiesChanged signal
+ *  @return true if actual matches expected
+ */
+bool isValueMatched(const std::string& propertyType,
+                    const pldm::utils::PropertyValue& expected,
+                    const pldm::utils::PropertyValue& actual,
+                    const std::string& objectPath = {},
+                    const std::string& propertyName = {});
+
 /** @class DbusToPLDMEvent
  *  @brief This class can listen to the state sensor PDRs and send PLDM event
  *         msg when a D-Bus property changes
