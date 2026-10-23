@@ -16,6 +16,24 @@
       "message": "The change is marked private (is this intentional?) and has merge conflict. Both of those prevent merges. Private also prevents other reviewers (not the ones already added to the patch) from reviewing.",
       "revId": "9bc0bbea089a9e27ef33fb0544984d415e2d8962",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e46ad56_acde42d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002523
+      },
+      "writtenOn": "2026-10-23T05:09:10Z",
+      "side": 1,
+      "message": "Private is intentional since these are security issues,\nfix the merge conflicts",
+      "parentUuid": "b5c3e434_985b1f05",
+      "revId": "9bc0bbea089a9e27ef33fb0544984d415e2d8962",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
