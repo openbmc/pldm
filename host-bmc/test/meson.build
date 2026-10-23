@@ -32,16 +32,20 @@ host_bmc_test_lib = static_library(
 )
 host_bmc_test_deps += declare_dependency(link_whole: host_bmc_test_lib)
 
-tests = ['utils_test', 'custom_dbus_test']
+tests = ['utils_test', 'custom_dbus_test', 'dbus_to_event_handler_test']
 
 foreach t : tests
+    test_deps = host_bmc_test_deps
+    if t == 'dbus_to_event_handler_test'
+        test_deps += [libpldmresponder_dep]
+    endif
     test(
         t,
         executable(
             t.underscorify(),
             t + '.cpp',
             implicit_include_directories: false,
-            dependencies: host_bmc_test_deps,
+            dependencies: test_deps,
         ),
         workdir: meson.current_source_dir(),
     )
