@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9f7573f_0647be34",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-23T01:15:20Z",
+      "side": 1,
+      "message": "Abandoning this patch as i updated https://gerrit.openbmc.org/c/openbmc/pldm/+/94762 to use the current firmware inventory object path.",
+      "parentUuid": "f29ff045_0b9fbe1f",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 11,
+        "endChar": 10
+      },
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8feff07f_864c1441",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-22T16:15:02Z",
       "side": 1,
       "message": "The events are still being reported for objects that don\u0027t exist in the collection yet since they\u0027re only created after the update is successful",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 52
+      },
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a14101_2e0714f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-23T01:15:20Z",
+      "side": 1,
+      "message": "Abandoning this patch as i updated https://gerrit.openbmc.org/c/openbmc/pldm/+/94762 to use the current firmware inventory object path.",
+      "parentUuid": "8feff07f_864c1441",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -64,6 +112,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c8b9f2e_9ba64806",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-23T01:15:20Z",
+      "side": 1,
+      "message": "Abandoning this patch as i updated https://gerrit.openbmc.org/c/openbmc/pldm/+/94762 to use the current firmware inventory object path.",
+      "parentUuid": "705ed012_ecd47ef8",
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a75f3b01_13e3eec7",
@@ -77,6 +143,24 @@
       "writtenOn": "2026-10-22T16:10:07Z",
       "side": 1,
       "message": "This doesn\u0027t exactly solve the issue from https://gerrit.openbmc.org/c/openbmc/pldm/+/94762. The events are created for objects that don\u0027t exist on the FirmwareInventory URI yet (which are only created after a successful update and successful inventory commands)",
+      "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ae3a9fc_74809a7f",
+        "filename": "fw-update/item_update_manager.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-23T01:15:20Z",
+      "side": 1,
+      "message": "Abandoning this patch as i updated https://gerrit.openbmc.org/c/openbmc/pldm/+/94762 to use the current firmware inventory object path.",
+      "parentUuid": "a75f3b01_13e3eec7",
       "revId": "099dc42056cf466f4d93367813aaf0618e2ed8cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
