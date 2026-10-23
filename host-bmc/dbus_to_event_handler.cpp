@@ -22,6 +22,39 @@ namespace state_sensor
 {
 const std::vector<uint8_t> pdrTypes{PLDM_STATE_SENSOR_PDR};
 
+bool isValueMatched(const std::string& propertyType,
+                    const pldm::utils::PropertyValue& expected,
+                    const pldm::utils::PropertyValue& actual,
+                    const std::string& objectPath,
+                    const std::string& propertyName)
+{
+    if (propertyType == "string")
+    {
+        const auto* src = std::get_if<std::string>(&expected);
+        const auto* dst = std::get_if<std::string>(&actual);
+        if (!src || !dst)
+        {
+            const char* side = !src ? "configured" : "live D-Bus";
+            warning(
+                "D-Bus property value type mismatch for object '{PATH}' property '{PROP}', expected string, {SIDE} side has an unexpected value type",
+                "PATH", objectPath, "PROP", propertyName, "SIDE", side);
+            return false;
+        }
+
+        auto values = pldm::utils::split(*src, "||", " ");
+        for (const auto& value : values)
+        {
+            if (value == *dst)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    return expected == actual;
+}
+
 DbusToPLDMEvent::DbusToPLDMEvent(
     int /* mctp_fd */, uint8_t mctp_eid, pldm::InstanceIdDb& instanceIdDb,
     pldm::requester::Handler<pldm::requester::Request>* handler) :
@@ -131,32 +164,10 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                 }
                 for (const auto& itr : dbusValueMapping)
                 {
-                    bool findValue = false;
-                    if (dbusMapping.propertyType == "string")
-                    {
-                        std::string src = std::get<std::string>(itr.second);
-                        std::string dst = std::get<std::string>(
-                            props.at(dbusMapping.propertyName));
-
-                        auto values = pldm::utils::split(src, "||", " ");
-                        for (const auto& value : values)
-                        {
-                            if (value == dst)
-                            {
-                                findValue = true;
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        findValue =
-                            itr.second == props.at(dbusMapping.propertyName)
-                                ? true
-                                : false;
-                    }
-
-                    if (findValue)
+                    if (isValueMatched(dbusMapping.propertyType, itr.second,
+                                       props.at(dbusMapping.propertyName),
+                                       dbusMapping.objectPath,
+                                       dbusMapping.propertyName))
                     {
                         auto eventData = new (sensorEventDataVec.data())
                             pldm_sensor_event_data;

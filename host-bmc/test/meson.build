@@ -12,7 +12,7 @@ test_sources = [
     '../dbus/pcie_slot.cpp',
 ]
 
-tests = ['utils_test', 'custom_dbus_test']
+tests = ['utils_test', 'custom_dbus_test', 'dbus_to_event_handler_test']
 
 foreach t : tests
     test(
@@ -26,6 +26,7 @@ foreach t : tests
                 gtest,
                 gmock,
                 libpldm_dep,
+                libpldmresponder_dep,
                 libpldmutils,
                 nlohmann_json_dep,
                 phosphor_dbus_interfaces,
