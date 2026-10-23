@@ -178,6 +178,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "387f9b47_40e051e9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-23T08:27:22Z",
+      "side": 1,
+      "message": "They don\u0027t need to, since both are IntelCPU (Basically same entity), hence it doesn\u0027t make sense to have differing names. Also in a case where a single device exposes multiple terminus - for example a GPU with 2 silicon - it makes sense for them to share the same name - while having differing entity instance number.\n\nSo - as per spec DSP0248 v1.3.0 Sec 9.3, we can use Entity Instance Number to differentiate between each:\n\n```\nThe Entity Instance Number is a value that could be used when\ninstantiating CIM objects or presenting PLDM data as part of \nthe \"name\" of the managed object. For example, if a processor \nentity has an Entity Instance Number of \"1\", the expectation \nis that the entity would be presented as “Processor 1”.\n```\n\nNote: This doesn\u0027t work if we are talking about independent devices sharing the same name - for example 2 different GPU of the same vendor \u0026 same model \u0026 same entity instance number: This case is addressed in https://gerrit.openbmc.org/c/openbmc/pldm/+/93498",
+      "parentUuid": "f212ce19_82129886",
+      "revId": "db94be931475ae8ba28bc85a33904b6bae264b5b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98717504_e0864e56",

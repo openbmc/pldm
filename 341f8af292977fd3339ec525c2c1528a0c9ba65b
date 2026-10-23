@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c685f05_e8889830",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-23T08:27:22Z",
+      "side": 1,
+      "message": "Hi @jvoon@nvidia.com\n\nReviewing your sample and patches, we still need the entity instance number to prevent D-Bus path collisions.\n\nCurrently:\n`/xyz/openbmc_project/sensors/power/Terminus_12_Sensor_50`\n\nIf the terminus name resolves to Intel_CPU, and a single physical device exposes multiple termini, collisions will occur. Per DSP0248 v1.3.0 (line 829), entity instance numbers are relative to each containing entity - hence sensor entity instance numbers can be identical across them:\n\nWithout entity instance number (collision):\n```\n.../temperature/Intel_CPU_12_Sensor_50\n.../temperature/Intel_CPU_12_Sensor_50\n```\n\nWith entity instance number (unique):\n```\n.../temperature/Intel_CPU_1_12_Sensor_50\n.../temperature/Intel_CPU_2_12_Sensor_50\n```\n\nUsing the termini\u0027s entity instance numbers (1, 2, etc.) ensures uniqueness even when the underlying sensor instance numbers overlap. Since the containing entity for the termini is the same single processor - we can guarantee their entity instance numbers will not overlap.\n\nI will clarify this in the commit message:\n```\nHelps to distinguish between multiple entity instances contained within\nthe same entity having same name (A PLDM device having multiple\nterminus).\n\n```",
+      "parentUuid": "4c04f4e8_9a8aefa2",
+      "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45030d4c_e2812a6b",
@@ -67,6 +85,24 @@
       "writtenOn": "2026-10-16T08:49:09Z",
       "side": 1,
       "message": "Shouldn\u0027t we do nullptr check before deference the point in the line above?",
+      "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5636a649_109ccf4c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-23T08:27:22Z",
+      "side": 1,
+      "message": "Thanks for pointing that out — that null check was effectively useless, so I removed it.\n\nI confirmed that parseTerminusPDRs() is the only place that populates entityAuxiliaryNamesTbl, and it already null-checks each entry before inserting it. So by the time this lambda runs, every element is guaranteed non-null.\n\nhttps://github.com/openbmc/pldm/blob/42532e4f8085d264c36c0c1eafad15306c7f3e42/platform-mc/terminus.cpp#L204\n\nI\u0027ve added a comment documenting that invariant, so if entityAuxiliaryNames is ever null in the future, the program will crash right here — making it much easier to pinpoint where the invariant was broken, instead of silently masking the bug behind a redundant check.",
+      "parentUuid": "45030d4c_e2812a6b",
       "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
