@@ -75,7 +75,7 @@ int OemEventManager::handleOemEvent(
         lg2::error("Receive OEM Meta event from not Meta specific device");
         return PLDM_ERROR;
     }
-    if (!processOemMetaEvent(tid, eventData, eventDataSize))
+    if (processOemMetaEvent(tid, eventData, eventDataSize) != PLDM_SUCCESS)
     {
         return PLDM_ERROR;
     }
