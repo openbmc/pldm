@@ -348,7 +348,6 @@ void InventoryManager::queryDownstreamIdentifiers(
         error(
             "No response received for QueryDownstreamIdentifiers for endpoint ID {EID}",
             "EID", eid);
-        descriptorMap.erase(eid);
         return;
     }
 
@@ -526,7 +525,6 @@ void InventoryManager::getDownstreamFirmwareParameters(
         error(
             "No response received for QueryDownstreamFirmwareParameters for endpoint ID {EID}",
             "EID", eid);
-        descriptorMap.erase(eid);
         return;
     }
 
