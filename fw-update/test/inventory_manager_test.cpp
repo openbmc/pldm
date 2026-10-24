@@ -154,6 +154,30 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
     ASSERT_EQ(outDownstreamDescriptorMap.size(), 0);
 }
 
+TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifiersNoResponse)
+{
+    constexpr uint8_t eid = 1;
+    const DescriptorMap descriptorMap{
+        {eid, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
+    outDescriptorMap = descriptorMap;
+
+    inventoryManager.queryDownstreamIdentifiers(eid, nullptr, 0);
+
+    EXPECT_EQ(outDescriptorMap, descriptorMap);
+}
+
+TEST_F(InventoryManagerTest, handleGetDownstreamFirmwareParametersNoResponse)
+{
+    constexpr uint8_t eid = 1;
+    const DescriptorMap descriptorMap{
+        {eid, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
+    outDescriptorMap = descriptorMap;
+
+    inventoryManager.getDownstreamFirmwareParameters(eid, nullptr, 0);
+
+    EXPECT_EQ(outDescriptorMap, descriptorMap);
+}
+
 TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
 {
     // constexpr uint16_t compCount = 2;
