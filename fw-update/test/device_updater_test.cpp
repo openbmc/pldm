@@ -264,3 +264,35 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST_F(DeviceUpdaterTest, PaddedLastChunkCompletesTransferProgress)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 1024, nullptr);
+
+    // Transfer the first 1000 bytes of the 1024-byte component.
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        firstRequest{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
+                     0x00, 0xE8, 0x03, 0x00, 0x00};
+    auto response = deviceUpdater.requestFwData(
+        reinterpret_cast<const pldm_msg*>(firstRequest.data()),
+        sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t) + 1000);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 94);
+
+    // The final request carries 24 component bytes and eight padding bytes.
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        lastRequest{0x8B, 0x05, 0x15, 0xE8, 0x03, 0x00,
+                    0x00, 0x20, 0x00, 0x00, 0x00};
+    response = deviceUpdater.requestFwData(
+        reinterpret_cast<const pldm_msg*>(lastRequest.data()),
+        sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t) + 32);
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_TRUE(std::all_of(response.end() - 8, response.end(),
+                            [](uint8_t value) { return value == 0; }));
+    EXPECT_EQ(deviceUpdater.getProgress(), 97);
+}

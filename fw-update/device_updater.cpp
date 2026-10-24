@@ -650,11 +650,13 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         }
     }
 
+    const auto dataBytes = length - padBytes;
+
     if (componentIndex < progress.size())
     {
         // technically this should never happen, as its an invariant
         // but check to prefer a failed fw update over a pldm crash
-        progress[componentIndex].reportFwUpdate(length);
+        progress[componentIndex].reportFwUpdate(dataBytes);
         if (updateManager != nullptr)
         {
             updateManager->updateActivationProgress();
@@ -667,7 +669,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     package.read(
         reinterpret_cast<char*>(
             response.data() + sizeof(pldm_msg_hdr) + sizeof(completionCode)),
-        length - padBytes);
+        dataBytes);
     rc = encode_request_firmware_data_resp(
         request->hdr.instance_id, completionCode, responseMsg,
         sizeof(completionCode));
