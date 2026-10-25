@@ -65,6 +65,7 @@ test(
     executable(
         'events_test',
         'events_test.cpp',
+        cpp_args: ['-fno-access-control'],
         implicit_include_directories: false,
         include_directories: '../../pldmd',
         dependencies: test_deps,
