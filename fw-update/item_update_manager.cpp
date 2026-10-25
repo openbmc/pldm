@@ -78,8 +78,7 @@ bool ItemUpdateManager::processPackage()
     if (!deviceIdRecordOffset)
     {
         error("Failed to associate package to device");
-        events::generateUpdateNotApplicable(firmwareInventoryPath,
-                                            parser->pkgVersion);
+        events::generateUpdateNotApplicable(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
 
@@ -99,8 +98,7 @@ bool ItemUpdateManager::processPackage()
             error(
                 "Package has no applicable image for component {COMPONENT} at endpoint ID {EID}",
                 "COMPONENT", componentIdentifier, "EID", eid);
-            events::generateUpdateNotApplicable(firmwareInventoryPath,
-                                                parser->pkgVersion);
+            events::generateUpdateNotApplicable(firmwareInventoryPath, {});
             return failInvalidPackage();
         }
     }
@@ -111,9 +109,8 @@ bool ItemUpdateManager::processPackage()
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
         eid, *packageDataStream, fwDeviceIDRecord, compImageInfos,
-        componentInfo, MAXIMUM_TRANSFER_SIZE, this, parser->pkgVersion,
-        firmwareInventoryPath);
-    events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
+        componentInfo, MAXIMUM_TRANSFER_SIZE, this,
+        aggregate ? aggregate->componentTargets(eid) : ComponentTargets{});
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
     {
@@ -274,11 +271,6 @@ void ItemUpdateManager::completeUpdate(bool status)
         info("Firmware update time: {DURATION}ms", "DURATION", dur);
     }
 
-    if (status)
-    {
-        events::generateUpdateSuccessful(
-            firmwareInventoryPath, parser ? parser->pkgVersion : std::string{});
-    }
     inProgressActivation->activation(
         status ? software::Activation::Activations::Active
                : software::Activation::Activations::Failed);

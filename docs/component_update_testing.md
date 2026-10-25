@@ -95,3 +95,24 @@ Retain the package manifests/hashes, target URIs, decoded PLDM exchanges,
 activation/progress history, journal and before/after firmware parameters for
 every case. Mark each case passed, failed or untested with its reason. Do not
 infer a pass from task completion or from the number of log entries alone.
+
+## Component event checks
+
+Capture new phosphor-logging entries and their `TARGET_NAME` and
+`IMAGE_IDENTIFIER` fields for each case. These checks do not require Redfish
+task-message consumption or an update-to-target association.
+
+- A component target has one TargetDetermined naming that component's current
+  software inventory object. Every stage event names that same component and
+  uses its ComponentVersionString, even when its image is second in the package.
+- A device target has TargetDetermined for each applicable component with an
+  inventory object. Transfer, verification and installation events identify the
+  component currently being processed. No device-level duplicates are emitted.
+- A declined component has UpdateNotApplicable and no UpdateSuccessful. At
+  successful activation, each applied component has one UpdateSuccessful.
+  Activation failure reports ActivateFailed only for applied components.
+- Missing/non-applicable target images fail before TargetDetermined. Their
+  UpdateNotApplicable names the selected item with an empty image identifier.
+- A failure during one component's transfer or verification must name that
+  component. Correlate the log with the decoded protocol result, and check for
+  crashes, late sibling transfers and duplicate terminal outcomes separately.

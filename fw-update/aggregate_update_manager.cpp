@@ -41,7 +41,21 @@ void AggregateUpdateManager::createUpdateManager(
         softwareIdentifier, event, handler, instanceIdDb, updateObjPath,
         generatedId, *descriptorMap[softwareIdentifier],
         *componentInfoMap[softwareIdentifier], conditionPathPair, conditionArg,
-        std::move(taskCompletionCallback));
+        std::move(taskCompletionCallback), this);
+}
+
+ComponentTargets AggregateUpdateManager::componentTargets(mctp_eid_t eid) const
+{
+    ComponentTargets targets;
+    for (const auto& [softwareIdentifier, updateManager] : updateManagers)
+    {
+        if (softwareIdentifier.first == eid && softwareIdentifier.second != 0)
+        {
+            targets.emplace(softwareIdentifier.second,
+                            updateManager->eventTarget());
+        }
+    }
+    return targets;
 }
 
 void AggregateUpdateManager::eraseUpdateManager(

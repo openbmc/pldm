@@ -110,6 +110,8 @@ class AggregateUpdateManager : public UpdateManager
     void eraseUpdateManagerIf(
         std::function<bool(const SoftwareIdentifier&)>&& predicate);
 
+    ComponentTargets componentTargets(mctp_eid_t eid) const override;
+
   private:
     /**
      * @brief Map of UpdateManager instances keyed by software identifier
