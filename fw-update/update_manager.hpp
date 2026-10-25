@@ -114,6 +114,14 @@ class UpdateManager : public UpdateManagerBase
         taskCompletionCallback(std::move(taskCompletionCallback))
     {}
 
+    /** @brief Software objects of the components of an FD, named by the
+     *         Software.Update events; none unless an inventory is kept
+     */
+    virtual ComponentTargets componentTargets(mctp_eid_t /*eid*/) const
+    {
+        return {};
+    }
+
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
      *

@@ -60,6 +60,9 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @param[in] generatedId The software hash identifier
      * @param[in] descriptors The descriptors for the device
      * @param[in] componentInfo The component information for the device
+     * @param[in] aggregate The update manager of the inventory this item
+     *                      belongs to, which knows the software objects of
+     *                      the device's components
      */
     explicit ItemUpdateManager(
         const SoftwareIdentifier& softwareIdentifier, Event& event,
@@ -69,7 +72,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const ComponentInfo& componentInfo,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        std::function<void()> taskCompletionCallback = nullptr,
+        const UpdateManager* aggregate = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         ItemUpdateIntf(
             pldm::utils::DBusHandler::getBus(),
@@ -78,8 +82,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         componentIdentifier(softwareIdentifier.second), objPath(objPath),
         firmwareInventoryPath(
             constructFirmwareInventoryPath(objPath, generatedId)),
-        descriptors(descriptors), componentInfo(componentInfo),
-        preConditionPath(conditionPathPair.first),
+        aggregate(aggregate), descriptors(descriptors),
+        componentInfo(componentInfo), preConditionPath(conditionPathPair.first),
         postConditionPath(conditionPathPair.second),
         baseConditionArg(conditionArg), conditionArg(conditionArg),
         taskCompletionCallback(std::move(taskCompletionCallback))
@@ -153,12 +157,19 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const FirmwareDeviceIDRecords& fwDeviceIDRecords,
         const Descriptors& descriptors);
 
+    /** @brief The inventory item named by this manager's update events */
+    auto eventTarget() const -> sdbusplus::object_path
+    {
+        return firmwareInventoryPath;
+    }
+
   private:
     mctp_eid_t eid;
     CompIdentifier componentIdentifier;
     std::string objPath;
     sdbusplus::object_path firmwareInventoryPath;
     std::string objPathWithSwId;
+    const UpdateManager* aggregate;
 
     /**
      * @brief The descriptors to match against

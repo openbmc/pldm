@@ -10,9 +10,10 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <map>
 #include <optional>
 #include <string>
-#include <string_view>
+#include <vector>
 
 namespace pldm
 {
@@ -33,6 +34,11 @@ enum class ComponentUpdateStatus
     Failed,
     Accepted,
 };
+
+/** @brief Software object of each component of an FD, by component identifier,
+ *         named by the Software.Update events reported for the component
+ */
+using ComponentTargets = std::map<CompIdentifier, sdbusplus::object_path>;
 
 /** @brief Type alias for component update status tracking
  *         Maps component index to its update status
@@ -153,18 +159,17 @@ class DeviceUpdater
      *                               payload allowed to be requested by the FD
      *  @param[in] updateManager - To update the status of fw update of the
      *                             device
-     *  @param[in] pkgVersion - PackageVersionString of the fw update package,
-     *                          naming the image in the Software.Update events
-     *  @param[in] targetPath - Software object the Software.Update events
-     *                          report against, nullopt to report none
+     *  @param[in] componentTargets - Software object per component, named by
+     *                                the Software.Update events; components
+     *                                without one are not reported
      */
-    explicit DeviceUpdater(
-        mctp_eid_t eid, std::istream& package,
-        const FirmwareDeviceIDRecord& fwDeviceIDRecord,
-        const ComponentImageInfos& compImageInfos,
-        const ComponentInfo& compInfo, uint32_t maxTransferSize,
-        UpdateManagerBase* updateManager, std::string_view pkgVersion = {},
-        std::optional<sdbusplus::object_path> targetPath = std::nullopt);
+    explicit DeviceUpdater(mctp_eid_t eid, std::istream& package,
+                           const FirmwareDeviceIDRecord& fwDeviceIDRecord,
+                           const ComponentImageInfos& compImageInfos,
+                           const ComponentInfo& compInfo,
+                           uint32_t maxTransferSize,
+                           UpdateManagerBase* updateManager,
+                           ComponentTargets componentTargets = {});
 
     /** @brief Get the progress of updating this device as percentage
      *
@@ -378,11 +383,22 @@ class DeviceUpdater
     /** @brief To update the status of fw update of the FD */
     UpdateManagerBase* updateManager;
 
-    /** @brief PackageVersionString naming the image in the reported events */
-    std::string pkgVersion;
+    /** @brief Software object per component, named by the reported events */
+    ComponentTargets componentTargets;
 
-    /** @brief Software object the reported events name as their target */
-    std::optional<sdbusplus::object_path> targetPath;
+    /** @brief Indices into the applicable components whose apply completed */
+    std::vector<size_t> appliedComponents;
+
+    using EventGenerator = void (*)(
+        const std::optional<sdbusplus::object_path>&, const std::string&);
+
+    /** @brief Report an event for an applicable component, naming its
+     *         software object and version; skipped when it has no object
+     */
+    void report(EventGenerator generate, size_t index) const;
+
+    /** @brief Report an event for every component whose apply completed */
+    void reportApplied(EventGenerator generate) const;
 
     /** @brief Component index is used to track the current component being
      *         updated if multiple components are applicable for the FD.
