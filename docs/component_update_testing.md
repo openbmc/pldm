@@ -116,3 +116,10 @@ task-message consumption or an update-to-target association.
 - A failure during one component's transfer or verification must name that
   component. Correlate the log with the decoded protocol result, and check for
   crashes, late sibling transfers and duplicate terminal outcomes separately.
+
+For a two-device bundle with two applicable components on each device, expect
+four TargetDetermined entries with four distinct component paths. Compare each
+EID's events with a separate whole-device update of the same package: target
+identity and component image versions must agree. Images outside a device
+record's bitmap must produce no events for that EID. Capture later stage and
+outcome events too; initial TargetDetermined coverage alone is insufficient.
