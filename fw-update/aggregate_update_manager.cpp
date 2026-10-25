@@ -32,8 +32,6 @@ void AggregateUpdateManager::createUpdateManager(
     const ConditionPaths& conditionPathPair, const std::string& conditionArg,
     std::function<void()> taskCompletionCallback)
 {
-    auto eid = softwareIdentifier.first;
-
     if (updateManagers.contains(softwareIdentifier))
     {
         // Keep storage and any active update alive while refreshing inputs.
@@ -50,8 +48,8 @@ void AggregateUpdateManager::createUpdateManager(
         std::make_unique<ComponentInfo>(componentInfo);
 
     updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
-        eid, event, handler, instanceIdDb, updateObjPath, generatedId,
-        *descriptorMap[softwareIdentifier],
+        softwareIdentifier, event, handler, instanceIdDb, updateObjPath,
+        generatedId, *descriptorMap[softwareIdentifier],
         *componentInfoMap[softwareIdentifier], conditionPathPair, conditionArg,
         std::move(taskCompletionCallback));
 }
