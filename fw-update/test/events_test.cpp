@@ -6,17 +6,21 @@
 // stopped from inside its own event loop, so one service runs for the whole
 // binary and is left running at exit rather than being stopped per test.
 #include "fw-update/events.hpp"
+#include "fw-update/update_manager.hpp"
+#include "test/test_instance_id.hpp"
 
 #include <sdbusplus/async.hpp>
 #include <xyz/openbmc_project/Logging/Create/aserver.hpp>
 #include <xyz/openbmc_project/Logging/Entry/aserver.hpp>
 #include <xyz/openbmc_project/Software/Update/event.hpp>
 
+#include <array>
 #include <format>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
@@ -24,6 +28,7 @@
 #include <gtest/gtest.h>
 
 namespace events = pldm::fw_update::events;
+namespace fw = pldm::fw_update;
 
 class TestEventServer;
 class TestEventEntry;
@@ -262,4 +267,219 @@ TEST_F(EventsTest, CommitsNothingWithoutATarget)
     events::generateUpdateSuccessful(std::nullopt, imageIdentifier);
 
     EXPECT_TRUE(eventServer.committed().empty());
+}
+
+// Keep the updater alive after completion so these tests can inspect the
+// committed events independently of the update manager's cleanup policy.
+class EventUpdateManager : public fw::UpdateManagerBase
+{
+  public:
+    using UpdateManagerBase::UpdateManagerBase;
+    void updateDeviceCompletion(mctp_eid_t, bool status) override
+    {
+        completed = status;
+    }
+    void updateActivationProgress() override {}
+    void activatePackage() override {}
+    void resetActivationState() override {}
+    std::optional<bool> completed;
+};
+
+class ComponentEventsTest : public EventsTest
+{
+  protected:
+    ComponentEventsTest() :
+        event(sdeventplus::Event::get_default()),
+        handler(nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+                std::chrono::milliseconds(100)),
+        manager(event, handler, instanceIdDb)
+    {}
+
+    void expectCommit(size_t index, std::string_view name,
+                      fw::CompIdentifier component, const std::string& version)
+    {
+        const auto commits = eventServer.committed();
+        ASSERT_LT(index, commits.size());
+        EXPECT_EQ(commits[index].first, name);
+        EXPECT_EQ(commits[index].second.at("TARGET_NAME"),
+                  targets.at(component).str);
+        EXPECT_EQ(commits[index].second.at("IMAGE_IDENTIFIER"), version);
+    }
+
+    void completeComponent(fw::DeviceUpdater& updater)
+    {
+        const std::array<uint8_t, 12> accepted{
+            0, PLDM_FWUP, PLDM_UPDATE_COMPONENT, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        ASSERT_TRUE(updater.updateComponent(
+            eid, reinterpret_cast<const pldm_msg*>(accepted.data()),
+            accepted.size() - sizeof(pldm_msg_hdr)));
+        const std::array<uint8_t, 11> dataRequest{
+            0x80, PLDM_FWUP, PLDM_REQUEST_FIRMWARE_DATA, 0, 0, 0, 0, 0, 2,
+            0,    0};
+        auto response = updater.requestFwData(
+            reinterpret_cast<const pldm_msg*>(dataRequest.data()), 8);
+        ASSERT_EQ(response.at(sizeof(pldm_msg_hdr)), PLDM_SUCCESS);
+        const std::array<uint8_t, 4> transfer{
+            0x80, PLDM_FWUP, PLDM_TRANSFER_COMPLETE,
+            PLDM_FWUP_TRANSFER_SUCCESS};
+        response = updater.transferComplete(
+            reinterpret_cast<const pldm_msg*>(transfer.data()), 1);
+        ASSERT_EQ(response.at(sizeof(pldm_msg_hdr)), PLDM_SUCCESS);
+        const std::array<uint8_t, 4> verify{
+            0x80, PLDM_FWUP, PLDM_VERIFY_COMPLETE, PLDM_FWUP_VERIFY_SUCCESS};
+        response = updater.verifyComplete(
+            reinterpret_cast<const pldm_msg*>(verify.data()), 1);
+        ASSERT_EQ(response.at(sizeof(pldm_msg_hdr)), PLDM_SUCCESS);
+        const std::array<uint8_t, 6> apply{
+            0x80, PLDM_FWUP, PLDM_APPLY_COMPLETE, PLDM_FWUP_APPLY_SUCCESS,
+            0,    0};
+        response = updater.applyComplete(
+            reinterpret_cast<const pldm_msg*>(apply.data()), 3);
+        ASSERT_EQ(response.at(sizeof(pldm_msg_hdr)), PLDM_SUCCESS);
+        // The post-apply status check moves on to the next component.
+        const std::array<uint8_t, 14> status{
+            0,
+            PLDM_FWUP,
+            PLDM_GET_STATUS,
+            PLDM_SUCCESS,
+            PLDM_FD_STATE_READY_XFER,
+            PLDM_FD_STATE_APPLY,
+            PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER,
+            PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS,
+            100,
+            0,
+            0,
+            0,
+            0,
+            0};
+        updater.handleApplyState(
+            eid, reinterpret_cast<const pldm_msg*>(status.data()),
+            status.size() - sizeof(pldm_msg_hdr));
+    }
+
+    void activate(fw::DeviceUpdater& updater, uint8_t completion = PLDM_SUCCESS)
+    {
+        const std::array<uint8_t, 6> response{
+            0, PLDM_FWUP, PLDM_ACTIVATE_FIRMWARE, completion, 0, 0};
+        updater.activateFirmware(
+            eid, reinterpret_cast<const pldm_msg*>(response.data()), 3);
+    }
+
+    static constexpr mctp_eid_t eid = 16;
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> handler;
+    EventUpdateManager manager;
+    std::istringstream package{std::string(1024, 'x')};
+    fw::pkg::FirmwareDeviceIDRecord record{0, {0, 1}, "device-version", {}, {}};
+    fw::pkg::ComponentImageInfos images{
+        {10, 100, 0xffffffff, 0, 0, 0, 512, "first-version"},
+        {10, 200, 0xffffffff, 0, 0, 512, 512, "second-version"}};
+    fw::ComponentInfo componentInfo{{{10, 100}, fw::CompInfo{1, 0}},
+                                    {{10, 200}, fw::CompInfo{2, 0}}};
+    fw::ComponentTargets targets{
+        {100,
+         sdbusplus::object_path("/xyz/openbmc_project/software/component100")},
+        {200,
+         sdbusplus::object_path("/xyz/openbmc_project/software/component200")}};
+};
+
+TEST_F(ComponentEventsTest, ReportsEachComponentsStagesAndSuccess)
+{
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    completeComponent(updater);
+    activate(updater);
+    ASSERT_EQ(eventServer.committed().size(), 10);
+    EXPECT_EQ(manager.completed, true);
+    expectCommit(0, event_intf::TargetDetermined::errName, 100,
+                 "first-version");
+    expectCommit(1, event_intf::TargetDetermined::errName, 200,
+                 "second-version");
+    for (size_t i = 0; i < 2; ++i)
+    {
+        const auto component = i ? 200 : 100;
+        const auto version = i ? "second-version" : "first-version";
+        expectCommit(2 + i * 3, event_intf::TransferringToComponent::errName,
+                     component, version);
+        expectCommit(3 + i * 3, event_intf::VerifyingAtComponent::errName,
+                     component, version);
+        expectCommit(4 + i * 3, event_intf::InstallingOnComponent::errName,
+                     component, version);
+        expectCommit(8 + i, event_intf::UpdateSuccessful::errName, component,
+                     version);
+    }
+}
+
+TEST_F(ComponentEventsTest, SelectedSecondComponentHasNoSiblingEvents)
+{
+    std::get<fw::pkg::ApplicableComponents>(record) = {1};
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    activate(updater);
+    const auto commits = eventServer.committed();
+    ASSERT_EQ(commits.size(), 5);
+    for (const auto& [name, data] : commits)
+    {
+        EXPECT_EQ(data.at("TARGET_NAME"), targets.at(200).str);
+        EXPECT_EQ(data.at("IMAGE_IDENTIFIER"), "second-version");
+    }
+    expectCommit(0, event_intf::TargetDetermined::errName, 200,
+                 "second-version");
+    expectCommit(4, event_intf::UpdateSuccessful::errName, 200,
+                 "second-version");
+}
+
+TEST_F(ComponentEventsTest, ActivationFailureNamesOnlyAppliedComponents)
+{
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    eventServer.clear();
+    activate(updater, PLDM_ERROR);
+    ASSERT_EQ(eventServer.committed().size(), 1);
+    expectCommit(0, error_intf::ActivateFailed::errName, 100, "first-version");
+    EXPECT_EQ(manager.completed, false);
+}
+
+TEST_F(ComponentEventsTest, SkippedComponentDoesNotReportSuccess)
+{
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    eventServer.clear();
+    const std::array<uint8_t, 12> rejected{
+        0,
+        PLDM_FWUP,
+        PLDM_UPDATE_COMPONENT,
+        0,
+        PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0};
+    ASSERT_TRUE(updater.updateComponent(
+        eid, reinterpret_cast<const pldm_msg*>(rejected.data()), 9));
+    activate(updater);
+    ASSERT_EQ(eventServer.committed().size(), 2);
+    expectCommit(0, error_intf::UpdateNotApplicable::errName, 200,
+                 "second-version");
+    expectCommit(1, event_intf::UpdateSuccessful::errName, 100,
+                 "first-version");
+}
+
+TEST_F(ComponentEventsTest, MissingInventoryDoesNotFallBackToDevice)
+{
+    auto available = targets;
+    available.erase(200);
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, available);
+    ASSERT_EQ(eventServer.committed().size(), 1);
+    expectCommit(0, event_intf::TargetDetermined::errName, 100,
+                 "first-version");
 }
