@@ -37,13 +37,19 @@ const std::map<uint8_t, const char*> fdAuxState{
     {PLDM_FD_OPERATION_SUCCESSFUL, "Operation successful"},
     {PLDM_FD_OPERATION_FAILED, "Operation Failed"},
     {PLDM_FD_IDLE_LEARN_COMPONENTS_READ_XFER,
-     "Not applicable in current state"}};
+     "Not applicable in current state"},
+    {PLDM_FD_IDLE_SELF_CONTAINED_ACTIVATION_FAILURE,
+     "Self-contained activation failure"},
+};
 
 const std::map<uint8_t, const char*> fdAuxStateStatus{
     {PLDM_FD_AUX_STATE_IN_PROGRESS_OR_SUCCESS,
      "AuxState is In Progress or Success"},
     {PLDM_FD_TIMEOUT, "Timeout occurred while performing action"},
-    {PLDM_FD_GENERIC_ERROR, "Generic Error has occurred"}};
+    {PLDM_FD_GENERIC_ERROR, "Generic Error has occurred"},
+    {PLDM_FD_SELF_CONTAINED_ACTIVATION_FAILURE,
+     "Self-contained activation failure"},
+};
 
 const std::map<uint8_t, const char*> fdReasonCode{
     {PLDM_FD_INITIALIZATION, "Initialization of firmware device has occurred"},
