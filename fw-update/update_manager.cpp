@@ -196,7 +196,8 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
                 deviceUpdaterInfo.first, package, fwDeviceIDRecord,
-                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this));
+                compImageInfos, search->second, MAXIMUM_TRANSFER_SIZE, this,
+                componentTargets(deviceUpdaterInfo.first)));
     }
 
     updateInProgress = true;

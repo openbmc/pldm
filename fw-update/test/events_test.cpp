@@ -5,9 +5,11 @@
 // blocks in the commit while the service thread answers it. A context is
 // stopped from inside its own event loop, so one service runs for the whole
 // binary and is left running at exit rather than being stopped per test.
+#include "fw-update/aggregate_update_manager.hpp"
 #include "fw-update/events.hpp"
 #include "fw-update/update_manager.hpp"
 #include "test/test_instance_id.hpp"
+#include "test_package.hpp"
 
 #include <sdbusplus/async.hpp>
 #include <xyz/openbmc_project/Logging/Create/aserver.hpp>
@@ -462,4 +464,85 @@ TEST_F(ComponentEventsTest, MissingInventoryDoesNotFallBackToDevice)
     ASSERT_EQ(eventServer.committed().size(), 1);
     expectCommit(0, event_intf::TargetDetermined::errName, 100,
                  "first-version");
+}
+
+class BundleEventsTest : public ComponentEventsTest
+{
+  protected:
+    void checkBundle(uint8_t applicable, size_t expectedComponents)
+    {
+        const auto bytes = fw::test::twoComponentPackage(applicable);
+        std::istringstream stream(std::string(bytes.begin(), bytes.end()));
+        const fw::Descriptors descriptors{
+            {PLDM_FWUP_UUID,
+             std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41,
+                                  0x15, 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49,
+                                  0xD6, 0x75}}};
+        const fw::DescriptorMap deviceDescriptors{{16, descriptors},
+                                                  {17, descriptors}};
+        const fw::ComponentInfoMap components{{16, componentInfo},
+                                              {17, componentInfo}};
+        fw::AggregateUpdateManager aggregate(event, handler, instanceIdDb,
+                                             deviceDescriptors, components);
+        std::map<std::string, std::string> expected;
+        for (mctp_eid_t endpoint : {16, 17})
+        {
+            // Create the same inventory-backed managers that discovery creates,
+            // including the device object which must not receive these events.
+            for (fw::CompIdentifier component : {0, 100, 200})
+            {
+                aggregate.createUpdateManager(
+                    {endpoint, component}, descriptors, componentInfo,
+                    std::format(
+                        "/xyz/openbmc_project/software/eid{}_component{}",
+                        endpoint, component),
+                    "sw", {}, {}, nullptr);
+            }
+            const auto paths = aggregate.componentTargets(endpoint);
+            expected.emplace(paths.at(100).str, "VersionString3");
+            if (applicable & 2)
+            {
+                expected.emplace(paths.at(200).str, "VersionString4");
+            }
+        }
+        aggregate.processStreamDefer(stream, bytes.size());
+        event.run(std::nullopt);
+        const auto commits = eventServer.committed();
+        ASSERT_EQ(commits.size(), expectedComponents);
+        for (const auto& [name, data] : commits)
+        {
+            EXPECT_EQ(name, event_intf::TargetDetermined::errName);
+            auto target = expected.find(data.at("TARGET_NAME"));
+            ASSERT_NE(target, expected.end());
+            EXPECT_EQ(data.at("IMAGE_IDENTIFIER"), target->second);
+            expected.erase(target); // Also reject duplicates
+        }
+        EXPECT_TRUE(expected.empty());
+
+        // The ongoing device-stage events must retain the endpoint's component
+        // identity, not just the initial TargetDetermined messages.
+        const std::array<uint8_t, 4> transfer{
+            0x80, PLDM_FWUP, PLDM_TRANSFER_COMPLETE,
+            PLDM_FWUP_TRANSFER_SUCCESS};
+        aggregate.handleRequest(
+            17, PLDM_TRANSFER_COMPLETE,
+            reinterpret_cast<const pldm_msg*>(transfer.data()), 1);
+        const auto after = eventServer.committed();
+        ASSERT_EQ(after.size(), expectedComponents + 1);
+        EXPECT_EQ(after.back().first,
+                  event_intf::VerifyingAtComponent::errName);
+        EXPECT_EQ(after.back().second.at("TARGET_NAME"),
+                  aggregate.componentTargets(17).at(100).str);
+        EXPECT_EQ(after.back().second.at("IMAGE_IDENTIFIER"), "VersionString3");
+    }
+};
+
+TEST_F(BundleEventsTest, ReportsComponentsOnBothEndpoints)
+{
+    checkBundle(3, 4);
+}
+
+TEST_F(BundleEventsTest, OmitsImagesOutsideTheApplicableBitmap)
+{
+    checkBundle(1, 2);
 }
