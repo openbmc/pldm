@@ -51,7 +51,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief Constructor for ItemUpdateManager
      *
-     * @param[in] eid The MCTP EID
+     * @param[in] softwareIdentifier The EID and component identifier; zero
+     *                              identifies the whole device
      * @param[in] event The event object
      * @param[in] handler The request handler
      * @param[in] instanceIdDb The instance ID database
@@ -61,7 +62,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @param[in] componentInfo The component information for the device
      */
     explicit ItemUpdateManager(
-        mctp_eid_t eid, Event& event,
+        const SoftwareIdentifier& softwareIdentifier, Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
         InstanceIdDb& instanceIdDb, const std::string& objPath,
         const std::string& generatedId, const Descriptors& descriptors,
@@ -73,7 +74,8 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         ItemUpdateIntf(
             pldm::utils::DBusHandler::getBus(),
             constructFirmwareInventoryPath(objPath, generatedId).c_str()),
-        eid(eid), objPath(objPath),
+        eid(softwareIdentifier.first),
+        componentIdentifier(softwareIdentifier.second), objPath(objPath),
         firmwareInventoryPath(
             constructFirmwareInventoryPath(objPath, generatedId)),
         descriptors(descriptors), componentInfo(componentInfo),
@@ -153,6 +155,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
 
   private:
     mctp_eid_t eid;
+    CompIdentifier componentIdentifier;
     std::string objPath;
     sdbusplus::object_path firmwareInventoryPath;
     std::string objPathWithSwId;
@@ -166,6 +169,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
      * @brief The component information of the target device
      */
     const ComponentInfo componentInfo;
+
+    /** @brief Device record with only the components selected for this update.
+     *         Own the copy for as long as DeviceUpdater references it, leaving
+     *         the parsed package and its image offsets unchanged.
+     */
+    FirmwareDeviceIDRecord fwDeviceIDRecord;
 
     /**
      * @brief The package data for the firmware update

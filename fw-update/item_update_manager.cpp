@@ -85,15 +85,34 @@ bool ItemUpdateManager::processPackage()
 
     const auto& fwDeviceIDRecords = parser->getFwDeviceIDRecords();
     const auto& compImageInfos = parser->getComponentImageInfos();
+    fwDeviceIDRecord = fwDeviceIDRecords[*deviceIdRecordOffset];
+    if (componentIdentifier != 0)
+    {
+        auto& components = std::get<ApplicableComponents>(fwDeviceIDRecord);
+        std::erase_if(components, [&](size_t index) {
+            return std::get<static_cast<size_t>(
+                       ComponentImageInfoPos::CompIdentifierPos)>(
+                       compImageInfos[index]) != componentIdentifier;
+        });
+        if (components.empty())
+        {
+            error(
+                "Package has no applicable image for component {COMPONENT} at endpoint ID {EID}",
+                "COMPONENT", componentIdentifier, "EID", eid);
+            events::generateUpdateNotApplicable(firmwareInventoryPath,
+                                                parser->pkgVersion);
+            return failInvalidPackage();
+        }
+    }
     static constexpr uint32_t MAXIMUM_TRANSFER_SIZE = 4096;
 
     auto packageSpan = packageMap->getChars();
     packageDataStream =
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
-        eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
-        compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
-        parser->pkgVersion, firmwareInventoryPath);
+        eid, *packageDataStream, fwDeviceIDRecord, compImageInfos,
+        componentInfo, MAXIMUM_TRANSFER_SIZE, this, parser->pkgVersion,
+        firmwareInventoryPath);
     events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
     inProgressActivation->activation(software::Activation::Activations::Ready);
     if (!preConditionPath.empty())
