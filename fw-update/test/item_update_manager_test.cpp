@@ -1,17 +1,15 @@
 #include "common/types.hpp"
 #include "fw-update/item_update_manager.hpp"
 #include "test/test_instance_id.hpp"
+#include "test_package.hpp"
 
 #include <fcntl.h>
-#include <libpldm/edac.h>
 #include <libpldm/firmware_update.h>
 #include <sys/mman.h>
 #include <unistd.h>
 
 #include <algorithm>
 #include <array>
-#include <fstream>
-#include <iterator>
 #include <ranges>
 
 #include <gtest/gtest.h>
@@ -69,37 +67,7 @@ class ItemUpdateManagerTest : public testing::Test
     // filtering; the bitmap can leave the second image inapplicable.
     void useTwoComponentPackage(uint8_t applicable = 3)
     {
-        std::ifstream source("./test_pkg", std::ios::binary);
-        std::vector<uint8_t> bytes{std::istreambuf_iterator<char>(source), {}};
-        constexpr size_t headerSize = 139;
-        constexpr size_t componentInfoOffset = 99;
-        constexpr size_t componentInfoSize = 36;
-        constexpr size_t payloadSize = 1024;
-        constexpr size_t newHeaderSize = headerSize + componentInfoSize;
-        ASSERT_EQ(bytes.size(), headerSize + payloadSize);
-
-        std::vector<uint8_t> second(bytes.begin() + componentInfoOffset,
-                                    bytes.begin() + headerSize - 4);
-        bytes.resize(headerSize - 4); // Replace the old header checksum
-        bytes.insert(bytes.end(), second.begin(), second.end());
-        auto setLE = [&](size_t offset, uint32_t value, size_t width) {
-            for (size_t i = 0; i < width; ++i)
-            {
-                bytes.at(offset + i) = (value >> (8 * i)) & 0xff;
-            }
-        };
-        setLE(17, newHeaderSize, 2); // PackageHeaderSize
-        setLE(62, applicable, 1);    // ApplicableComponents bitmap
-        setLE(97, 2, 2);             // ComponentImageCount
-        setLE(componentInfoOffset + 12, newHeaderSize, 4);
-        setLE(componentInfoOffset + componentInfoSize + 2, 200, 2);
-        setLE(componentInfoOffset + componentInfoSize + 12,
-              newHeaderSize + payloadSize, 4);
-        const auto checksum = pldm_edac_crc32(bytes.data(), bytes.size());
-        bytes.resize(newHeaderSize);
-        setLE(newHeaderSize - 4, checksum, 4);
-        bytes.insert(bytes.end(), payloadSize, 0xa1);
-        bytes.insert(bytes.end(), payloadSize, 0xb2);
+        const auto bytes = test::twoComponentPackage(applicable);
 
         close(packageFd);
         packageFd = memfd_create("component-targeting-test", MFD_CLOEXEC);
