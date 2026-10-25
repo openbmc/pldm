@@ -3,10 +3,16 @@
 #include "test/test_instance_id.hpp"
 
 #include <fcntl.h>
+#include <libpldm/edac.h>
 #include <libpldm/firmware_update.h>
+#include <sys/mman.h>
 #include <unistd.h>
 
+#include <algorithm>
 #include <array>
+#include <fstream>
+#include <iterator>
+#include <ranges>
 
 #include <gtest/gtest.h>
 
@@ -43,6 +49,65 @@ class ItemUpdateManagerTest : public testing::Test
     static ActivationProgress* progressOf(ItemUpdateManager& manager)
     {
         return manager.activationProgress.get();
+    }
+
+    static const ApplicableComponents& selectedComponents(
+        const ItemUpdateManager& manager)
+    {
+        return std::get<ApplicableComponents>(manager.fwDeviceIDRecord);
+    }
+
+    static bool rejected(const ItemUpdateManager& manager)
+    {
+        return !manager.deviceUpdater && !manager.parser &&
+               manager.inProgressActivation->activation() ==
+                   Activation::Activations::Invalid;
+    }
+
+    // Extend the existing test_pkg's single device record with a second
+    // component. Distinct payloads detect using the wrong package index after
+    // filtering; the bitmap can leave the second image inapplicable.
+    void useTwoComponentPackage(uint8_t applicable = 3)
+    {
+        std::ifstream source("./test_pkg", std::ios::binary);
+        std::vector<uint8_t> bytes{std::istreambuf_iterator<char>(source), {}};
+        constexpr size_t headerSize = 139;
+        constexpr size_t componentInfoOffset = 99;
+        constexpr size_t componentInfoSize = 36;
+        constexpr size_t payloadSize = 1024;
+        constexpr size_t newHeaderSize = headerSize + componentInfoSize;
+        ASSERT_EQ(bytes.size(), headerSize + payloadSize);
+
+        std::vector<uint8_t> second(bytes.begin() + componentInfoOffset,
+                                    bytes.begin() + headerSize - 4);
+        bytes.resize(headerSize - 4); // Replace the old header checksum
+        bytes.insert(bytes.end(), second.begin(), second.end());
+        auto setLE = [&](size_t offset, uint32_t value, size_t width) {
+            for (size_t i = 0; i < width; ++i)
+            {
+                bytes.at(offset + i) = (value >> (8 * i)) & 0xff;
+            }
+        };
+        setLE(17, newHeaderSize, 2); // PackageHeaderSize
+        setLE(62, applicable, 1);    // ApplicableComponents bitmap
+        setLE(97, 2, 2);             // ComponentImageCount
+        setLE(componentInfoOffset + 12, newHeaderSize, 4);
+        setLE(componentInfoOffset + componentInfoSize + 2, 200, 2);
+        setLE(componentInfoOffset + componentInfoSize + 12,
+              newHeaderSize + payloadSize, 4);
+        const auto checksum = pldm_edac_crc32(bytes.data(), bytes.size());
+        bytes.resize(newHeaderSize);
+        setLE(newHeaderSize - 4, checksum, 4);
+        bytes.insert(bytes.end(), payloadSize, 0xa1);
+        bytes.insert(bytes.end(), payloadSize, 0xb2);
+
+        close(packageFd);
+        packageFd = memfd_create("component-targeting-test", MFD_CLOEXEC);
+        ASSERT_GE(packageFd, 0);
+        ASSERT_EQ(write(packageFd, bytes.data(), bytes.size()),
+                  static_cast<ssize_t>(bytes.size()));
+        ASSERT_EQ(lseek(packageFd, 0, SEEK_SET), 0);
+        componentInfo.emplace(std::make_pair(10, 200), 2);
     }
 
     // StartUpdate defers the package processing to the event loop
@@ -85,8 +150,8 @@ class ItemUpdateManagerTest : public testing::Test
 
 TEST_F(ItemUpdateManagerTest, activationProgressAdvancesPerChunk)
 {
-    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
-                              descriptors, componentInfo);
+    ItemUpdateManager manager({eid, 0}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
     startUpdate(manager);
     ASSERT_NE(progressOf(manager), nullptr);
     EXPECT_EQ(progressOf(manager)->progress(), 0);
@@ -107,8 +172,8 @@ TEST_F(ItemUpdateManagerTest, activationProgressAdvancesPerChunk)
 
 TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
 {
-    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
-                              descriptors, componentInfo);
+    ItemUpdateManager manager({eid, 0}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
     startUpdate(manager);
     ASSERT_NE(progressOf(manager), nullptr);
     auto response = requestFwData(manager, 0);
@@ -130,4 +195,76 @@ TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(progressOf(manager)->progress(), 48);
+}
+
+TEST_F(ItemUpdateManagerTest, ComponentTargetReadsOnlyFirstImage)
+{
+    useTwoComponentPackage();
+    ItemUpdateManager manager({eid, 100}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
+    startUpdate(manager);
+    EXPECT_EQ(selectedComponents(manager), (ApplicableComponents{0}));
+    const auto response = requestFwData(manager);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + 1 + 512);
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_TRUE(std::ranges::all_of(response | std::views::drop(4),
+                                    [](auto byte) { return byte == 0xa1; }));
+    ASSERT_NE(progressOf(manager), nullptr);
+    EXPECT_EQ(progressOf(manager)->progress(), 48);
+}
+
+TEST_F(ItemUpdateManagerTest, ComponentTargetReadsOnlySecondImageOnEachUpdate)
+{
+    useTwoComponentPackage();
+    ItemUpdateManager manager({eid, 200}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
+    for (size_t attempt = 0; attempt < 2; ++attempt)
+    {
+        startUpdate(manager);
+        EXPECT_EQ(selectedComponents(manager), (ApplicableComponents{1}));
+        const auto response = requestFwData(manager);
+        ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + 1 + 512);
+        EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+        EXPECT_TRUE(
+            std::ranges::all_of(response | std::views::drop(4), [](auto byte) {
+                return byte == 0xb2;
+            }));
+        ASSERT_NE(progressOf(manager), nullptr);
+        EXPECT_EQ(progressOf(manager)->progress(), 48);
+        manager.updateDeviceCompletion(eid, false);
+    }
+}
+
+TEST_F(ItemUpdateManagerTest, DeviceTargetRetainsBothImages)
+{
+    useTwoComponentPackage();
+    ItemUpdateManager manager({eid, 0}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
+    startUpdate(manager);
+    EXPECT_EQ(selectedComponents(manager), (ApplicableComponents{0, 1}));
+    const auto response = requestFwData(manager);
+    ASSERT_GT(response.size(), sizeof(pldm_msg));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    ASSERT_NE(progressOf(manager), nullptr);
+    EXPECT_EQ(progressOf(manager)->progress(), 24);
+}
+
+TEST_F(ItemUpdateManagerTest, RejectsComponentOutsideApplicableBitmap)
+{
+    useTwoComponentPackage(1);
+    ItemUpdateManager manager({eid, 200}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
+    startUpdate(manager);
+    EXPECT_TRUE(rejected(manager));
+    EXPECT_EQ(progressOf(manager), nullptr);
+}
+
+TEST_F(ItemUpdateManagerTest, RejectsComponentAbsentFromPackage)
+{
+    useTwoComponentPackage();
+    ItemUpdateManager manager({eid, 300}, event, handler, instanceIdDb, objPath,
+                              "sw", descriptors, componentInfo);
+    startUpdate(manager);
+    EXPECT_TRUE(rejected(manager));
+    EXPECT_EQ(progressOf(manager), nullptr);
 }
