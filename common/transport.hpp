@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common/endpoint.hpp"
+
 #include <libpldm/base.h>
 #include <libpldm/pldm.h>
 #include <poll.h>
@@ -19,7 +21,7 @@ union TransportImpl
 class PldmTransport
 {
   public:
-    explicit PldmTransport(bool listening = true);
+    explicit PldmTransport(bool listening = true, bool identityMap = true);
     PldmTransport(const PldmTransport& other) = delete;
     PldmTransport(PldmTransport&& other) = delete;
     PldmTransport& operator=(const PldmTransport& other) = delete;
@@ -87,6 +89,31 @@ class PldmTransport
      */
     pldm_requester_rc_t sendRecvMsg(pldm_tid_t tid, const void* tx,
                                     size_t txLen, void*& rx, size_t& rxLen);
+
+    /** @brief Map a peer to the fully qualified MCTP endpoint (Network and
+     *         EID) that messages for it are sent to and received from.
+     *
+     * Only supported with the af-mctp transport.
+     *
+     * @param[in] peer - The key under which the endpoint is addressed by
+     *                   sendMsg(), recvMsg() and sendRecvMsg()
+     * @param[in] endpoint - The MCTP Network and EID of the endpoint
+     *
+     * @return 0 on success, otherwise a negative error code. -ENOTSUP is
+     *         returned when the transport does not support Network-qualified
+     *         addressing.
+     */
+    int mapEndpoint(pldm::PeerId peer, const pldm::Endpoint& endpoint);
+
+    /** @brief Remove the mapping created by mapEndpoint()
+     *
+     * @param[in] peer - The key that was passed to mapEndpoint()
+     *
+     * @return 0 on success, otherwise a negative error code. -ENOTSUP is
+     *         returned when the transport does not support Network-qualified
+     *         addressing.
+     */
+    int unmapEndpoint(pldm::PeerId peer);
 
   private:
     /** @brief A pollfd object for holding a file descriptor from the libpldm
