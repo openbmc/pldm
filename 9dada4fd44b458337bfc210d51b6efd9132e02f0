@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c2760aa_17d2a2d8",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1003102
+      },
+      "writtenOn": "2026-10-26T17:12:30Z",
+      "side": 0,
+      "message": "Nice cleanup. Could the helper return an integer value, such as std::optional\u003cint64_t\u003e? That would keep the JSON output unchanged.",
+      "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
