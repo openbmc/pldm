@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1cc69b7_6d374634",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:26:08Z",
+      "side": 1,
+      "message": "There is a stray i at the end of this URL. Please remove it,and trim the cherry-pick list as in the other patches.",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b12bbd_1996f7ba",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:26:08Z",
+      "side": 1,
+      "message": "include \u003ccmath\u003e, \u003ccstdint\u003e, \u003cstring\u003e\n\nThe header now uses union_range_field_format and PLDM_RANGE_FIELD_FORMAT_*. Please include \u003clibpldm/platform.h\u003e directly, and confirm ordered_json is declared above this point.",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
