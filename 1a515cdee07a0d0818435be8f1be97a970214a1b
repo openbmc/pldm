@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "928e758f_79b46ea4",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-26T05:56:04Z",
+      "side": 1,
+      "message": "The comment is too verbose. Can we shorten it?",
+      "revId": "1a515cdee07a0d0818435be8f1be97a970214a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c54d2a75_08411ec7",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-26T05:56:04Z",
+      "side": 1,
+      "message": "Maybe we can throw/return early for an empty bitfield either in this patch or as a follow up",
+      "revId": "1a515cdee07a0d0818435be8f1be97a970214a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d93fbfc_bd5a5080",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-26T05:56:04Z",
+      "side": 1,
+      "message": "Can we identify the firmware device ID record as well?",
+      "revId": "1a515cdee07a0d0818435be8f1be97a970214a1b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
