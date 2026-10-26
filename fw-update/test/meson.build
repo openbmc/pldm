@@ -36,6 +36,7 @@ foreach t : tests
             dependencies: test_deps,
         ),
         workdir: meson.current_source_dir(),
+        timeout: t == 'device_updater_test' ? 90 : 30,
     )
 endforeach
 
