@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/endpoint.hpp"
 #include "common/instance_id.hpp"
 
 #include <err.h>
@@ -18,8 +19,10 @@
 #include <CLI/CLI.hpp>
 #include <nlohmann/json.hpp>
 
+#include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <optional>
 #include <utility>
 
 namespace pldmtool
@@ -94,6 +97,11 @@ class CommandInterface
         pldmVerbose(false), instanceId(0)
     {
         app->add_option("-m,--mctp_eid", mctp_eid, "MCTP endpoint ID");
+        app->add_option(
+               "-N,--network", mctpNetwork,
+               "MCTP Network ID of the endpoint. Needs the af-mctp transport. "
+               "Without it the endpoint is on the default Network.")
+            ->check(CLI::PositiveNumber);
         app->add_flag("-v, --verbose", pldmVerbose);
         app->add_option("-n, --retry-count", numRetries,
                         "Number of retry when PLDM request message is failed");
@@ -146,6 +154,7 @@ class CommandInterface
     const std::string pldmType;
     const std::string commandName;
     uint8_t mctp_eid;
+    std::optional<uint32_t> mctpNetwork;
     bool pldmVerbose;
 
   protected:

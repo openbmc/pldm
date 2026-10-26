@@ -237,6 +237,29 @@ pldmtool raw -d 0x80 0x00 0x04 0x00 0x00 -m 0x08
 
 ```
 
+## pldmtool with Network option
+
+Use **-N** or **--network** option to give the MCTP Network of the remote end
+point, if it is not on the default Network. It needs pldmtool to be built with
+the af-mctp transport.
+
+pldmtool allocates instance IDs by the EID, and pldmd by the PeerId of the
+endpoint. This only matters when pldmd had to give the endpoint a PeerId other
+than its EID, because another Network already uses that EID: do not use pldmtool
+on such an endpoint while pldmd is talking to it.
+
+```bash
+# Command format:
+pldmtool <pldmType> <cmdType> -m <mctpId> -N <networkId>
+```
+
+Example:
+
+```bash
+# Get the terminus ID of the endpoint on MCTP Network 2 with EID 9
+pldmtool base GetTID -m 9 -N 2
+```
+
 ## pldmtool verbosity
 
 By default verbose flag is disabled on the pldmtool.

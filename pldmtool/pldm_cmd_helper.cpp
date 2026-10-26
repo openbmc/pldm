@@ -136,6 +136,20 @@ int CommandInterface::pldmSendRecv(std::vector<uint8_t>& requestMsg,
 
     auto tid = mctp_eid;
     PldmTransport pldmTransport(false);
+    if (mctpNetwork)
+    {
+        // This process talks to one endpoint, so its EID can be the key
+        int mapRc = pldmTransport.mapEndpoint(
+            tid, pldm::Endpoint{*mctpNetwork, mctp_eid});
+        if (mapRc)
+        {
+            std::cerr << "Cannot address MCTP Network " << *mctpNetwork
+                      << " EID " << unsigned(mctp_eid)
+                      << ", the transport does not support Networks, rc "
+                      << mapRc << std::endl;
+            return PLDM_ERROR;
+        }
+    }
     uint8_t retry = 0;
     int rc = PLDM_ERROR;
 
