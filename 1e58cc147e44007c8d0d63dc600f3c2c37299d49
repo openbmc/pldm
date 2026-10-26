@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff81e63_887b8d12",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1003102
+      },
+      "writtenOn": "2026-10-26T17:12:19Z",
+      "side": 1,
+      "message": "LGTM, and the IBM output is unchanged. Nit: emplace() only needs to run once per record, not for every Type-Length-Value.",
+      "revId": "1e58cc147e44007c8d0d63dc600f3c2c37299d49",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
