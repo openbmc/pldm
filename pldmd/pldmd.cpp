@@ -11,6 +11,7 @@
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
+#include "requester/transport_address_mapper.hpp"
 
 #include <err.h>
 #include <libpldm/base.h>
@@ -186,7 +187,13 @@ int main(int argc, char** argv)
     /* To maintain current behaviour until we have the infrastructure to find
      * and use the correct TIDs */
     pldm_tid_t TID = hostEID;
+#if defined(PLDM_NETWORK_SUPPORT)
+    // The endpoints are mapped by Network and EID once they are discovered, so
+    // the transport must not know any other
+    PldmTransport pldmTransport{true, false};
+#else
     PldmTransport pldmTransport{};
+#endif
     auto event = Event::get_default();
     auto& bus = pldm::utils::DBusHandler::getBus();
 
@@ -197,7 +204,13 @@ int main(int argc, char** argv)
         sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/inventory")};
 
     InstanceIdDb instanceIdDb;
+#if defined(PLDM_NETWORK_SUPPORT)
+    TransportAddressMapper addressMapper(pldmTransport);
+    EndpointRegistry endpointRegistry(std::make_unique<PooledPeerIdPolicy>(),
+                                      &addressMapper);
+#else
     EndpointRegistry endpointRegistry(std::make_unique<IdentityPeerIdPolicy>());
+#endif
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,

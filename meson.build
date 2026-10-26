@@ -118,6 +118,13 @@ elif get_option('transport-implementation') == 'af-mctp'
     conf_data.set('PLDM_TRANSPORT_WITH_AF_MCTP', 1)
 endif
 
+if get_option('network-support').allowed()
+    if get_option('transport-implementation') != 'af-mctp'
+        error('network-support requires -Dtransport-implementation=af-mctp')
+    endif
+    conf_data.set('PLDM_NETWORK_SUPPORT', 1)
+endif
+
 # Firmware update inotify option
 if get_option('fw-update-pkg-inotify').allowed()
     conf_data.set('FW_UPDATE_INOTIFY_ENABLED', 1)
