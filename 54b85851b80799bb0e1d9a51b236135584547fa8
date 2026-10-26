@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1c54655_77bcf3e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1003195
+      },
+      "writtenOn": "2026-10-26T11:28:17Z",
+      "side": 1,
+      "message": "The Before/After shown is for numericSensor and is identical. If possible can you demonstrate the effecter fix described in the body. Could you please show numericEffecter output where the old code gave a wrong value (REAL32 or negative signed),or add a unit test for addRangeField.",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12b12bbd_1996f7ba",
         "filename": "pldmtool/pldm_cmd_helper.hpp",
         "patchSetId": 8
