@@ -1,7 +1,9 @@
 #pragma once
 
+#include "common/endpoint.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
+#include "requester/endpoint_registry.hpp"
 
 #include <libpldm/pldm.h>
 
@@ -54,6 +56,34 @@ class MctpDiscoveryHandlerIntf
   public:
     virtual void handleMctpEndpoints(const MctpInfos& mctpInfos) = 0;
     virtual void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) = 0;
+
+    /** @brief Handle added endpoints together with their PeerIds.
+     *
+     *  This is what MctpDiscovery calls. By default it drops the PeerIds and
+     *  calls handleMctpEndpoints(), so handlers that do not need the PeerId
+     *  need not change.
+     *
+     *  @param[in] endpoints - the added endpoints
+     */
+    virtual void handleEndpoints(
+        const std::vector<DiscoveredEndpoint>& endpoints)
+    {
+        handleMctpEndpoints(toMctpInfos(endpoints));
+    }
+
+    /** @brief Handle removed endpoints together with their PeerIds.
+     *
+     *  The PeerIds are still valid while this is called. By default it drops
+     *  them and calls handleRemovedMctpEndpoints().
+     *
+     *  @param[in] endpoints - the removed endpoints
+     */
+    virtual void handleRemovedEndpoints(
+        const std::vector<DiscoveredEndpoint>& endpoints)
+    {
+        handleRemovedMctpEndpoints(toMctpInfos(endpoints));
+    }
+
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
     /** @brief Get Active EIDs.
@@ -67,6 +97,18 @@ class MctpDiscoveryHandlerIntf
     virtual void handleConfigurations(const Configurations& /*configurations*/)
     {}
     virtual ~MctpDiscoveryHandlerIntf() {}
+
+  private:
+    static MctpInfos toMctpInfos(
+        const std::vector<DiscoveredEndpoint>& endpoints)
+    {
+        MctpInfos mctpInfos;
+        for (const auto& endpoint : endpoints)
+        {
+            mctpInfos.emplace_back(endpoint.mctpInfo);
+        }
+        return mctpInfos;
+    }
 };
 
 class MctpDiscovery
@@ -84,10 +126,14 @@ class MctpDiscovery
      *
      *  @param[in] bus - reference to systemd bus
      *  @param[in] list - initializer list to the MctpDiscoveryHandlerIntf
+     *  @param[in] registry - assigns the PeerId of each discovered endpoint.
+     *                        When null, MctpDiscovery uses its own registry
+     *                        with PeerId equal to the EID.
      */
     explicit MctpDiscovery(
         sdbusplus::bus_t& bus,
-        std::initializer_list<MctpDiscoveryHandlerIntf*> list);
+        std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+        EndpointRegistry* registry = nullptr);
 
     /** @brief reference to the systemd bus */
     sdbusplus::bus_t& bus;
@@ -104,6 +150,12 @@ class MctpDiscovery
     /** @brief List of handlers need to notify when new MCTP
      * Endpoint is Added/Removed */
     std::vector<MctpDiscoveryHandlerIntf*> handlers;
+
+    /** @brief Registry used when the creator does not provide one */
+    std::unique_ptr<EndpointRegistry> ownedRegistry;
+
+    /** @brief Assigns the PeerId of each endpoint handed to the handlers */
+    EndpointRegistry& registry;
 
     /** @brief The existing MCTP endpoints and their D-Bus object paths */
     MctpInfosWithPath existingMctpInfos;
@@ -130,8 +182,8 @@ class MctpDiscovery
     void removeEndpoints(sdbusplus::message_t& msg);
 
     /** @brief Notify the registered handlers about the added MCTP endpoints.
-     *  The handlers receive the MctpInfo of each endpoint, without its
-     *  D-Bus object path.
+     *  Each endpoint is given a PeerId first. An endpoint that cannot get one
+     *  is logged and skipped.
      *
      *  @param[in] endpoints - added MCTP endpoints, each with the D-Bus
      *  object path it was discovered at
@@ -139,7 +191,8 @@ class MctpDiscovery
     void handleMctpEndpoints(const MctpInfosWithPath& endpoints);
 
     /** @brief Helper function to invoke registered handlers for
-     *  the removed MCTP endpoints
+     *  the removed MCTP endpoints. The PeerIds of the endpoints are released
+     *  after the handlers ran.
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */

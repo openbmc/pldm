@@ -29,7 +29,8 @@ auto findByObjectPath(const MctpInfosWithPath& mctpInfos,
 
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
-    std::initializer_list<MctpDiscoveryHandlerIntf*> list) :
+    std::initializer_list<MctpDiscoveryHandlerIntf*> list,
+    EndpointRegistry* suppliedRegistry) :
     bus(bus),
     mctpEndpointAddedSignal(
         bus, interfacesAdded(MCTPPath),
@@ -40,7 +41,12 @@ MctpDiscovery::MctpDiscovery(
     mctpEndpointPropChangedSignal(
         bus, propertiesChangedNamespace(MCTPPath, MCTPInterfaceCC),
         [this](sdbusplus::message_t& msg) { this->propertiesChangedCb(msg); }),
-    handlers(list)
+    handlers(list),
+    ownedRegistry(suppliedRegistry
+                      ? nullptr
+                      : std::make_unique<EndpointRegistry>(
+                            std::make_unique<IdentityPeerIdPolicy>())),
+    registry(suppliedRegistry ? *suppliedRegistry : *ownedRegistry)
 {
     std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>
         currentMctpInfoMap;
@@ -400,10 +406,19 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
 
 void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
 {
-    MctpInfos mctpInfos;
-    for (const auto& endpoint : endpoints)
+    std::vector<DiscoveredEndpoint> discovered;
+    for (const auto& [path, mctpInfo] : endpoints)
     {
-        mctpInfos.emplace_back(endpoint.second);
+        const auto endpoint = toEndpoint(mctpInfo);
+        auto peer = registry.acquire(endpoint);
+        if (!peer)
+        {
+            error(
+                "Cannot assign a PeerId to endpoint {ENDPOINT} at {PATH}, it is skipped",
+                "ENDPOINT", formatEndpoint(endpoint), "PATH", path);
+            continue;
+        }
+        discovered.push_back({*peer, mctpInfo});
     }
 
     for (const auto& handler : handlers)
@@ -411,19 +426,37 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
         if (handler)
         {
             handler->handleConfigurations(configurations);
-            handler->handleMctpEndpoints(mctpInfos);
+            handler->handleEndpoints(discovered);
         }
     }
 }
 
 void MctpDiscovery::handleRemovedMctpEndpoints(const MctpInfos& mctpInfos)
 {
-    for (const auto& handler : handlers)
+    std::vector<DiscoveredEndpoint> removed;
+    for (const auto& mctpInfo : mctpInfos)
     {
-        if (handler)
+        // Endpoints that never got a PeerId were never given to the handlers
+        if (auto peer = registry.peerOf(toEndpoint(mctpInfo)))
         {
-            handler->handleRemovedMctpEndpoints(mctpInfos);
+            removed.push_back({*peer, mctpInfo});
         }
+    }
+
+    if (!removed.empty())
+    {
+        for (const auto& handler : handlers)
+        {
+            if (handler)
+            {
+                handler->handleRemovedEndpoints(removed);
+            }
+        }
+    }
+
+    for (const auto& mctpInfo : mctpInfos)
+    {
+        registry.release(toEndpoint(mctpInfo));
     }
 }
 

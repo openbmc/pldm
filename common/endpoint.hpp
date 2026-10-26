@@ -21,6 +21,13 @@ struct Endpoint
     auto operator<=>(const Endpoint&) const = default;
 };
 
+/** @brief An MCTP endpoint together with the PeerId it is addressed by */
+struct DiscoveredEndpoint
+{
+    PeerId peer;
+    MctpInfo mctpInfo;
+};
+
 /** @brief Extract the Endpoint from an MctpInfo
  *
  *  @param[in] mctpInfo - MCTP endpoint information
