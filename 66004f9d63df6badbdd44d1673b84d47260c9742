@@ -70,6 +70,30 @@
       },
       "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae6c5d47_1accaa1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-26T07:57:49Z",
+      "side": 1,
+      "message": "we append TID only when there is no EM config name \u0026\u0026 no Entity Aux Name for the terminus -\u003e Basically the final fallback where we get `Terminus_\u003cTID\u003e`\n\nWhen we have either EM config name or Entity Aux Name - we don\u0027t append TID.\nhttps://github.com/openbmc/pldm/blob/af250d0f3833b1c167b071c4ded7d254eb88d673/platform-mc/terminus.cpp#L230\n\nHence, we see path collision.",
+      "parentUuid": "742276ea_21fc8cc5",
+      "range": {
+        "startLine": 14,
+        "startChar": 25,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
