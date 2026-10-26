@@ -17,6 +17,7 @@ namespace pldm
 
 using Availability = bool;
 using eid = uint8_t;
+using PeerId = uint8_t;
 using UUID = std::string;
 using Request = std::vector<uint8_t>;
 using Response = std::vector<uint8_t>;
@@ -62,11 +63,22 @@ using MctpEndpointProps = std::tuple<NetworkId, eid, MCTPMsgTypes>;
 using MctpInfos = std::vector<MctpInfo>;
 
 /**
- * In `Table 2 - Special endpoint IDs` of DSP0236.
- * EID from 1 to 7 is reserved EID. So the start valid EID is 8
+ * In `Table 2 - Special endpoint IDs` of DSP0236 v1.3.3.
+ * EID from 1 to 7 is reserved EID. So the start valid EID is 8.
+ * 255 is the broadcast EID, so the last valid EID will be 254.
  */
 constexpr eid MCTP_START_VALID_EID = 8;
+constexpr eid MCTP_END_VALID_EID = 254;
 constexpr uint8_t BmcMctpEid = 8;
+
+/**
+ * In `Table 8` of DSP0240 v1.2.0.
+ * TIDs 0 and 255 are reserved.
+ * So there are only pldm terminus possible from 1 - 254
+ * Using that constraint for peer id too.
+ */
+constexpr PeerId MIN_PEER_ID = 1;
+constexpr PeerId MAX_PEER_ID = 254;
 
 constexpr size_t PLDM_PLATFORM_GETPDR_MAX_RECORD_BYTES = 1024;
 /* default the max event message buffer size BMC supported to 4K bytes */
