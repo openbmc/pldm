@@ -11,14 +11,23 @@ requester_test_deps = [
 
 requester_test_lib = static_library(
     'requester_test_common',
-    ['../mctp_endpoint_discovery.cpp', '../../common/utils.cpp'],
+    [
+        '../endpoint_registry.cpp',
+        '../mctp_endpoint_discovery.cpp',
+        '../../common/utils.cpp',
+    ],
     implicit_include_directories: false,
     include_directories: ['../../', '../../pldmd'],
     dependencies: requester_test_deps,
 )
 test_src = declare_dependency(link_whole: requester_test_lib)
 
-tests = ['handler_test', 'request_test', 'mctp_endpoint_discovery_test']
+tests = [
+    'endpoint_registry_test',
+    'handler_test',
+    'request_test',
+    'mctp_endpoint_discovery_test',
+]
 
 foreach t : tests
     test(

@@ -293,6 +293,7 @@ executable(
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     oem_files,
+    'requester/endpoint_registry.cpp',
     'requester/mctp_endpoint_discovery.cpp',
     implicit_include_directories: false,
     dependencies: deps,
