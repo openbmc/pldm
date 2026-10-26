@@ -16,6 +16,24 @@
       "message": "@arunpapannagari23@gmail.com I see you\u0027ve started pushing patches on top. Are you donw testing this and good with this to merge, or still have comments?",
       "revId": "c9b6e16bc5279071ca804273188b64c19b4d9c68",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb85ec49_c3c6fa0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-26T08:10:31Z",
+      "side": 1,
+      "message": "Yes this patch LGTM",
+      "parentUuid": "4cf5ff11_7dd8ef29",
+      "revId": "c9b6e16bc5279071ca804273188b64c19b4d9c68",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
