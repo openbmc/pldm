@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5be09f_4b5865ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1003195
+      },
+      "writtenOn": "2026-10-26T11:11:57Z",
+      "side": 1,
+      "message": "The Tested section shows results after the fix only. It would be good if you could show the output or status before code fix so that it would be easy to understand",
+      "revId": "3d1a847121ee775123ed8d97f6dc5aea66e1d3c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fefd1ca7_823d6dbf",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1003195
+      },
+      "writtenOn": "2026-10-26T11:11:57Z",
+      "side": 1,
+      "message": "Could you please confirm the behaviour of componentTargets() for an EID that has no inventory entry, since the package path also handles such devices. Does it return an empty map, or can it throw (for example through at())? Also could you confirm that DeviceUpdater takes the result by value or const reference and does not hold a view into a temporary. If it returns an empty map by value, a short note in the commit body would help.",
+      "revId": "3d1a847121ee775123ed8d97f6dc5aea66e1d3c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
