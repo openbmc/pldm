@@ -1,5 +1,6 @@
 #pragma once
 
+#include "requester/endpoint_registry.hpp"
 #include "requester/handler.hpp"
 #include "terminus.hpp"
 
@@ -51,10 +52,11 @@ class TerminusManager
     explicit TerminusManager(
         sdeventplus::Event& event, RequesterHandler& handler,
         pldm::InstanceIdDb& instanceIdDb, TerminiMapper& termini,
-        Manager* manager, mctp_eid_t localEid) :
+        Manager* manager, mctp_eid_t localEid,
+        const EndpointRegistry& registry) :
         handler(handler), instanceIdDb(instanceIdDb), termini(termini),
         tidPool(tidPoolSize, false), manager(manager), localEid(localEid),
-        event(event)
+        registry(registry), event(event)
     {
         // DSP0240 v1.1.0 table-8, special value: 0,0xFF = reserved
         tidPool[0] = true;
@@ -88,17 +90,17 @@ class TerminusManager
                                     const pldm_msg** responseMsg,
                                     size_t* responseLen);
 
-    /** @brief Send request PLDM message to eid. The function will
+    /** @brief Send request PLDM message to the PeerId. The function will
      *         return when received the response message from terminus.
      *
-     *  @param[in] eid - Destination EID
+     *  @param[in] peer - PeerId of the destination endpoint
      *  @param[in] request - request PLDM message
      *  @param[out] responseMsg - response PLDM message
      *  @param[out] responseLen - length of response PLDM message
      *  @return coroutine return_value - PLDM completion code
      */
     virtual exec::task<int> sendRecvPldmMsgOverMctp(
-        mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
+        PeerId peer, Request& request, const pldm_msg** responseMsg,
         size_t* responseLen);
 
     /** @brief member functions to map/unmap tid
@@ -168,14 +170,15 @@ class TerminusManager
      */
     std::string constructEndpointObjPath(const MctpInfo& mctpInfo);
 
-    /** @brief Member functions to get the MCTP eid of active MCTP medium
+    /** @brief Member functions to get the PeerId of the active MCTP medium
      *         interface of one terminus by terminus name
      *
      *  @param[in] terminusName - terminus name
      *
-     *  @return option mctp_eid_t - the mctp eid or std::nullopt
+     *  @return option PeerId - the PeerId that addresses the endpoint in the
+     *          transport or std::nullopt
      */
-    std::optional<mctp_eid_t> getActiveEidByName(
+    std::optional<PeerId> getActivePeerIdByName(
         const std::string& terminusName);
 
   private:
@@ -199,22 +202,30 @@ class TerminusManager
      */
     exec::task<int> initMctpTerminus(const MctpInfo& mctpInfo);
 
-    /** @brief Send getTID PLDM command to destination EID and then return the
-     *         value of tid in reference parameter.
+    /** @brief Get the PeerId that addresses an MCTP endpoint in the transport
      *
-     *  @param[in] eid - Destination EID
+     *  @param[in] mctpInfo - information of the MCTP endpoint
+     *
+     *  @return the PeerId, std::nullopt if the endpoint is not registered
+     */
+    std::optional<PeerId> peerOf(const MctpInfo& mctpInfo) const;
+
+    /** @brief Send getTID PLDM command to destination endpoint and then return
+     *         the value of tid in reference parameter.
+     *
+     *  @param[in] peer - PeerId of the destination endpoint
      *  @param[out] tid - Terminus TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid);
+    exec::task<int> getTidOverMctp(PeerId peer, pldm_tid_t* tid);
 
-    /** @brief Send setTID command to destination EID.
+    /** @brief Send setTID command to destination endpoint.
      *
-     *  @param[in] eid - Destination EID
+     *  @param[in] peer - PeerId of the destination endpoint
      *  @param[in] tid - Destination TID
      *  @return coroutine return_value - PLDM completion code
      */
-    exec::task<int> setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid);
+    exec::task<int> setTidOverMctp(PeerId peer, pldm_tid_t tid);
 
     /** @brief Send getPLDMTypes command to destination TID and then return the
      *         value of supportedTypes in reference parameter.
@@ -282,6 +293,11 @@ class TerminusManager
 
     /** @brief local EID */
     mctp_eid_t localEid;
+
+    /** @brief Tells which PeerId addresses an MCTP endpoint in the transport.
+     *         It is not the PLDM TID the terminus is assigned.
+     */
+    const EndpointRegistry& registry;
 
     /** @brief MCTP Endpoint available status mapping */
     std::map<MctpInfo, Availability> mctpInfoAvailTable;

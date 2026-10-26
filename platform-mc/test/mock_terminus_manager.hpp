@@ -3,6 +3,7 @@
 #include "platform-mc/terminus_manager.hpp"
 
 #include <queue>
+#include <vector>
 
 #include <gmock/gmock.h>
 
@@ -16,15 +17,17 @@ class MockTerminusManager : public TerminusManager
   public:
     MockTerminusManager(sdeventplus::Event& event, RequesterHandler& handler,
                         pldm::InstanceIdDb& instanceIdDb,
-                        TerminiMapper& termini, Manager* manager) :
+                        TerminiMapper& termini, Manager* manager,
+                        const EndpointRegistry& registry) :
         TerminusManager(event, handler, instanceIdDb, termini, manager,
-                        pldm::BmcMctpEid)
+                        pldm::BmcMctpEid, registry)
     {}
 
-    exec::task<int> sendRecvPldmMsgOverMctp(
-        mctp_eid_t /*eid*/, Request& /*request*/, const pldm_msg** responseMsg,
-        size_t* responseLen) override
+    exec::task<int> sendRecvPldmMsgOverMctp(PeerId peer, Request& /*request*/,
+                                            const pldm_msg** responseMsg,
+                                            size_t* responseLen) override
     {
+        sentTo.push_back(peer);
         if (responseMsgs.empty() || responseMsg == nullptr ||
             responseLen == nullptr)
         {
@@ -65,6 +68,9 @@ class MockTerminusManager : public TerminusManager
         }
         return PLDM_SUCCESS;
     }
+
+    /** @brief The PeerIds the requests were sent to, in order */
+    std::vector<PeerId> sentTo;
 
     std::queue<pldm_msg*> responseMsgs;
     std::queue<size_t> responseLens;

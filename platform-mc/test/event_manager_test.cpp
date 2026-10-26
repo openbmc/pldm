@@ -24,16 +24,22 @@ class EventManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false,
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
-        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+        registry(std::make_unique<pldm::IdentityPeerIdPolicy>()),
+        terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
+                        registry),
         eventManager(terminusManager, termini),
         platformManager(terminusManager, termini, nullptr)
-    {}
+    {
+        // The endpoint of the termini the tests add
+        registry.acquire(pldm::Endpoint{1, 10});
+    }
 
     PldmTransport* pldmTransport = nullptr;
     sdbusplus::bus_t& bus;
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::EndpointRegistry registry;
     pldm::platform_mc::MockTerminusManager terminusManager;
     pldm::platform_mc::MockEventManager eventManager;
     pldm::platform_mc::PlatformManager platformManager;

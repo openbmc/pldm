@@ -212,7 +212,8 @@ int main(int argc, char** argv)
     DBusHandler dbusHandler;
 
     std::unique_ptr<platform_mc::Manager> platformManager =
-        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb);
+        std::make_unique<platform_mc::Manager>(event, reqHandler, instanceIdDb,
+                                               endpointRegistry);
 
     pldm::host_effecters::HostEffecterParser hostEffecterParser(
         &instanceIdDb, pldmTransport.getEventSource(), pdrRepo.get(),

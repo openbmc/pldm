@@ -130,12 +130,10 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return updateManager.handleRequest(peer, command, request, reqMsgLen);
     }
 
-    /** @brief Get Active EIDs.
-     *
-     *  @param[in] addr - MCTP address of terminus
-     *  @param[in] terminiNames - MCTP terminus name
+    /** @brief Get the PeerId of the active endpoint of a terminus. fw-update
+     *         does not name its devices after termini, so there is none.
      */
-    std::optional<mctp_eid_t> getActiveEidByName(const std::string&) override
+    std::optional<PeerId> getActivePeerIdByName(const std::string&) override
     {
         return std::nullopt;
     }

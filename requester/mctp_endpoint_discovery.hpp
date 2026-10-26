@@ -86,12 +86,14 @@ class MctpDiscoveryHandlerIntf
 
     virtual void updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                 Availability availability) = 0;
-    /** @brief Get Active EIDs.
+    /** @brief Get the PeerId of the active endpoint of a terminus.
      *
-     *  @param[in] addr - MCTP address of terminus
-     *  @param[in] terminiNames - MCTP terminus name
+     *  @param[in] terminusName - MCTP terminus name
+     *
+     *  @return the PeerId that addresses the endpoint in the transport,
+     *          std::nullopt if there is no active endpoint of that name
      */
-    virtual std::optional<mctp_eid_t> getActiveEidByName(
+    virtual std::optional<PeerId> getActivePeerIdByName(
         const std::string& terminusName) = 0;
 
     virtual void handleConfigurations(const Configurations& /*configurations*/)

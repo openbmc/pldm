@@ -346,7 +346,8 @@ class PeerAwareHandler : public pldm::MctpDiscoveryHandlerIntf
     void updateMctpEndpointAvailability(const pldm::MctpInfo&,
                                         pldm::Availability) override
     {}
-    std::optional<mctp_eid_t> getActiveEidByName(const std::string&) override
+    std::optional<pldm::PeerId> getActivePeerIdByName(
+        const std::string&) override
     {
         return std::nullopt;
     }

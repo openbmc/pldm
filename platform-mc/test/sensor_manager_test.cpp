@@ -18,8 +18,9 @@ class SensorManagerTest : public testing::Test
         bus(pldm::utils::DBusHandler::getBus()),
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false),
+        registry(std::make_unique<pldm::IdentityPeerIdPolicy>()),
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
-                        pldm::BmcMctpEid),
+                        pldm::BmcMctpEid, registry),
         sensorManager(event, terminusManager, termini, nullptr)
     {}
 
@@ -28,6 +29,7 @@ class SensorManagerTest : public testing::Test
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::EndpointRegistry registry;
     pldm::platform_mc::TerminusManager terminusManager;
     pldm::platform_mc::MockSensorManager sensorManager;
     std::map<pldm_tid_t, std::shared_ptr<pldm::platform_mc::Terminus>> termini;

@@ -34,10 +34,19 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     Manager& operator=(Manager&&) = delete;
     ~Manager() override = default;
 
+    /** @brief Constructor
+     *
+     *  @param[in] event - PLDM daemon's main event loop
+     *  @param[in] handler - PLDM request handler
+     *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
+     *  @param[in] registry - Tells which PeerId addresses an MCTP endpoint in
+     *                        the transport. It must outlive the Manager.
+     */
     explicit Manager(sdeventplus::Event& event, RequesterHandler& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
+                     pldm::InstanceIdDb& instanceIdDb,
+                     const EndpointRegistry& registry) :
         terminusManager(event, handler, instanceIdDb, termini, this,
-                        pldm::BmcMctpEid),
+                        pldm::BmcMctpEid, registry),
         platformManager(terminusManager, termini, this),
         sensorManager(event, terminusManager, termini, this),
         eventManager(terminusManager, termini)
@@ -254,15 +263,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      */
     exec::task<int> oemPollForPlatformEvent(pldm_tid_t tid);
 
-    /** @brief Get Active EIDs.
+    /** @brief Get the PeerId of the active endpoint of a terminus.
      *
-     *  @param[in] addr - MCTP address of terminus
-     *  @param[in] terminiNames - MCTP terminus name
+     *  @param[in] terminusName - MCTP terminus name
      */
-    std::optional<mctp_eid_t> getActiveEidByName(
+    std::optional<PeerId> getActivePeerIdByName(
         const std::string& terminusName) override
     {
-        return terminusManager.getActiveEidByName(terminusName);
+        return terminusManager.getActivePeerIdByName(terminusName);
     }
 
   private:

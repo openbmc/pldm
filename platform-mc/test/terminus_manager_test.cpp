@@ -5,6 +5,7 @@
 #include "platform-mc/terminus_manager.hpp"
 #include "requester/handler.hpp"
 #include "requester/request.hpp"
+#include "requester/test/test_peer_id_policy.hpp"
 #include "test/test_instance_id.hpp"
 
 #include <libpldm/base.h>
@@ -32,9 +33,11 @@ class TerminusManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(pldmTransport, event, instanceIdDb, false,
                    std::chrono::seconds(1), 2, std::chrono::milliseconds(100)),
+        registry(std::make_unique<pldm::IdentityPeerIdPolicy>()),
         terminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
-                        pldm::BmcMctpEid),
-        mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr),
+                        pldm::BmcMctpEid, registry),
+        mockTerminusManager(event, reqHandler, instanceIdDb, termini, nullptr,
+                            registry),
         platformManager(mockTerminusManager, termini, nullptr)
     {}
 
@@ -43,6 +46,7 @@ class TerminusManagerTest : public testing::Test
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    pldm::EndpointRegistry registry;
     pldm::platform_mc::TerminusManager terminusManager;
     pldm::platform_mc::MockTerminusManager mockTerminusManager;
     pldm::platform_mc::PlatformManager platformManager;
@@ -161,6 +165,7 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
 
     pldm::MctpInfos mctpInfos{};
     mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    ASSERT_TRUE(registry.acquire(pldm::toEndpoint(mctpInfos.back())));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -194,6 +199,74 @@ TEST_F(TerminusManagerTest, discoverMctpTerminusTest)
     EXPECT_EQ(0, termini.size());
 }
 
+TEST_F(TerminusManagerTest, requestsAreSentToThePeerIdOfTheEndpoint)
+{
+    // The same EID on two networks, so each needs its own PeerId
+    pldm::EndpointRegistry twoNetworkRegistry(
+        std::make_unique<pldm::LowestFreePeerIdPolicy>());
+    std::map<pldm_tid_t, std::shared_ptr<pldm::platform_mc::Terminus>>
+        localTermini;
+    pldm::platform_mc::MockTerminusManager manager(
+        event, reqHandler, instanceIdDb, localTermini, nullptr,
+        twoNetworkRegistry);
+
+    pldm::MctpInfo networkOne(10, "", "", 1,
+                              std::optional<std::string>("NicOne"));
+    pldm::MctpInfo networkTwo(10, "", "", 2,
+                              std::optional<std::string>("NicTwo"));
+    auto peerOne = twoNetworkRegistry.acquire(pldm::toEndpoint(networkOne));
+    auto peerTwo = twoNetworkRegistry.acquire(pldm::toEndpoint(networkTwo));
+    ASSERT_TRUE(peerOne && peerTwo);
+    ASSERT_NE(*peerOne, *peerTwo);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_BASE_GET_TID_RESP_BYTES>
+        getTidResp{0x00, 0x02, 0x02, 0x00, 0x00};
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_SET_TID_RESP_BYTES>
+        setTidResp{0x00, 0x02, 0x01, 0x00};
+    std::array<uint8_t,
+               sizeof(pldm_msg_hdr) + PLDM_BASE_GET_PLDM_TYPES_RESP_BYTES>
+        getPldmTypesResp{0x00, 0x02, 0x04, 0x00, 0x01, 0x00,
+                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    auto discover = [&](const pldm::MctpInfo& info) {
+        manager.clearQueuedResponses();
+        manager.sentTo.clear();
+        manager.enqueueResponse(
+            std::start_lifetime_as<pldm_msg>(getTidResp.data()),
+            sizeof(getTidResp));
+        manager.enqueueResponse(
+            std::start_lifetime_as<pldm_msg>(setTidResp.data()),
+            sizeof(setTidResp));
+        manager.enqueueResponse(
+            std::start_lifetime_as<pldm_msg>(getPldmTypesResp.data()),
+            sizeof(getPldmTypesResp));
+        manager.discoverMctpTerminus(pldm::MctpInfos{info});
+    };
+
+    discover(networkOne);
+    ASSERT_FALSE(manager.sentTo.empty());
+    EXPECT_THAT(manager.sentTo, ::testing::Each(*peerOne));
+
+    discover(networkTwo);
+    ASSERT_FALSE(manager.sentTo.empty());
+    EXPECT_THAT(manager.sentTo, ::testing::Each(*peerTwo));
+
+    // Two termini, one for each endpoint, found by name through their PeerIds
+    EXPECT_EQ(2, localTermini.size());
+    EXPECT_EQ(manager.getActivePeerIdByName("NicOne"), peerOne);
+    EXPECT_EQ(manager.getActivePeerIdByName("NicTwo"), peerTwo);
+}
+
+TEST_F(TerminusManagerTest, endpointWithoutPeerIdIsNotInitialized)
+{
+    // The endpoint was never registered, so it cannot be addressed
+    pldm::MctpInfos mctpInfos{pldm::MctpInfo(12, "", "", 1, std::nullopt)};
+
+    mockTerminusManager.discoverMctpTerminus(mctpInfos);
+
+    EXPECT_EQ(0, termini.size());
+    EXPECT_TRUE(mockTerminusManager.sentTo.empty());
+}
+
 TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
 {
     const size_t getTidRespLen = PLDM_BASE_GET_TID_RESP_BYTES;
@@ -210,6 +283,7 @@ TEST_F(TerminusManagerTest, negativeDiscoverMctpTerminusTest)
 
     pldm::MctpInfos mctpInfos{};
     mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    ASSERT_TRUE(registry.acquire(pldm::toEndpoint(mctpInfos.back())));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(0, termini.size());
 
@@ -294,6 +368,7 @@ TEST_F(TerminusManagerTest, doesSupportTypeTest)
 
     pldm::MctpInfos mctpInfos{};
     mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    ASSERT_TRUE(registry.acquire(pldm::toEndpoint(mctpInfos.back())));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
 
@@ -483,6 +558,7 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
 
     pldm::MctpInfos mctpInfos{};
     mctpInfos.emplace_back(pldm::MctpInfo(12, "", "", 1, std::nullopt));
+    ASSERT_TRUE(registry.acquire(pldm::toEndpoint(mctpInfos.back())));
     mockTerminusManager.discoverMctpTerminus(mctpInfos);
     EXPECT_EQ(1, termini.size());
     EXPECT_EQ(true, termini.contains(1));
@@ -558,10 +634,11 @@ TEST_F(TerminusManagerTest, doesSupportCommandTest)
                          PLDM_FRU, PLDM_GET_FRU_RECORD_BY_OPTION));
 }
 
-TEST_F(TerminusManagerTest, getActiveEidByNameTest)
+TEST_F(TerminusManagerTest, getActivePeerIdByNameTest)
 {
     // Add terminus
     pldm::MctpInfo mctpInfo(10, "", "", 1, std::nullopt);
+    ASSERT_TRUE(registry.acquire(pldm::toEndpoint(mctpInfo)));
     auto mappedTid = mockTerminusManager.mapTid(mctpInfo);
     auto tid = mappedTid.value();
     termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
@@ -725,8 +802,8 @@ TEST_F(TerminusManagerTest, getActiveEidByNameTest)
     EXPECT_EQ(2, terminus->pdrs.size());
     EXPECT_EQ(1, termini.size());
     EXPECT_EQ("S0_1", terminus->getTerminusName().value());
-    EXPECT_EQ(10, terminusManager.getActiveEidByName("S0_1").value());
-    EXPECT_EQ(false, terminusManager.getActiveEidByName("S1").has_value());
-    EXPECT_EQ(false, terminusManager.getActiveEidByName("S0").has_value());
-    EXPECT_EQ(false, terminusManager.getActiveEidByName("S0_2").has_value());
+    EXPECT_EQ(10, terminusManager.getActivePeerIdByName("S0_1").value());
+    EXPECT_EQ(false, terminusManager.getActivePeerIdByName("S1").has_value());
+    EXPECT_EQ(false, terminusManager.getActivePeerIdByName("S0").has_value());
+    EXPECT_EQ(false, terminusManager.getActivePeerIdByName("S0_2").has_value());
 }

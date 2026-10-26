@@ -206,9 +206,9 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
                 if (rc != PLDM_SUCCESS)
                 {
                     lg2::error(
-                        "Failed to initialize terminus with EID {EID}, networkId {NETWORK}, response code {RC}.",
-                        "EID", std::get<0>(mctpInfo), "NETWORK",
-                        std::get<3>(mctpInfo), "RC", rc);
+                        "Failed to initialize terminus with Network {NETWORK} EID {EID}, response code {RC}.",
+                        "NETWORK", std::get<3>(mctpInfo), "EID",
+                        std::get<0>(mctpInfo), "RC", rc);
                     mctpInfoAvailTable.erase(mctpInfo);
                     terminusInitFailed = true;
                     continue;
@@ -220,9 +220,9 @@ exec::task<int> TerminusManager::discoverMctpTerminusTask()
             if (!tid)
             {
                 lg2::error(
-                    "Failed to get TID for terminus with EID {EID}, networkId {NETWORK}.",
-                    "EID", std::get<0>(mctpInfo), "NETWORK",
-                    std::get<3>(mctpInfo));
+                    "Failed to get TID for terminus with Network {NETWORK} EID {EID}.",
+                    "NETWORK", std::get<3>(mctpInfo), "EID",
+                    std::get<0>(mctpInfo));
                 mctpInfoAvailTable.erase(mctpInfo);
                 terminusInitFailed = true;
                 continue;
@@ -262,18 +262,33 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
             manager->stopSensorPolling(it->second->getTid());
         }
 
+        lg2::info("Terminus {TID} at endpoint {ENDPOINT} is removed", "TID",
+                  it->first, "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)));
         unmapTid(it->first);
         termini.erase(it);
         mctpInfoAvailTable.erase(mctpInfo);
     }
 }
 
+std::optional<PeerId> TerminusManager::peerOf(const MctpInfo& mctpInfo) const
+{
+    return registry.peerOf(toEndpoint(mctpInfo));
+}
+
 exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 {
-    mctp_eid_t eid = std::get<0>(mctpInfo);
+    auto foundPeer = peerOf(mctpInfo);
+    if (!foundPeer)
+    {
+        lg2::error(
+            "Cannot address endpoint {ENDPOINT}, it has no PeerId. Skip initializing its terminus.",
+            "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)));
+        co_return PLDM_ERROR;
+    }
+    PeerId peer = *foundPeer;
     pldm_tid_t tid = 0;
     bool isMapped = false;
-    auto rc = co_await getTidOverMctp(eid, &tid);
+    auto rc = co_await getTidOverMctp(peer, &tid);
     if (rc != PLDM_SUCCESS)
     {
         lg2::error("Failed to Get Terminus ID, error {ERROR}.", "ERROR", rc);
@@ -340,7 +355,7 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         }
 
         tid = mappedTid.value();
-        rc = co_await setTidOverMctp(eid, tid);
+        rc = co_await setTidOverMctp(peer, tid);
         if (rc != PLDM_SUCCESS)
         {
             if (rc == PLDM_ERROR_UNSUPPORTED_PLDM_CMD)
@@ -386,6 +401,11 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
         unmapTid(tid);
         co_return PLDM_ERROR;
     }
+
+    // The messages about a terminus name its TID, which says nothing about
+    // where the terminus is
+    lg2::info("Terminus {TID} is at endpoint {ENDPOINT}", "TID", tid,
+              "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)));
 
     uint8_t type = PLDM_BASE;
     auto size = PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8);
@@ -445,14 +465,14 @@ exec::task<int> TerminusManager::initMctpTerminus(const MctpInfo& mctpInfo)
 }
 
 exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
-    mctp_eid_t eid, Request& request, const pldm_msg** responseMsg,
+    PeerId peer, Request& request, const pldm_msg** responseMsg,
     size_t* responseLen)
 {
     int rc = 0;
     try
     {
         std::tie(rc, *responseMsg, *responseLen) =
-            co_await handler.sendRecvMsg(eid, std::move(request));
+            co_await handler.sendRecvMsg(peer, std::move(request));
     }
     catch (const sdbusplus::exception_t& e)
     {
@@ -472,9 +492,9 @@ exec::task<int> TerminusManager::sendRecvPldmMsgOverMctp(
     co_return rc;
 }
 
-exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
+exec::task<int> TerminusManager::getTidOverMctp(PeerId peer, pldm_tid_t* tid)
 {
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     if (!instanceIdResult)
     {
         co_return PLDM_ERROR;
@@ -485,21 +505,21 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
     auto rc = encode_get_tid_req(instanceId, requestMsg);
     if (rc)
     {
-        instanceIdDb.free(eid, instanceId);
+        instanceIdDb.free(peer, instanceId);
         lg2::error(
-            "Failed to encode request GetTID for endpoint ID {EID}, error {RC} ",
-            "EID", eid, "RC", rc);
+            "Failed to encode request GetTID for endpoint {ENDPOINT}, error {RC} ",
+            "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return rc;
     }
 
     const pldm_msg* responseMsg = nullptr;
     size_t responseLen = 0;
-    rc = co_await sendRecvPldmMsgOverMctp(eid, request, &responseMsg,
+    rc = co_await sendRecvPldmMsgOverMctp(peer, request, &responseMsg,
                                           &responseLen);
     if (rc)
     {
-        lg2::error("Failed to send GetTID for Endpoint {EID}, error {RC}",
-                   "EID", eid, "RC", rc);
+        lg2::error("Failed to send GetTID for endpoint {ENDPOINT}, error {RC}",
+                   "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return rc;
     }
 
@@ -508,15 +528,16 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
     if (rc)
     {
         lg2::error(
-            "Failed to decode response GetTID for Endpoint ID {EID}, error {RC} ",
-            "EID", eid, "RC", rc);
+            "Failed to decode response GetTID for endpoint {ENDPOINT}, error {RC} ",
+            "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return rc;
     }
 
     if (resp.completion_code != PLDM_SUCCESS)
     {
-        lg2::error("Error : GetTID for Endpoint ID {EID}, complete code {CC}.",
-                   "EID", eid, "CC", resp.completion_code);
+        lg2::error(
+            "Error : GetTID for endpoint {ENDPOINT}, complete code {CC}.",
+            "ENDPOINT", registry.describe(peer), "CC", resp.completion_code);
         co_return rc;
     }
 
@@ -525,9 +546,9 @@ exec::task<int> TerminusManager::getTidOverMctp(mctp_eid_t eid, pldm_tid_t* tid)
     co_return resp.completion_code;
 }
 
-exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
+exec::task<int> TerminusManager::setTidOverMctp(PeerId peer, pldm_tid_t tid)
 {
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     if (!instanceIdResult)
     {
         co_return PLDM_ERROR;
@@ -538,29 +559,29 @@ exec::task<int> TerminusManager::setTidOverMctp(mctp_eid_t eid, pldm_tid_t tid)
     auto rc = encode_set_tid_req(instanceId, tid, requestMsg);
     if (rc)
     {
-        instanceIdDb.free(eid, instanceId);
+        instanceIdDb.free(peer, instanceId);
         lg2::error(
-            "Failed to encode request SetTID for endpoint ID {EID}, error {RC} ",
-            "EID", eid, "RC", rc);
+            "Failed to encode request SetTID for endpoint {ENDPOINT}, error {RC} ",
+            "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return rc;
     }
 
     const pldm_msg* responseMsg = nullptr;
     size_t responseLen = 0;
-    rc = co_await sendRecvPldmMsgOverMctp(eid, request, &responseMsg,
+    rc = co_await sendRecvPldmMsgOverMctp(peer, request, &responseMsg,
                                           &responseLen);
     if (rc)
     {
-        lg2::error("Failed to send SetTID for Endpoint {EID}, error {RC}",
-                   "EID", eid, "RC", rc);
+        lg2::error("Failed to send SetTID for endpoint {ENDPOINT}, error {RC}",
+                   "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return rc;
     }
 
     if (responseMsg == nullptr || responseLen != PLDM_SET_TID_RESP_BYTES)
     {
         lg2::error(
-            "Failed to decode response SetTID for Endpoint ID {EID}, error {RC} ",
-            "EID", eid, "RC", rc);
+            "Failed to decode response SetTID for endpoint {ENDPOINT}, error {RC} ",
+            "ENDPOINT", registry.describe(peer), "RC", rc);
         co_return PLDM_ERROR_INVALID_LENGTH;
     }
 
@@ -704,15 +725,19 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
         co_return PLDM_ERROR_NOT_READY;
     }
 
-    auto eid = std::get<0>(mctpInfo.value());
+    auto peer = peerOf(mctpInfo.value());
+    if (!peer)
+    {
+        co_return PLDM_ERROR_NOT_READY;
+    }
     auto requestMsg = new (request.data()) pldm_msg;
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(*peer);
     if (!instanceIdResult)
     {
         co_return PLDM_ERROR;
     }
     requestMsg->hdr.instance_id = instanceIdResult.value();
-    auto rc = co_await sendRecvPldmMsgOverMctp(eid, request, responseMsg,
+    auto rc = co_await sendRecvPldmMsgOverMctp(*peer, request, responseMsg,
                                                responseLen);
 
     if (rc == PLDM_ERROR_NOT_READY)
@@ -783,7 +808,7 @@ exec::task<int> TerminusManager::getPLDMVersion(pldm_tid_t tid, uint8_t type,
     co_return completionCode;
 }
 
-std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
+std::optional<PeerId> TerminusManager::getActivePeerIdByName(
     const std::string& terminusName)
 {
     if (!termini.size() || terminusName.empty())
@@ -812,7 +837,7 @@ std::optional<mctp_eid_t> TerminusManager::getActiveEidByName(
                 return std::nullopt;
             }
 
-            return std::get<0>(*mctpInfo);
+            return peerOf(*mctpInfo);
         }
         catch (const std::exception& e)
         {

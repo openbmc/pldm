@@ -475,10 +475,10 @@ int HostEffecterParser::setTerminusNumericEffecter(
     uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
     if (!terminusName.empty())
     {
-        auto tmpEid = platformManager->getActiveEidByName(terminusName);
-        if (tmpEid)
+        auto tmpPeer = platformManager->getActivePeerIdByName(terminusName);
+        if (tmpPeer)
         {
-            mctpEid = tmpEid.value();
+            mctpEid = tmpPeer.value();
         }
     }
 
@@ -618,10 +618,10 @@ int HostEffecterParser::setHostStateEffecter(
     uint8_t& mctpEid = hostEffecterInfo[effecterInfoIndex].mctpEid;
     if (!terminusName.empty())
     {
-        auto tmpEid = platformManager->getActiveEidByName(terminusName);
-        if (tmpEid)
+        auto tmpPeer = platformManager->getActivePeerIdByName(terminusName);
+        if (tmpPeer)
         {
-            mctpEid = tmpEid.value();
+            mctpEid = tmpPeer.value();
         }
     }
 
