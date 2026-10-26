@@ -36,8 +36,8 @@ class FirmwareInventory
 
     /**
      * @brief Constructor
-     * @param[in] softwareIdentifier - Software identifier containing EID and
-     *                                 component identifier
+     * @param[in] softwareIdentifier - Software identifier containing the PeerId
+     * and component identifier
      * @param[in] softwarePath - D-Bus object path for the firmware inventory
      * entry
      * @param[in] generatedId - Software hash identifier
@@ -64,7 +64,7 @@ class FirmwareInventory
     sdbusplus::bus_t& bus = utils::DBusHandler::getBus();
 
     /**
-     * @brief Software identifier containing EID and component identifier
+     * @brief Software identifier containing the PeerId and component identifier
      */
     SoftwareIdentifier softwareIdentifier;
 

@@ -51,29 +51,30 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief Constructor for ItemUpdateManager
      *
-     * @param[in] eid The MCTP EID
+     * @param[in] peer The PeerId of the MCTP endpoint
      * @param[in] event The event object
      * @param[in] handler The request handler
      * @param[in] instanceIdDb The instance ID database
+     * @param[in] registry Tells which MCTP endpoint a PeerId stands for
      * @param[in] objPath The D-Bus object path
      * @param[in] generatedId The software hash identifier
      * @param[in] descriptors The descriptors for the device
      * @param[in] componentInfo The component information for the device
      */
     explicit ItemUpdateManager(
-        mctp_eid_t eid, Event& event,
+        PeerId peer, Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, const std::string& objPath,
-        const std::string& generatedId, const Descriptors& descriptors,
-        const ComponentInfo& componentInfo,
+        InstanceIdDb& instanceIdDb, const EndpointRegistry& registry,
+        const std::string& objPath, const std::string& generatedId,
+        const Descriptors& descriptors, const ComponentInfo& componentInfo,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
-        UpdateManagerBase(event, handler, instanceIdDb),
+        UpdateManagerBase(event, handler, instanceIdDb, registry),
         ItemUpdateIntf(
             pldm::utils::DBusHandler::getBus(),
             constructFirmwareInventoryPath(objPath, generatedId).c_str()),
-        eid(eid), objPath(objPath),
+        peer(peer), objPath(objPath),
         firmwareInventoryPath(
             constructFirmwareInventoryPath(objPath, generatedId)),
         descriptors(descriptors), componentInfo(componentInfo),
@@ -86,23 +87,23 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief Handle PLDM requests for the item-based update manager
      *
-     * @param[in] eid - Remote MCTP Endpoint ID
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] command - PLDM command code
      * @param[in] request - PLDM request message
      * @param[in] reqMsgLen - PLDM request message length
      * @return PLDM response message
      */
-    Response handleRequest(mctp_eid_t eid, uint8_t command,
+    Response handleRequest(PeerId peer, uint8_t command,
                            const pldm_msg* request, size_t reqMsgLen);
 
     /**
      * @brief Update the device completion status
      *
-     * @param[in] eid - The MCTP EID of the device
+     * @param[in] peer - The PeerId of the device
      * @param[in] status - The completion status (true for success, false for
      * failure)
      */
-    void updateDeviceCompletion(mctp_eid_t eid, bool status) override;
+    void updateDeviceCompletion(PeerId peer, bool status) override;
 
     /**
      * @brief Update the activation progress status
@@ -152,7 +153,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         const Descriptors& descriptors);
 
   private:
-    mctp_eid_t eid;
+    PeerId peer;
     std::string objPath;
     sdbusplus::object_path firmwareInventoryPath;
     std::string objPathWithSwId;

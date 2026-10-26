@@ -9,6 +9,7 @@
 #include "fw-update/watch.hpp"
 #endif
 #include "package_parser.hpp"
+#include "requester/endpoint_registry.hpp"
 #include "requester/handler.hpp"
 
 #include <libpldm/base.h>
@@ -38,7 +39,7 @@ using namespace sdeventplus::source;
 using namespace pldm;
 
 using DeviceIDRecordOffset = size_t;
-using DeviceUpdaterInfo = std::pair<mctp_eid_t, DeviceIDRecordOffset>;
+using DeviceUpdaterInfo = std::pair<PeerId, DeviceIDRecordOffset>;
 using DeviceUpdaterInfos = std::vector<DeviceUpdaterInfo>;
 using TotalComponentUpdates = size_t;
 
@@ -61,15 +62,17 @@ class UpdateManagerBase
      *  @param[in] event - PLDM daemon's main event loop
      *  @param[in] handler - PLDM request handler
      *  @param[in] instanceIdDb - Managing instance ID for PLDM requests
+     *  @param[in] registry - Tells which MCTP endpoint a PeerId stands for
      */
     UpdateManagerBase(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb) :
-        event(event), handler(handler), instanceIdDb(instanceIdDb)
+        InstanceIdDb& instanceIdDb, const EndpointRegistry& registry) :
+        event(event), handler(handler), instanceIdDb(instanceIdDb),
+        registry(registry)
     {}
 
-    virtual void updateDeviceCompletion(mctp_eid_t eid, bool status) = 0;
+    virtual void updateDeviceCompletion(PeerId peer, bool status) = 0;
     virtual void updateActivationProgress() = 0;
     virtual void activatePackage() = 0;
     virtual void resetActivationState() = 0;
@@ -77,6 +80,7 @@ class UpdateManagerBase
     Event& event;               //!< reference to PLDM daemon's main event loop
     pldm::requester::Handler<pldm::requester::Request>& handler;
     InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
+    const EndpointRegistry& registry; //!< tells what a PeerId stands for
 };
 
 class UpdateManager : public UpdateManagerBase
@@ -92,12 +96,13 @@ class UpdateManager : public UpdateManagerBase
     explicit UpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        InstanceIdDb& instanceIdDb, const EndpointRegistry& registry,
+        const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
-        UpdateManagerBase(event, handler, instanceIdDb),
+        UpdateManagerBase(event, handler, instanceIdDb, registry),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
         watch(event.get(),
@@ -118,14 +123,14 @@ class UpdateManager : public UpdateManagerBase
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
      *
-     *  @param[in] eid - Remote MCTP Endpoint ID
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] command - PLDM command code
      *  @param[in] request - PLDM request message
      *  @param[in] requestLen - PLDM request message length
      *
      *  @return PLDM response message
      */
-    virtual Response handleRequest(mctp_eid_t eid, uint8_t command,
+    virtual Response handleRequest(PeerId peer, uint8_t command,
                                    const pldm_msg* request, size_t reqMsgLen);
 
     int processPackage(const std::filesystem::path& packageFilePath);
@@ -149,7 +154,7 @@ class UpdateManager : public UpdateManagerBase
     std::string processStreamDefer(std::istream& packageStream,
                                    uintmax_t packageSize);
 
-    void updateDeviceCompletion(mctp_eid_t eid, bool status) override;
+    void updateDeviceCompletion(PeerId peer, bool status) override;
 
     void updateActivationProgress() override;
 
@@ -163,7 +168,7 @@ class UpdateManager : public UpdateManagerBase
 
     /** @brief Associate firmware device ID records in the package to
      *         discovered devices, skipping endpoints whose component info
-     *         is missing or empty and recording them in skippedEids
+     *         is missing or empty and recording them in skippedPeers
      *
      *  @param[in] fwDeviceIDRecords - Device ID records in the package
      *  @param[in] descriptorMap - Descriptors of the discovered devices
@@ -228,13 +233,12 @@ class UpdateManager : public UpdateManagerBase
     std::unique_ptr<PackageParser> parser;
     std::ifstream package;
 
-    std::unordered_map<mctp_eid_t, std::unique_ptr<DeviceUpdater>>
-        deviceUpdaterMap;
-    std::unordered_map<mctp_eid_t, bool> deviceUpdateCompletionMap;
+    std::unordered_map<PeerId, std::unique_ptr<DeviceUpdater>> deviceUpdaterMap;
+    std::unordered_map<PeerId, bool> deviceUpdateCompletionMap;
     /** @brief Endpoints matching the package but skipped for missing or empty
      *         component info
      */
-    std::set<mctp_eid_t> skippedEids;
+    std::set<PeerId> skippedPeers;
 
     /** @brief Total number of component updates to calculate the progress of
      *         the Firmware activation

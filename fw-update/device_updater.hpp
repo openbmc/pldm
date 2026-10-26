@@ -64,9 +64,11 @@ class UpdateProgress
      * size
      *
      * @param[in] totalSize the size in bytes of a component for a given device
-     * @param[in] eid the eid of the device this class tracks progress for
+     * @param[in] peer the PeerId of the device this class tracks progress for
+     * @param[in] endpoint the name of its endpoint, for log messages, which is
+     * the PeerId if it is empty
      */
-    UpdateProgress(uint32_t totalSize, mctp_eid_t eid);
+    UpdateProgress(uint32_t totalSize, PeerId peer, std::string endpoint = {});
     ~UpdateProgress() = default;
     UpdateProgress& operator=(UpdateProgress&&) = default;
     UpdateProgress& operator=(const UpdateProgress&) = delete;
@@ -107,9 +109,9 @@ class UpdateProgress
     uint8_t progress;
 
     /**
-     * @brief the eid of the device this object tracks
+     * @brief the name of the endpoint of the device, for log messages
      */
-    mctp_eid_t eid;
+    std::string endpoint;
     /**
      * @brief the total size in bytes of this component
      */
@@ -141,7 +143,7 @@ class DeviceUpdater
 
     /** @brief Constructor
      *
-     *  @param[in] eid - Endpoint ID of the firmware device
+     *  @param[in] peer - PeerId of the firmware device
      *  @param[in] package - File stream for firmware update package
      *  @param[in] fwDeviceIDRecord - FirmwareDeviceIDRecord in the fw update
      *                                package that matches this firmware device
@@ -159,7 +161,7 @@ class DeviceUpdater
      *                          report against, nullopt to report none
      */
     explicit DeviceUpdater(
-        mctp_eid_t eid, std::istream& package,
+        PeerId peer, std::istream& package,
         const FirmwareDeviceIDRecord& fwDeviceIDRecord,
         const ComponentImageInfos& compImageInfos,
         const ComponentInfo& compInfo, uint32_t maxTransferSize,
@@ -187,11 +189,11 @@ class DeviceUpdater
      *  The response of the RequestUpdate is processed and if the response
      *  is success, send PassComponentTable request to FD.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void requestUpdate(mctp_eid_t eid, const pldm_msg* response,
+    void requestUpdate(PeerId peer, const pldm_msg* response,
                        size_t respMsgLen);
 
     /** @brief Handler for PassComponentTable command response
@@ -207,14 +209,14 @@ class DeviceUpdater
      *  If the response indicates component may be updateable, continue
      *  based on the policy in DeviceUpdateOptionFlags.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      *
      *  @return true if the update can continue, false if the response could
      *          not be handled, in which case the caller abandons the update
      */
-    bool passCompTable(mctp_eid_t eid, const pldm_msg* response,
+    bool passCompTable(PeerId peer, const pldm_msg* response,
                        size_t respMsgLen);
 
     /** @brief Handler for UpdateComponent command response
@@ -225,14 +227,14 @@ class DeviceUpdater
      *  A component the firmware device declines is not a failure to handle
      *  the response: the update moves on to the next component.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      *
      *  @return true if the update can continue, false if the response could
      *          not be handled, in which case the caller abandons the update
      */
-    bool updateComponent(mctp_eid_t eid, const pldm_msg* response,
+    bool updateComponent(PeerId peer, const pldm_msg* response,
                          size_t respMsgLen);
 
     /** @brief Handler for RequestFirmwareData request
@@ -272,20 +274,20 @@ class DeviceUpdater
      *  The response of the ActivateFirmware is processed and will update the
      *  UpdateManager with the completion of the firmware update.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void activateFirmware(mctp_eid_t eid, const pldm_msg* response,
+    void activateFirmware(PeerId peer, const pldm_msg* response,
                           size_t respMsgLen);
     /**
      * @brief Handler for CancelUpdateComponent command response
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] response - PLDM Response message
      * @param[in] respMsgLen - Response message length
      */
-    void cancelUpdateComponent(mctp_eid_t eid, const pldm_msg* response,
+    void cancelUpdateComponent(PeerId peer, const pldm_msg* response,
                                size_t respMsgLen);
 
     /**
@@ -298,12 +300,11 @@ class DeviceUpdater
      *  response could not be handled. The device completion is reported here
      *  as a failure, whatever the CancelUpdate response.
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] response - PLDM Response message
      * @param[in] respMsgLen - Response message length
      */
-    void cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
-                      size_t respMsgLen);
+    void cancelUpdate(PeerId peer, const pldm_msg* response, size_t respMsgLen);
 
   private:
     /** @brief Send PassComponentTable command request
@@ -349,8 +350,17 @@ class DeviceUpdater
      */
     void createRequestFwDataTimer();
 
-    /** @brief Endpoint ID of the firmware device */
-    mctp_eid_t eid;
+    /** @brief Name an endpoint for log messages
+     *
+     *  @param[in] peer - PeerId of the endpoint
+     *
+     *  @return the Network and EID of the endpoint, or the PeerId when it is
+     *          not known
+     */
+    std::string describe(PeerId peer) const;
+
+    /** @brief PeerId of the firmware device */
+    PeerId peer;
 
     /** @brief File stream for firmware update package */
     std::istream& package;

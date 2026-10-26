@@ -1,9 +1,11 @@
 #pragma once
 
 #include "aggregate_update_manager.hpp"
+#include "common/endpoint.hpp"
 #include "common/instance_id.hpp"
 #include "common/types.hpp"
 #include "firmware_inventory_manager.hpp"
+#include "requester/endpoint_registry.hpp"
 #include "requester/handler.hpp"
 
 namespace pldm
@@ -41,6 +43,7 @@ class InventoryManager
      *                                        by the BMC.
      *  @param[out] componentInfoMap - Populate the component info for the FDs
      *                                 managed by the BMC.
+     *  @param[in] registry - Tells which MCTP endpoint a PeerId stands for
      */
     explicit InventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
@@ -49,32 +52,36 @@ class InventoryManager
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
         const Configurations& configurations,
-        AggregateUpdateManager& updateManager) :
+        AggregateUpdateManager& updateManager,
+        const EndpointRegistry& registry) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap), configurations(configurations),
-        firmwareInventoryManager(dbusHandler, configurations, updateManager)
+        registry(registry),
+        firmwareInventoryManager(dbusHandler, configurations, updateManager,
+                                 registry)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
      *
      *  Inventory commands QueryDeviceIdentifiers and GetFirmwareParmeters
      *  commands are sent to every FD and the response is used to populate
-     *  the firmware identifiers and component details of the FDs.
+     *  the firmware identifiers and component details of the FDs. The FDs are
+     *  keyed by the PeerId of their endpoint.
      *
-     *  @param[in] mctpInfos - List of MCTP endpoint information
+     *  @param[in] endpoints - The MCTP endpoints and their PeerIds
      */
-    void discoverFDs(const MctpInfos& mctpInfos);
+    void discoverFDs(const std::vector<DiscoveredEndpoint>& endpoints);
 
     /** @brief Remove the firmware identifiers and component details of FDs
      *
      *  This function removes the firmware identifiers, component details and
      *  downstream device identifiers of the FDs managed by the BMC.
      *
-     *  @param[in] mctpInfos - List of MCTP endpoint information
+     *  @param[in] endpoints - The MCTP endpoints and their PeerIds
      */
-    void removeFDs(const MctpInfos& mctpInfos);
+    void removeFDs(const std::vector<DiscoveredEndpoint>& endpoints);
 
     /** @brief Handler for QueryDeviceIdentifiers command response
      *
@@ -82,66 +89,66 @@ class InventoryManager
      *  identifiers of the FD is updated. GetFirmwareParameters command request
      *  is sent to the FD.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDeviceIdentifiers(mctp_eid_t eid, const pldm_msg* response,
+    void queryDeviceIdentifiers(PeerId peer, const pldm_msg* response,
                                 size_t respMsgLen);
 
     /** @brief Handler for QueryDownstreamDevices command response
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDownstreamDevices(mctp_eid_t eid, const pldm_msg* response,
+    void queryDownstreamDevices(PeerId peer, const pldm_msg* response,
                                 size_t respMsgLen);
 
     /** @brief Handler for QueryDownstreamIdentifiers command response
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void queryDownstreamIdentifiers(mctp_eid_t eid, const pldm_msg* response,
+    void queryDownstreamIdentifiers(PeerId peer, const pldm_msg* response,
                                     size_t respMsgLen);
 
     /** @brief Handler for GetDownstreamFirmwareParameters command response
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void getDownstreamFirmwareParameters(
-        mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen);
+    void getDownstreamFirmwareParameters(PeerId peer, const pldm_msg* response,
+                                         size_t respMsgLen);
 
     /** @brief Handler for GetFirmwareParameters command response
      *
      *  Handling the response of GetFirmwareParameters command and create
      *  software version D-Bus objects.
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - Response message length
      */
-    void getFirmwareParameters(mctp_eid_t eid, const pldm_msg* response,
+    void getFirmwareParameters(PeerId peer, const pldm_msg* response,
                                size_t respMsgLen);
 
   private:
     /**
      * @brief Sends QueryDeviceIdentifiers request
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      */
-    void sendQueryDeviceIdentifiersRequest(mctp_eid_t eid);
+    void sendQueryDeviceIdentifiersRequest(PeerId peer);
 
     /**
      * @brief Sends QueryDownstreamDevices request
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      */
-    void sendQueryDownstreamDevicesRequest(mctp_eid_t eid);
+    void sendQueryDownstreamDevicesRequest(PeerId peer);
 
     /**
      * @brief Sends QueryDownstreamIdentifiers request
@@ -149,23 +156,23 @@ class InventoryManager
      * The request format is defined at Table 16 – QueryDownstreamIdentifiers
      * command format in DSP0267_1.1.0
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] dataTransferHandle - Data transfer handle
      * @param[in] transferOperationFlag - Transfer operation flag
      */
     void sendQueryDownstreamIdentifiersRequest(
-        mctp_eid_t eid, uint32_t dataTransferHandle,
+        PeerId peer, uint32_t dataTransferHandle,
         enum transfer_op_flag transferOperationFlag);
 
     /**
      * @brief Sends QueryDownstreamFirmwareParameters request
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] dataTransferHandle - Data transfer handle
      * @param[in] transferOperationFlag - Transfer operation flag
      */
     void sendGetDownstreamFirmwareParametersRequest(
-        mctp_eid_t eid, uint32_t dataTransferHandle,
+        PeerId peer, uint32_t dataTransferHandle,
         const enum transfer_op_flag transferOperationFlag);
 
     /**
@@ -173,17 +180,16 @@ class InventoryManager
      * descriptors, if none of them is available, a default name is
      * generated.
      *
-     * @param[in] eid - Remote MCTP endpoint
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] descriptors - Descriptors of the firmware device
      */
-    void obtainFirmwareDeviceName(pldm::eid eid,
-                                  const Descriptors& descriptors);
+    void obtainFirmwareDeviceName(PeerId peer, const Descriptors& descriptors);
 
     /** @brief Send GetFirmwareParameters command request
      *
-     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      */
-    void sendGetFirmwareParametersRequest(mctp_eid_t eid);
+    void sendGetFirmwareParametersRequest(PeerId peer);
 
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
@@ -195,7 +201,7 @@ class InventoryManager
     DescriptorMap& descriptorMap;
 
     /** @brief Firmware Device names of the managed FDs */
-    std::map<eid, SoftwareName> firmwareDeviceNameMap;
+    std::map<PeerId, SoftwareName> firmwareDeviceNameMap;
 
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
@@ -206,6 +212,9 @@ class InventoryManager
     /** @brief Configuration bindings from Entity Manager */
     const Configurations& configurations;
 
+    /** @brief Tells which MCTP endpoint a PeerId stands for */
+    const EndpointRegistry& registry;
+
     /** @brief Dbus Inventory Item Manager */
     FirmwareInventoryManager firmwareInventoryManager;
 };
@@ -214,12 +223,12 @@ class InventoryManager
  * @brief Obtain the device name from the configurations
  *
  * @param[in] configurations - Configurations from Entity Manager
- * @param[in] eid - Remote MCTP endpoint
+ * @param[in] endpoint - Remote MCTP endpoint
  *
  * @return SoftwareName - The Device name, std::nullopt if not found
  */
 std::optional<SoftwareName> obtainDeviceNameFromConfigurations(
-    const Configurations& configurations, pldm::eid eid);
+    const Configurations& configurations, const pldm::Endpoint& endpoint);
 
 /**
  * @brief Obtain the device name from the descriptors

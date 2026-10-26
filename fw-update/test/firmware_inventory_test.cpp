@@ -44,11 +44,12 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
 
     Event event(sdeventplus::Event::get_default());
     TestInstanceIdDb instanceIdDb;
+    EndpointRegistry registry(std::make_unique<IdentityPeerIdPolicy>());
     requester::Handler<requester::Request> handler(
         nullptr, event, instanceIdDb, false, seconds(1), 2, milliseconds(100));
 
     AggregateUpdateManager updateManager(
-        event, handler, instanceIdDb, firmwareDescriptorMap,
+        event, handler, instanceIdDb, registry, firmwareDescriptorMap,
         firmwareComponentInfoMap);
 
     FirmwareInventoryTest inventory(

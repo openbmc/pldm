@@ -107,7 +107,7 @@ static std::optional<Response> processRxMsg(
     requester::Handler<requester::Request>& handler,
     fw_update::Manager* fwManager, pldm_tid_t tid)
 {
-    uint8_t eid = tid;
+    PeerId peer = tid;
 
     pldm_header_info hdrFields{};
     auto hdr = reinterpret_cast<const pldm_msg_hdr*>(requestMsg.data());
@@ -132,7 +132,7 @@ static std::optional<Response> processRxMsg(
             }
             else
             {
-                response = fwManager->handleRequest(eid, hdrFields.command,
+                response = fwManager->handleRequest(peer, hdrFields.command,
                                                     request, requestLen);
             }
         }
@@ -161,7 +161,7 @@ static std::optional<Response> processRxMsg(
     {
         auto response = reinterpret_cast<const pldm_msg*>(hdr);
         size_t responseLen = requestMsg.size() - sizeof(struct pldm_msg_hdr);
-        handler.handleResponse(eid, hdrFields.instance, hdrFields.pldm_type,
+        handler.handleResponse(peer, hdrFields.instance, hdrFields.pldm_type,
                                hdrFields.command, response, responseLen);
     }
     return std::nullopt;
@@ -342,7 +342,7 @@ int main(int argc, char** argv)
 
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
-                                             instanceIdDb);
+                                             instanceIdDb, endpointRegistry);
     MctpDiscovery mctpDiscoveryHandler(
         bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get(),

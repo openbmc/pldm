@@ -28,13 +28,13 @@ void FirmwareInventoryManager::createFirmwareEntry(
     unsigned seed = ts.tv_nsec ^ getpid();
     srandom(seed);
 
-    // Determine the inventory board path for this EID.  If Entity-Manager
+    // Determine the inventory board path for this endpoint.  If Entity-Manager
     // has provided a mapping, use it; otherwise fall back to a default
     // placeholder path so that a software object can still be created.
 
-    auto& eid = softwareIdentifier.first;
+    auto& peer = softwareIdentifier.first;
     auto boardPath =
-        getInventoryPath(eid)
+        getInventoryPath(peer)
             .and_then([&](const auto& path) {
                 return getBoardPath(*dbusHandler, path);
             })
@@ -60,13 +60,13 @@ void FirmwareInventoryManager::createFirmwareEntry(
                                      generatedId, activeVersion, boardPath));
 }
 
-void FirmwareInventoryManager::deleteFirmwareEntry(const pldm::eid& eid)
+void FirmwareInventoryManager::deleteFirmwareEntry(const PeerId& peer)
 {
     std::erase_if(softwareMap,
-                  [&](const auto& pair) { return pair.first.first == eid; });
+                  [&](const auto& pair) { return pair.first.first == peer; });
     updateManager.eraseUpdateManagerIf(
         [&](const SoftwareIdentifier& softwareIdentifier) {
-            return softwareIdentifier.first == eid;
+            return softwareIdentifier.first == peer;
         });
 }
 
@@ -99,16 +99,25 @@ std::optional<std::filesystem::path> getBoardPath(
 }
 
 std::optional<InventoryPath> FirmwareInventoryManager::getInventoryPath(
-    const pldm::eid& eid) const
+    const PeerId& peer) const
 {
+    auto endpoint = registry.endpointOf(peer);
+    if (!endpoint)
+    {
+        warning("No inventory path found, {PEER} is not a known endpoint",
+                "PEER", registry.describe(peer));
+        return std::nullopt;
+    }
+
     for (const auto& [configDbusPath, configMctpInfo] : configurations)
     {
-        if (std::get<pldm::eid>(configMctpInfo) == eid)
+        if (toEndpoint(configMctpInfo) == *endpoint)
         {
             return configDbusPath;
         }
     }
-    warning("No inventory path found for EID {EID}", "EID", eid);
+    warning("No inventory path found for endpoint {ENDPOINT}", "ENDPOINT",
+            formatEndpoint(*endpoint));
     return std::nullopt;
 }
 

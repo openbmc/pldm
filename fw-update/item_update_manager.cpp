@@ -46,9 +46,10 @@ bool ItemUpdateManager::processPackage()
     if (packageMap->getSize() < sizeof(pldm_package_header_information))
     {
         error(
-            "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}'.",
+            "PLDM fw update package length {SIZE} less than the length of the package header information '{PACKAGE_HEADER_INFO_SIZE}', for endpoint {ENDPOINT}.",
             "SIZE", packageMap->getSize(), "PACKAGE_HEADER_INFO_SIZE",
-            sizeof(pldm_package_header_information));
+            sizeof(pldm_package_header_information), "ENDPOINT",
+            registry.describe(peer));
         events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
@@ -58,7 +59,8 @@ bool ItemUpdateManager::processPackage()
     parser = parsePkgHeader(buffer);
     if (parser == nullptr)
     {
-        error("Invalid PLDM package header information");
+        error("Invalid PLDM package header information for endpoint {ENDPOINT}",
+              "ENDPOINT", registry.describe(peer));
         events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
@@ -68,7 +70,9 @@ bool ItemUpdateManager::processPackage()
     }
     catch (const std::exception& e)
     {
-        error("Invalid PLDM package header, error - {ERROR}", "ERROR", e);
+        error(
+            "Invalid PLDM package header for endpoint {ENDPOINT}, error - {ERROR}",
+            "ENDPOINT", registry.describe(peer), "ERROR", e);
         events::generateVerificationFailed(firmwareInventoryPath, {});
         return failInvalidPackage();
     }
@@ -77,7 +81,8 @@ bool ItemUpdateManager::processPackage()
         associatePkgToDevice(parser->getFwDeviceIDRecords(), descriptors);
     if (!deviceIdRecordOffset)
     {
-        error("Failed to associate package to device");
+        error("Failed to associate package to device at endpoint {ENDPOINT}",
+              "ENDPOINT", registry.describe(peer));
         events::generateUpdateNotApplicable(firmwareInventoryPath,
                                             parser->pkgVersion);
         return failInvalidPackage();
@@ -91,7 +96,7 @@ bool ItemUpdateManager::processPackage()
     packageDataStream =
         std::make_unique<std::ispanstream>(packageSpan, std::ios::binary);
     deviceUpdater = std::make_unique<DeviceUpdater>(
-        eid, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
+        peer, *packageDataStream, fwDeviceIDRecords[*deviceIdRecordOffset],
         compImageInfos, componentInfo, MAXIMUM_TRANSFER_SIZE, this,
         parser->pkgVersion, firmwareInventoryPath);
     events::generateTargetDetermined(firmwareInventoryPath, parser->pkgVersion);
@@ -99,30 +104,33 @@ bool ItemUpdateManager::processPackage()
     if (!preConditionPath.empty())
     {
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
-            .execute(preConditionPath, conditionArg,
-                     [this, alive = std::weak_ptr(aliveToken)](bool success) {
-                         if (alive.expired())
-                         {
-                             // This manager was erased while the condition was
-                             // running
-                             return;
-                         }
+            .execute(
+                preConditionPath, conditionArg,
+                [this, alive = std::weak_ptr(aliveToken)](bool success) {
+                    if (alive.expired())
+                    {
+                        // This manager was erased while the condition was
+                        // running
+                        return;
+                    }
 
-                         if (!updateInProgress)
-                         {
-                             return;
-                         }
+                    if (!updateInProgress)
+                    {
+                        return;
+                    }
 
-                         if (!success)
-                         {
-                             error("Pre-update condition failed for {PATH}",
-                                   "PATH", preConditionPath);
-                             completeUpdate(false);
-                             return;
-                         }
+                    if (!success)
+                    {
+                        error(
+                            "Pre-update condition failed for {PATH} on endpoint {ENDPOINT}",
+                            "PATH", preConditionPath, "ENDPOINT",
+                            registry.describe(peer));
+                        completeUpdate(false);
+                        return;
+                    }
 
-                         startFirmwareUpdate();
-                     });
+                    startFirmwareUpdate();
+                });
 
         return true;
     }
@@ -138,7 +146,9 @@ std::string ItemUpdateManager::processFd(int fd)
     auto rawDupFd = dup(fd);
     if (rawDupFd < 0)
     {
-        error("Failed to duplicate package file descriptor");
+        error(
+            "Failed to duplicate package file descriptor for endpoint {ENDPOINT}",
+            "ENDPOINT", registry.describe(peer));
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     this->dupFd = std::make_unique<pldm::utils::CustomFD>(rawDupFd);
@@ -152,13 +162,17 @@ std::string ItemUpdateManager::processFd(int fd)
         }
         catch (const std::exception& e)
         {
-            error("Failed to mmap package file, error - {ERROR}", "ERROR", e);
+            error(
+                "Failed to mmap package file for endpoint {ENDPOINT}, error - {ERROR}",
+                "ENDPOINT", registry.describe(peer), "ERROR", e);
             teardownUpdate();
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
         if (!processPackage())
         {
-            error("Failed to process firmware update package");
+            error(
+                "Failed to process firmware update package for endpoint {ENDPOINT}",
+                "ENDPOINT", registry.describe(peer));
             teardownUpdate();
             throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
         }
@@ -184,34 +198,37 @@ std::optional<DeviceIDRecordOffset> ItemUpdateManager::associatePkgToDevice(
     return std::nullopt;
 }
 
-void ItemUpdateManager::updateDeviceCompletion(mctp_eid_t /*eid*/, bool status)
+void ItemUpdateManager::updateDeviceCompletion(PeerId /*peer*/, bool status)
 {
     if (!postConditionPath.empty() && status == true)
     {
         SystemdInterface::getInstance(pldm::utils::DBusHandler::getBus())
-            .execute(postConditionPath, conditionArg,
-                     [this, status, alive = std::weak_ptr(aliveToken)](
-                         bool conditionSuccess) {
-                         if (alive.expired())
-                         {
-                             // This manager was erased while the condition was
-                             // running
-                             return;
-                         }
+            .execute(
+                postConditionPath, conditionArg,
+                [this, status,
+                 alive = std::weak_ptr(aliveToken)](bool conditionSuccess) {
+                    if (alive.expired())
+                    {
+                        // This manager was erased while the condition was
+                        // running
+                        return;
+                    }
 
-                         if (!updateInProgress)
-                         {
-                             return;
-                         }
+                    if (!updateInProgress)
+                    {
+                        return;
+                    }
 
-                         if (!conditionSuccess)
-                         {
-                             error("Post-update condition failed for {PATH}",
-                                   "PATH", postConditionPath);
-                         }
+                    if (!conditionSuccess)
+                    {
+                        error(
+                            "Post-update condition failed for {PATH} on endpoint {ENDPOINT}",
+                            "PATH", postConditionPath, "ENDPOINT",
+                            registry.describe(peer));
+                    }
 
-                         completeUpdate(status && conditionSuccess);
-                     });
+                    completeUpdate(status && conditionSuccess);
+                });
         return;
     }
 
@@ -252,7 +269,8 @@ void ItemUpdateManager::completeUpdate(bool status)
         auto dur = std::chrono::duration<double, std::milli>(
                        std::chrono::steady_clock::now() - *startTime)
                        .count();
-        info("Firmware update time: {DURATION}ms", "DURATION", dur);
+        info("Firmware update time on endpoint {ENDPOINT}: {DURATION}ms",
+             "ENDPOINT", registry.describe(peer), "DURATION", dur);
     }
 
     if (status)
@@ -281,10 +299,10 @@ void ItemUpdateManager::teardownUpdate()
 }
 
 Response ItemUpdateManager::handleRequest(
-    mctp_eid_t eid, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
+    PeerId peer, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
 {
     Response response(sizeof(pldm_msg), 0);
-    if (eid != this->eid || !deviceUpdater)
+    if (peer != this->peer || !deviceUpdater)
     {
         auto ptr = std::start_lifetime_as<pldm_msg>(response.data());
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
@@ -352,12 +370,14 @@ sdbusplus::object_path ItemUpdateManager::startUpdate(
 {
     if (updateInProgress)
     {
-        error("Update already in progress");
+        error("Update already in progress for endpoint {ENDPOINT}", "ENDPOINT",
+              registry.describe(peer));
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     if (image.fd < 0)
     {
-        error("Invalid package file descriptor");
+        error("Invalid package file descriptor for endpoint {ENDPOINT}",
+              "ENDPOINT", registry.describe(peer));
         throw sdbusplus::xyz::openbmc_project::Common::Error::Unavailable();
     }
     updateInProgress = true;

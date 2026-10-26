@@ -1,4 +1,6 @@
-fw_update_test_src = declare_dependency(sources: fw_update_sources)
+fw_update_test_src = declare_dependency(
+    sources: [fw_update_sources, '../../requester/endpoint_registry.cpp'],
+)
 
 test_deps = [
     fw_update_test_src,

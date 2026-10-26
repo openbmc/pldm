@@ -23,12 +23,13 @@ class UpdateManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()),
         handler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                 milliseconds(100)),
+        registry(std::make_unique<IdentityPeerIdPolicy>()),
         package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate),
         packageSize(package.tellg()),
-        updateManager(event, handler, instanceIdDb, descriptorMap,
+        updateManager(event, handler, instanceIdDb, registry, descriptorMap,
                       componentInfoMap)
     {
-        // Process the test package, which matches the device with eid, so
+        // Process the test package, which matches the device with peer, so
         // that the update is in progress.
         processPackage();
     }
@@ -56,7 +57,7 @@ class UpdateManagerTest : public testing::Test
         auto requestMsg =
             reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
         return updateManager.handleRequest(
-            eid, PLDM_REQUEST_FIRMWARE_DATA, requestMsg,
+            peer, PLDM_REQUEST_FIRMWARE_DATA, requestMsg,
             sizeof(pldm_request_firmware_data_req));
     }
 
@@ -66,18 +67,19 @@ class UpdateManagerTest : public testing::Test
         return updateManager.deviceUpdaterMap.empty() && !updateManager.parser;
     }
 
-    static constexpr mctp_eid_t eid = 1;
+    static constexpr PeerId peer = 1;
     const DescriptorMap descriptorMap{
-        {eid,
+        {peer,
          {{PLDM_FWUP_UUID,
            std::vector<uint8_t>{0x16, 0x20, 0x23, 0xC9, 0x3E, 0xC5, 0x41, 0x15,
                                 0x95, 0xF4, 0x48, 0x70, 0x1D, 0x49, 0xD6,
                                 0x75}}}}};
     const ComponentInfoMap componentInfoMap{
-        {eid, {{std::make_pair(10, 100), 1}}}};
+        {peer, {{std::make_pair(10, 100), 1}}}};
     Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> handler;
+    EndpointRegistry registry;
     std::ifstream package;
     uintmax_t packageSize;
     UpdateManager updateManager;
@@ -88,7 +90,7 @@ TEST_F(UpdateManagerTest, FailedUpdateReportsFullProgress)
     ASSERT_NE(updateManager.activationProgress, nullptr);
     EXPECT_EQ(updateManager.activationProgress->progress(), 0);
 
-    updateManager.updateDeviceCompletion(eid, false);
+    updateManager.updateDeviceCompletion(peer, false);
 
     EXPECT_EQ(updateManager.activationProgress->progress(), 100);
     EXPECT_EQ(updateManager.activation->activation(),
@@ -99,7 +101,7 @@ TEST_F(UpdateManagerTest, SuccessfulUpdateReportsFullProgress)
 {
     ASSERT_NE(updateManager.activationProgress, nullptr);
 
-    updateManager.updateDeviceCompletion(eid, true);
+    updateManager.updateDeviceCompletion(peer, true);
 
     EXPECT_EQ(updateManager.activationProgress->progress(), 100);
     EXPECT_EQ(updateManager.activation->activation(),
@@ -151,7 +153,7 @@ TEST_F(UpdateManagerTest, ReleasesPackageAfterCompletion)
 {
     ASSERT_FALSE(packageReleased());
 
-    updateManager.updateDeviceCompletion(eid, true);
+    updateManager.updateDeviceCompletion(peer, true);
     ASSERT_NE(updateManager.activation, nullptr);
     EXPECT_EQ(updateManager.activation->activation(),
               Activation::Activations::Active);
@@ -175,7 +177,7 @@ TEST_F(UpdateManagerTest, ReleasesPackageAfterCompletion)
 
 TEST_F(UpdateManagerTest, StartsTheNextUpdateBeforeAPendingRelease)
 {
-    updateManager.updateDeviceCompletion(eid, true);
+    updateManager.updateDeviceCompletion(peer, true);
     ASSERT_FALSE(packageReleased());
 
     // The next StartUpdate is dispatched before the pending release runs
@@ -222,7 +224,7 @@ class UpdateManagerCompInfoTest : public testing::Test
     }
 
     // RequestFirmwareData for the first 512-byte chunk
-    static Response requestFwData(UpdateManager& manager, mctp_eid_t eid)
+    static Response requestFwData(UpdateManager& manager, PeerId peer)
     {
         std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                 sizeof(pldm_request_firmware_data_req)>
@@ -230,7 +232,7 @@ class UpdateManagerCompInfoTest : public testing::Test
                          0x00, 0x00, 0x02, 0x00, 0x00};
         auto requestMsg =
             reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
-        return manager.handleRequest(eid, PLDM_REQUEST_FIRMWARE_DATA,
+        return manager.handleRequest(peer, PLDM_REQUEST_FIRMWARE_DATA,
                                      requestMsg,
                                      sizeof(pldm_request_firmware_data_req));
     }
@@ -245,71 +247,72 @@ class UpdateManagerCompInfoTest : public testing::Test
     Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> handler;
+    EndpointRegistry registry{std::make_unique<IdentityPeerIdPolicy>()};
     std::filesystem::path packageCopy;
 };
 
 TEST_F(UpdateManagerCompInfoTest, skipDeviceMissingComponentInfo)
 {
-    constexpr mctp_eid_t eidWithCompInfo = 1;
-    constexpr mctp_eid_t eidWithoutCompInfo = 2;
-    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
-                     {eidWithoutCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
+    constexpr PeerId peerWithCompInfo = 1;
+    constexpr PeerId peerWithoutCompInfo = 2;
+    descriptorMap = {{peerWithCompInfo, uuidDescriptors},
+                     {peerWithoutCompInfo, uuidDescriptors}};
+    componentInfoMap = {{peerWithCompInfo, {{std::make_pair(10, 100), 1}}}};
 
-    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+    UpdateManager manager(event, handler, instanceIdDb, registry, descriptorMap,
                           componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
 
     // The device with component info is serviced by a DeviceUpdater
-    auto response = requestFwData(manager, eidWithCompInfo);
+    auto response = requestFwData(manager, peerWithCompInfo);
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
 
     // The device without component info must not get a DeviceUpdater
-    response = requestFwData(manager, eidWithoutCompInfo);
+    response = requestFwData(manager, peerWithoutCompInfo);
     ASSERT_EQ(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
 }
 
 TEST_F(UpdateManagerCompInfoTest, skipDeviceEmptyComponentInfo)
 {
-    constexpr mctp_eid_t eidWithCompInfo = 1;
-    constexpr mctp_eid_t eidWithEmptyCompInfo = 2;
-    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
-                     {eidWithEmptyCompInfo, uuidDescriptors}};
+    constexpr PeerId peerWithCompInfo = 1;
+    constexpr PeerId peerWithEmptyCompInfo = 2;
+    descriptorMap = {{peerWithCompInfo, uuidDescriptors},
+                     {peerWithEmptyCompInfo, uuidDescriptors}};
     // GetFirmwareParameters succeeded but reported zero components
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
-                        {eidWithEmptyCompInfo, {}}};
+    componentInfoMap = {{peerWithCompInfo, {{std::make_pair(10, 100), 1}}},
+                        {peerWithEmptyCompInfo, {}}};
 
-    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+    UpdateManager manager(event, handler, instanceIdDb, registry, descriptorMap,
                           componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
 
     // The device with component info is serviced by a DeviceUpdater
-    auto response = requestFwData(manager, eidWithCompInfo);
+    auto response = requestFwData(manager, peerWithCompInfo);
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
 
     // The zero-component device must not get a DeviceUpdater
-    response = requestFwData(manager, eidWithEmptyCompInfo);
+    response = requestFwData(manager, peerWithEmptyCompInfo);
     ASSERT_EQ(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_COMMAND_NOT_EXPECTED);
 }
 
 TEST_F(UpdateManagerCompInfoTest, componentCountExcludesSkippedDevices)
 {
-    constexpr mctp_eid_t eidWithCompInfo = 1;
-    constexpr mctp_eid_t eidWithoutCompInfo = 2;
-    constexpr mctp_eid_t eidWithEmptyCompInfo = 3;
-    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
-                     {eidWithoutCompInfo, uuidDescriptors},
-                     {eidWithEmptyCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}},
-                        {eidWithEmptyCompInfo, {}}};
+    constexpr PeerId peerWithCompInfo = 1;
+    constexpr PeerId peerWithoutCompInfo = 2;
+    constexpr PeerId peerWithEmptyCompInfo = 3;
+    descriptorMap = {{peerWithCompInfo, uuidDescriptors},
+                     {peerWithoutCompInfo, uuidDescriptors},
+                     {peerWithEmptyCompInfo, uuidDescriptors}};
+    componentInfoMap = {{peerWithCompInfo, {{std::make_pair(10, 100), 1}}},
+                        {peerWithEmptyCompInfo, {}}};
     FirmwareDeviceIDRecords fwDeviceIDRecords{
         {1, {0x00}, "VersionString2", uuidDescriptors, {}}};
 
-    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+    UpdateManager manager(event, handler, instanceIdDb, registry, descriptorMap,
                           componentInfoMap);
     TotalComponentUpdates totalNumComponentUpdates = 0;
     auto deviceUpdaterInfos = manager.associatePkgToDevices(
@@ -318,17 +321,17 @@ TEST_F(UpdateManagerCompInfoTest, componentCountExcludesSkippedDevices)
 
     // Only the device with non-empty component info is matched and counted
     ASSERT_EQ(deviceUpdaterInfos.size(), 1);
-    EXPECT_EQ(deviceUpdaterInfos[0].first, eidWithCompInfo);
+    EXPECT_EQ(deviceUpdaterInfos[0].first, peerWithCompInfo);
     EXPECT_EQ(deviceUpdaterInfos[0].second, 0);
     EXPECT_EQ(totalNumComponentUpdates, 1);
 }
 
 TEST_F(UpdateManagerCompInfoTest, allDevicesMissingComponentInfoTerminates)
 {
-    constexpr mctp_eid_t eidWithoutCompInfo = 2;
-    descriptorMap = {{eidWithoutCompInfo, uuidDescriptors}};
+    constexpr PeerId peerWithoutCompInfo = 2;
+    descriptorMap = {{peerWithoutCompInfo, uuidDescriptors}};
 
-    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+    UpdateManager manager(event, handler, instanceIdDb, registry, descriptorMap,
                           componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), -1);
 
@@ -340,16 +343,16 @@ TEST_F(UpdateManagerCompInfoTest, allDevicesMissingComponentInfoTerminates)
 
 TEST_F(UpdateManagerCompInfoTest, skippedDeviceFailsUpdate)
 {
-    constexpr mctp_eid_t eidWithCompInfo = 1;
-    constexpr mctp_eid_t eidWithoutCompInfo = 2;
-    descriptorMap = {{eidWithCompInfo, uuidDescriptors},
-                     {eidWithoutCompInfo, uuidDescriptors}};
-    componentInfoMap = {{eidWithCompInfo, {{std::make_pair(10, 100), 1}}}};
+    constexpr PeerId peerWithCompInfo = 1;
+    constexpr PeerId peerWithoutCompInfo = 2;
+    descriptorMap = {{peerWithCompInfo, uuidDescriptors},
+                     {peerWithoutCompInfo, uuidDescriptors}};
+    componentInfoMap = {{peerWithCompInfo, {{std::make_pair(10, 100), 1}}}};
 
-    UpdateManager manager(event, handler, instanceIdDb, descriptorMap,
+    UpdateManager manager(event, handler, instanceIdDb, registry, descriptorMap,
                           componentInfoMap);
     EXPECT_EQ(manager.processPackage(copyTestPackage()), 0);
-    manager.updateDeviceCompletion(eidWithCompInfo, true);
+    manager.updateDeviceCompletion(peerWithCompInfo, true);
 
     // The skipped device was not updated, so the update must not succeed
     ASSERT_NE(manager.activation, nullptr);

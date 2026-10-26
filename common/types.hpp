@@ -123,17 +123,18 @@ using DownstreamDeviceIndex = uint16_t;
 using DownstreamDeviceInfo =
     std::unordered_map<DownstreamDeviceIndex, Descriptors>;
 
-using DescriptorMap = std::unordered_map<eid, Descriptors>;
-using DownstreamDescriptorMap = std::unordered_map<eid, DownstreamDeviceInfo>;
+using DescriptorMap = std::unordered_map<PeerId, Descriptors>;
+using DownstreamDescriptorMap =
+    std::unordered_map<PeerId, DownstreamDeviceInfo>;
 
 // Component information
 using CompClassification = uint16_t;
 using CompIdentifier = uint16_t;
-using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
+using SoftwareIdentifier = std::pair<PeerId, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
 using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
-using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
+using ComponentInfoMap = std::unordered_map<PeerId, ComponentInfo>;
 
 // PackageHeaderInformation
 using PackageHeaderSize = size_t;

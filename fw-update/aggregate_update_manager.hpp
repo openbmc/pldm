@@ -21,6 +21,7 @@ class AggregateUpdateManager : public UpdateManager
      * @param[in] event - Reference to the PLDM daemon's main event loop
      * @param[in] handler - PLDM request handler
      * @param[in] instanceIdDb - Reference to the instance ID database
+     * @param[in] registry - Tells which MCTP endpoint a PeerId stands for
      * @param[in] descriptorMap - Descriptor map for the update manager
      * @param[in] componentInfoMap - Component information map for the update
      * manager
@@ -28,12 +29,13 @@ class AggregateUpdateManager : public UpdateManager
     explicit AggregateUpdateManager(
         Event& event,
         pldm::requester::Handler<pldm::requester::Request>& handler,
-        InstanceIdDb& instanceIdDb, const DescriptorMap& descriptorMap,
+        InstanceIdDb& instanceIdDb, const EndpointRegistry& registry,
+        const DescriptorMap& descriptorMap,
         const ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
         std::function<void()> taskCompletionCallback = nullptr) :
-        UpdateManager(event, handler, instanceIdDb, descriptorMap,
+        UpdateManager(event, handler, instanceIdDb, registry, descriptorMap,
                       componentInfoMap, conditionPathPair, conditionArg,
                       std::move(taskCompletionCallback))
     {}
@@ -44,13 +46,13 @@ class AggregateUpdateManager : public UpdateManager
      * This function processes incoming PLDM requests and dispatches them to the
      * appropriate update manager based on the software identifier.
      *
-     * @param[in] eid - Remote MCTP Endpoint ID
+     * @param[in] peer - PeerId of the remote MCTP endpoint
      * @param[in] command - PLDM command code
      * @param[in] request - PLDM request message
      * @param[in] reqMsgLen - PLDM request message length
      * @return PLDM response message
      */
-    Response handleRequest(mctp_eid_t eid, uint8_t command,
+    Response handleRequest(PeerId peer, uint8_t command,
                            const pldm_msg* request, size_t reqMsgLen) override;
 
     /**
@@ -61,8 +63,8 @@ class AggregateUpdateManager : public UpdateManager
      * with the given software identifier, along with its corresponding
      * descriptor and component information maps.
      *
-     * @param[in] softwareIdentifier - The software identifier (pair of eid and
-     * component identifier)
+     * @param[in] softwareIdentifier - The software identifier (pair of PeerId
+     * and component identifier)
      * @param[in] descriptors - The descriptors associated with the software
      * identifier
      * @param[in] componentInfo - The component information associated with the
@@ -92,8 +94,8 @@ class AggregateUpdateManager : public UpdateManager
      * descriptor and component information maps from the internal storage based
      * on the provided software identifier.
      *
-     * @param[in] softwareIdentifier - The software identifier (pair of eid and
-     * component identifier)
+     * @param[in] softwareIdentifier - The software identifier (pair of PeerId
+     * and component identifier)
      */
     void eraseUpdateManager(const SoftwareIdentifier& softwareIdentifier);
 

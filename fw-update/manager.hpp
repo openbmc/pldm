@@ -39,25 +39,49 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
      * PLDM requests
      * @param[in] instanceIdDb - Reference to the InstanceId database for
      * managing PLDM instance IDs
+     * @param[in] registry - Registry that tells which MCTP endpoint a PeerId
+     * stands for. It must outlive the Manager.
      */
     explicit Manager(const pldm::utils::DBusHandler* dbusHandler, Event& event,
                      requester::Handler<requester::Request>& handler,
-                     pldm::InstanceIdDb& instanceIdDb) :
-        updateManager(event, handler, instanceIdDb, descriptorMap,
+                     pldm::InstanceIdDb& instanceIdDb,
+                     const EndpointRegistry& registry) :
+        registry(registry),
+        updateManager(event, handler, instanceIdDb, registry, descriptorMap,
                       componentInfoMap),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap, configurations,
-                     updateManager)
+                     updateManager, registry)
     {}
 
-    /** @brief Helper function to invoke registered handlers for
-     *         the added MCTP endpoints
+    /** @brief Discover the firmware devices behind the added endpoints
+     *
+     *  @param[in] endpoints - the added endpoints and their PeerIds
+     */
+    void handleEndpoints(
+        const std::vector<DiscoveredEndpoint>& endpoints) override
+    {
+        inventoryMgr.discoverFDs(endpoints);
+    }
+
+    /** @brief Remove the firmware devices behind the removed endpoints
+     *
+     *  @param[in] endpoints - the removed endpoints and their PeerIds
+     */
+    void handleRemovedEndpoints(
+        const std::vector<DiscoveredEndpoint>& endpoints) override
+    {
+        inventoryMgr.removeFDs(endpoints);
+    }
+
+    /** @brief Same as handleEndpoints(), for callers that only have the
+     *         MctpInfo. Endpoints that have no PeerId are ignored.
      *
      *  @param[in] mctpInfos - information of discovered MCTP endpoints
      */
     void handleMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        inventoryMgr.discoverFDs(mctpInfos);
+        handleEndpoints(withPeerIds(mctpInfos));
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -70,14 +94,14 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         this->configurations = configurations;
     }
 
-    /** @brief Helper function to invoke registered handlers for
-     *         the removed MCTP endpoints
+    /** @brief Same as handleRemovedEndpoints(), for callers that only have
+     *         the MctpInfo. Endpoints that have no PeerId are ignored.
      *
      *  @param[in] mctpInfos - information of removed MCTP endpoints
      */
     void handleRemovedMctpEndpoints(const MctpInfos& mctpInfos) override
     {
-        inventoryMgr.removeFDs(mctpInfos);
+        handleRemovedEndpoints(withPeerIds(mctpInfos));
     }
 
     /** @brief Helper function to invoke registered handlers for
@@ -94,16 +118,16 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     /** @brief Handle PLDM request for the commands in the FW update
      *         specification
      *
-     *  @param[in] eid - Remote MCTP Endpoint ID
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] command - PLDM command code
      *  @param[in] request - PLDM request message
      *  @param[in] requestLen - PLDM request message length
      *  @return PLDM response message
      */
-    Response handleRequest(mctp_eid_t eid, Command command,
+    Response handleRequest(PeerId peer, Command command,
                            const pldm_msg* request, size_t reqMsgLen)
     {
-        return updateManager.handleRequest(eid, command, request, reqMsgLen);
+        return updateManager.handleRequest(peer, command, request, reqMsgLen);
     }
 
     /** @brief Get Active EIDs.
@@ -117,6 +141,23 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
     }
 
   private:
+    std::vector<DiscoveredEndpoint> withPeerIds(
+        const MctpInfos& mctpInfos) const
+    {
+        std::vector<DiscoveredEndpoint> endpoints;
+        for (const auto& mctpInfo : mctpInfos)
+        {
+            if (auto peer = registry.peerOf(toEndpoint(mctpInfo)))
+            {
+                endpoints.push_back({*peer, mctpInfo});
+            }
+        }
+        return endpoints;
+    }
+
+    /** @brief Registry of the PeerIds of the discovered MCTP endpoints */
+    const EndpointRegistry& registry;
+
     /** Descriptor information of all the discovered MCTP endpoints */
     DescriptorMap descriptorMap;
 

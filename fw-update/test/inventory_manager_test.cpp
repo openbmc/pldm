@@ -21,11 +21,13 @@ class InventoryManagerTest : public testing::Test
         event(sdeventplus::Event::get_default()), instanceIdDb(),
         reqHandler(nullptr, event, instanceIdDb, false, seconds(1), 2,
                    milliseconds(100)),
-        updateManager(event, reqHandler, instanceIdDb, outDescriptorMap,
-                      outComponentInfoMap),
+        registry(std::make_unique<IdentityPeerIdPolicy>()),
+        updateManager(event, reqHandler, instanceIdDb, registry,
+                      outDescriptorMap, outComponentInfoMap),
         inventoryManager(&dBusHandler, reqHandler, instanceIdDb,
                          outDescriptorMap, outDownstreamDescriptorMap,
-                         outComponentInfoMap, configurations, updateManager)
+                         outComponentInfoMap, configurations, updateManager,
+                         registry)
     {}
 
     int fd = -1;
@@ -33,6 +35,7 @@ class InventoryManagerTest : public testing::Test
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler;
+    EndpointRegistry registry;
     AggregateUpdateManager updateManager;
     InventoryManager inventoryManager;
     DescriptorMap outDescriptorMap{};
@@ -112,7 +115,7 @@ TEST_F(InventoryManagerTest, handleQueryDeviceIdentifiersResponseErrorCC)
 
 TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
 {
-    constexpr uint8_t eid = 1;
+    constexpr uint8_t peer = 1;
     constexpr uint8_t downstreamDeviceCount = 1;
     constexpr uint32_t downstreamDeviceLen = 11;
     constexpr size_t respPayloadLength =
@@ -125,7 +128,7 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
             0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0xa0, 0x15};
     auto responseMsg = new (queryDownstreamIdentifiersResp.data()) pldm_msg;
 
-    inventoryManager.queryDownstreamIdentifiers(eid, responseMsg,
+    inventoryManager.queryDownstreamIdentifiers(peer, responseMsg,
                                                 respPayloadLength);
 
     DownstreamDeviceInfo downstreamDevices = {
@@ -133,7 +136,7 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponse)
          {{PLDM_FWUP_IANA_ENTERPRISE_ID,
            std::vector<uint8_t>{0x00, 0x00, 0xa0, 0x15}}}}};
     DownstreamDescriptorMap refDownstreamDescriptorMap{
-        {eid, downstreamDevices}};
+        {peer, downstreamDevices}};
 
     ASSERT_EQ(outDownstreamDescriptorMap.size(), downstreamDeviceCount);
     ASSERT_EQ(outDownstreamDescriptorMap.size(),
@@ -156,24 +159,24 @@ TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifierResponseErrorCC)
 
 TEST_F(InventoryManagerTest, handleQueryDownstreamIdentifiersNoResponse)
 {
-    constexpr uint8_t eid = 1;
+    constexpr PeerId peer = 1;
     const DescriptorMap descriptorMap{
-        {eid, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
+        {peer, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
     outDescriptorMap = descriptorMap;
 
-    inventoryManager.queryDownstreamIdentifiers(eid, nullptr, 0);
+    inventoryManager.queryDownstreamIdentifiers(peer, nullptr, 0);
 
     EXPECT_EQ(outDescriptorMap, descriptorMap);
 }
 
 TEST_F(InventoryManagerTest, handleGetDownstreamFirmwareParametersNoResponse)
 {
-    constexpr uint8_t eid = 1;
+    constexpr PeerId peer = 1;
     const DescriptorMap descriptorMap{
-        {eid, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
+        {peer, {{PLDM_FWUP_UUID, std::vector<uint8_t>(16, 0xaa)}}}};
     outDescriptorMap = descriptorMap;
 
-    inventoryManager.getDownstreamFirmwareParameters(eid, nullptr, 0);
+    inventoryManager.getDownstreamFirmwareParameters(peer, nullptr, 0);
 
     EXPECT_EQ(outDescriptorMap, descriptorMap);
 }
@@ -262,4 +265,37 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponseErrorCC)
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp.data());
     inventoryManager.getFirmwareParameters(1, responseMsg, respPayloadLength);
     EXPECT_EQ(outComponentInfoMap.size(), 0);
+}
+
+TEST_F(InventoryManagerTest, deviceNameFromConfigurationsMatchesNetworkAndEid)
+{
+    const auto networkOne =
+        MctpInfo(10, "uuid1", "", 1, std::optional<std::string>("NicA"));
+    const auto networkTwo =
+        MctpInfo(10, "uuid2", "", 2, std::optional<std::string>("NicB"));
+    Configurations configs{{"/em/a", networkOne}, {"/em/b", networkTwo}};
+
+    EXPECT_EQ(obtainDeviceNameFromConfigurations(configs, Endpoint{1, 10}),
+              "NicA");
+    EXPECT_EQ(obtainDeviceNameFromConfigurations(configs, Endpoint{2, 10}),
+              "NicB");
+    EXPECT_EQ(obtainDeviceNameFromConfigurations(configs, Endpoint{3, 10}),
+              std::nullopt);
+}
+
+TEST_F(InventoryManagerTest, removeFDsOnlyRemovesTheGivenPeer)
+{
+    // The same EID on two networks, told apart by their PeerIds 10 and 11
+    const auto networkOne = MctpInfo(10, "uuid1", "", 1, std::nullopt);
+    outDescriptorMap.emplace(10, Descriptors{});
+    outDescriptorMap.emplace(11, Descriptors{});
+    outComponentInfoMap.emplace(10, ComponentInfo{});
+    outComponentInfoMap.emplace(11, ComponentInfo{});
+
+    inventoryManager.removeFDs({{10, networkOne}});
+
+    EXPECT_FALSE(outDescriptorMap.contains(10));
+    EXPECT_TRUE(outDescriptorMap.contains(11));
+    EXPECT_FALSE(outComponentInfoMap.contains(10));
+    EXPECT_TRUE(outComponentInfoMap.contains(11));
 }

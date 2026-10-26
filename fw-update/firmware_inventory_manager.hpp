@@ -4,6 +4,7 @@
 #include "common/types.hpp"
 #include "condition_collector.hpp"
 #include "firmware_inventory.hpp"
+#include "requester/endpoint_registry.hpp"
 
 class FirmwareInventoryManagerTest;
 
@@ -39,20 +40,22 @@ class FirmwareInventoryManager
      * @brief Constructor
      * @param[in] configurations - Reference to the EM configurations for MCTP
      * endpoints
+     * @param[in] registry - Tells which MCTP endpoint a PeerId stands for
      */
     explicit FirmwareInventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
-        const Configurations& config, AggregateUpdateManager& updateManager) :
+        const Configurations& config, AggregateUpdateManager& updateManager,
+        const EndpointRegistry& registry) :
         dbusHandler(dbusHandler), configurations(config),
-        updateManager(updateManager),
+        updateManager(updateManager), registry(registry),
         conditionConfigManager(FW_UPDATE_TARGETS_JSON)
     {}
 
     /**
      * @brief Creates a firmware inventory entry for the given software
      * identifier
-     * @param[in] softwareIdentifier - Software identifier containing EID and
-     *                                 component identifier
+     * @param[in] softwareIdentifier - Software identifier containing the
+     *                                 PeerId and component identifier
      * @param[in] softwareName - Name of the firmware device
      * @param[in] activeVersion - Active version of the firmware
      * @param[in] descriptors - Descriptors associated with the firmware
@@ -66,19 +69,19 @@ class FirmwareInventoryManager
         std::function<void()> taskCompletionCallback);
 
     /**
-     * @brief Deletes the firmware inventory entry for the given EID
-     * @param[in] eid - MCTP endpoint ID for which the firmware inventory entry
-     *                  needs to be deleted
+     * @brief Deletes the firmware inventory entries of the given endpoint
+     * @param[in] peer - PeerId of the MCTP endpoint for which the firmware
+     *                   inventory entries need to be deleted
      */
-    void deleteFirmwareEntry(const pldm::eid& eid);
+    void deleteFirmwareEntry(const PeerId& peer);
 
   private:
     /**
-     * @brief Get the inventory path associated with the given EID
-     * @param[in] eid - MCTP endpoint ID
+     * @brief Get the inventory path associated with the given endpoint
+     * @param[in] peer - PeerId of the MCTP endpoint
      * @return Inventory path if found, std::nullopt otherwise
      */
-    std::optional<InventoryPath> getInventoryPath(const pldm::eid& eid) const;
+    std::optional<InventoryPath> getInventoryPath(const PeerId& peer) const;
 
     /**
      * @brief D-Bus Handler
@@ -89,7 +92,7 @@ class FirmwareInventoryManager
      * @brief Map of software identifier to FirmwareInventory instances
      *        This map maintains the firmware inventory entries created for
      *        different firmware components identified by their software
-     *        identifiers (EID and component identifier).
+     *        identifiers (PeerId and component identifier).
      */
     SoftwareMap softwareMap;
 
@@ -106,6 +109,11 @@ class FirmwareInventoryManager
      * @brief Reference to the aggregate update manager
      */
     AggregateUpdateManager& updateManager;
+
+    /**
+     * @brief Tells which MCTP endpoint a PeerId stands for
+     */
+    const EndpointRegistry& registry;
 
     ConditionConfigManager conditionConfigManager;
 };

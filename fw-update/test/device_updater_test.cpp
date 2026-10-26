@@ -21,7 +21,7 @@ class TestUpdateManager : public UpdateManagerBase
   public:
     using UpdateManagerBase::UpdateManagerBase;
 
-    void updateDeviceCompletion(mctp_eid_t /*eid*/, bool /*status*/) override {}
+    void updateDeviceCompletion(PeerId /*peer*/, bool /*status*/) override {}
     void updateActivationProgress() override {}
     void activatePackage() override {}
     void resetActivationState() override {}
@@ -234,21 +234,22 @@ TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
 
 TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 {
-    constexpr mctp_eid_t eid = 1;
+    constexpr PeerId peer = 1;
     auto event = sdeventplus::Event::get_default();
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> reqHandler(
         nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
         std::chrono::milliseconds(100));
-    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
+    EndpointRegistry registry(std::make_unique<IdentityPeerIdPolicy>());
+    TestUpdateManager updateManager(event, reqHandler, instanceIdDb, registry);
 
     // Bind to the map-owned entry, as UpdateManager::processStream does
-    ComponentInfoMap componentInfoMap{{eid, compInfo}};
-    DeviceUpdater deviceUpdater(eid, package, fwDeviceIDRecord, compImageInfos,
-                                componentInfoMap.at(eid), 512, &updateManager);
+    ComponentInfoMap componentInfoMap{{peer, compInfo}};
+    DeviceUpdater deviceUpdater(peer, package, fwDeviceIDRecord, compImageInfos,
+                                componentInfoMap.at(peer), 512, &updateManager);
 
     // InventoryManager::removeFDs() erases the entry mid-update
-    componentInfoMap.erase(eid);
+    componentInfoMap.erase(peer);
 
     // A successful RequestUpdate response defers sendPassCompTableRequest
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
@@ -256,7 +257,7 @@ TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
         requestUpdateResponse{0x00, 0x05, 0x10, 0x00, 0x00, 0x00, 0x00};
     auto responseMsg =
         reinterpret_cast<const pldm_msg*>(requestUpdateResponse.data());
-    deviceUpdater.requestUpdate(eid, responseMsg,
+    deviceUpdater.requestUpdate(peer, responseMsg,
                                 sizeof(pldm_request_update_resp));
 
     // The deferred request preparation reads the component info; it must not

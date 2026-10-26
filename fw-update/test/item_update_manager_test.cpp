@@ -68,16 +68,17 @@ class ItemUpdateManagerTest : public testing::Test
         }
         auto requestMsg =
             reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
-        return manager.handleRequest(eid, PLDM_REQUEST_FIRMWARE_DATA,
+        return manager.handleRequest(peer, PLDM_REQUEST_FIRMWARE_DATA,
                                      requestMsg,
                                      sizeof(pldm_request_firmware_data_req));
     }
 
-    static constexpr mctp_eid_t eid = 1;
+    static constexpr PeerId peer = 1;
     static constexpr auto objPath = "/xyz/openbmc_project/software/test";
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
     requester::Handler<requester::Request> handler;
+    EndpointRegistry registry{std::make_unique<IdentityPeerIdPolicy>()};
     int packageFd;
     Descriptors descriptors;
     ComponentInfo componentInfo;
@@ -85,8 +86,8 @@ class ItemUpdateManagerTest : public testing::Test
 
 TEST_F(ItemUpdateManagerTest, activationProgressAdvancesPerChunk)
 {
-    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
-                              descriptors, componentInfo);
+    ItemUpdateManager manager(peer, event, handler, instanceIdDb, registry,
+                              objPath, "sw", descriptors, componentInfo);
     startUpdate(manager);
     ASSERT_NE(progressOf(manager), nullptr);
     EXPECT_EQ(progressOf(manager)->progress(), 0);
@@ -107,8 +108,8 @@ TEST_F(ItemUpdateManagerTest, activationProgressAdvancesPerChunk)
 
 TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
 {
-    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
-                              descriptors, componentInfo);
+    ItemUpdateManager manager(peer, event, handler, instanceIdDb, registry,
+                              objPath, "sw", descriptors, componentInfo);
     startUpdate(manager);
     ASSERT_NE(progressOf(manager), nullptr);
     auto response = requestFwData(manager, 0);
@@ -117,7 +118,7 @@ TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
     ASSERT_EQ(progressOf(manager)->progress(), 48);
 
     // Fail the update at 48%: completeUpdate() tears the update down
-    manager.updateDeviceCompletion(eid, false);
+    manager.updateDeviceCompletion(peer, false);
     EXPECT_EQ(progressOf(manager), nullptr);
 
     // Reuse the manager for a second update of the same package

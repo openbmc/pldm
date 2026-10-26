@@ -8,13 +8,13 @@ namespace pldm::fw_update
 {
 
 Response AggregateUpdateManager::handleRequest(
-    mctp_eid_t eid, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
+    PeerId peer, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
 {
     Response response;
     for (auto& [_, updateManager] : updateManagers)
     {
         response =
-            updateManager->handleRequest(eid, command, request, reqMsgLen);
+            updateManager->handleRequest(peer, command, request, reqMsgLen);
         auto relayedResponseMsg =
             std::start_lifetime_as<pldm_msg>(response.data());
         if (relayedResponseMsg->payload[0] != PLDM_FWUP_COMMAND_NOT_EXPECTED)
@@ -22,7 +22,7 @@ Response AggregateUpdateManager::handleRequest(
             return response;
         }
     }
-    return UpdateManager::handleRequest(eid, command, request, reqMsgLen);
+    return UpdateManager::handleRequest(peer, command, request, reqMsgLen);
 }
 
 void AggregateUpdateManager::createUpdateManager(
@@ -32,7 +32,7 @@ void AggregateUpdateManager::createUpdateManager(
     const ConditionPaths& conditionPathPair, const std::string& conditionArg,
     std::function<void()> taskCompletionCallback)
 {
-    auto eid = softwareIdentifier.first;
+    auto peer = softwareIdentifier.first;
 
     descriptorMap[softwareIdentifier] =
         std::make_unique<Descriptors>(descriptors);
@@ -40,8 +40,8 @@ void AggregateUpdateManager::createUpdateManager(
         std::make_unique<ComponentInfo>(componentInfo);
 
     updateManagers[softwareIdentifier] = std::make_unique<ItemUpdateManager>(
-        eid, event, handler, instanceIdDb, updateObjPath, generatedId,
-        *descriptorMap[softwareIdentifier],
+        peer, event, handler, instanceIdDb, registry, updateObjPath,
+        generatedId, *descriptorMap[softwareIdentifier],
         *componentInfoMap[softwareIdentifier], conditionPathPair, conditionArg,
         std::move(taskCompletionCallback));
 }
