@@ -10,6 +10,8 @@ the requirements of PLDM requesters. It provides the following features:
 - Multiple outstanding requests are supported.
 - Request retries based on the time-out waiting for a response.
 - Instance ID expiration and marking the instance ID free after expiration.
+- Endpoints are addressed by a `PeerId`, which is the EID unless more than one
+  MCTP Network is in use. See [MCTP Networks](../docs/mctp_networks.md).
 
 ## Future enhancements
 
