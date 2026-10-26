@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <format>
 #include <string>
+#include <vector>
 
 namespace pldm
 {
@@ -20,6 +21,31 @@ struct Endpoint
 
     auto operator<=>(const Endpoint&) const = default;
 };
+
+/** @brief An MCTP endpoint together with the PeerId it is addressed by */
+struct MctpInfoWithPeer
+{
+    PeerId peer;
+    MctpInfo mctpInfo;
+};
+
+using MctpInfoWithPeers = std::vector<MctpInfoWithPeer>;
+
+/** @brief Drop the PeerIds from a list of endpoints
+ *
+ *  @param[in] endpoints - MCTP endpoints with their PeerIds
+ *
+ *  @return the MctpInfo of each endpoint, in the same order
+ */
+inline MctpInfos toMctpInfos(const MctpInfoWithPeers& endpoints)
+{
+    MctpInfos mctpInfos;
+    for (const auto& endpoint : endpoints)
+    {
+        mctpInfos.emplace_back(endpoint.mctpInfo);
+    }
+    return mctpInfos;
+}
 
 /** @brief Extract the Endpoint from an MctpInfo
  *
