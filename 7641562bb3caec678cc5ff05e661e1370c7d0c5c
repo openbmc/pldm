@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d602376_89dd83a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-10-26T08:42:28Z",
+      "side": 1,
+      "message": "Not exactly. Existing code assumes that every terminus has a SYSTEM entity. Which may not be true always.\n\nOne can consider a server platform as a SYSTEM and have multiple CPU\u0027s and add-in-card having separate TIDs.",
+      "parentUuid": "d5ae0992_59e6c6ba",
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "180265a0_036c4675",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
