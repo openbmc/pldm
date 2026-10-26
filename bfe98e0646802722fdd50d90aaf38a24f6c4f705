@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3697e1_73419d34",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "This is a user-visible, backwards-incompatible output change, and it is not required by the refactor, because every supported sensor data size is integral. Scripts, Robot Framework tests and tooling that parse this output may break. Please either preserve integer output, or justify the change and mark it clearly",
+      "range": {
+        "startLine": 13,
+        "startChar": 37,
+        "endLine": 13,
+        "endChar": 68
+      },
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8745be0_1baa5db4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "presentReading shows 45 before and 44.0 after, so the readings differ and the example does not isolate the formatting change. Please use a stable sensor or the same PDR in both runs",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd672e0_c1e035d3",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1907,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "This now emits 120.0 instead of 120. Suggested approach: keep integer JSON output, for example by converting back to int64_t when the value is integral, or by using a helper that returns a variant. Also, for an unrecognised sensor_data_size the keys were previously omitted and are now null. Please either keep omitting them or report an error, so a malformed PDR cannot be mistaken for a valid one.",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "780fdddc_2e6d000a",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "Replacing the 4-byte array with the union is an improvement, because it will grow with the 64-bit arm. Please confirm decode_get_sensor_reading_resp never writes more than sizeof(union_sensor_data_size) bytes.",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28bb9094_813b52ea",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2513,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "This is permitted because uint8_t is a character type, but it relies on libpldm writing host-endian bytes for the union. Please add a short comment and a static_assert(sizeof(presentReading) \u003e\u003d sizeof(uint32_t)).",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cdb57f1_41027677",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T07:07:00Z",
+      "side": 1,
+      "message": "Using std::isnan as the error signal obscures the cause. Please check sensorDataSize explicitly, or have the helper return std::optional\u003cdouble\u003e. In addition, \"presentReading\": null is still emitted after the error message. Consider returning an error code or omitting the key, to match the previous behaviour.",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
