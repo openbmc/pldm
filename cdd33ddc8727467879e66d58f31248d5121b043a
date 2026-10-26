@@ -1,0 +1,58 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8faa5a3_0e134ac6",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1003113
+      },
+      "writtenOn": "2026-10-26T22:13:07Z",
+      "side": 1,
+      "message": "Done. Replaced the verbose block with two lines covering the consumer\u0027s non-empty requirement and the componentImageInfos index target.",
+      "parentUuid": "928e758f_79b46ea4",
+      "revId": "cdd33ddc8727467879e66d58f31248d5121b043a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52858718_49567620",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1003113
+      },
+      "writtenOn": "2026-10-26T22:13:07Z",
+      "side": 1,
+      "message": "Good point. Although DSP0267 Table 4 does not explicitly require a set bit, this implementation assumes a matched record has a component: if the firmware device accepts a zero-component RequestUpdate, sendPassCompTableRequest() indexes element zero of the empty vector. PS4 now rejects an all-zero ApplicableComponents field during parsing and adds a regression test for it. The check fails the whole package, including when the all-zero record matches no device.",
+      "parentUuid": "c54d2a75_08411ec7",
+      "revId": "cdd33ddc8727467879e66d58f31248d5121b043a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178e531e_fae8fc58",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1003113
+      },
+      "writtenOn": "2026-10-26T22:13:07Z",
+      "side": 1,
+      "message": "Done. The record format has no standalone record ID, so the error now reports the zero-based index into fwDeviceIDRecords alongside the offending component index.",
+      "parentUuid": "6d93fbfc_bd5a5080",
+      "revId": "cdd33ddc8727467879e66d58f31248d5121b043a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
