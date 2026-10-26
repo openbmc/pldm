@@ -21,6 +21,7 @@ platform_mc_test_lib = static_library(
         '../numeric_sensor.cpp',
         '../event_manager.cpp',
         '../dbus_to_terminus_effecters.cpp',
+        '../../requester/endpoint_registry.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
     implicit_include_directories: false,
