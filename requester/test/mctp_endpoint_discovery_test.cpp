@@ -343,9 +343,12 @@ class PeerAwareHandler : public pldm::MctpDiscoveryHandlerIntf
   public:
     void handleMctpEndpoints(const pldm::MctpInfos&) override {}
     void handleRemovedMctpEndpoints(const pldm::MctpInfos&) override {}
-    void updateMctpEndpointAvailability(const pldm::MctpInfo&,
-                                        pldm::Availability) override
-    {}
+    void updateMctpEndpointAvailability(
+        const pldm::MctpInfo& mctpInfo,
+        pldm::Availability availability) override
+    {
+        availabilities.emplace_back(pldm::toEndpoint(mctpInfo), availability);
+    }
     std::optional<pldm::PeerId> getActivePeerIdByName(
         const std::string&) override
     {
@@ -366,6 +369,7 @@ class PeerAwareHandler : public pldm::MctpDiscoveryHandlerIntf
 
     std::vector<pldm::DiscoveredEndpoint> added;
     std::vector<pldm::DiscoveredEndpoint> removed;
+    std::vector<std::pair<pldm::Endpoint, pldm::Availability>> availabilities;
 };
 } // namespace
 
@@ -525,4 +529,265 @@ TEST(MctpEndpointDiscoveryTest, endpointThatCannotBeBoundIsNotGivenToHandlers)
 
     EXPECT_TRUE(handler.added.empty());
     EXPECT_EQ(registry.peerOf(pldm::toEndpoint(info)), std::nullopt);
+}
+
+namespace
+{
+constexpr auto pathNetworkOne =
+    "/au/com/codeconstruct/mctp1/networks/1/endpoints/10";
+constexpr auto pathNetworkTwo =
+    "/au/com/codeconstruct/mctp1/networks/2/endpoints/10";
+constexpr auto pathNetworkThree =
+    "/au/com/codeconstruct/mctp1/networks/3/endpoints/10";
+
+void removeEndpoint(pldm::MctpDiscovery& discovery, const std::string& path)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto msg = bus.new_signal("/test", "org.freedesktop.DBus.ObjectManager",
+                              "InterfacesRemoved");
+    std::vector<std::string> interfaces{MCTPEndpoint::interface};
+    msg.append(sdbusplus::object_path{path}, interfaces);
+    ASSERT_EQ(0, sd_bus_message_seal(msg.get(), 0, 0));
+    discovery.removeEndpoints(msg);
+}
+
+void changeConnectivity(pldm::MctpDiscovery& discovery, const std::string& path,
+                        const std::string& value)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    auto msg = bus.new_signal(path.c_str(), "org.freedesktop.DBus.Properties",
+                              "PropertiesChanged");
+    std::map<std::string, std::variant<std::string>> changed{
+        {"Connectivity", value}};
+    msg.append(std::string(pldm::MCTPInterfaceCC), changed);
+    ASSERT_EQ(0, sd_bus_message_seal(msg.get(), 0, 0));
+    discovery.propertiesChangedCb(msg);
+}
+
+class UuidGroupingTest : public ::testing::Test
+{
+  protected:
+    UuidGroupingTest() :
+        registry(std::make_unique<pldm::PooledPeerIdPolicy>(), &mapper),
+        discovery(
+            pldm::utils::DBusHandler::getBus(),
+            std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&handler},
+            &registry, true)
+    {}
+
+    // The same device, with the same EID, on the networks 1, 2 and 3
+    void discover(const std::string& path, const pldm::MctpInfo& info)
+    {
+        discovery.addToExistingMctpInfos({{path, info}});
+        discovery.handleMctpEndpoints({{path, info}});
+    }
+
+    pldm::MctpInfo onNetwork(pldm::NetworkId network,
+                             const std::string& uuid = "same-device")
+    {
+        return pldm::MctpInfo(10, uuid, "", network, std::nullopt);
+    }
+
+    PeerAwareHandler handler;
+    pldm::FakeMapper mapper;
+    pldm::EndpointRegistry registry;
+    pldm::MctpDiscovery discovery;
+};
+} // namespace
+
+TEST_F(UuidGroupingTest, theEndpointDiscoveredFirstIsTheOneGiven)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{1, 10}));
+    // The one that stands by has no PeerId and is not bound in the transport
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{2, 10}), std::nullopt);
+    EXPECT_EQ(mapper.mapped.size(), 1);
+}
+
+TEST_F(UuidGroupingTest, theNextEndpointTakesOverWhenTheActiveOneIsRemoved)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    discover(pathNetworkThree, onNetwork(3));
+    ASSERT_EQ(handler.added.size(), 1);
+    handler.added.clear();
+
+    removeEndpoint(discovery, pathNetworkOne);
+
+    ASSERT_EQ(handler.removed.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.removed[0].mctpInfo),
+              (pldm::Endpoint{1, 10}));
+    // The one discovered first of those that stood by, with its own EID
+    // as the PeerId that was just freed
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{2, 10}));
+    EXPECT_EQ(handler.added[0].peer, 10);
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{3, 10}), std::nullopt);
+    EXPECT_EQ(mapper.mapped.size(), 1);
+    EXPECT_EQ(mapper.mapped.at(10), (pldm::Endpoint{2, 10}));
+}
+
+TEST_F(UuidGroupingTest, removingAnEndpointThatStandsByIsNotReported)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    handler.added.clear();
+
+    removeEndpoint(discovery, pathNetworkTwo);
+
+    EXPECT_TRUE(handler.removed.empty());
+    EXPECT_TRUE(handler.added.empty());
+
+    // Nothing is left to take over when the active one goes
+    removeEndpoint(discovery, pathNetworkOne);
+    ASSERT_EQ(handler.removed.size(), 1);
+    EXPECT_TRUE(handler.added.empty());
+}
+
+TEST_F(UuidGroupingTest, theLastEndpointCanComeBackAfterAllWereRemoved)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    removeEndpoint(discovery, pathNetworkOne);
+    handler.added.clear();
+
+    discover(pathNetworkTwo, onNetwork(2));
+
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{2, 10}));
+}
+
+TEST_F(UuidGroupingTest, endpointsWithoutAUuidAreNeverGrouped)
+{
+    discover(pathNetworkOne, onNetwork(1, pldm::emptyUUID));
+    discover(pathNetworkTwo, onNetwork(2, pldm::emptyUUID));
+
+    EXPECT_EQ(handler.added.size(), 2);
+}
+
+TEST_F(UuidGroupingTest, differentUuidsAreDifferentDevices)
+{
+    discover(pathNetworkOne, onNetwork(1, "device-a"));
+    discover(pathNetworkTwo, onNetwork(2, "device-b"));
+
+    EXPECT_EQ(handler.added.size(), 2);
+}
+
+TEST_F(UuidGroupingTest, aLossOfConnectivityDoesNotSwitchTheDevice)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    handler.added.clear();
+
+    changeConnectivity(discovery, pathNetworkOne, "Unavailable");
+
+    // The device is not removed, e.g. a firmware update on it goes on. The
+    // handlers hear that it is not available, as without grouping.
+    EXPECT_TRUE(handler.removed.empty());
+    EXPECT_TRUE(handler.added.empty());
+    ASSERT_EQ(handler.availabilities.size(), 1);
+    EXPECT_EQ(handler.availabilities[0],
+              std::make_pair(pldm::Endpoint{1, 10}, false));
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{1, 10}), 10);
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{2, 10}), std::nullopt);
+
+    // and when it is available again
+    changeConnectivity(discovery, pathNetworkOne, "Available");
+    ASSERT_EQ(handler.availabilities.size(), 2);
+    EXPECT_EQ(handler.availabilities[1],
+              std::make_pair(pldm::Endpoint{1, 10}, true));
+}
+
+TEST_F(UuidGroupingTest,
+       aNewEndpointDoesNotTakeOverWhenTheOneInUseIsNotAvailable)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    changeConnectivity(discovery, pathNetworkOne, "Unavailable");
+    handler.added.clear();
+    handler.availabilities.clear();
+
+    discover(pathNetworkTwo, onNetwork(2));
+
+    EXPECT_TRUE(handler.removed.empty());
+    EXPECT_TRUE(handler.added.empty());
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{2, 10}), std::nullopt);
+}
+
+TEST_F(UuidGroupingTest, anEndpointThatStandsByDoesNotMatterWhileTheOneInUseIs)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    handler.added.clear();
+
+    changeConnectivity(discovery, pathNetworkTwo, "Unavailable");
+    changeConnectivity(discovery, pathNetworkTwo, "Available");
+
+    EXPECT_TRUE(handler.removed.empty());
+    EXPECT_TRUE(handler.added.empty());
+    // The handlers do not know the endpoint that stands by
+    EXPECT_TRUE(handler.availabilities.empty());
+}
+
+TEST_F(UuidGroupingTest, anAvailableEndpointIsUsedBeforeOneThatIsNotOnRemoval)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    discover(pathNetworkThree, onNetwork(3));
+    changeConnectivity(discovery, pathNetworkTwo, "Unavailable");
+    handler.added.clear();
+
+    removeEndpoint(discovery, pathNetworkOne);
+
+    // The one that was discovered first is not available, so the next one is
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{3, 10}));
+}
+
+TEST_F(UuidGroupingTest, anEndpointThatIsNotAvailableTakesOverWhenItIsAvailable)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    changeConnectivity(discovery, pathNetworkTwo, "Unavailable");
+    handler.added.clear();
+
+    removeEndpoint(discovery, pathNetworkOne);
+
+    // Nothing can be reached, so the handlers are not given the endpoint
+    ASSERT_EQ(handler.removed.size(), 1);
+    EXPECT_TRUE(handler.added.empty());
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{2, 10}), std::nullopt);
+    EXPECT_TRUE(mapper.mapped.empty());
+
+    changeConnectivity(discovery, pathNetworkTwo, "Available");
+
+    // It is discovered as soon as it can be reached
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{2, 10}));
+    EXPECT_EQ(handler.added[0].peer, 10);
+    EXPECT_EQ(mapper.mapped.at(10), (pldm::Endpoint{2, 10}));
+}
+
+TEST(MctpEndpointDiscoveryTest, endpointsWithTheSameUuidAreNotGroupedByDefault)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    PeerAwareHandler handler;
+    pldm::EndpointRegistry registry(
+        std::make_unique<pldm::PooledPeerIdPolicy>());
+    const pldm::MctpInfo infoOne(10, "same-device", "", 1, std::nullopt);
+    const pldm::MctpInfo infoTwo(10, "same-device", "", 2, std::nullopt);
+
+    pldm::MctpDiscovery discovery(
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&handler},
+        &registry);
+    discovery.handleMctpEndpoints(
+        {{pathNetworkOne, infoOne}, {pathNetworkTwo, infoTwo}});
+
+    EXPECT_EQ(handler.added.size(), 2);
 }

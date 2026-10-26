@@ -360,11 +360,17 @@ int main(int argc, char** argv)
     std::unique_ptr<fw_update::Manager> fwManager =
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
                                              instanceIdDb, endpointRegistry);
+#if defined(PLDM_NETWORK_SUPPORT)
+    // One device can be reachable over more than one MCTP Network
+    constexpr bool groupByUuid = true;
+#else
+    constexpr bool groupByUuid = false;
+#endif
     MctpDiscovery mctpDiscoveryHandler(
         bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get(),
                                                          platformManager.get()},
-        &endpointRegistry);
+        &endpointRegistry, groupByUuid);
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      &endpointRegistry,
                      TID](IO& io, int fd, uint32_t revents) mutable {

@@ -12,6 +12,8 @@
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
 #include <initializer_list>
+#include <map>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -131,11 +133,21 @@ class MctpDiscovery
      *  @param[in] registry - assigns the PeerId of each discovered endpoint.
      *                        When null, MctpDiscovery uses its own registry
      *                        with PeerId equal to the EID.
+     *  @param[in] groupByUuid - treat the endpoints that have the same UUID as
+     *                        one device that is reachable more than once, e.g.
+     *                        over more than one MCTP Network. Only the one
+     *                        that was discovered first is given to the
+     *                        handlers, the others stand by. When that one is
+     *                        removed, an available one that stands by takes its
+     *                        place, as a new device. One that is not available
+     *                        keeps standing by until it is. A loss of
+     *                        connectivity does not switch to another one. An
+     *                        empty UUID never groups.
      */
     explicit MctpDiscovery(
         sdbusplus::bus_t& bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*> list,
-        EndpointRegistry* registry = nullptr);
+        EndpointRegistry* registry = nullptr, bool groupByUuid = false);
 
     /** @brief reference to the systemd bus */
     sdbusplus::bus_t& bus;
@@ -158,6 +170,24 @@ class MctpDiscovery
 
     /** @brief Assigns the PeerId of each endpoint handed to the handlers */
     EndpointRegistry& registry;
+
+    /** @brief Whether the endpoints with the same UUID are one device */
+    bool groupByUuid;
+
+    /** @brief The object path of the endpoint of each UUID that is given to
+     *         the handlers, when grouping by UUID
+     */
+    std::map<UUID, dbus::ObjectPath> activeByUuid;
+
+    /** @brief The object paths of the endpoints that stand by for the active
+     *         endpoint of their UUID, when grouping by UUID
+     */
+    std::set<dbus::ObjectPath> standby;
+
+    /** @brief The object paths of the endpoints that are not available, so that
+     *         only an endpoint that can be reached takes over
+     */
+    std::set<dbus::ObjectPath> unavailable;
 
     /** @brief The existing MCTP endpoints and their D-Bus object paths */
     MctpInfosWithPath existingMctpInfos;
@@ -238,6 +268,26 @@ class MctpDiscovery
     friend class ::TestMctpDiscovery;
 
   private:
+    /** @brief Decide whether an endpoint stands by for another one with the
+     *         same UUID instead of being given to the handlers. If it does it
+     *         is remembered as standing by.
+     *
+     *  @param[in] path - the D-Bus object path of the endpoint
+     *  @param[in] mctpInfo - information of the endpoint
+     *
+     *  @return true if the endpoint stands by
+     */
+    bool standsBy(const dbus::ObjectPath& path, const MctpInfo& mctpInfo);
+
+    /** @brief Give the handlers the first endpoint, in the order of discovery,
+     *         that stands by for the active endpoint of a UUID, is available
+     *         and can get a PeerId. Used when the active endpoint is removed,
+     *         and when one that stands by becomes available and none is active.
+     *
+     *  @param[in] uuid - the UUID of the device
+     */
+    void promoteStandby(const UUID& uuid);
+
     /** @brief Get MCTP Endpoint D-Bus Properties in the
      *         `xyz.openbmc_project.MCTP.Endpoint` D-Bus interface
      *

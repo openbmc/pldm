@@ -30,7 +30,7 @@ auto findByObjectPath(const MctpInfosWithPath& mctpInfos,
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list,
-    EndpointRegistry* suppliedRegistry) :
+    EndpointRegistry* suppliedRegistry, bool groupByUuid) :
     bus(bus),
     mctpEndpointAddedSignal(
         bus, interfacesAdded(MCTPPath),
@@ -46,7 +46,8 @@ MctpDiscovery::MctpDiscovery(
                       ? nullptr
                       : std::make_unique<EndpointRegistry>(
                             std::make_unique<IdentityPeerIdPolicy>())),
-    registry(suppliedRegistry ? *suppliedRegistry : *ownedRegistry)
+    registry(suppliedRegistry ? *suppliedRegistry : *ownedRegistry),
+    groupByUuid(groupByUuid)
 {
     std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>
         currentMctpInfoMap;
@@ -265,6 +266,10 @@ void MctpDiscovery::getAddedMctpInfos(sdbusplus::message_t& msg,
                         MctpInfo(eid, uuid, "", networkId, std::nullopt);
                     searchConfigurationFor(pldm::utils::DBusHandler(),
                                            mctpInfo);
+                    if (!availability)
+                    {
+                        unavailable.insert(objPath.str);
+                    }
                     mctpInfos.emplace_back(objPath.str, std::move(mctpInfo));
                 }
             }
@@ -319,6 +324,27 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
             auto existingIt = findByObjectPath(existingMctpInfos, objPath);
             if (existingIt != existingMctpInfos.end())
             {
+                if (availability)
+                {
+                    unavailable.erase(objPath);
+                }
+                else
+                {
+                    unavailable.insert(objPath);
+                }
+
+                if (standby.contains(objPath))
+                {
+                    // The handlers do not know this endpoint, unless it can be
+                    // reached now and no other endpoint is in use for its UUID
+                    const auto uuid = std::get<1>(existingIt->second);
+                    if (availability && !activeByUuid.contains(uuid))
+                    {
+                        promoteStandby(uuid);
+                    }
+                    continue;
+                }
+
                 // The endpoint already in existingMctpInfos, the signal has
                 // all that is needed so do not read its properties again
                 updateMctpEndpointAvailability(existingIt->second,
@@ -402,6 +428,66 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
     existingMctpInfos.erase(it);
     handleRemovedMctpEndpoints(removedInfos);
     removeConfigs(removedInfos);
+
+    unavailable.erase(objPath.str);
+    const auto& uuid = std::get<1>(mctpInfo);
+    if (standby.erase(objPath.str) == 0 && groupByUuid)
+    {
+        auto active = activeByUuid.find(uuid);
+        if (active != activeByUuid.end() && active->second == objPath.str)
+        {
+            activeByUuid.erase(active);
+            promoteStandby(uuid);
+        }
+    }
+}
+
+bool MctpDiscovery::standsBy(const dbus::ObjectPath& path,
+                             const MctpInfo& mctpInfo)
+{
+    const auto& uuid = std::get<1>(mctpInfo);
+    if (!groupByUuid || uuid == emptyUUID)
+    {
+        return false;
+    }
+
+    auto active = activeByUuid.find(uuid);
+    if (active == activeByUuid.end() || active->second == path)
+    {
+        return false;
+    }
+
+    info(
+        "Endpoint {ENDPOINT} at {PATH} has UUID '{UUID}' of the endpoint at {ACTIVE}, it stands by",
+        "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)), "PATH", path, "UUID",
+        uuid, "ACTIVE", active->second);
+    standby.insert(path);
+    return true;
+}
+
+void MctpDiscovery::promoteStandby(const UUID& uuid)
+{
+    // In the order of discovery. One that is not available stays on standby,
+    // it takes over when it is available again, see propertiesChangedCb()
+    for (const auto& [path, mctpInfo] : existingMctpInfos)
+    {
+        if (!standby.contains(path) || std::get<1>(mctpInfo) != uuid ||
+            unavailable.contains(path))
+        {
+            continue;
+        }
+
+        standby.erase(path);
+        info(
+            "Endpoint {ENDPOINT} at {PATH} takes over for the removed endpoint with UUID '{UUID}'",
+            "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)), "PATH", path,
+            "UUID", uuid);
+        handleMctpEndpoints(MctpInfosWithPath{{path, mctpInfo}});
+        if (activeByUuid.contains(uuid))
+        {
+            return;
+        }
+    }
 }
 
 void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
@@ -409,6 +495,11 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
     std::vector<DiscoveredEndpoint> discovered;
     for (const auto& [path, mctpInfo] : endpoints)
     {
+        if (standsBy(path, mctpInfo))
+        {
+            continue;
+        }
+
         const auto endpoint = toEndpoint(mctpInfo);
         auto peer = registry.acquire(endpoint);
         if (!peer)
@@ -417,6 +508,10 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
                 "Cannot assign a PeerId to endpoint {ENDPOINT} at {PATH}, it is skipped",
                 "ENDPOINT", formatEndpoint(endpoint), "PATH", path);
             continue;
+        }
+        if (groupByUuid && std::get<1>(mctpInfo) != emptyUUID)
+        {
+            activeByUuid[std::get<1>(mctpInfo)] = path;
         }
         discovered.push_back({*peer, mctpInfo});
     }
