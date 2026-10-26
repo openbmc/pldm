@@ -7,6 +7,7 @@
 #include "invoker.hpp"
 #include "platform-mc/dbus_to_terminus_effecters.hpp"
 #include "platform-mc/manager.hpp"
+#include "requester/endpoint_registry.hpp"
 #include "requester/handler.hpp"
 #include "requester/mctp_endpoint_discovery.hpp"
 #include "requester/request.hpp"
@@ -196,6 +197,7 @@ int main(int argc, char** argv)
         sdbusplus::server::manager_t(bus, "/xyz/openbmc_project/inventory")};
 
     InstanceIdDb instanceIdDb;
+    EndpointRegistry endpointRegistry(std::make_unique<IdentityPeerIdPolicy>());
 
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
@@ -342,8 +344,10 @@ int main(int argc, char** argv)
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
                                              instanceIdDb);
     MctpDiscovery mctpDiscoveryHandler(
-        bus, std::initializer_list<MctpDiscoveryHandlerIntf*>{
-                 fwManager.get(), platformManager.get()});
+        bus,
+        std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get(),
+                                                         platformManager.get()},
+        &endpointRegistry);
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
