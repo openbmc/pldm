@@ -17,7 +17,7 @@ namespace requester
 class MockRequest : public RequestRetryTimer
 {
   public:
-    MockRequest(PldmTransport* /*pldmTransport*/, mctp_eid_t /*eid*/,
+    MockRequest(PldmTransport* /*pldmTransport*/, pldm::PeerId /*peer*/,
                 sdeventplus::Event& event, pldm::Request&& /*requestMsg*/,
                 uint8_t numRetries, std::chrono::milliseconds responseTimeOut,
                 bool /*verbose*/) :

@@ -202,6 +202,9 @@ int main(int argc, char** argv)
     Invoker invoker{};
     requester::Handler<requester::Request> reqHandler(&pldmTransport, event,
                                                       instanceIdDb, verbose);
+    reqHandler.setEndpointNamer([&endpointRegistry](mctp_eid_t peer) {
+        return endpointRegistry.describe(peer);
+    });
 
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> pdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
@@ -350,6 +353,7 @@ int main(int argc, char** argv)
                                                          platformManager.get()},
         &endpointRegistry);
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
+                     &endpointRegistry,
                      TID](IO& io, int fd, uint32_t revents) mutable {
         if (revents & (POLLHUP | POLLERR))
         {
@@ -400,8 +404,9 @@ int main(int argc, char** argv)
                 if (returnCode != PLDM_REQUESTER_SUCCESS)
                 {
                     warning(
-                        "Failed to send pldmTransport message for TID '{TID}', response code '{RETURN_CODE}'",
-                        "TID", TID, "RETURN_CODE", returnCode);
+                        "Failed to send pldmTransport message for endpoint '{ENDPOINT}', response code '{RETURN_CODE}'",
+                        "ENDPOINT", endpointRegistry.describe(TID),
+                        "RETURN_CODE", returnCode);
                 }
             }
         }

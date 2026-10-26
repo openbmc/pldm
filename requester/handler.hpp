@@ -17,6 +17,7 @@
 #include <cassert>
 #include <chrono>
 #include <deque>
+#include <format>
 #include <functional>
 #include <memory>
 #include <tuple>
@@ -31,19 +32,19 @@ namespace requester
 /** @struct RequestKey
  *
  *  RequestKey uniquely identifies the PLDM request message to match it with the
- *  response and a combination of MCTP endpoint ID, PLDM instance ID, PLDM type
- *  and PLDM command is the key.
+ *  response and a combination of the PeerId of the endpoint, PLDM instance ID,
+ *  PLDM type and PLDM command is the key.
  */
 struct RequestKey
 {
-    mctp_eid_t eid;     //!< MCTP endpoint ID
+    PeerId peer;        //!< PeerId of the endpoint
     uint8_t instanceId; //!< PLDM instance ID
     uint8_t type;       //!< PLDM type
     uint8_t command;    //!< PLDM command
 
     bool operator==(const RequestKey& e) const
     {
-        return ((eid == e.eid) && (instanceId == e.instanceId) &&
+        return ((peer == e.peer) && (instanceId == e.instanceId) &&
                 (type == e.type) && (command == e.command));
     }
 };
@@ -51,19 +52,19 @@ struct RequestKey
 /** @struct RequestKeyHasher
  *
  *  This is a simple hash function, since the instance ID generator API
- *  generates unique instance IDs for MCTP endpoint ID.
+ *  generates unique instance IDs for the PeerId of an MCTP endpoint.
  */
 struct RequestKeyHasher
 {
     std::size_t operator()(const RequestKey& key) const
     {
-        return (key.eid << 24 | key.instanceId << 16 | key.type << 8 |
+        return (key.peer << 24 | key.instanceId << 16 | key.type << 8 |
                 key.command);
     }
 };
 
 using ResponseHandler = std::function<void(
-    mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)>;
+    PeerId peer, const pldm_msg* response, size_t respMsgLen)>;
 
 /** @brief The response from SendRecvMsg with coroutine API
  *
@@ -82,7 +83,7 @@ using SendRecvCoResp = std::tuple<int, const pldm_msg*, size_t>;
  */
 struct RegisteredRequest
 {
-    RequestKey key;                  //!< Responder MCTP endpoint ID
+    RequestKey key;                  //!< PeerId of the responder MCTP endpoint
     std::vector<uint8_t> reqMsg;     //!< Request messages queue
     ResponseHandler responseHandler; //!< Waiting for response flag
 };
@@ -90,17 +91,17 @@ struct RegisteredRequest
 /** @struct EndpointMessageQueue
  *
  *  This struct is used to save the list of request messages of one endpoint and
- *  the existing of the request message to the endpoint with its' EID.
+ *  the existing of the request message to the endpoint with its' PeerId.
  */
 struct EndpointMessageQueue
 {
-    mctp_eid_t eid; //!< Responder MCTP endpoint ID
+    PeerId peer; //!< PeerId of the responder endpoint
     std::deque<std::shared_ptr<RegisteredRequest>> requestQueue; //!< Queue
     bool activeRequest; //!< Waiting for response flag
 
-    bool operator==(const mctp_eid_t& mctpEid) const
+    bool operator==(const PeerId& otherPeer) const
     {
-        return (eid == mctpEid);
+        return (peer == otherPeer);
     }
 };
 
@@ -148,14 +149,42 @@ class Handler
         numRetries(numRetries), responseTimeOut(responseTimeOut)
     {}
 
+    /** @brief Let the log messages name the endpoint of a request by its MCTP
+     *         Network and EID, which the key of the request does not say
+     *
+     *  @param[in] namer - gives the name of the endpoint of a PeerId, e.g. from
+     *                     EndpointRegistry::describe(). It must stay valid as
+     *                     long as the handler is used.
+     */
+    void setEndpointNamer(std::function<std::string(PeerId)> namer)
+    {
+        endpointNamer = std::move(namer);
+    }
+
+    /** @brief Name the endpoint of a request for log messages
+     *
+     *  @param[in] peer - the PeerId of the endpoint
+     *
+     *  @return the name from the namer, e.g. "Network 2 EID 10", or "EID 10"
+     *          without one, where the PeerId is the EID
+     */
+    std::string describe(PeerId peer) const
+    {
+        if (!endpointNamer)
+        {
+            return std::format("EID {}", static_cast<unsigned>(peer));
+        }
+        return endpointNamer(peer);
+    }
+
     void instanceIdExpiryCallBack(RequestKey key)
     {
-        auto eid = key.eid;
+        auto peer = key.peer;
         if (this->handlers.contains(key))
         {
             info(
-                "Instance ID expiry for EID '{EID}' using InstanceID '{INSTANCEID}'",
-                "EID", key.eid, "INSTANCEID", key.instanceId);
+                "Instance ID expiry for endpoint '{ENDPOINT}' using InstanceID '{INSTANCEID}'",
+                "ENDPOINT", describe(key.peer), "INSTANCEID", key.instanceId);
             auto& [request, responseHandler,
                    timerInstance] = this->handlers[key];
             request->stop();
@@ -168,15 +197,15 @@ class Handler
             }
             // Call response handler with an empty response to indicate no
             // response
-            responseHandler(eid, nullptr, 0);
+            responseHandler(peer, nullptr, 0);
             this->removeRequestContainer.emplace(
                 key,
                 std::make_unique<sdeventplus::source::Defer>(
                     event, std::bind(&Handler::removeRequestEntry, this, key)));
-            endpointMessageQueues[eid]->activeRequest = false;
+            endpointMessageQueues[peer]->activeRequest = false;
 
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            pollEndpointQueue(peer);
         }
         else
         {
@@ -189,22 +218,22 @@ class Handler
 
     /** @brief Send the remaining PLDM request messages in endpoint queue
      *
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      */
-    int pollEndpointQueue(mctp_eid_t eid)
+    int pollEndpointQueue(PeerId peer)
     {
-        if (endpointMessageQueues[eid]->activeRequest ||
-            endpointMessageQueues[eid]->requestQueue.empty())
+        if (endpointMessageQueues[peer]->activeRequest ||
+            endpointMessageQueues[peer]->requestQueue.empty())
         {
             return PLDM_SUCCESS;
         }
 
-        endpointMessageQueues[eid]->activeRequest = true;
-        auto requestMsg = endpointMessageQueues[eid]->requestQueue.front();
-        endpointMessageQueues[eid]->requestQueue.pop_front();
+        endpointMessageQueues[peer]->activeRequest = true;
+        auto requestMsg = endpointMessageQueues[peer]->requestQueue.front();
+        endpointMessageQueues[peer]->requestQueue.pop_front();
 
         auto request = std::make_unique<RequestInterface>(
-            pldmTransport, requestMsg->key.eid, event,
+            pldmTransport, requestMsg->key.peer, event,
             std::move(requestMsg->reqMsg), numRetries, responseTimeOut,
             verbose);
         auto timer = std::make_unique<sdbusplus::Timer>(
@@ -214,11 +243,11 @@ class Handler
         auto rc = request->start();
         if (rc)
         {
-            instanceIdDb.free(requestMsg->key.eid, requestMsg->key.instanceId);
+            instanceIdDb.free(requestMsg->key.peer, requestMsg->key.instanceId);
             error(
                 "Failure to send the PLDM request message for polling endpoint queue, response code '{RC}'",
                 "RC", rc);
-            endpointMessageQueues[eid]->activeRequest = false;
+            endpointMessageQueues[peer]->activeRequest = false;
             return rc;
         }
 
@@ -229,11 +258,11 @@ class Handler
         }
         catch (const std::runtime_error& e)
         {
-            instanceIdDb.free(requestMsg->key.eid, requestMsg->key.instanceId);
+            instanceIdDb.free(requestMsg->key.peer, requestMsg->key.instanceId);
             error(
                 "Failed to start the instance ID expiry timer, error - {ERROR}",
                 "ERROR", e);
-            endpointMessageQueues[eid]->activeRequest = false;
+            endpointMessageQueues[peer]->activeRequest = false;
             return PLDM_ERROR;
         }
 
@@ -246,7 +275,7 @@ class Handler
 
     /** @brief Register a PLDM request message
      *
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] instanceId - instance ID to match request and response
      *  @param[in] type - PLDM type
      *  @param[in] command - PLDM command
@@ -255,41 +284,41 @@ class Handler
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    int registerRequest(mctp_eid_t eid, uint8_t instanceId, uint8_t type,
+    int registerRequest(PeerId peer, uint8_t instanceId, uint8_t type,
                         uint8_t command, pldm::Request&& requestMsg,
                         ResponseHandler&& responseHandler)
     {
-        RequestKey key{eid, instanceId, type, command};
+        RequestKey key{peer, instanceId, type, command};
 
         if (handlers.contains(key))
         {
             error(
-                "Register request for EID '{EID}' is using InstanceID '{INSTANCEID}'",
-                "EID", eid, "INSTANCEID", instanceId);
+                "Register request for endpoint '{ENDPOINT}' is using InstanceID '{INSTANCEID}'",
+                "ENDPOINT", describe(peer), "INSTANCEID", instanceId);
             return PLDM_ERROR;
         }
 
         auto inputRequest = std::make_shared<RegisteredRequest>(
             key, std::move(requestMsg), std::move(responseHandler));
-        if (endpointMessageQueues.contains(eid))
+        if (endpointMessageQueues.contains(peer))
         {
-            endpointMessageQueues[eid]->requestQueue.push_back(inputRequest);
+            endpointMessageQueues[peer]->requestQueue.push_back(inputRequest);
         }
         else
         {
             std::deque<std::shared_ptr<RegisteredRequest>> reqQueue;
             reqQueue.push_back(inputRequest);
-            endpointMessageQueues[eid] =
-                std::make_shared<EndpointMessageQueue>(eid, reqQueue, false);
+            endpointMessageQueues[peer] =
+                std::make_shared<EndpointMessageQueue>(peer, reqQueue, false);
         }
 
         /* try to send new request if the endpoint is free */
-        auto rc = pollEndpointQueue(eid);
+        auto rc = pollEndpointQueue(peer);
         if (rc != PLDM_SUCCESS)
         {
             error(
-                "Failed to process request queue for EID {EID}, response code {RC}.",
-                "EID", eid, "RC", rc);
+                "Failed to process request queue for endpoint {ENDPOINT}, response code {RC}.",
+                "ENDPOINT", describe(peer), "RC", rc);
             return rc;
         }
 
@@ -298,17 +327,17 @@ class Handler
 
     /** @brief Unregister a PLDM request message
      *
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] instanceId - instance ID to match request and response
      *  @param[in] type - PLDM type
      *  @param[in] command - PLDM command
      *
      *  @return return PLDM_SUCCESS on success and PLDM_ERROR otherwise
      */
-    int unregisterRequest(mctp_eid_t eid, uint8_t instanceId, uint8_t type,
+    int unregisterRequest(PeerId peer, uint8_t instanceId, uint8_t type,
                           uint8_t command)
     {
-        RequestKey key{eid, instanceId, type, command};
+        RequestKey key{peer, instanceId, type, command};
 
         /* handlers only contain key when the message is already sent */
         if (handlers.contains(key))
@@ -323,24 +352,25 @@ class Handler
                     "RC", static_cast<int>(rc));
             }
 
-            instanceIdDb.free(key.eid, key.instanceId);
+            instanceIdDb.free(key.peer, key.instanceId);
             handlers.erase(key);
-            endpointMessageQueues[eid]->activeRequest = false;
+            endpointMessageQueues[peer]->activeRequest = false;
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            pollEndpointQueue(peer);
 
             return PLDM_SUCCESS;
         }
         else
         {
-            if (!endpointMessageQueues.contains(eid))
+            if (!endpointMessageQueues.contains(peer))
             {
                 error(
-                    "Can't find request for EID '{EID}' using InstanceID '{INSTANCEID}' in the endpoint message queue",
-                    "EID", (unsigned)eid, "INSTANCEID", (unsigned)instanceId);
+                    "Can't find request for endpoint '{ENDPOINT}' using InstanceID '{INSTANCEID}' in the endpoint message queue",
+                    "ENDPOINT", describe(peer), "INSTANCEID",
+                    (unsigned)instanceId);
                 return PLDM_ERROR;
             }
-            auto& requestMsg = endpointMessageQueues[eid]->requestQueue;
+            auto& requestMsg = endpointMessageQueues[peer]->requestQueue;
             /* Find the registered request in the requestQueue */
             for (auto it = requestMsg.begin(); it != requestMsg.end();)
             {
@@ -348,8 +378,8 @@ class Handler
                 if (msg->key == key)
                 {
                     // erase and get the next valid iterator
-                    it = endpointMessageQueues[eid]->requestQueue.erase(it);
-                    instanceIdDb.free(key.eid, key.instanceId);
+                    it = endpointMessageQueues[peer]->requestQueue.erase(it);
+                    instanceIdDb.free(key.peer, key.instanceId);
                     return PLDM_SUCCESS;
                 }
                 else
@@ -364,18 +394,18 @@ class Handler
 
     /** @brief Handle PLDM response message
      *
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] instanceId - instance ID to match request and response
      *  @param[in] type - PLDM type
      *  @param[in] command - PLDM command
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - length of the response message
      */
-    void handleResponse(mctp_eid_t eid, uint8_t instanceId, uint8_t type,
+    void handleResponse(PeerId peer, uint8_t instanceId, uint8_t type,
                         uint8_t command, const pldm_msg* response,
                         size_t respMsgLen)
     {
-        RequestKey key{eid, instanceId, type, command};
+        RequestKey key{peer, instanceId, type, command};
         if (handlers.contains(key) && !removeRequestContainer.contains(key))
         {
             auto& [request, responseHandler, timerInstance] = handlers[key];
@@ -387,13 +417,13 @@ class Handler
                     "Failed to stop the instance ID expiry timer, response code '{RC}'",
                     "RC", rc);
             }
-            responseHandler(eid, response, respMsgLen);
-            instanceIdDb.free(key.eid, key.instanceId);
+            responseHandler(peer, response, respMsgLen);
+            instanceIdDb.free(key.peer, key.instanceId);
             handlers.erase(key);
 
-            endpointMessageQueues[eid]->activeRequest = false;
+            endpointMessageQueues[peer]->activeRequest = false;
             /* try to send new request if the endpoint is free */
-            pollEndpointQueue(eid);
+            pollEndpointQueue(peer);
         }
     }
 
@@ -404,10 +434,12 @@ class Handler
      *          Return [PLDM_SUCCESS, resp, len] if succeeded
      */
     stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto sendRecvMsg(
-        mctp_eid_t eid, pldm::Request&& request);
+        PeerId peer, pldm::Request&& request);
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport object
+    //! names an endpoint in log messages
+    std::function<std::string(PeerId)> endpointNamer;
     sdeventplus::Event& event; //!< reference to PLDM daemon's main event loop
     pldm::InstanceIdDb& instanceIdDb; //!< reference to an InstanceIdDb
     bool verbose;                     //!< verbose tracing flag
@@ -425,8 +457,8 @@ class Handler
         std::tuple<std::unique_ptr<RequestInterface>, ResponseHandler,
                    std::unique_ptr<sdbusplus::Timer>>;
 
-    // Manage the requests of responders base on MCTP EID
-    std::map<mctp_eid_t, std::shared_ptr<EndpointMessageQueue>>
+    // Manage the requests of responders base on the PeerId
+    std::map<PeerId, std::shared_ptr<EndpointMessageQueue>>
         endpointMessageQueues;
 
     /** @brief Container for storing the PLDM request entries */
@@ -448,7 +480,7 @@ class Handler
         if (removeRequestContainer.contains(key))
         {
             removeRequestContainer[key].reset();
-            instanceIdDb.free(key.eid, key.instanceId);
+            instanceIdDb.free(key.peer, key.instanceId);
             handlers.erase(key);
             removeRequestContainer.erase(key);
         }
@@ -468,14 +500,13 @@ struct SendRecvMsgOperation
     SendRecvMsgOperation() = delete;
 
     explicit SendRecvMsgOperation(Handler<RequestInterface>& handler,
-                                  mctp_eid_t eid, pldm::Request&& request,
-                                  R&& r) :
+                                  PeerId peer, pldm::Request&& request, R&& r) :
         handler(handler), request(std::move(request)), receiver(std::move(r))
     {
         auto requestMsg =
             reinterpret_cast<const pldm_msg*>(this->request.data());
         requestKey = RequestKey{
-            eid,
+            peer,
             requestMsg->hdr.instance_id,
             requestMsg->hdr.type,
             requestMsg->hdr.command,
@@ -503,7 +534,7 @@ struct SendRecvMsgOperation
 
         using namespace std::placeholders;
         auto rc = handler.registerRequest(
-            requestKey.eid, requestKey.instanceId, requestKey.type,
+            requestKey.peer, requestKey.instanceId, requestKey.type,
             requestKey.command, std::move(request),
             std::bind(&SendRecvMsgOperation::onComplete, this, _1, _2, _3));
         if (rc)
@@ -526,7 +557,7 @@ struct SendRecvMsgOperation
      */
     void onStop()
     {
-        handler.unregisterRequest(requestKey.eid, requestKey.instanceId,
+        handler.unregisterRequest(requestKey.peer, requestKey.instanceId,
                                   requestKey.type, requestKey.command);
         return stdexec::set_stopped(std::move(receiver));
     }
@@ -534,16 +565,16 @@ struct SendRecvMsgOperation
     /** @brief This function resets the stop callback. Validates the response
      *         and sets either an error or a value on the receiver.
      *
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] response - PLDM response message
      *  @param[in] respMsgLen - length of the response message
      *
      *  @return PLDM completion code
      */
-    void onComplete(mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
+    void onComplete(PeerId peer, const pldm_msg* response, size_t respMsgLen)
     {
         stopCallback.reset();
-        assert(eid == this->requestKey.eid);
+        assert(peer == this->requestKey.peer);
         auto rc = PLDM_SUCCESS;
         if (!response && !respMsgLen)
         {
@@ -559,7 +590,7 @@ struct SendRecvMsgOperation
      */
     requester::Handler<RequestInterface>& handler;
 
-    /** @brief Stores information about the request such as eid, instanceId,
+    /** @brief Stores information about the request such as peer, instanceId,
      *         type, and command.
      */
     RequestKey requestKey;
@@ -602,8 +633,8 @@ struct SendRecvMsgSender
     SendRecvMsgSender() = delete;
 
     explicit SendRecvMsgSender(requester::Handler<RequestInterface>& handler,
-                               mctp_eid_t eid, pldm::Request&& request) :
-        handler(handler), eid(eid), request(std::move(request))
+                               PeerId peer, pldm::Request&& request) :
+        handler(handler), peer(peer), request(std::move(request))
     {}
 
     template <typename... Env>
@@ -617,7 +648,7 @@ struct SendRecvMsgSender
     auto connect(R r) &&
     {
         return SendRecvMsgOperation<RequestInterface, R>(
-            handler, eid, std::move(request), std::move(r));
+            handler, peer, std::move(request), std::move(r));
     }
 
   private:
@@ -627,7 +658,7 @@ struct SendRecvMsgSender
     requester::Handler<RequestInterface>& handler;
 
     /** @brief MCTP Endpoint ID of request message */
-    mctp_eid_t eid;
+    PeerId peer;
 
     /** @brief Request message */
     pldm::Request request;
@@ -635,7 +666,7 @@ struct SendRecvMsgSender
 
 /** @brief Wrap registerRequest with coroutine API.
  *
- *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+ *  @param[in] peer - PeerId of the remote MCTP endpoint
  *  @param[in] request - PLDM request message
  *
  *  @return Return [PLDM_ERROR, _, _] if registerRequest fails.
@@ -644,10 +675,9 @@ struct SendRecvMsgSender
  */
 template <class RequestInterface>
 stdexec::sender_of<stdexec::set_value_t(SendRecvCoResp)> auto
-    Handler<RequestInterface>::sendRecvMsg(mctp_eid_t eid,
-                                           pldm::Request&& request)
+    Handler<RequestInterface>::sendRecvMsg(PeerId peer, pldm::Request&& request)
 {
-    return SendRecvMsgSender(*this, eid, std::move(request)) |
+    return SendRecvMsgSender(*this, peer, std::move(request)) |
            stdexec::then([](int rc, const pldm_msg* resp, size_t respLen) {
                return std::make_tuple(rc, resp, respLen);
            });

@@ -41,7 +41,7 @@ class RequestIntfTest : public testing::Test
     }
 
     int fd = 0;
-    mctp_eid_t eid = 0;
+    pldm::PeerId peer = 0;
     PldmTransport* pldmTransport = nullptr;
     sdeventplus::Event event;
 };
@@ -49,7 +49,7 @@ class RequestIntfTest : public testing::Test
 TEST_F(RequestIntfTest, 0Retries100msTimeout)
 {
     std::vector<uint8_t> requestMsg;
-    MockRequest request(pldmTransport, eid, event, std::move(requestMsg), 0,
+    MockRequest request(pldmTransport, peer, event, std::move(requestMsg), 0,
                         milliseconds(100), false);
     EXPECT_CALL(request, send())
         .Times(Exactly(1))
@@ -61,7 +61,7 @@ TEST_F(RequestIntfTest, 0Retries100msTimeout)
 TEST_F(RequestIntfTest, 2Retries100msTimeout)
 {
     std::vector<uint8_t> requestMsg;
-    MockRequest request(pldmTransport, eid, event, std::move(requestMsg), 2,
+    MockRequest request(pldmTransport, peer, event, std::move(requestMsg), 2,
                         milliseconds(100), false);
     // send() is called a total of 3 times, the original plus two retries
     EXPECT_CALL(request, send()).Times(3).WillRepeatedly(Return(PLDM_SUCCESS));
@@ -73,7 +73,7 @@ TEST_F(RequestIntfTest, 2Retries100msTimeout)
 TEST_F(RequestIntfTest, 9Retries100msTimeoutRequestStoppedAfter1sec)
 {
     std::vector<uint8_t> requestMsg;
-    MockRequest request(pldmTransport, eid, event, std::move(requestMsg), 9,
+    MockRequest request(pldmTransport, peer, event, std::move(requestMsg), 9,
                         milliseconds(100), false);
     // send() will be called a total of 10 times, the original plus 9 retries.
     // In a ideal scenario send() would have been called 10 times in 1 sec (when
@@ -97,7 +97,7 @@ TEST_F(RequestIntfTest, 9Retries100msTimeoutRequestStoppedAfter1sec)
 TEST_F(RequestIntfTest, 2Retries100msTimeoutsendReturnsError)
 {
     std::vector<uint8_t> requestMsg;
-    MockRequest request(pldmTransport, eid, event, std::move(requestMsg), 2,
+    MockRequest request(pldmTransport, peer, event, std::move(requestMsg), 2,
                         milliseconds(100), false);
     EXPECT_CALL(request, send()).Times(Exactly(1)).WillOnce(Return(PLDM_ERROR));
     auto rc = request.start();

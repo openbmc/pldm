@@ -3,6 +3,7 @@
 #include "common/types.hpp"
 #include "common/utils.hpp"
 #include "mock_request.hpp"
+#include "requester/endpoint_registry.hpp"
 #include "requester/handler.hpp"
 #include "test/test_instance_id.hpp"
 
@@ -31,7 +32,7 @@ class HandlerTest : public testing::Test
     HandlerTest() : event(sdeventplus::Event::get_default()), instanceIdDb() {}
 
     int fd = 0;
-    mctp_eid_t eid = 0;
+    pldm::PeerId peer = 0;
     PldmTransport* pldmTransport = nullptr;
     sdeventplus::Event event;
     TestInstanceIdDb instanceIdDb;
@@ -61,7 +62,7 @@ class HandlerTest : public testing::Test
     int callbackCount = 0;
     bool response2 = false;
 
-    void pldmResponseCallBack(mctp_eid_t /*eid*/, const pldm_msg* response,
+    void pldmResponseCallBack(pldm::PeerId /*peer*/, const pldm_msg* response,
                               size_t respMsgLen)
     {
         if (response == nullptr && respMsgLen == 0)
@@ -82,20 +83,20 @@ TEST_F(HandlerTest, singleRequestResponseScenario)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
-        eid, instanceId, 0, 0, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->pldmResponseCallBack(eid, response, respMsgLen);
+        peer, instanceId, 0, 0, std::move(request),
+        [this](pldm::PeerId peer, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(peer, response, respMsgLen);
         });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
-    reqHandler.handleResponse(eid, instanceId, 0, 0, responsePtr,
+    reqHandler.handleResponse(peer, instanceId, 0, 0, responsePtr,
                               response.size());
 
     EXPECT_EQ(validResponse, true);
@@ -107,14 +108,14 @@ TEST_F(HandlerTest, singleRequestInstanceIdTimerExpired)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
-        eid, instanceId, 0, 0, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->pldmResponseCallBack(eid, response, respMsgLen);
+        peer, instanceId, 0, 0, std::move(request),
+        [this](pldm::PeerId peer, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(peer, response, respMsgLen);
         });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
@@ -130,32 +131,32 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
         pldmTransport, event, instanceIdDb, false, seconds(2), 2,
         milliseconds(100));
     pldm::Request request{};
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
     auto rc = reqHandler.registerRequest(
-        eid, instanceId, 0, 0, std::move(request),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->pldmResponseCallBack(eid, response, respMsgLen);
+        peer, instanceId, 0, 0, std::move(request),
+        [this](pldm::PeerId peer, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(peer, response, respMsgLen);
         });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Request requestNxt{};
-    auto instanceIdNxtResult = instanceIdDb.next(eid);
+    auto instanceIdNxtResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdNxtResult);
     auto instanceIdNxt = instanceIdNxtResult.value();
     EXPECT_EQ(instanceIdNxt, 1);
     rc = reqHandler.registerRequest(
-        eid, instanceIdNxt, 0, 0, std::move(requestNxt),
-        [this](mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen) {
-            this->pldmResponseCallBack(eid, response, respMsgLen);
+        peer, instanceIdNxt, 0, 0, std::move(requestNxt),
+        [this](pldm::PeerId peer, const pldm_msg* response, size_t respMsgLen) {
+            this->pldmResponseCallBack(peer, response, respMsgLen);
         });
     EXPECT_EQ(rc, PLDM_SUCCESS);
 
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto responsePtr = reinterpret_cast<const pldm_msg*>(response.data());
-    reqHandler.handleResponse(eid, instanceId, 0, 0, responsePtr,
+    reqHandler.handleResponse(peer, instanceId, 0, 0, responsePtr,
                               response.size());
     EXPECT_EQ(validResponse, true);
     EXPECT_EQ(callbackCount, 1);
@@ -165,7 +166,7 @@ TEST_F(HandlerTest, multipleRequestResponseScenario)
     // simulate a delayed response for the first request
     waitEventExpiry(milliseconds(500));
 
-    reqHandler.handleResponse(eid, instanceIdNxt, 0, 0, responsePtr,
+    reqHandler.handleResponse(peer, instanceIdNxt, 0, 0, responsePtr,
                               response.size());
 
     EXPECT_EQ(validResponse, true);
@@ -179,7 +180,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
 
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
@@ -196,7 +197,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
         try
         {
             std::tie(rc, responseMsg, responseLen) =
-                co_await reqHandler.sendRecvMsg(eid, std::move(request));
+                co_await reqHandler.sendRecvMsg(peer, std::move(request));
         }
         catch (...)
         {
@@ -205,7 +206,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
 
         EXPECT_NE(responseLen, 0);
 
-        this->pldmResponseCallBack(eid, responseMsg, responseLen);
+        this->pldmResponseCallBack(peer, responseMsg, responseLen);
 
         EXPECT_EQ(validResponse, true);
     };
@@ -215,7 +216,7 @@ TEST_F(HandlerTest, singleRequestResponseScenarioUsingCoroutine)
     pldm::Response mockResponse(sizeof(pldm_msg_hdr) + sizeof(uint8_t), 0);
     auto mockResponsePtr =
         reinterpret_cast<const pldm_msg*>(mockResponse.data());
-    reqHandler.handleResponse(eid, instanceId, 0, 0, mockResponsePtr,
+    reqHandler.handleResponse(peer, instanceId, 0, 0, mockResponsePtr,
                               mockResponse.size() - sizeof(pldm_msg_hdr));
 
     stdexec::sync_wait(scope.on_empty());
@@ -227,7 +228,7 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
     Handler<NiceMock<MockRequest>> reqHandler(
         pldmTransport, event, instanceIdDb, false, seconds(1), 2,
         milliseconds(100));
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
     EXPECT_EQ(instanceId, 0);
@@ -241,7 +242,7 @@ TEST_F(HandlerTest, singleRequestCancellationScenarioUsingCoroutine)
         auto requestPtr = std::start_lifetime_as<pldm_msg>(request.data());
         requestPtr->hdr.instance_id = instanceId;
 
-        co_await reqHandler.sendRecvMsg(eid, std::move(request));
+        co_await reqHandler.sendRecvMsg(peer, std::move(request));
 
         EXPECT_TRUE(false); // unreachable
     };
@@ -260,7 +261,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
     struct _
     {
         static exec::task<uint8_t> getTIDTask(Handler<MockRequest>& handler,
-                                              mctp_eid_t eid,
+                                              pldm::PeerId peer,
                                               uint8_t instanceId, uint8_t& tid)
         {
             pldm::Request request(sizeof(pldm_msg), 0);
@@ -272,7 +273,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
             EXPECT_EQ(rc, PLDM_SUCCESS);
 
             std::tie(rc, responseMsg, responseLen) =
-                co_await handler.sendRecvMsg(eid, std::move(request));
+                co_await handler.sendRecvMsg(peer, std::move(request));
             EXPECT_NE(responseLen, 0);
 
             pldm_base_get_tid_resp resp{};
@@ -287,7 +288,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
     exec::async_scope scope;
     Handler<MockRequest> reqHandler(pldmTransport, event, instanceIdDb, false,
                                     seconds(1), 2, milliseconds(100));
-    auto instanceIdResult = instanceIdDb.next(eid);
+    auto instanceIdResult = instanceIdDb.next(peer);
     ASSERT_TRUE(instanceIdResult);
     auto instanceId = instanceIdResult.value();
 
@@ -296,7 +297,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
     auto coroFn = [&]() -> exec::task<void> {
         uint8_t respTid = 0;
 
-        co_await _::getTIDTask(reqHandler, eid, instanceId, respTid);
+        co_await _::getTIDTask(reqHandler, peer, instanceId, respTid);
 
         EXPECT_EQ(expectedTid, respTid);
     };
@@ -320,7 +321,7 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
     // Send response back to resume getTID coroutine to update respTid by
     // calling  reqHandler.handleResponse() manually
-    reqHandler.handleResponse(eid, instanceId, PLDM_BASE, PLDM_GET_TID,
+    reqHandler.handleResponse(peer, instanceId, PLDM_BASE, PLDM_GET_TID,
                               mockResponseMsg,
                               mockResponse.size() - sizeof(pldm_msg_hdr));
 
@@ -332,31 +333,57 @@ TEST_F(HandlerTest, cancelQueuedRequestPreservesFollowingRequest)
     Handler<NiceMock<MockRequest>> reqHandler(
         pldmTransport, event, instanceIdDb, false, seconds(1), 0,
         milliseconds(100));
-    auto first = instanceIdDb.next(eid);
-    auto cancelled = instanceIdDb.next(eid);
-    auto last = instanceIdDb.next(eid);
+    auto first = instanceIdDb.next(peer);
+    auto cancelled = instanceIdDb.next(peer);
+    auto last = instanceIdDb.next(peer);
     ASSERT_TRUE(first);
     ASSERT_TRUE(cancelled);
     ASSERT_TRUE(last);
     int completed = 0;
     auto onResponse = [&](auto, auto, auto) { ++completed; };
-    ASSERT_EQ(reqHandler.registerRequest(eid, *first, 0, 0, pldm::Request{},
+    ASSERT_EQ(reqHandler.registerRequest(peer, *first, 0, 0, pldm::Request{},
                                          onResponse),
               PLDM_SUCCESS);
     ASSERT_EQ(
-        reqHandler.registerRequest(eid, *cancelled, 0, 0, pldm::Request{},
+        reqHandler.registerRequest(peer, *cancelled, 0, 0, pldm::Request{},
                                    [](auto, auto, auto) { ADD_FAILURE(); }),
         PLDM_SUCCESS);
-    ASSERT_EQ(reqHandler.registerRequest(eid, *last, 0, 0, pldm::Request{},
+    ASSERT_EQ(reqHandler.registerRequest(peer, *last, 0, 0, pldm::Request{},
                                          onResponse),
               PLDM_SUCCESS);
 
-    ASSERT_EQ(reqHandler.unregisterRequest(eid, *cancelled, 0, 0),
+    ASSERT_EQ(reqHandler.unregisterRequest(peer, *cancelled, 0, 0),
               PLDM_SUCCESS);
     pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
     auto message = reinterpret_cast<const pldm_msg*>(response.data());
-    reqHandler.handleResponse(eid, *first, 0, 0, message, 1);
-    reqHandler.handleResponse(eid, *cancelled, 0, 0, message, 1);
-    reqHandler.handleResponse(eid, *last, 0, 0, message, 1);
+    reqHandler.handleResponse(peer, *first, 0, 0, message, 1);
+    reqHandler.handleResponse(peer, *cancelled, 0, 0, message, 1);
+    reqHandler.handleResponse(peer, *last, 0, 0, message, 1);
     EXPECT_EQ(completed, 2);
+}
+
+TEST_F(HandlerTest, endpointInLogMessagesIsNamedByNetworkAndEid)
+{
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 2,
+        milliseconds(100));
+
+    // Without a namer the PeerId is the EID
+    EXPECT_EQ(reqHandler.describe(20), "EID 20");
+
+    pldm::EndpointRegistry registry(
+        std::make_unique<pldm::PooledPeerIdPolicy>());
+    registry.acquire(pldm::Endpoint{1, 20});
+    auto other = registry.acquire(pldm::Endpoint{3, 20});
+    ASSERT_TRUE(other);
+    reqHandler.setEndpointNamer([&registry](pldm::PeerId peer) {
+        return registry.describe(peer);
+    });
+
+    // The same EID on another Network gets another PeerId, which says
+    // where
+    EXPECT_EQ(reqHandler.describe(20), "Network 1 EID 20");
+    EXPECT_EQ(reqHandler.describe(*other), "Network 3 EID 20");
+    // A PeerId that is not in use is shown as it is
+    EXPECT_EQ(reqHandler.describe(99), "PeerId 99");
 }

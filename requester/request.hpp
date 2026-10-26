@@ -141,7 +141,7 @@ class Request final : public RequestRetryTimer
     /** @brief Constructor
      *
      *  @param[in] pldm_transport - PLDM transport object
-     *  @param[in] eid - endpoint ID of the remote MCTP endpoint
+     *  @param[in] peer - PeerId of the remote MCTP endpoint
      *  @param[in] currrentSendbuffSize - the current send buffer size
      *  @param[in] event - reference to PLDM daemon's main event loop
      *  @param[in] requestMsg - PLDM request message
@@ -149,18 +149,18 @@ class Request final : public RequestRetryTimer
      *  @param[in] timeout - time to wait between each retry in milliseconds
      *  @param[in] verbose - verbose tracing flag
      */
-    explicit Request(PldmTransport* pldmTransport, mctp_eid_t eid,
+    explicit Request(PldmTransport* pldmTransport, PeerId peer,
                      sdeventplus::Event& event, pldm::Request&& requestMsg,
                      uint8_t numRetries, std::chrono::milliseconds timeout,
                      bool verbose) :
         RequestRetryTimer(event, numRetries, timeout),
-        pldmTransport(pldmTransport), eid(eid),
+        pldmTransport(pldmTransport), peer(peer),
         requestMsg(std::move(requestMsg)), verbose(verbose)
     {}
 
   private:
     PldmTransport* pldmTransport; //!< PLDM transport
-    mctp_eid_t eid;               //!< endpoint ID of the remote MCTP endpoint
+    PeerId peer;                  //!< PeerId of the remote MCTP endpoint
     pldm::Request requestMsg;     //!< PLDM request message
     bool verbose;                 //!< verbose tracing flag
 
@@ -189,7 +189,7 @@ class Request final : public RequestRetryTimer
             return PLDM_ERROR;
         }
 
-        auto rc = pldmTransport->sendMsg(static_cast<pldm_tid_t>(eid),
+        auto rc = pldmTransport->sendMsg(static_cast<pldm_tid_t>(peer),
                                          requestMsg.data(), requestMsg.size());
         if (rc < 0)
         {
