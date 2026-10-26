@@ -22,6 +22,30 @@
       },
       "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cf80742_8ec3fa24",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-26T04:16:02Z",
+      "side": 1,
+      "message": "Yup. We set that in https://github.com/openbmc/pldm/blob/72e0c1ef403daa84004bdb7ae3275d6e23fb5163/platform-mc/terminus_manager.cpp#L441\n\nmctpInfo gets it from https://github.com/openbmc/pldm/blob/72e0c1ef403daa84004bdb7ae3275d6e23fb5163/requester/mctp_endpoint_discovery.cpp#L516\n\nso terminusName, by the time it reaches this part of the code changed in patch - is already populated with the name found from EM (Which we override when there is an Entity Aux Name PDR for that terminus)\n\nInstead of that override this patch is proposing to append.",
+      "parentUuid": "0adc8167_99234a42",
+      "range": {
+        "startLine": 14,
+        "startChar": 25,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
