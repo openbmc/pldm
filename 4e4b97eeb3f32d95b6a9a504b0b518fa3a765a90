@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "672bf93c_0baca35f",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1539,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:14:57Z",
+      "side": 1,
+      "message": "Prefer EXPECT_DOUBLE_EQ for floating-point comparisons. It is consistent with the sibling tests and robust if the values change.\nchange where else applicable",
+      "range": {
+        "startLine": 1539,
+        "startChar": 4,
+        "endLine": 1539,
+        "endChar": 13
+      },
+      "revId": "4e4b97eeb3f32d95b6a9a504b0b518fa3a765a90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcc5b605_a6aa734a",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1566,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:14:57Z",
+      "side": 1,
+      "message": "Please add NaN and infinity inputs, and the UINT32_MAX case for REAL32, to document the intended pass-through behavior.",
+      "revId": "4e4b97eeb3f32d95b6a9a504b0b518fa3a765a90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd62fac_c55defa6",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:14:57Z",
+      "side": 1,
+      "message": "This passes an int to a uint8_t parameter and may produce a conversion warning. Please use static_cast\u003cuint8_t\u003e(...). Also add a case for a value well outside the enumeration, such as 0xFF.",
+      "revId": "4e4b97eeb3f32d95b6a9a504b0b518fa3a765a90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e4d108f_bdaae051",
+        "filename": "common/utils.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T09:14:57Z",
+      "side": 1,
+      "message": "This is defined inline in the header, while the equivalent getSensorDataValue in the sibling topic is declared in the header and defined in utils.cpp. Please pick one convention for both helpers. I would prefer the declaration in the header and the definition in utils.cpp, to keep \u003climits\u003e out of a widely included header.",
+      "revId": "4e4b97eeb3f32d95b6a9a504b0b518fa3a765a90",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
