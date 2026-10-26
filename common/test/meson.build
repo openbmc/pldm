@@ -1,6 +1,6 @@
 common_test_src = declare_dependency(sources: ['../utils.cpp'])
 
-tests = ['pldm_utils_test']
+tests = ['endpoint_test', 'pldm_utils_test']
 
 foreach t : tests
     test(
