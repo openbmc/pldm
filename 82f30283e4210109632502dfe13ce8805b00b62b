@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4cd4f32_fcb1d29a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T06:56:46Z",
+      "side": 1,
+      "message": "When the 64-bit arm is added, converting uint64_t or int64_t to double loses precision above 2^53. Please note this limitation in the helper documentation now, or consider whether the return type should carry full precision.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca07e39c_05a3e02c",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T06:56:46Z",
+      "side": 1,
+      "message": "Please add boundary values: INT8_MIN, INT16_MIN, INT32_MIN and the positive maxima. Also add 0 and UINT32_MAX in the unsigned test. This confirms the conversion is exact at the extremes.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d0570ce_719615ef",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T06:56:46Z",
+      "side": 1,
+      "message": "This expression is an int passed to a uint8_t parameter and may trigger a narrowing or conversion warning. Please use static_cast\u003cuint8_t\u003e(PLDM_SENSOR_DATA_SIZE_SINT32 + 1) or a named constant.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ffa2b54_cb1f3c51",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T06:56:46Z",
+      "side": 1,
+      "message": "Acceptable. \nCallers that must distinguish “invalid size” from a valid reading currently have to use std::isnan. Consider whether std::optional\u003cdouble\u003e would give clearer error handling. Not blocking.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7825739c_13157636",
+        "filename": "common/utils.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-26T06:56:46Z",
+      "side": 1,
+      "message": "Suggestion: also document in the @return text that the result is not exact for 64-bit values once they are supported.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
