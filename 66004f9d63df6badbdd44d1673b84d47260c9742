@@ -118,6 +118,30 @@
       },
       "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "408bc655_d27815d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-27T08:59:36Z",
+      "side": 1,
+      "message": "I have rephrased the commit message to clarify the intent of the patch.\n\nThe main expectation was to have a way to distinguish between identical pldm devices - and also prevent duplicate dbus object path as a result.\n\nTID was not persistent over boot cycles or daemon restart - So it was hard to  differentiate between the pldm devices. \n\nWith this change - the entity manager name will be a static persistent config that can be distinctly identifiable. \n\nI think the commit message correction should give a better picture now.",
+      "parentUuid": "aee11fbe_9c48f971",
+      "range": {
+        "startLine": 14,
+        "startChar": 25,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "66004f9d63df6badbdd44d1673b84d47260c9742",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
