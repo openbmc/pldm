@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ce9d280_dfddc5ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:17:27Z",
+      "side": 1,
+      "message": "Thanks for the catching, removed the straying \"i\" in PS9.",
+      "parentUuid": "a1cc69b7_6d374634",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1c54655_77bcf3e3",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4668bcfe_2edd2596",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:17:27Z",
+      "side": 1,
+      "message": "Acknowledged, I have added the unit test and test log for numeric effector as suggested. Please check them in PS9.",
+      "parentUuid": "f1c54655_77bcf3e3",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12b12bbd_1996f7ba",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-26T09:26:08Z",
       "side": 1,
       "message": "include \u003ccmath\u003e, \u003ccstdint\u003e, \u003cstring\u003e\n\nThe header now uses union_range_field_format and PLDM_RANGE_FIELD_FORMAT_*. Please include \u003clibpldm/platform.h\u003e directly, and confirm ordered_json is declared above this point.",
+      "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b4d829d_34c0838a",
+        "filename": "pldmtool/pldm_cmd_helper.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:17:27Z",
+      "side": 1,
+      "message": "`libpldm/plamform.h` has already included in PS8(L12).\nAlso, `ordered_json` is declared at L37, before `addRangeField`.",
+      "parentUuid": "12b12bbd_1996f7ba",
       "revId": "54b85851b80799bb0e1d9a51b236135584547fa8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
