@@ -16,6 +16,24 @@
       "message": "@jvoon@nvidia.com still have comments on this?",
       "revId": "8bd07c9764207019596441fb671a62af7a384d36",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c3d8b6_0a43d85f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:30:56Z",
+      "side": 1,
+      "message": "No further comments from me. \nI think this patch is solving a different problem with mine and they doesn\u0027t conflict at all.",
+      "parentUuid": "7ac0f100_55490e85",
+      "revId": "8bd07c9764207019596441fb671a62af7a384d36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

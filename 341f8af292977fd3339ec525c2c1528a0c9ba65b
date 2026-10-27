@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6117f41_cab144c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:30:56Z",
+      "side": 1,
+      "message": "Understood, I think we are trying to solve different problems here and the solution doesn\u0027t collide with each other I think.\n\nThanks for the nice explanation !",
+      "parentUuid": "4c685f05_e8889830",
+      "revId": "341f8af292977fd3339ec525c2c1528a0c9ba65b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45030d4c_e2812a6b",
