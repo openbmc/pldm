@@ -368,23 +368,8 @@ void HostEffecterParser::processTerminusNumericEffecterChangeNotification(
         return;
     }
 
-    /* Update the current value of D-Bus interface*/
-    if (std::isfinite(val) && !std::isfinite(propValues.propertyValue))
-    {
-        hostEffecterInfo[effecterInfoIndex]
-            .dbusNumericEffecterInfo[dbusInfoIndex]
-            .propertyValue = val;
-        return;
-    }
-
-    /* Bypass the setting when the current value is NA or setting value is NA */
-    if (!std::isfinite(propValues.propertyValue) || !std::isfinite(val))
-    {
-        return;
-    }
-
-    /* Setting value equals the D-Bus value which is real value of effecter */
-    if (val == propValues.propertyValue)
+    /* Bypass the setting when the requested value is not finite. */
+    if (!std::isfinite(val))
     {
         return;
     }
@@ -415,10 +400,6 @@ void HostEffecterParser::processTerminusNumericEffecterChangeNotification(
               effecterId);
         return;
     }
-
-    hostEffecterInfo[effecterInfoIndex]
-        .dbusNumericEffecterInfo[dbusInfoIndex]
-        .propertyValue = val;
 
     return;
 }
