@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62929933_309494ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:53:34Z",
+      "side": 1,
+      "message": "All sizes handled today are 32-bit or smaller, so they fit in a double exactly.\nI think the documentation should be added alongside with the patch that introduce such cases.",
+      "parentUuid": "c4cd4f32_fcb1d29a",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca07e39c_05a3e02c",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-26T06:56:46Z",
       "side": 1,
       "message": "Please add boundary values: INT8_MIN, INT16_MIN, INT32_MIN and the positive maxima. Also add 0 and UINT32_MAX in the unsigned test. This confirms the conversion is exact at the extremes.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1be17165_e52dff47",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1551,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:53:34Z",
+      "side": 1,
+      "message": "Done. Add `testBoundaryValues` covering 0, `UINT32_MAX` and etc.",
+      "parentUuid": "ca07e39c_05a3e02c",
       "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65a8744_5fe72760",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:53:34Z",
+      "side": 1,
+      "message": "This is an integer constant that fits in uint8_t, so it doesn\u0027t narrow and doesn\u0027t warn at all.",
+      "parentUuid": "3d0570ce_719615ef",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ffa2b54_cb1f3c51",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f22004_c98666a0",
+        "filename": "common/utils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:53:34Z",
+      "side": 1,
+      "message": "Keeping NaN on purpose (as the callers can write this straight to `Sensor.Value`) and NaN already means the reading is unavailable.",
+      "parentUuid": "4ffa2b54_cb1f3c51",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7825739c_13157636",
@@ -82,6 +154,24 @@
       "writtenOn": "2026-10-26T06:56:46Z",
       "side": 1,
       "message": "Suggestion: also document in the @return text that the result is not exact for 64-bit values once they are supported.",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87086ae4_4ce2924e",
+        "filename": "common/utils.hpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-27T08:53:34Z",
+      "side": 1,
+      "message": "Similar to the previous reply, I think such documentation should be added in the corresponding patch.",
+      "parentUuid": "7825739c_13157636",
       "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
