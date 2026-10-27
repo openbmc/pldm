@@ -32,7 +32,7 @@ class AggregateUpdateManager : public UpdateManager
         const ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        std::function<void(mctp_eid_t)> taskCompletionCallback = nullptr) :
         UpdateManager(event, handler, instanceIdDb, descriptorMap,
                       componentInfoMap, conditionPathPair, conditionArg,
                       std::move(taskCompletionCallback))
@@ -54,12 +54,10 @@ class AggregateUpdateManager : public UpdateManager
                            const pldm_msg* request, size_t reqMsgLen) override;
 
     /**
-     * @brief Create a new UpdateManager instance for a specific software
-     * identifier
+     * @brief Create an item manager or refresh its metadata in place
      *
-     * This function creates and stores a new UpdateManager instance associated
-     * with the given software identifier, along with its corresponding
-     * descriptor and component information maps.
+     * Existing managers retain their D-Bus path, completion callback and any
+     * active update. Their referenced metadata storage remains valid.
      *
      * @param[in] softwareIdentifier - The software identifier (pair of eid and
      * component identifier)

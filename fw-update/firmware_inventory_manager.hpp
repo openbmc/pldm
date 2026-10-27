@@ -49,8 +49,9 @@ class FirmwareInventoryManager
     {}
 
     /**
-     * @brief Creates a firmware inventory entry for the given software
-     * identifier
+     * @brief Create or refresh firmware inventory for a software identifier
+     *
+     * Existing entries retain their D-Bus paths and update managers.
      * @param[in] softwareIdentifier - Software identifier containing EID and
      *                                 component identifier
      * @param[in] softwareName - Name of the firmware device

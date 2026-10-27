@@ -135,6 +135,12 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
         ApplyTimeIntf::RequestedApplyTimes applyTime =
             ApplyTimeIntf::RequestedApplyTimes::Immediate) override;
 
+    /** @brief Refresh component metadata for future device updaters */
+    void updateComponentInfo(const ComponentInfo& info)
+    {
+        componentInfo = info;
+    }
+
     /**
      * @brief Associate the firmware update package with the target device
      *
@@ -165,7 +171,7 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief The component information of the target device
      */
-    const ComponentInfo componentInfo;
+    ComponentInfo componentInfo;
 
     /**
      * @brief The package data for the firmware update

@@ -22,7 +22,7 @@ To enable inotify-based firmware update monitoring:
 meson setup build -Dfw-update-pkg-inotify=enabled
 ```
 
-## Activation
+## Activation and inventory refresh
 
 `Immediate` requests self-contained activation when an applied component
 supports it. Capabilities come from `GetFirmwareParameters`; an `ApplyComplete`
@@ -39,6 +39,13 @@ After self-contained activation is accepted, the task waits for the device's
 status. Temporary silence is retried within the advertised activation window,
 with a 15-second minimum for devices reporting very short estimates. Explicit
 failure or invalid status data fails the update.
+
+At completion, including failure, the daemon refreshes affected devices'
+firmware inventory asynchronously. `Software.Version` reflects the active
+version returned by the device; staged firmware does not replace it before
+activation. A completed task can precede the refreshed property. Refresh retains
+existing software object paths and active item updates. A failed parameter query
+leaves the previously published versions in place.
 
 ## Pre and Post Update Condition Services
 

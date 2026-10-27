@@ -639,7 +639,6 @@ void InventoryManager::getFirmwareParameters(
         error(
             "No response received for get firmware parameters for endpoint ID {EID}",
             "EID", eid);
-        descriptorMap.erase(eid);
         return;
     }
 
