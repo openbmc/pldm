@@ -21,6 +21,8 @@ test_deps += declare_dependency(link_whole: fw_update_test_lib)
 
 tests = [
     'inventory_manager_test',
+    'inventory_refresh_test',
+    'aggregate_update_test',
     'package_parser_test',
     'device_updater_test',
     'update_manager_test',
@@ -38,7 +40,13 @@ foreach t : tests
         executable(
             t.underscorify(),
             t + '.cpp',
-            cpp_args: t == 'device_updater_flow_test' ? ['-fno-access-control'] : [],
+            cpp_args: t in [
+                'device_updater_flow_test',
+                'inventory_refresh_test',
+                'aggregate_update_test',
+            ] ? [
+                '-fno-access-control',
+            ] : [],
             link_args: t == 'device_updater_flow_test' ? [
                 '-Wl,--wrap=sd_event_source_set_time',
             ] : [],
