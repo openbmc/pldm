@@ -426,9 +426,12 @@ void UpdateManager::completeUpdate(bool status)
     activation->activation(status ? software::Activation::Activations::Active
                                   : software::Activation::Activations::Failed);
 
-    if (taskCompletionCallback)
+    if (deviceCompletionCallback)
     {
-        taskCompletionCallback();
+        for (const auto& [eid, _] : deviceUpdateCompletionMap)
+        {
+            deviceCompletionCallback(eid);
+        }
     }
 
     // The completing DeviceUpdater may still be executing; release its

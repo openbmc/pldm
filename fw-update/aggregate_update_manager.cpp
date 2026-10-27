@@ -34,6 +34,16 @@ void AggregateUpdateManager::createUpdateManager(
 {
     auto eid = softwareIdentifier.first;
 
+    if (updateManagers.contains(softwareIdentifier))
+    {
+        // Keep storage and any active update alive while refreshing inputs.
+        *descriptorMap.at(softwareIdentifier) = descriptors;
+        *componentInfoMap.at(softwareIdentifier) = componentInfo;
+        updateManagers.at(softwareIdentifier)
+            ->updateComponentInfo(componentInfo);
+        return;
+    }
+
     descriptorMap[softwareIdentifier] =
         std::make_unique<Descriptors>(descriptors);
     componentInfoMap[softwareIdentifier] =

@@ -120,7 +120,7 @@ class UpdateManager : public UpdateManagerBase
         const ComponentInfoMap& componentInfoMap,
         const ConditionPaths& conditionPathPair = ConditionPaths{},
         const std::string& conditionArg = std::string{},
-        std::function<void()> taskCompletionCallback = nullptr) :
+        std::function<void(mctp_eid_t)> deviceCompletionCallback = nullptr) :
         UpdateManagerBase(event, handler, instanceIdDb),
         descriptorMap(descriptorMap), componentInfoMap(componentInfoMap),
 #ifdef FW_UPDATE_INOTIFY_ENABLED
@@ -139,7 +139,7 @@ class UpdateManager : public UpdateManagerBase
 #endif
         totalNumComponentUpdates(0), preConditionPath(conditionPathPair.first),
         postConditionPath(conditionPathPair.second), conditionArg(conditionArg),
-        taskCompletionCallback(std::move(taskCompletionCallback))
+        deviceCompletionCallback(std::move(deviceCompletionCallback))
     {}
 
     /** @brief Handle PLDM request for the commands in the FW update
@@ -275,7 +275,11 @@ class UpdateManager : public UpdateManagerBase
     std::string preConditionPath;
     std::string postConditionPath;
     std::string conditionArg;
-    std::function<void()> taskCompletionCallback;
+    /** @brief Called once per completed EID, including failures, after device
+     *         cleanup. Starts asynchronous inventory refresh; no call is made
+     *         for failures before any device participates.
+     */
+    std::function<void(mctp_eid_t)> deviceCompletionCallback;
     bool updateInProgress = false;
 
     /** @brief The last progress that was calculated. Used to avoid spamming

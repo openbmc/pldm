@@ -23,6 +23,14 @@ void FirmwareInventoryManager::createFirmwareEntry(
     const Descriptors& descriptors, const ComponentInfo& componentInfo,
     std::function<void()> taskCompletionCallback)
 {
+    if (auto it = softwareMap.find(softwareIdentifier); it != softwareMap.end())
+    {
+        updateManager.createUpdateManager(softwareIdentifier, descriptors,
+                                          componentInfo, {}, {});
+        it->second->updateVersion(activeVersion);
+        return;
+    }
+
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
     unsigned seed = ts.tv_nsec ^ getpid();

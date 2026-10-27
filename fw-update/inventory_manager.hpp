@@ -128,7 +128,6 @@ class InventoryManager
     void getFirmwareParameters(mctp_eid_t eid, const pldm_msg* response,
                                size_t respMsgLen);
 
-  private:
     /**
      * @brief Sends QueryDeviceIdentifiers request
      *
@@ -143,6 +142,7 @@ class InventoryManager
      */
     void sendQueryDownstreamDevicesRequest(mctp_eid_t eid);
 
+  private:
     /**
      * @brief Sends QueryDownstreamIdentifiers request
      *

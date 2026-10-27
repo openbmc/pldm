@@ -57,6 +57,12 @@ class FirmwareInventory
         const std::string& associatedEndpoint,
         SoftwareVersionPurpose purpose = SoftwareVersionPurpose::Other);
 
+    /** @brief Refresh the active version without replacing the D-Bus object. */
+    void updateVersion(const std::string& activeVersion)
+    {
+        version.version(activeVersion);
+    }
+
   private:
     /**
      * @brief Reference to the sdbusplus bus

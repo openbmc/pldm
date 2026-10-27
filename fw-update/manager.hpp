@@ -44,7 +44,11 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                      requester::Handler<requester::Request>& handler,
                      pldm::InstanceIdDb& instanceIdDb) :
         updateManager(event, handler, instanceIdDb, descriptorMap,
-                      componentInfoMap),
+                      componentInfoMap, {}, {},
+                      [this](mctp_eid_t eid) {
+                          inventoryMgr.sendQueryDeviceIdentifiersRequest(eid);
+                          inventoryMgr.sendQueryDownstreamDevicesRequest(eid);
+                      }),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap, configurations,
                      updateManager)
