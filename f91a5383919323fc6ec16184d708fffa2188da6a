@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b27c3b3c_3e1cc7f3",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T10:34:48Z",
+      "side": 1,
+      "message": "Since this validation runs before the record type is read, it rejects all events shorter than 14 bytes. Can we confirm every supported record type requires at least 14 bytes, or should the check be done per type instead?",
+      "revId": "f91a5383919323fc6ec16184d708fffa2188da6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a73d2f3_3e9b1e56",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T10:34:48Z",
+      "side": 1,
+      "message": "Could we replace the hardcoded 14 with a named constant? It would make the intent clearer and keep the check and log message in sync.",
+      "revId": "f91a5383919323fc6ec16184d708fffa2188da6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9950ebd8_c8fe6be0",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T10:34:48Z",
+      "side": 1,
+      "message": "nit:it would be better to include TID in log message",
+      "range": {
+        "startLine": 28,
+        "startChar": 13,
+        "endLine": 28,
+        "endChar": 77
+      },
+      "revId": "f91a5383919323fc6ec16184d708fffa2188da6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83b21d16_4371647f",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T10:34:48Z",
+      "side": 1,
+      "message": "as above comment",
+      "revId": "f91a5383919323fc6ec16184d708fffa2188da6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b98a49_298fbdaf",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T10:34:48Z",
+      "side": 1,
+      "message": "nit: it is better to add a blank line in between",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 32,
+        "endChar": 66
+      },
+      "revId": "f91a5383919323fc6ec16184d708fffa2188da6a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
