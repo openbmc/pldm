@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fc3765e_7c020778",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "The guard checks alive.expired() only before the call. If the method itself causes the update manager to release this updater (for example by completing the update or resetting the activation state), failAndCancelUpdate() then runs on a freed object. Please check alive.expired() again after the method returns, and before failAndCancelUpdate(). The same reasoning applies to anything the handler touches after the member call.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f350fd88_661cbf84",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "The two guarded overloads duplicate the guard logic. A single template over the member pointer, using if constexpr (std::is_same_v\u003cstd::invoke_result_t\u003c...\u003e, bool\u003e), would remove the duplication and avoid a third overload when a new response type appears.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d4c2c4b_6ac5d15c",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "Please state the copy and move semantics. If DeviceUpdater can be copied, both copies share one token and a handler on a destroyed copy would still run. Delete the copy and move operations, or add a comment that they are never used.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d323f4_9560526f",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "std::shared_ptr\u003cvoid\u003e or an empty tag type conveys intent better than std::shared_ptr\u003cbool\u003e, because the value is never read.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a4e7988_e5189c52",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "The test has no assertion. It passes without the fix unless the run uses AddressSanitizer or valgrind, because reading freed memory often does not crash. Please make the outcome observable. For example, give the handler a response that would change visible state if it were delivered (progress, update state, or a recorded call on a spy), and assert that it did not change.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c36e806b_ede2e6a6",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-10-27T09:57:33Z",
+      "side": 1,
+      "message": "Please add the companion positive test: with a live updater, the guarded handler does deliver the response, so the guard is not trivially always dropping. Also add a case for the checked variant (passCompTable or updateComponent) to show that failAndCancelUpdate() is not called on an expired updater.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
