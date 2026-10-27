@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02b4273f_92a91842",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-27T15:09:54Z",
+      "side": 1,
+      "message": "I asked for it since we seem to do few operations in between which can fail (although this should be very rare). Anyways i am not too much worried about it.So thats okay.",
+      "parentUuid": "af85c43c_1c42781b",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70381c5c_5461ce30",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I tried auto, but it gets deduced as const char* from namespace_path. Since the value is updated later with a std::string, I kept it as std::string to avoid the type mismatch.",
       "parentUuid": "70381c5c_5461ce30",
+      "range": {
+        "startLine": 658,
+        "startChar": 4,
+        "endLine": 658,
+        "endChar": 15
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f78e39a_5b3a9561",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-27T15:09:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "98829145_1fb3b4bd",
       "range": {
         "startLine": 658,
         "startChar": 4,
@@ -165,6 +207,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e9325e8_1fa2fa5d",
+        "filename": "platform-mc/event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-27T15:09:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3d5f7ccb_96221b2c",
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "973541ea_ee093cab",
@@ -178,6 +238,30 @@
       "writtenOn": "2026-10-22T06:57:16Z",
       "side": 1,
       "message": "if it is path, why not make it filesystem::path ? rather than std::string ?",
+      "range": {
+        "startLine": 241,
+        "startChar": 32,
+        "endLine": 241,
+        "endChar": 50
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3477a47_b0575412",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000206
+      },
+      "writtenOn": "2026-10-27T15:09:54Z",
+      "side": 1,
+      "message": "how about this one ?",
+      "parentUuid": "973541ea_ee093cab",
       "range": {
         "startLine": 241,
         "startChar": 32,
