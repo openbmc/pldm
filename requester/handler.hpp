@@ -340,7 +340,7 @@ class Handler
                     "EID", (unsigned)eid, "INSTANCEID", (unsigned)instanceId);
                 return PLDM_ERROR;
             }
-            auto requestMsg = endpointMessageQueues[eid]->requestQueue;
+            auto& requestMsg = endpointMessageQueues[eid]->requestQueue;
             /* Find the registered request in the requestQueue */
             for (auto it = requestMsg.begin(); it != requestMsg.end();)
             {

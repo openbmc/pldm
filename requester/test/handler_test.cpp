@@ -326,3 +326,37 @@ TEST_F(HandlerTest, asyncRequestResponseByCoroutine)
 
     stdexec::sync_wait(scope.on_empty());
 }
+
+TEST_F(HandlerTest, cancelQueuedRequestPreservesFollowingRequest)
+{
+    Handler<NiceMock<MockRequest>> reqHandler(
+        pldmTransport, event, instanceIdDb, false, seconds(1), 0,
+        milliseconds(100));
+    auto first = instanceIdDb.next(eid);
+    auto cancelled = instanceIdDb.next(eid);
+    auto last = instanceIdDb.next(eid);
+    ASSERT_TRUE(first);
+    ASSERT_TRUE(cancelled);
+    ASSERT_TRUE(last);
+    int completed = 0;
+    auto onResponse = [&](auto, auto, auto) { ++completed; };
+    ASSERT_EQ(reqHandler.registerRequest(eid, *first, 0, 0, pldm::Request{},
+                                         onResponse),
+              PLDM_SUCCESS);
+    ASSERT_EQ(
+        reqHandler.registerRequest(eid, *cancelled, 0, 0, pldm::Request{},
+                                   [](auto, auto, auto) { ADD_FAILURE(); }),
+        PLDM_SUCCESS);
+    ASSERT_EQ(reqHandler.registerRequest(eid, *last, 0, 0, pldm::Request{},
+                                         onResponse),
+              PLDM_SUCCESS);
+
+    ASSERT_EQ(reqHandler.unregisterRequest(eid, *cancelled, 0, 0),
+              PLDM_SUCCESS);
+    pldm::Response response(sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    auto message = reinterpret_cast<const pldm_msg*>(response.data());
+    reqHandler.handleResponse(eid, *first, 0, 0, message, 1);
+    reqHandler.handleResponse(eid, *cancelled, 0, 0, message, 1);
+    reqHandler.handleResponse(eid, *last, 0, 0, message, 1);
+    EXPECT_EQ(completed, 2);
+}
