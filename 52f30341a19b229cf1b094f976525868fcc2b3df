@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "736e5b8c_41eea093",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-10-27T08:33:31Z",
+      "side": 1,
+      "message": "I actually made the change to associate with the MCTP `.Configuration` described in patch set [1].\n\nBased on our recent discord discussion and patch [2], I suppose the final association happens with the EM path which exposes `xyz.openbmc_project.Configuration.Object` interface. @andhsieh@nvidia.com Please confirm this is your proposal as well.\n\n[1] https://gerrit.openbmc.org/q/topic:%22mctp-configuration%22\n[2] https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/96104",
+      "parentUuid": "86ca35ea_2055d698",
+      "range": {
+        "startLine": 11,
+        "startChar": 37,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cf58a2f_68716f56",
         "filename": "/COMMIT_MSG",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-26T10:02:15Z",
       "side": 1,
       "message": "There is an old patch that attempts to describe PLDM config in the existing MCTP config file. Have you seen that? In that case the association will be already created by mctpreactor.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f435801_551bc9a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000479
+      },
+      "writtenOn": "2026-10-27T08:33:31Z",
+      "side": 1,
+      "message": "I am not sure which old patch you are referring to.\n\nBut mctp-reactor creates the association between EID and EM config. What we are adding here is the terminus (inventory created by PLDM) to EM association based on the association created by mctpreactor for EID.",
+      "parentUuid": "6cf58a2f_68716f56",
       "range": {
         "startLine": 15,
         "startChar": 0,
