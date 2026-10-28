@@ -16,6 +16,23 @@
       "message": "Can you get EM maintainers to +1 the EM patch?",
       "revId": "7892db359c635a8c2a33d0c5f7b045c6ff836e27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c476a4d8_994d2f89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 41
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-28T10:45:59Z",
+      "side": 1,
+      "message": "FYI, [change 96378] proposes moving PLDM-specific settings to a separate `PLDMTerminus` entry. If it is accepted, this change and the corresponding EM config may need to be updated to use it.\n\n[change 96378]: https://gerrit.openbmc.org/c/openbmc/docs/+/96378",
+      "revId": "7892db359c635a8c2a33d0c5f7b045c6ff836e27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
