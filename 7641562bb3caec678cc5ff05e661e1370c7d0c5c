@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "782c337a_f19341f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-28T09:34:14Z",
+      "side": 1,
+      "message": "moving to resolved. Pls feel free to reopen for further queries.",
+      "parentUuid": "7d602376_89dd83a9",
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "180265a0_036c4675",
@@ -49,6 +67,24 @@
       "writtenOn": "2026-10-26T01:41:56Z",
       "side": 1,
       "message": "Can we point to spec?",
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7a1cbf_1d95b975",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-28T09:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "180265a0_036c4675",
       "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -76,6 +112,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a3d36b_285994b9",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-28T09:34:14Z",
+      "side": 1,
+      "message": "removed copy. changed to return directly.",
+      "parentUuid": "50c8947d_34cb4222",
+      "range": {
+        "startLine": 73,
+        "startChar": 16,
+        "endLine": 73,
+        "endChar": 61
+      },
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69e2691b_5a373804",
@@ -93,6 +153,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d74799_39b113c4",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-28T09:34:14Z",
+      "side": 1,
+      "message": "agreed.",
+      "parentUuid": "69e2691b_5a373804",
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "acd4180e_0877d933",
@@ -106,6 +184,24 @@
       "writtenOn": "2026-10-26T01:41:56Z",
       "side": 1,
       "message": "Do we want to fallback to existing path instead of returning?",
+      "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0f1bae7_405698e8",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-28T09:34:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acd4180e_0877d933",
       "revId": "7641562bb3caec678cc5ff05e661e1370c7d0c5c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
