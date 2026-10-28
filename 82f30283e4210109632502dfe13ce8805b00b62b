@@ -16,6 +16,24 @@
       "message": "Please confirm common/utils.hpp is included directly in this file and not only transitively, and that \u003climits\u003e is still needed by getRangeFieldValue. Remove it if not.",
       "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f070bdf_5874f7b1",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:43Z",
+      "side": 0,
+      "message": "`common/utils.hpp` is included directly at L3, where `\u003climits\u003e` is still used by `getRangeFieldValue()` and the threshold default so not removing it.",
+      "parentUuid": "1c3f1a65_c90117e0",
+      "revId": "82f30283e4210109632502dfe13ce8805b00b62b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

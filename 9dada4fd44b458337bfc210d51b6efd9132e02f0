@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a80c759a_062be6a8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:43Z",
+      "side": 1,
+      "message": "Dropped the value of live measurement.\nAlso, I have added several test case in the parent patch to ensure the correctness of the conversion.",
+      "parentUuid": "fc440f94_c70ddabf",
+      "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a76f40d_30dee792",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Why aer you asking for a manual run of clang-format? CI is not failing. If this as an AI suggested review (which itself is fine), let\u0027s make sure to do a self-review before posting it.",
       "parentUuid": "6a76f40d_30dee792",
+      "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66622ab2_d1080a24",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:43Z",
+      "side": 1,
+      "message": "CI\u0027s format check passes on this, so I kept it as is.",
+      "parentUuid": "dd73eb27_2d9b9122",
       "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
