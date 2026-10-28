@@ -33,6 +33,23 @@
       "message": "FYI, [change 96378] proposes moving PLDM-specific settings to a separate `PLDMTerminus` entry. If it is accepted, this change and the corresponding EM config may need to be updated to use it.\n\n[change 96378]: https://gerrit.openbmc.org/c/openbmc/docs/+/96378",
       "revId": "7892db359c635a8c2a33d0c5f7b045c6ff836e27",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10da44fd_e50c7184",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 41
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-28T11:05:05Z",
+      "side": 1,
+      "message": "Should this compare the whole path instead of a prefix? If one config object\u0027s path starts with another\u0027s (e.g. .../MMC and .../MMC2), the second one also passes `starts_with` and its properties would be applied to the first terminus.",
+      "revId": "7892db359c635a8c2a33d0c5f7b045c6ff836e27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
