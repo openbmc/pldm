@@ -46,9 +46,10 @@ exec::task<int> PlatformManager::initTerminus()
             continue;
         }
 
-        /* Get Fru */
+        /* Get Fru, unless Entity Manager turns it off for this device */
         uint16_t totalTableRecords = 0;
-        if (terminus->doesSupportCommand(PLDM_FRU,
+        if (terminus->isFruEnabled(pldm::utils::DBusHandler()) &&
+            terminus->doesSupportCommand(PLDM_FRU,
                                          PLDM_GET_FRU_RECORD_TABLE_METADATA))
         {
             auto rc =
