@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98dbbe58_f3f6c573",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-10-28T12:41:43Z",
+      "side": 1,
+      "message": "FYI, [change 88234] (with EM [88233]) skips PLDM sensor creation per device through EM configuration, and the design in [96378] proposes a `PLDMTerminus` entry for such settings.\n\n[change 88234]: https://gerrit.openbmc.org/c/openbmc/pldm/+/88234\n[88233]: https://gerrit.openbmc.org/c/openbmc/entity-manager/+/88233\n[96378]: https://gerrit.openbmc.org/c/openbmc/docs/+/96378",
+      "revId": "d4b9040c52299dd8d274b56a8c75acc2ff43aeef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
