@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "808e2094_050b1b98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1002790
+      },
+      "writtenOn": "2026-10-28T07:37:33Z",
+      "side": 1,
+      "message": "Yes, linking the terminus to the EM object with `xyz.openbmc_project.Configuration.Object` is right, and this step works as it is, since the [configured_by association of Inventory.Item](https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/96104) has been merged. I\u0027ve posted a [design for the whole discovery flow](https://gerrit.openbmc.org/c/openbmc/docs/+/96378), and if that direction is accepted, I\u0027d like to rework the discovery part of pldmd along those lines later.",
+      "parentUuid": "736e5b8c_41eea093",
+      "range": {
+        "startLine": 11,
+        "startChar": 37,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cf58a2f_68716f56",
         "filename": "/COMMIT_MSG",
         "patchSetId": 6
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I am not sure which old patch you are referring to.\n\nBut mctp-reactor creates the association between EID and EM config. What we are adding here is the terminus (inventory created by PLDM) to EM association based on the association created by mctpreactor for EID.",
       "parentUuid": "6cf58a2f_68716f56",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71e22bb2_411e0590",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002790
+      },
+      "writtenOn": "2026-10-28T07:37:33Z",
+      "side": 1,
+      "message": "I think this is [the PLDMSensors change](https://gerrit.openbmc.org/c/openbmc/entity-manager/+/86156), which adds `PLDMSensors` to the MCTP transport records. The design above proposes keeping such settings on a `PLDMTerminus` entry for the device on its board instead, since a device behind a bridge has no transport record of its own.",
+      "parentUuid": "8f435801_551bc9a9",
       "range": {
         "startLine": 15,
         "startChar": 0,
