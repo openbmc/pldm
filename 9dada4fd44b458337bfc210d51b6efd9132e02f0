@@ -16,6 +16,24 @@
       "message": "Nice cleanup. Could the helper return an integer value, such as std::optional\u003cint64_t\u003e? That would keep the JSON output unchanged.",
       "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72a02675_30ee4178",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 0,
+      "message": "Thanks, I kept the return type and cast to `int64_t` here instead because `platform-mc` uses the same helper and needs a double for `Sensor.Value`.",
+      "parentUuid": "0c2760aa_17d2a2d8",
+      "revId": "9dada4fd44b458337bfc210d51b6efd9132e02f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

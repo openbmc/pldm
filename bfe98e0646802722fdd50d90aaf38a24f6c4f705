@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16ace772_e45cb83f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "Acknowledged, I have reverted to use `int64_t`.",
+      "parentUuid": "bb3697e1_73419d34",
+      "range": {
+        "startLine": 13,
+        "startChar": 37,
+        "endLine": 13,
+        "endChar": 68
+      },
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8745be0_1baa5db4",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-26T07:07:00Z",
       "side": 1,
       "message": "presentReading shows 45 before and 44.0 after, so the readings differ and the example does not isolate the formatting change. Please use a stable sensor or the same PDR in both runs",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31e10f0d_3fee2b18",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "Acknowledged, I have recaptured to have effective evidence here.",
+      "parentUuid": "a8745be0_1baa5db4",
       "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "746d6632_a78f4094",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1907,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "Done, modified to cast to `int64_t`.\nHowever, I think the null case can\u0027t happen, as `decode_numeric_sensor_pdr_data()` reject any sensor data size above `PLDM_SENSOR_DATA_SIZE_MAX` and will return on that error before printing it.",
+      "parentUuid": "cdd672e0_c1e035d3",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "780fdddc_2e6d000a",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-10-26T07:07:00Z",
       "side": 1,
       "message": "Replacing the 4-byte array with the union is an improvement, because it will grow with the 64-bit arm. Please confirm decode_get_sensor_reading_resp never writes more than sizeof(union_sensor_data_size) bytes.",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bde5a9b_57f41132",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2507,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "Yes, `decode_get_sensor_reading_resp` rejects sizes above `SINT32` and only writes a single value of at most 4 bytes, so I think it fits.",
+      "parentUuid": "780fdddc_2e6d000a",
       "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -92,6 +170,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ffce96b_0db93977",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2513,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "I would rather leave this one as it, because `libpldm` writes the typed value at offset 0 in host byte order, which is what the union member expects.",
+      "parentUuid": "28bb9094_813b52ea",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cdb57f1_41027677",
@@ -105,6 +201,24 @@
       "writtenOn": "2026-10-26T07:07:00Z",
       "side": 1,
       "message": "Using std::isnan as the error signal obscures the cause. Please check sensorDataSize explicitly, or have the helper return std::optional\u003cdouble\u003e. In addition, \"presentReading\": null is still emitted after the error message. Consider returning an error code or omitting the key, to match the previous behaviour.",
+      "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caea5bde_2058f525",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T02:00:54Z",
+      "side": 1,
+      "message": "Acknowledged, removed in PS 11.",
+      "parentUuid": "9cdb57f1_41027677",
       "revId": "bfe98e0646802722fdd50d90aaf38a24f6c4f705",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
