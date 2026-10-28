@@ -1,3 +1,4 @@
+#include "common/test/mocked_utils.hpp"
 #include "common/utils.hpp"
 #include "platform-mc/dbus_impl_fru.hpp"
 #include "platform-mc/terminus.hpp"
@@ -12,6 +13,11 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+
+using ::testing::_;
+using ::testing::Return;
+using ::testing::StrEq;
+using ::testing::Throw;
 
 TEST(TerminusTest, supportedTypeTest)
 {
@@ -617,4 +623,157 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
 
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
+}
+
+TEST(TerminusTest, fruEnabledWithoutAssociatedPathTest)
+{
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(_, _)).Times(0);
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    EXPECT_TRUE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruDisabledByEntityManagerTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+    constexpr auto emService = "xyz.openbmc_project.EntityManager";
+    constexpr auto i2cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i2cTarget)))
+        .WillOnce(Return(emService));
+    EXPECT_CALL(mockedDbusHandler,
+                getDbusPropertiesVariant(StrEq(emService), StrEq(emPath),
+                                         StrEq(i2cTarget)))
+        .WillOnce(Return(pldm::utils::PropertyMap{{"DiscoverFRU", false}}));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_FALSE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruEnabledByEntityManagerTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+    constexpr auto emService = "xyz.openbmc_project.EntityManager";
+    constexpr auto i2cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i2cTarget)))
+        .WillOnce(Return(emService));
+    EXPECT_CALL(mockedDbusHandler,
+                getDbusPropertiesVariant(StrEq(emService), StrEq(emPath),
+                                         StrEq(i2cTarget)))
+        .WillOnce(Return(pldm::utils::PropertyMap{{"DiscoverFRU", true}}));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_TRUE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruEnabledWithoutPropertyTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+    constexpr auto emService = "xyz.openbmc_project.EntityManager";
+    constexpr auto i2cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i2cTarget)))
+        .WillOnce(Return(emService));
+    EXPECT_CALL(mockedDbusHandler,
+                getDbusPropertiesVariant(StrEq(emService), StrEq(emPath),
+                                         StrEq(i2cTarget)))
+        .WillOnce(Return(pldm::utils::PropertyMap{{"Name", "NIC_0"}}));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_TRUE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruEnabledWithWrongPropertyTypeTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+    constexpr auto emService = "xyz.openbmc_project.EntityManager";
+    constexpr auto i2cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i2cTarget)))
+        .WillOnce(Return(emService));
+    EXPECT_CALL(mockedDbusHandler,
+                getDbusPropertiesVariant(StrEq(emService), StrEq(emPath),
+                                         StrEq(i2cTarget)))
+        .WillOnce(Return(pldm::utils::PropertyMap{{"DiscoverFRU", "false"}}));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_TRUE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruDisabledOnSecondInterfaceTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+    constexpr auto emService = "xyz.openbmc_project.EntityManager";
+    constexpr auto i2cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI2CTarget";
+    constexpr auto i3cTarget =
+        "xyz.openbmc_project.Configuration.MCTPI3CTarget";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i2cTarget)))
+        .WillOnce(Throw(std::exception()));
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), StrEq(i3cTarget)))
+        .WillOnce(Return(emService));
+    EXPECT_CALL(mockedDbusHandler,
+                getDbusPropertiesVariant(StrEq(emService), StrEq(emPath),
+                                         StrEq(i3cTarget)))
+        .WillOnce(Return(pldm::utils::PropertyMap{{"DiscoverFRU", false}}));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_FALSE(t1.isFruEnabled(mockedDbusHandler));
+}
+
+TEST(TerminusTest, fruEnabledWhenEntityManagerUnreachableTest)
+{
+    constexpr auto emPath =
+        "/xyz/openbmc_project/inventory/system/board/Board_0/NIC_0";
+
+    MockdBusHandler mockedDbusHandler;
+    EXPECT_CALL(mockedDbusHandler, getService(StrEq(emPath), _))
+        .WillRepeatedly(Throw(std::exception()));
+
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setAssociatedPath(emPath);
+
+    EXPECT_TRUE(t1.isFruEnabled(mockedDbusHandler));
 }

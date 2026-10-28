@@ -204,6 +204,19 @@ class Terminus
      */
     int fetchEntityManagerConfiguration();
 
+    /** @brief Whether the FRU data of this terminus should be requested
+     *
+     *  Entity Manager can turn FRU off for a device with the boolean
+     *  property "DiscoverFRU" on the device's MCTP target configuration. FRU
+     *  stays enabled when there is no associated configuration, the property
+     *  is absent or not a boolean, or Entity Manager cannot be read.
+     *
+     *  @param[in] handler - D-Bus handler used to read the property
+     *
+     *  @return false only when Entity Manager sets DiscoverFRU to false
+     */
+    bool isFruEnabled(const pldm::utils::DBusHandler& handler);
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.

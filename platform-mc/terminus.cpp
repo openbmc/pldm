@@ -968,5 +968,53 @@ int Terminus::fetchEntityManagerConfiguration()
     return 0;
 }
 
+bool Terminus::isFruEnabled(const pldm::utils::DBusHandler& handler)
+{
+    auto path = getAssociatedPath();
+    if (!path.has_value())
+    {
+        return true;
+    }
+
+    const std::string objPath(*path);
+    std::string lastError;
+    for (const auto& interface : interfaceFilter)
+    {
+        try
+        {
+            auto service =
+                handler.getService(objPath.c_str(), interface.c_str());
+            auto properties = handler.getDbusPropertiesVariant(
+                service.c_str(), objPath.c_str(), interface.c_str());
+
+            auto it = properties.find("DiscoverFRU");
+            if (it == properties.end() ||
+                !std::holds_alternative<bool>(it->second))
+            {
+                return true;
+            }
+
+            if (!std::get<bool>(it->second))
+            {
+                lg2::info(
+                    "Terminus ID {TID}: Entity Manager sets DiscoverFRU to false on {PATH}. Skipping FRU data.",
+                    "TID", tid, "PATH", objPath);
+                return false;
+            }
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            // The object does not implement this interface, try the next one
+            lastError = e.what();
+        }
+    }
+
+    lg2::error(
+        "Terminus ID {TID}: Cannot read DiscoverFRU on {PATH}, keeping FRU enabled: {ERR}",
+        "TID", tid, "PATH", objPath, "ERR", lastError);
+    return true;
+}
+
 } // namespace platform_mc
 } // namespace pldm
