@@ -16,6 +16,121 @@
       "message": "Can you add details on what testing was done and also write some unit tests?",
       "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd9aa7fd_6a65e3f0",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T03:00:50Z",
+      "side": 1,
+      "message": "Q: Do we have any guideline of choosing 120s as timeout?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 72
+      },
+      "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74f3bb42_54d7f119",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T03:00:50Z",
+      "side": 1,
+      "message": "Q: Why do we need to extract these EIDs just for loop through them in the cancelling ?",
+      "range": {
+        "startLine": 362,
+        "startChar": 8,
+        "endLine": 365,
+        "endChar": 9
+      },
+      "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fa84ce5_bd21351e",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T03:00:50Z",
+      "side": 1,
+      "message": "Don\u0027t we need to remove the healthy termini from `timeoutEids`?\n\nBased on my understanding, this implementation suggests to cancel every endpoint in this batch, including those may have been successfully discovered during the early phase of the discovery process.",
+      "range": {
+        "startLine": 371,
+        "startChar": 12,
+        "endLine": 373,
+        "endChar": 70
+      },
+      "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f92cdff0_4f74ed42",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T03:00:50Z",
+      "side": 1,
+      "message": "nit:\nShall we simply loop through `mctpInfos` and log for each canceling EID, instead of doing such one time log?\nIn this way we can get rid of `eidsToString()`.",
+      "range": {
+        "startLine": 374,
+        "startChar": 16,
+        "endLine": 376,
+        "endChar": 47
+      },
+      "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8778f5d3_8eb13a74",
+        "filename": "platform-mc/terminus_manager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-28T03:00:50Z",
+      "side": 1,
+      "message": "Perhaps we can loop through the `mctpInfos` directly here?\n```\nfor (const auto\u0026 mctpInfo : mctpInfos) \n{\n    handler.cancelEndpointRequests(std::get\u003c0\u003e(mctpInfo));\n}\n```",
+      "range": {
+        "startLine": 377,
+        "startChar": 16,
+        "endLine": 380,
+        "endChar": 17
+      },
+      "revId": "d35de7d0d5cfafb13ed477e479a581d2bd961f7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
