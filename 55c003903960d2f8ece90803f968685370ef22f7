@@ -3,6 +3,103 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89c180f6_9cced336",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-28T07:42:54Z",
+      "side": 1,
+      "message": "Since GetFWParams is also part of discovery, should we consider extending it there as well?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 39
+      },
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc5f51d9_0bb9df81",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-28T07:42:54Z",
+      "side": 1,
+      "message": "Can we stop the request along with erasing the entry? Currently if the eid is removed while a request is in flight, removing this entry does not stop the request.",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908285d6_fe3e9ce7",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-28T07:42:54Z",
+      "side": 1,
+      "message": "nit: Please reuse the event loop from manager",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f45f0d3_4fbc8d2a",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-28T07:42:54Z",
+      "side": 1,
+      "message": "Can we change this to warning and also update the message? The message reads as final in the current form",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a985dc_383d84ed",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-28T07:42:54Z",
+      "side": 1,
+      "message": "What if the FD is too busy to reply in time consistently? In worst case scenario, we\u0027ll have the 3 retries from requester code due to delays, followed by the 3 retries here",
+      "range": {
+        "startLine": 170,
+        "startChar": 36,
+        "endLine": 170,
+        "endChar": 68
+      },
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "916d87c8_e894ae5e",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 3
