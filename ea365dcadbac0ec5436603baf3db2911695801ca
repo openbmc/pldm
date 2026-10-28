@@ -34,6 +34,24 @@
       "parentUuid": "e7076048_c98d3991",
       "revId": "ea365dcadbac0ec5436603baf3db2911695801ca",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e96cda8_34b67121",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 694,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-10-28T01:24:34Z",
+      "side": 0,
+      "message": "Agreed, changed back to return so a partially decoded table no longer creates the image-level entry or updates componentInfoMap. Updated the unit test accordingly.",
+      "parentUuid": "84c2f477_62e53ca2",
+      "revId": "ea365dcadbac0ec5436603baf3db2911695801ca",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
