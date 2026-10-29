@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c84a8f_ce4a5fae",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8fc3765e_7c020778",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f350fd88_661cbf84",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-27T09:57:33Z",
       "side": 1,
       "message": "The two guarded overloads duplicate the guard logic. A single template over the member pointer, using if constexpr (std::is_same_v\u003cstd::invoke_result_t\u003c...\u003e, bool\u003e), would remove the duplication and avoid a third overload when a new response type appears.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84d57069_7aed84e8",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1275,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Agreed, thanks for the suggestion!",
+      "parentUuid": "f350fd88_661cbf84",
       "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -69,6 +105,42 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd9e9680_1cd0d160",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Created an empty tag type since make_shared\u003cvoid\u003e is invalid",
+      "parentUuid": "95d323f4_9560526f",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a6c4b9_b985b66b",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Ack, deleted the copy and move operations",
+      "parentUuid": "1d4c2c4b_6ac5d15c",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a4e7988_e5189c52",
@@ -99,6 +171,42 @@
       "writtenOn": "2026-10-27T09:57:33Z",
       "side": 1,
       "message": "Please add the companion positive test: with a live updater, the guarded handler does deliver the response, so the guard is not trivially always dropping. Also add a case for the checked variant (passCompTable or updateComponent) to show that failAndCancelUpdate() is not called on an expired updater.",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c836fb_b62b5b06",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c36e806b_ede2e6a6",
+      "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b343446b_6920c5ba",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:29:03Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2a4e7988_e5189c52",
       "revId": "382311fec0ff6fe59a848e2f4f165ac948713f5c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
