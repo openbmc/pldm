@@ -2,13 +2,16 @@
 
 #include "common/utils.hpp"
 
+#include <fcntl.h>
 #include <poll.h>
+#include <sys/socket.h>
 #include <unistd.h>
 
 #include <CLI/CLI.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
 
+#include <array>
 #include <cerrno>
 #include <cstring>
 #include <format>
@@ -33,12 +36,13 @@ constexpr const char* FileRootPath = "/xyz/openbmc_project/pldm/file";
 constexpr const char* DBusProperties = "org.freedesktop.DBus.Properties";
 
 /** @brief Hex-dump bytes to stdout, 16 bytes per row */
-static void hexDump(const std::vector<uint8_t>& data)
+static void hexDump(const std::vector<uint8_t>& data, uint64_t baseOffset = 0)
 {
     constexpr size_t rowWidth = 16;
     for (size_t i = 0; i < data.size(); i += rowWidth)
     {
-        std::cout << std::hex << std::setw(8) << std::setfill('0') << i << "  ";
+        std::cout << std::hex << std::setw(8) << std::setfill('0')
+                  << baseOffset + i << "  ";
         for (size_t j = i; j < i + rowWidth; ++j)
         {
             if (j < data.size())
@@ -100,9 +104,10 @@ static uint64_t getUint64Prop(sdbusplus::bus_t& bus, const std::string& objPath,
         reply.read(val);
         return std::get<uint64_t>(val);
     }
-    catch (...)
+    catch (const std::exception& e)
     {
-        return 0;
+        throw std::runtime_error(
+            std::string("Cannot read file size: ") + e.what());
     }
 }
 
@@ -150,7 +155,7 @@ static std::vector<std::string> printFileList()
     {
         auto name = getStringProp(bus, path, "Name");
         auto purpose = getStringProp(bus, path, "Purpose");
-        auto size = getUint64Prop(bus, path, "Size");
+        auto size = getUint64Prop(bus, path, "CurrentSize");
 
         // strip the enum prefix (e.g.
         // "xyz.openbmc_project.PLDM.File.PurposeType.")
@@ -174,9 +179,16 @@ static void doRead(const std::string& objPath, uint32_t offset, uint32_t length,
 {
     auto bus = sdbusplus::bus::new_default();
 
+    const auto size = getUint64Prop(bus, objPath, "CurrentSize");
+    if (offset > size || (length != 0 && length > size - offset))
+    {
+        throw std::runtime_error("Requested range exceeds current file size");
+    }
+    const uint64_t expected = length == 0 ? size - offset : length;
+
     auto method = bus.new_method_call(PLDMService, objPath.c_str(),
                                       FileInterface, "Open");
-    method.append(offset, length, exclusivity);
+    method.append(size_t{offset}, size_t{length}, exclusivity);
 
     sdbusplus::message_t reply;
     try
@@ -185,8 +197,7 @@ static void doRead(const std::string& objPath, uint32_t offset, uint32_t length,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        std::cerr << "D-Bus call to Open() failed: " << e.what() << "\n";
-        return;
+        throw std::runtime_error(std::string("D-Bus Open failed: ") + e.what());
     }
 
     sdbusplus::message::unix_fd socketFd;
@@ -196,84 +207,90 @@ static void doRead(const std::string& objPath, uint32_t offset, uint32_t length,
     }
     catch (const sdbusplus::exception_t& e)
     {
-        std::cerr << "Failed to read unix_fd from reply: " << e.what() << "\n";
-        return;
+        throw std::runtime_error(
+            std::string("Invalid Open reply: ") + e.what());
     }
 
-    std::vector<uint8_t> data;
-    uint8_t buf[4096];
-    bool readError = false;
-    bool done = false;
-    while (!done)
+    // The reply owns socketFd. Duplicate it for independent RAII ownership.
+    pldm::utils::CustomFD input(fcntl(socketFd.fd, F_DUPFD_CLOEXEC, 0));
+    if (input() < 0)
     {
-        struct pollfd pfd = {};
-        pfd.fd = socketFd.fd;
-        pfd.events = POLLIN;
-        int ret = poll(&pfd, 1, -1);
-        if (ret < 0)
+        throw std::runtime_error("Cannot duplicate transfer descriptor");
+    }
+    pldm::utils::CustomFD output(
+        outputFile.empty()
+            ? -1
+            : open(outputFile.c_str(),
+                   O_WRONLY | O_CREAT | O_TRUNC | O_NOFOLLOW | O_CLOEXEC,
+                   0600));
+    if (!outputFile.empty() && output() < 0)
+    {
+        throw std::runtime_error("Cannot open output file");
+    }
+    uint64_t received = 0;
+    std::array<uint8_t, 4096> buffer{};
+    while (true)
+    {
+        pollfd watch{input(), POLLIN, 0};
+        auto ready = poll(&watch, 1, 10000);
+        if (ready < 0 && errno == EINTR)
         {
-            std::cerr << "poll() failed: " << std::strerror(errno) << "\n";
-            readError = true;
+            continue;
+        }
+        if (ready <= 0 || (watch.revents & (POLLERR | POLLNVAL)))
+        {
+            throw std::runtime_error("Transfer socket timed out or failed");
+        }
+        auto count = recv(input(), buffer.data(), buffer.size(), MSG_DONTWAIT);
+        if (count < 0 && (errno == EINTR || errno == EAGAIN))
+        {
+            continue;
+        }
+        if (count < 0)
+        {
+            throw std::runtime_error("Transfer socket read failed");
+        }
+        if (count == 0)
+        {
             break;
         }
-        if (pfd.revents & (POLLERR | POLLNVAL))
+        if (static_cast<uint64_t>(count) > expected - received)
         {
-            std::cerr << "Socket error on poll\n";
-            readError = true;
-            break;
+            throw std::runtime_error("Transfer exceeds requested byte count");
         }
-        // Drain all available data (POLLIN or POLLHUP may both carry data)
-        while (!done)
+        received += count;
+        if (output() >= 0)
         {
-            ssize_t n = read(socketFd.fd, buf, sizeof(buf));
-            if (n > 0)
+            ssize_t written = 0;
+            while (written < count)
             {
-                data.insert(data.end(), buf, buf + n);
-            }
-            else if (n == 0)
-            {
-                done = true; // EOF: server closed its end
-            }
-            else
-            {
-                if (errno == EAGAIN || errno == EWOULDBLOCK)
+                auto result =
+                    write(output(), buffer.data() + written, count - written);
+                if (result < 0 && errno == EINTR)
                 {
-                    break; // no more data right now, go back to poll
+                    continue;
                 }
-                std::cerr << "Error reading from socket: "
-                          << std::strerror(errno) << "\n";
-                readError = true;
-                done = true;
+                if (result <= 0)
+                {
+                    throw std::runtime_error("Output write failed");
+                }
+                written += result;
             }
         }
-        if (!done && (pfd.revents & POLLHUP))
+        else
         {
-            done = true; // peer hung up and we drained all data above
+            hexDump(std::vector<uint8_t>(buffer.begin(),
+                                         buffer.begin() + count),
+                    received - count);
         }
     }
-    if (readError)
+    if (received != expected || (output() >= 0 && fsync(output()) < 0))
     {
-        return;
+        throw std::runtime_error(
+            "Incomplete transfer or output synchronization failed");
     }
-
-    std::cerr << "Read " << data.size() << " bytes from " << objPath << "\n";
-
-    if (!outputFile.empty())
-    {
-        std::ofstream ofs(outputFile, std::ios::binary);
-        if (!ofs)
-        {
-            std::cerr << "Failed to open output file: " << outputFile << "\n";
-            return;
-        }
-        ofs.write(reinterpret_cast<const char*>(data.data()),
-                  static_cast<std::streamsize>(data.size()));
-        std::cerr << "Data written to " << outputFile << "\n";
-    }
-    else
-    {
-        hexDump(data);
-    }
+    std::cerr << "Read " << received << " bytes from " << objPath << "\n";
+    // Legacy File.Open has no per-transfer terminal-status return value.
 }
 
 } // namespace
@@ -312,7 +329,20 @@ class ReadFile
         app->add_flag("-x,--exclusive", exclusivity,
                       "Request exclusive access to the file");
 
-        app->callback([&]() { exec(); });
+        app->callback([&]() {
+            try
+            {
+                exec();
+            }
+            catch (const std::exception& e)
+            {
+                throw CLI::RuntimeError(e.what(), 1);
+            }
+            catch (const std::error_condition& e)
+            {
+                throw CLI::RuntimeError(e.message(), 1);
+            }
+        });
     }
 
   private:
@@ -345,9 +375,7 @@ class ReadFile
             auto paths = listFileObjects();
             if (index < 0 || static_cast<size_t>(index) >= paths.size())
             {
-                std::cerr << "Index " << index << " is out of range (0.."
-                          << paths.size() - 1 << ")\n";
-                return;
+                throw CLI::RuntimeError("File index is out of range", 1);
             }
             target = paths[index];
         }
@@ -359,7 +387,7 @@ class ReadFile
 void registerCommand(CLI::App& app)
 {
     auto file =
-        app.add_subcommand("file", "PLDM File Transfer (DSP0248) commands");
+        app.add_subcommand("file", "PLDM File Transfer (DSP0242) commands");
     file->require_subcommand(1);
 
     auto listFiles = file->add_subcommand(
