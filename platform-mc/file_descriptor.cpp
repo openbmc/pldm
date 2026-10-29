@@ -1,10 +1,11 @@
 #include "file_descriptor.hpp"
 
 #include "file_cmds.hpp"
+#include "file_transfer_wait.hpp"
+#include "regular_file_transfer.hpp"
 
 #include <libpldm/edac.h>
 #include <libpldm/entity.h>
-#include <poll.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -29,13 +30,6 @@ using namespace sdbusplus::xyz::openbmc_project::Common::Error;
 using NotAllowedMetaData = xyz::openbmc_project::Common::NotAllowed;
 using PurposeType =
     sdbusplus::common::xyz::openbmc_project::pldm::File::PurposeType;
-
-// Maximum retry allowed to tolerate local socket back-pressure while the
-// consumer drains a large file-transfer stream.
-constexpr auto MAX_SOCKET_POLL_RETRY = 120;
-
-// Timeout in milliseconds used in poll() for the server socket.
-constexpr auto SOCKET_POLL_TIMEOUT_MS = 50;
 
 // Local socket buffer used between the PLDM transfer task and its consumer.
 constexpr int FILE_TRANSFER_SOCKET_BUFFER_SIZE = 1024 * 1024;
@@ -72,7 +66,7 @@ FileDescriptor::FileDescriptor(
         lg2::error(
             "Terminus ID {TID}: File Descriptor Constructor does not have valid pdr ptr.",
             "TID", tid);
-        return;
+        elog<Unavailable>();
     }
 
     entityInfo = std::make_tuple(
@@ -113,370 +107,318 @@ void FileDescriptor::setPurpose(FileClassification classification)
     }
 }
 
+exec::task<int> FileDescriptor::keepAlive()
+{
+    const auto now = std::chrono::steady_clock::now();
+    if (now >= deadline || !available || !sessionOpen ||
+        negotiatedInterval == 0 ||
+        now - lastActivity >= std::chrono::milliseconds(negotiatedInterval))
+    {
+        co_return PLDM_ERROR_NOT_READY;
+    }
+    if (now - lastActivity < std::chrono::milliseconds(negotiatedInterval / 2))
+    {
+        co_return PLDM_SUCCESS;
+    }
+    const pldm_file_df_heartbeat_req request{activeDescriptor,
+                                             REQUESTER_MAX_INTERVAL_MS};
+    pldm_file_df_heartbeat_resp response{};
+    const auto sentAt = std::chrono::steady_clock::now();
+    const auto previousInterval = negotiatedInterval;
+    auto rc = co_await dfHeartbeat(terminusManager, tid, &request, &response);
+    if (!rc && (!available || std::chrono::steady_clock::now() - lastActivity >=
+                                  std::chrono::milliseconds(previousInterval)))
+    {
+        rc = PLDM_ERROR_NOT_READY;
+    }
+    if (rc)
+    {
+        co_return rc;
+    }
+    negotiatedInterval = std::min<uint32_t>(REQUESTER_MAX_INTERVAL_MS,
+                                            response.responder_max_interval);
+    if (negotiatedInterval < 10)
+    {
+        // Local scheduling support limit, not a DMTF minimum.
+        co_return PLDM_ERROR_NOT_READY;
+    }
+    lastActivity = sentAt;
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> FileDescriptor::waitForStorage()
+{
+    // Signal data EOF while retaining the PLDM session until the sink has
+    // synchronized its file. This is an internal API, not a new wire protocol.
+    if (shutdown(sockets[SERVER_IDX], SHUT_WR) < 0)
+    {
+        co_return PLDM_ERROR;
+    }
+    const auto progressDeadline =
+        std::chrono::steady_clock::now() + std::chrono::seconds(30);
+    while (storageCompletion.wait_for(std::chrono::seconds(0)) !=
+           std::future_status::ready)
+    {
+        auto rc = co_await keepAlive();
+        if (rc || std::chrono::steady_clock::now() >= progressDeadline)
+        {
+            co_return rc ? rc : PLDM_ERROR_NOT_READY;
+        }
+        if (co_await file_transfer::Yield{})
+        {
+            co_return PLDM_ERROR;
+        }
+    }
+    co_return storageCompletion.get();
+}
+
 exec::task<int> FileDescriptor::writeDataToSocket(
     size_t dataSize, const uint8_t* const data, int socket)
 {
-    uint8_t retries = 0;
-    size_t remaining = dataSize;
-
-    while (remaining > 0)
+    size_t written = 0;
+    auto progressDeadline =
+        std::chrono::steady_clock::now() + std::chrono::seconds(5);
+    while (written < dataSize)
     {
-        if (retries > MAX_SOCKET_POLL_RETRY)
+        auto rc = co_await keepAlive();
+        if (rc || std::chrono::steady_clock::now() >= progressDeadline)
         {
-            lg2::error(
-                "Failed to write to output socket for terminus ID {TID}, FileIdentifier {ID} after {RETRY} retries.",
-                "TID", tid, "ID", identifier, "RETRY", retries);
             co_return PLDM_ERROR;
         }
-        pollfd pollFd{socket, POLLOUT, 0};
-        int retval = poll(&pollFd, 1, SOCKET_POLL_TIMEOUT_MS);
-        if (retval < 0)
+        auto count = send(socket, data + written, dataSize - written,
+                          MSG_DONTWAIT | MSG_NOSIGNAL);
+        if (count > 0)
         {
-            if (errno == EINTR)
-            {
-                continue;
-            }
-            lg2::error(
-                "Failed to poll output socket for terminus ID {TID}, FileIdentifier {ID}, error number - {ERR}.",
-                "TID", tid, "ID", identifier, "ERR", errno);
-            co_return PLDM_ERROR;
-        }
-        if (retval == 0)
-        {
-            lg2::error(
-                "Socket poll timeout for terminus ID {TID}, FileIdentifier {ID}.",
-                "TID", tid, "ID", identifier);
-            retries++;
+            written += static_cast<size_t>(count);
+            progressDeadline =
+                std::chrono::steady_clock::now() + std::chrono::seconds(5);
             continue;
         }
-        if (pollFd.revents & (POLLERR | POLLHUP | POLLNVAL))
+        if (count < 0 &&
+            (errno == EINTR || errno == EAGAIN || errno == EWOULDBLOCK))
         {
-            lg2::error(
-                "Output socket closed for terminus ID {TID}, FileIdentifier {ID}, events {EVENTS}.",
-                "TID", tid, "ID", identifier, "EVENTS", pollFd.revents);
-            co_return PLDM_ERROR;
-        }
-        if (pollFd.revents & POLLOUT)
-        {
-            auto bytes = send(socket, data + (dataSize - remaining), remaining,
-                              MSG_NOSIGNAL);
-            if (bytes < 0)
+            // Yield even on EINTR: repeated signals cannot monopolize the loop.
+            if (co_await file_transfer::Yield{})
             {
-                const int sendErrno = errno;
-                if (sendErrno == EINTR)
-                {
-                    continue;
-                }
-                if (sendErrno == EAGAIN || sendErrno == EWOULDBLOCK)
-                {
-                    retries++;
-                    continue;
-                }
-                lg2::error(
-                    "Failed to write to output socket for terminus ID {TID}, FileIdentifier {ID}, error number - {ERR}.",
-                    "TID", tid, "ID", identifier, "ERR", sendErrno);
                 co_return PLDM_ERROR;
             }
-            if (bytes == 0)
-            {
-                lg2::error(
-                    "Zero-byte socket write for terminus ID {TID}, FileIdentifier {ID}.",
-                    "TID", tid, "ID", identifier);
-                co_return PLDM_ERROR;
-            }
-            remaining -= static_cast<size_t>(bytes);
-            retries = 0;
-        }
-        else
-        {
-            lg2::debug(
-                "Output socket is not writable for terminus ID {TID}, FileIdentifier {ID}.",
-                "TID", tid, "ID", identifier);
-            retries++;
             continue;
         }
+        co_return PLDM_ERROR; // zero send, closed peer, or another socket error
     }
-
     co_return PLDM_SUCCESS;
 }
 
 exec::task<int> FileDescriptor::readFileBySection(
     DfOpenFD fd, SectionOffset offset, SectionOffset length,
-    std::vector<uint8_t>& readBuffer)
+    std::vector<uint8_t>& readBuffer, bool finalSection)
 {
-    int rc;
-
-    TransferOp transferOp = PLDM_XFER_FIRST_PART;
-    DfOpenFD transferCtx = fd;
-    TransferHandle dataTransferHandle = 0;
-    SectionOffset requestSectionOffset = offset;
-    SectionOffset requestSectionLength = length;
-
-    bool isEnd = false;
-
-    while (!isEnd)
+    bool delivered = false;
+    file_transfer::Section section(length, negotiatedPartSize);
+    while (true)
     {
-        Checksum dataIntegrityChecksum = 0;
-
-        const struct pldm_base_multipart_receive_req reqData = {
-            PLDM_FILE,          transferOp,           transferCtx,
-            dataTransferHandle, requestSectionOffset, requestSectionLength};
-        struct pldm_base_multipart_receive_resp respData = {};
-
-        rc = co_await sendMultipartReceive(terminusManager, tid, &reqData,
-                                           &respData, dataIntegrityChecksum);
-
+        auto rc = co_await keepAlive();
         if (rc)
         {
-            lg2::error(
-                "Failed to send MultipartReceive request for {LEN} bytes at offset {OFF} for TID {TID}, file descriptor {FD} with error {RC}",
-                "LEN", requestSectionLength, "OFF", requestSectionOffset, "TID",
-                tid, "FD", fd, "RC", rc);
             co_return rc;
         }
-
-        std::vector<uint8_t> buffer;
-        if (respData.data.length > 0)
+        const auto operation = section.operation();
+        if (operation == PLDM_XFER_COMPLETE && finalSection &&
+            storageCompletion.valid() && !delivered)
         {
-            if (respData.data.ptr == nullptr)
-            {
-                lg2::error(
-                    "MultipartReceive returned a missing payload for terminus ID {TID}, file descriptor {FD}.",
-                    "TID", tid, "FD", fd);
-                co_return PLDM_ERROR;
-            }
-            buffer.insert(buffer.end(), respData.data.ptr,
-                          respData.data.ptr + respData.data.length);
-        }
-
-        if (buffer.size())
-        {
-            readBuffer.insert(readBuffer.end(), buffer.begin(), buffer.end());
-        }
-
-        if (respData.transfer_flag !=
-            PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_ACK_COMPLETION)
-        {
-            auto calculatedCRC =
-                pldm_edac_crc32(readBuffer.data(), readBuffer.size());
-            if (calculatedCRC != dataIntegrityChecksum)
-            {
-                lg2::info(
-                    "Checksum mismatched while sending MultipartReceive request for TID {TID}, file descriptor {FD}.\nRe-requesting current part",
-                    "TID", tid, "FD", fd);
-
-                readBuffer.resize(readBuffer.size() - buffer.size());
-                // dataTransferHandle remains the handle previously requested
-                transferOp = PLDM_XFER_CURRENT_PART;
-                requestSectionOffset = 0;
-                requestSectionLength = 0;
-                continue;
-            }
-
-            rc = co_await writeDataToSocket(buffer.size(), buffer.data(),
+            rc = co_await writeDataToSocket(section.bytes().size(),
+                                            section.bytes().data(),
                                             sockets[SERVER_IDX]);
+            if (!rc)
+            {
+                rc = co_await waitForStorage();
+            }
             if (rc)
             {
-                lg2::error(
-                    "Failed to write part data of {LEN} bytes to the output socket {SOCKET} with error {RC}",
-                    "LEN", buffer.size(), "SOCKET", sockets[SERVER_IDX], "RC",
-                    rc);
-                co_return rc;
+                co_return rc; // Caller aborts before the final section ACK.
             }
+            delivered = true;
         }
-
-        switch (respData.transfer_flag)
+        const pldm_base_multipart_receive_req request{
+            PLDM_FILE,
+            operation,
+            fd,
+            section.handle(),
+            operation == PLDM_XFER_FIRST_PART ? offset : 0,
+            operation == PLDM_XFER_FIRST_PART ? length : 0};
+        pldm_base_multipart_receive_resp response{};
+        uint32_t checksum = 0;
+        const auto sentAt = std::chrono::steady_clock::now();
+        rc = co_await sendMultipartReceive(terminusManager, tid, &request,
+                                           &response, checksum);
+        if (rc || !available)
         {
-            case PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_START:
-            case PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_MIDDLE:
-                transferOp = PLDM_XFER_NEXT_PART;
-                dataTransferHandle = respData.next_transfer_handle;
-                requestSectionOffset = 0;
-                requestSectionLength = 0;
-                break;
-            case PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_END:
-            case PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_START_AND_END:
-                // Leave the decision of whether to request another section
-                // to the caller
-                transferOp = PLDM_XFER_COMPLETE;
-                dataTransferHandle = 0;
-                requestSectionOffset = 0;
-                requestSectionLength = 0;
-                break;
-            case PLDM_BASE_MULTIPART_RECEIVE_TRANSFER_FLAG_ACK_COMPLETION:
-                isEnd = true;
-                break;
-            default:
-                lg2::error(
-                    "Received bad transfer flag {FLAG} while sending MultipartReceive request for TID {TID}, file descriptor {FD}.",
-                    "FLAG", respData.transfer_flag, "TID", tid, "FD", fd);
-                co_return PLDM_ERROR;
+            co_return rc ? rc : PLDM_ERROR_NOT_READY;
+        }
+        if (std::chrono::steady_clock::now() - lastActivity >=
+            std::chrono::milliseconds(negotiatedInterval))
+        {
+            co_return PLDM_ERROR_NOT_READY;
+        }
+        lastActivity = sentAt;
+        if (response.data.length && !response.data.ptr)
+        {
+            co_return PLDM_ERROR_INVALID_DATA;
+        }
+        auto outcome = section.accept(
+            response.transfer_flag, response.next_transfer_handle,
+            std::span<const uint8_t>(response.data.ptr, response.data.length),
+            checksum);
+        if (outcome == file_transfer::Section::Outcome::invalid)
+        {
+            co_return PLDM_ERROR_INVALID_DATA;
+        }
+        if (outcome == file_transfer::Section::Outcome::complete)
+        {
+            if (!delivered)
+            {
+                readBuffer.assign(section.bytes().begin(),
+                                  section.bytes().end());
+            }
+            co_return PLDM_SUCCESS;
         }
     }
-
-    co_return rc;
 }
 
 exec::task<int> FileDescriptor::readFileByLength(DfOpenFD fd, size_t offset,
-                                                 size_t readLength)
+                                                 size_t length)
 {
-    std::vector<uint8_t> readBuffer{};
-    int rc;
-
-    if (isRegular)
+    while (length > 0)
     {
-        rc = co_await readFileBySection(fd, offset, readLength, readBuffer);
+        const auto count = static_cast<uint32_t>(
+            std::min<size_t>(length, file_transfer::Section::maximumSection));
+        std::vector<uint8_t> section;
+        auto rc = co_await readFileBySection(fd, offset, count, section,
+                                             count == length);
         if (rc)
         {
-            lg2::error(
-                "Failed to read {LEN} bytes at offset {OFF} from terminus ID {TID}, file descriptor {FD}, error {RC}.",
-                "LEN", readLength, "OFF", offset, "TID", tid, "FD", fd, "RC",
-                rc);
-            co_return PLDM_ERROR;
+            // DSP0240 Table 17: abort uses zero handle/offset/length.
+            const pldm_base_multipart_receive_req abort{
+                PLDM_FILE, PLDM_XFER_ABORT, fd, 0, 0, 0};
+            pldm_base_multipart_receive_resp ignored{};
+            uint32_t checksum = 0;
+            // Transport may be gone; cleanup failure must not replace root
+            // cause.
+            if (available)
+            {
+                co_await sendMultipartReceive(terminusManager, tid, &abort,
+                                              &ignored, checksum);
+            }
+            co_return rc;
         }
-        co_return PLDM_SUCCESS;
-    }
-
-    PartSize reqPartSize = REQUESTER_PART_SIZE;
-    PartSize respPartSize = 0;
-    bitfield8_t reqProtocol[8];
-    memset(&reqProtocol, 0, sizeof(reqProtocol));
-    reqProtocol[0].bits.bit0 = 1;
-    reqProtocol[0].bits.bit7 = 1;
-
-    struct pldm_base_negotiate_transfer_params_req negoParamsReq = {};
-    negoParamsReq.requester_part_size = reqPartSize;
-    memcpy(negoParamsReq.requester_protocol_support, reqProtocol,
-           8 * sizeof(*reqProtocol));
-    struct pldm_base_negotiate_transfer_params_resp negoParamsResp = {};
-    rc = co_await negotiateTransferParameters(terminusManager, tid,
-                                              &negoParamsReq, &negoParamsResp);
-    if (rc)
-    {
-        respPartSize = REQUESTER_PART_SIZE;
-        lg2::info(
-            "Failed to negotiate part size {PARTSIZE} for terminus ID {TID}, use {DEFAULT}",
-            "PARTSIZE", reqPartSize, "TID", tid, "DEFAULT", respPartSize);
-    }
-    else
-    {
-        respPartSize = negoParamsResp.responder_part_size;
-    }
-
-    rc = 0;
-    uint32_t remaining = readLength;
-    bool lastRead = false;
-
-    while ((remaining > 0) && !lastRead)
-    {
-        std::vector<uint8_t> buff{};
-        PartSize partSize = respPartSize;
-
-        if (partSize > remaining)
-        {
-            partSize = remaining;
-            lastRead = true;
-        }
-
-        rc = co_await readFileBySection(fd, 0, partSize, buff);
-
+        rc = co_await writeDataToSocket(section.size(), section.data(),
+                                        sockets[SERVER_IDX]);
         if (rc)
         {
-            lg2::error(
-                "Failed to read {LEN} bytes at offset 0 from terminus ID {TID}, file descriptor {FD}, error {RC}.",
-                "LEN", partSize, "TID", tid, "FD", fd, "RC", rc);
-            co_return PLDM_ERROR;
+            co_return rc;
         }
-
-        readBuffer.insert(readBuffer.end(), buff.begin(), buff.end());
-
-        if (buff.size() < partSize)
-        {
-            lastRead = true;
-        }
-
-        remaining -= buff.size();
+        offset += count;
+        length -= count;
     }
-
     co_return PLDM_SUCCESS;
 }
 
 exec::task<int> FileDescriptor::readTask(size_t offset, size_t length,
                                          bool exclusivity)
 {
-    int rc;
-    DfOpenFD curFd;
-    bitfield16_t reqAttr;
-    reqAttr.value = 0;
-    if (isRegular)
+    deadline = std::chrono::steady_clock::now() + std::chrono::minutes(2);
+    // Fresh negotiation per transfer avoids a stale negotiation cache on reset.
+    pldm_base_negotiate_transfer_params_req negotiate{};
+    negotiate.requester_part_size = REQUESTER_PART_SIZE;
+    negotiate.requester_protocol_support[0].bits.bit7 = 1;
+    pldm_base_negotiate_transfer_params_resp parameters{};
+    auto rc = co_await negotiateTransferParameters(terminusManager, tid,
+                                                   &negotiate, &parameters);
+    auto partSize = file_transfer::negotiatePartSize(
+        REQUESTER_PART_SIZE, parameters.responder_part_size,
+        parameters.responder_protocol_support[0].bits.bit7);
+    if (rc || !available || !partSize)
     {
-        reqAttr.bits.bit1 = exclusivity ? 1 : 0;
+        co_return rc ? rc : PLDM_ERROR_INVALID_DATA;
     }
-    else
+    negotiatedPartSize = *partSize;
+
+    // Size/range validation happens before the remote file is opened.
+    const auto size = getFileSize();
+    auto count = file_transfer::readLength(size, offset, length);
+    if (!count)
     {
-        reqAttr.bits.bit2 = 1;
+        co_return PLDM_ERROR_INVALID_DATA;
     }
-
-    struct pldm_file_df_open_req openReq = {identifier, reqAttr};
-    struct pldm_file_df_open_resp openResp = {};
-    rc = co_await dfOpen(terminusManager, tid, &openReq, &openResp);
-    if (rc)
+    bitfield16_t attributes{};
+    attributes.bits.bit1 = exclusivity;
+    const pldm_file_df_open_req open{identifier, attributes};
+    pldm_file_df_open_resp opened{};
+    rc = co_await dfOpen(terminusManager, tid, &open, &opened);
+    if (rc || !available)
     {
-        lg2::error(
-            "Failed to open file session from terminus ID {TID}, FileIdentifier {ID}, error {RC}.",
-            "TID", tid, "ID", identifier, "RC", rc);
-        co_return rc;
+        co_return rc ? rc : PLDM_ERROR_NOT_READY;
     }
-
-    curFd = openResp.file_descriptor;
-    if (isRegular)
-    {
-        Interval requesterMaxInterval = REQUESTER_MAX_INTERVAL_MS;
-        const struct pldm_file_df_heartbeat_req heartBeatReq = {
-            curFd, requesterMaxInterval};
-        struct pldm_file_df_heartbeat_resp heartBeatResp = {};
-        rc = co_await dfHeartbeat(terminusManager, tid, &heartBeatReq,
-                                  &heartBeatResp);
-    }
-
-    FileSize fileSize = getFileSize();
-
+    activeDescriptor = opened.file_descriptor;
+    sessionOpen = true;
     int readRc = PLDM_SUCCESS;
-    if (fileSize > 0)
+    try
     {
-        auto readLength = (length > 0) ? length : fileSize;
-
-        readRc = co_await readFileByLength(curFd, offset, readLength);
-        if (readRc)
+        const pldm_file_df_heartbeat_req heartbeat{activeDescriptor,
+                                                   REQUESTER_MAX_INTERVAL_MS};
+        pldm_file_df_heartbeat_resp response{};
+        const auto sentAt = std::chrono::steady_clock::now();
+        readRc =
+            co_await dfHeartbeat(terminusManager, tid, &heartbeat, &response);
+        negotiatedInterval = std::min<uint32_t>(
+            REQUESTER_MAX_INTERVAL_MS, response.responder_max_interval);
+        lastActivity = sentAt;
+        if (!readRc && negotiatedInterval < 10)
         {
-            lg2::error(
-                "Failed to read {LEN} bytes at offset {OFF} for terminus ID {TID}, FileIdentifier {ID}, error {RC}.",
-                "LEN", readLength, "OFF", offset, "TID", tid, "ID", identifier,
-                "RC", readRc);
-            // No return here as we still need to call DfClose.
+            readRc = PLDM_ERROR_NOT_READY;
+        }
+        if (!readRc)
+        {
+            readRc =
+                co_await readFileByLength(activeDescriptor, offset, *count);
+            if (!readRc && *count == 0 && storageCompletion.valid())
+            {
+                readRc = co_await waitForStorage();
+            }
         }
     }
-
-    const struct pldm_file_df_close_req closeReq = {
-        curFd, static_cast<bitfield16_t>(0)};
-    rc = co_await dfClose(terminusManager, tid, &closeReq);
-    if (rc)
+    catch (...)
     {
-        lg2::error(
-            "Failed to close file session from terminus ID {TID}, FileIdentifier {ID}, error {RC}.",
-            "TID", tid, "ID", identifier, "RC", rc);
+        // Exit the catch before awaiting cleanup (C++ coroutine restriction).
+        readRc = PLDM_ERROR;
     }
-
-    co_return readRc != PLDM_SUCCESS ? readRc : rc;
+    const pldm_file_df_close_req close{activeDescriptor, bitfield16_t{}};
+    rc = PLDM_ERROR_NOT_READY;
+    if (available)
+    {
+        rc = co_await dfClose(terminusManager, tid, &close);
+    }
+    sessionOpen = false;
+    co_return !available ? PLDM_ERROR_NOT_READY : (readRc ? readRc : rc);
 }
 
 sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
     size_t offset, size_t length, bool exclusivity)
 {
-    if (isDirectory)
+    return startRegularTransfer(offset, length, exclusivity).stream;
+}
+
+FileDescriptor::Transfer FileDescriptor::startRegularTransfer(
+    size_t offset, size_t length, bool exclusivity, bool requireStorage)
+{
+    if (!available)
     {
-        elog<NotAllowed>(
-            NotAllowedMetaData::REASON("Reading a directory is not allowed"));
+        elog<Unavailable>();
+    }
+    if (!isRegular || isDirectory)
+    {
+        elog<NotAllowed>(NotAllowedMetaData::REASON(
+            "Only regular files are supported by this transfer client"));
     }
 
     if (exclusivity)
@@ -504,8 +446,14 @@ sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
         taskHandle.reset();
     }
 
+    auto stored =
+        requireStorage ? std::make_shared<std::promise<int>>() : nullptr;
+    storageCompletion =
+        stored ? stored->get_future().share() : std::shared_future<int>{};
+
     /* Create a socketpair */
-    if (socketpair(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK, 0, sockets) == -1)
+    if (socketpair(AF_UNIX, SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0,
+                   sockets) == -1)
     {
         lg2::error(
             "Failed to setup socketpair for terminus ID {TID}, FileIdentifier {ID}, error number {ERR}.",
@@ -534,6 +482,8 @@ sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
     sdbusplus::message::unix_fd clientFd(sockets[CLIENT_IDX]);
     sockets[CLIENT_IDX] = -1;
 
+    completion = std::make_shared<std::promise<int>>();
+    auto terminal = completion->get_future().share();
     auto& [scope, rcOpt] = taskHandle.emplace();
     scope.spawn(
         readTask(offset, length, exclusivity) |
@@ -595,6 +545,7 @@ sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
                     // Complete the task and close its socket even if logging fails.
                 }
                 rcOpt.emplace(rc);
+                completion->set_value(rc);
                 if (sockets[SERVER_IDX] >= 0)
                 {
                     close(sockets[SERVER_IDX]);
@@ -603,7 +554,7 @@ sdbusplus::message::unix_fd FileDescriptor::startFileTransfer(
             }),
         exec::default_task_context<void>(stdexec::inline_scheduler{}));
 
-    return clientFd;
+    return {clientFd, std::move(terminal), std::move(stored)};
 }
 
 sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
@@ -613,12 +564,16 @@ sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
     // original alive until the next Open, after that reply has been sent.
     auto clientFd = startFileTransfer(offset, length, exclusivity);
     dbusClientFd.reset();
-    dbusClientFd.emplace(clientFd.fd);
+    dbusClientFd = std::make_unique<pldm::utils::CustomFD>(clientFd.fd);
     return clientFd;
 }
 
 FileSize FileDescriptor::getFileSize() const
 {
+    if (!available)
+    {
+        elog<Unavailable>();
+    }
     if (!sizeSensor)
     {
         sizeSensor =
@@ -638,15 +593,13 @@ FileSize FileDescriptor::getFileSize() const
         }
     }
 
-    double fileSize = sizeSensor->getSensorValue();
-    if (std::isfinite(fileSize))
+    const auto size =
+        file_transfer::validFileSize(sizeSensor->getSensorValue());
+    if (!size)
     {
-        return fileSize;
+        elog<Unavailable>();
     }
-    else
-    {
-        return maxSize;
-    }
+    return *size;
 }
 } // namespace platform_mc
 } // namespace pldm

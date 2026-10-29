@@ -48,3 +48,22 @@ foreach t : tests
         workdir: meson.current_source_dir(),
     )
 endforeach
+
+# Independent bounded-section state tests do not require a D-Bus fixture.
+test(
+    'regular_file_transfer_test',
+    executable(
+        'regular_file_transfer_test',
+        'regular_file_transfer_test.cpp',
+        dependencies: [libpldm_dep],
+    ),
+)
+
+test(
+    'file_transfer_wait_test',
+    executable(
+        'file_transfer_wait_test',
+        'file_transfer_wait_test.cpp',
+        dependencies: [sdbusplus, sdeventplus],
+    ),
+)

@@ -91,6 +91,10 @@ exec::task<int> dfClose(TerminusManager& terminusManager, pldm_tid_t tid,
         co_return rc;
     }
 
+    if (responseLen != PLDM_DF_CLOSE_RESP_BYTES)
+    {
+        co_return PLDM_ERROR_INVALID_LENGTH;
+    }
     struct pldm_file_df_close_resp resp_data = {};
     rc = decode_pldm_file_df_close_resp(responseMsg, responseLen, &resp_data);
     if (rc)

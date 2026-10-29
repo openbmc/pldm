@@ -12,6 +12,8 @@
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/PLDM/File/server.hpp>
 
+#include <chrono>
+#include <future>
 #include <optional>
 #include <string>
 
@@ -68,6 +70,34 @@ class FileDescriptor : virtual public FileInterface
     sdbusplus::message::unix_fd startFileTransfer(size_t offset, size_t length,
                                                   bool exclusivity);
 
+    struct Transfer
+    {
+        sdbusplus::message::unix_fd stream;
+        std::shared_future<int> completion;
+        // Internal sink acknowledgement; never crosses the D-Bus boundary.
+        std::shared_ptr<std::promise<int>> stored;
+    };
+
+    /** Start a regular transfer with an explicit protocol terminal result.
+     * Internal callers own stream.fd. All calls run on the event thread.
+     */
+    Transfer startRegularTransfer(size_t offset, size_t length,
+                                  bool exclusivity,
+                                  bool requireStorage = false);
+
+    void invalidate()
+    {
+        available = false;
+        if (busy())
+        {
+            taskHandle->first.request_stop();
+        }
+    }
+    bool busy() const
+    {
+        return taskHandle && !taskHandle->second.has_value();
+    }
+
     /** @brief Get current file size from the associated size sensor. */
     FileSize getFileSize() const;
 
@@ -78,6 +108,7 @@ class FileDescriptor : virtual public FileInterface
     }
 
   private:
+    bool available = true;
     bool isDirectory = false;
     bool isRegular = false;
     bool exReadPermitted = false;
@@ -92,14 +123,25 @@ class FileDescriptor : virtual public FileInterface
     TerminusManager& terminusManager;
 
     mutable std::shared_ptr<NumericSensor> sizeSensor;
+    uint16_t negotiatedPartSize = 0;
+    DfOpenFD activeDescriptor = 0;
+    bool sessionOpen = false;
+    uint32_t negotiatedInterval = 0;
+    std::chrono::steady_clock::time_point lastActivity;
+    std::chrono::steady_clock::time_point deadline;
+    std::shared_ptr<std::promise<int>> completion;
+    std::shared_future<int> storageCompletion;
+    exec::task<int> waitForStorage();
+    exec::task<int> keepAlive();
 
     // TODO: support multiple socket pairs based on
     // FileMaximumFileDescriptorCount
     /** @brief A socket pair to stream file data out upon an Open call.*/
     int sockets[SOCKET_CNT] = {-1, -1};
 
-    /** @brief Original D-Bus Open FD, closed on the next Open or destruction. */
-    std::optional<pldm::utils::CustomFD> dbusClientFd;
+    /** @brief Original D-Bus Open FD, closed on the next Open or destruction.
+     */
+    std::unique_ptr<pldm::utils::CustomFD> dbusClientFd;
 
     /** @brief Coroutine handler for tasks.*/
     std::optional<std::pair<exec::async_scope, std::optional<int>>> taskHandle;
@@ -131,9 +173,9 @@ class FileDescriptor : virtual public FileInterface
      *
      *  @return coroutine task returning int
      */
-    exec::task<int> readFileBySection(DfOpenFD fd, SectionOffset offset,
-                                      SectionOffset length,
-                                      std::vector<uint8_t>& readBuffer);
+    exec::task<int> readFileBySection(
+        DfOpenFD fd, SectionOffset offset, SectionOffset length,
+        std::vector<uint8_t>& readBuffer, bool finalSection);
 
     /** @brief Read a certain length of data based on file type
      *
