@@ -1398,6 +1398,89 @@ class UpdateSecurityRevision : public CommandInterface
     struct pldm_fwup_update_security_revision_req req = {};
 };
 
+class QueryDownstreamDevices : public CommandInterface
+{
+  public:
+    ~QueryDownstreamDevices() override = default;
+    QueryDownstreamDevices() = delete;
+    QueryDownstreamDevices(const QueryDownstreamDevices&) = delete;
+    QueryDownstreamDevices(QueryDownstreamDevices&&) = delete;
+    QueryDownstreamDevices& operator=(const QueryDownstreamDevices&) = delete;
+    QueryDownstreamDevices& operator=(QueryDownstreamDevices&&) = delete;
+
+    using CommandInterface::CommandInterface;
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        // QueryDownstreamDevices carries no request payload.
+        std::vector<uint8_t> requestMsg(sizeof(pldm_msg));
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        auto rc = encode_query_downstream_devices_req(instanceId, request);
+        requestMsg.resize(sizeof(pldm_msg_hdr));
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        struct pldm_query_downstream_devices_resp resp = {};
+
+        auto rc = decode_query_downstream_devices_resp(responsePtr,
+                                                       payloadLength, &resp);
+        if (rc)
+        {
+            std::cerr << "Decoding QueryDownstreamDevices response failed, EID="
+                      << unsigned(getMCTPEID()) << ", RC=" << rc << "\n";
+            return;
+        }
+
+        if (resp.completion_code != PLDM_SUCCESS)
+        {
+            if (resp.completion_code == PLDM_ERROR_UNSUPPORTED_PLDM_CMD)
+            {
+                std::cerr << "QueryDownstreamDevices: device does not "
+                             "support this command, EID="
+                          << unsigned(getMCTPEID())
+                          << ", CC=" << unsigned(resp.completion_code) << "\n";
+            }
+            else
+            {
+                std::cerr << "QueryDownstreamDevices response failed with "
+                             "error completion code, EID="
+                          << unsigned(getMCTPEID())
+                          << ", CC=" << unsigned(resp.completion_code) << "\n";
+            }
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(resp.completion_code, data, PLDM_FWUP);
+
+        data["EID"] = getMCTPEID();
+        data["DownstreamDeviceUpdateSupported"] =
+            resp.downstream_device_update_supported ==
+            PLDM_FWUP_DOWNSTREAM_DEVICE_UPDATE_SUPPORTED;
+
+        data["NumberOfDownstreamDevices"] = resp.number_of_downstream_devices;
+        data["MaxNumberOfDownstreamDevices"] =
+            resp.max_number_of_downstream_devices;
+
+        // DSP0267 Table 20: Capabilities is a 32-bit field describing the
+        // FDP's support for downstream devices. Bits [31:3] are reserved.
+        ordered_json capabilities;
+        capabilities["SupportsDynamicAttachment"] =
+            static_cast<bool>(resp.capabilities.bits.bit0);
+        capabilities["SupportsDynamicRemoval"] =
+            static_cast<bool>(resp.capabilities.bits.bit1);
+        capabilities["SupportsSimultaneousUpdates"] =
+            static_cast<bool>(resp.capabilities.bits.bit2);
+
+        data["FDPDownstreamDeviceCapabilities"] = capabilities;
+
+        DisplayInJson(data);
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -1456,6 +1539,12 @@ void registerCommand(CLI::App& app)
         "UpdateSecurityRevision", "To update security revision");
     commands.push_back(std::make_unique<UpdateSecurityRevision>(
         "fw_update", "UpdateSecurityRevision", updateSecurityRevision));
+
+    auto queryDownstreamDevices = fwUpdate->add_subcommand(
+        "QueryDownstreamDevices",
+        "To query the downstream device capability of the FD");
+    commands.push_back(std::make_unique<QueryDownstreamDevices>(
+        "fw_update", "QueryDownstreamDevices", queryDownstreamDevices));
 }
 
 } // namespace fw_update
