@@ -77,7 +77,15 @@ inline bool syncFile(const std::filesystem::path& path)
 
 inline void prepareRoot(const std::filesystem::path& root)
 {
-    std::filesystem::create_directories(root.parent_path());
+    // Synchronize a newly created state parent as well: syncing crashlogs
+    // alone does not persist the /var/lib/pldm directory entry on first use.
+    const auto parent = root.parent_path();
+    if (!std::filesystem::is_directory(parent.parent_path()) ||
+        (std::filesystem::create_directories(parent) &&
+         !syncDirectory(parent.parent_path())))
+    {
+        throw std::runtime_error("Cannot persist crashlog state parent");
+    }
     if (mkdir(root.c_str(), 0700) < 0 && errno != EEXIST)
     {
         throw std::runtime_error("Cannot create crashlog state directory");
