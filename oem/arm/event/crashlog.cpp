@@ -1,6 +1,7 @@
 #include "crashlog.hpp"
 
 #include "common/utils.hpp"
+#include "crashlog_storage.hpp"
 #include "platform-mc/file_descriptor.hpp"
 #include "platform-mc/manager.hpp"
 
@@ -17,12 +18,14 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/Common/Progress/server.hpp>
 
 #include <algorithm>
 #include <array>
 #include <atomic>
 #include <cerrno>
 #include <chrono>
+#include <condition_variable>
 #include <ctime>
 #include <deque>
 #include <exception>
@@ -31,6 +34,7 @@
 #include <filesystem>
 #include <future>
 #include <iomanip>
+#include <map>
 #include <mutex>
 #include <optional>
 #include <stdexcept>
@@ -39,6 +43,7 @@
 #include <thread>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 PHOSPHOR_LOG2_USING;
@@ -59,20 +64,17 @@ constexpr uint16_t firstCrashlogStateSensorId = 2;
 constexpr uint8_t crashlogStateSensorStride = 2;
 constexpr uint8_t deviceFileNotChangedState = 1;
 constexpr uint8_t deviceFileUpdatedState = 2;
-constexpr auto crashlogFileName = "agi_cpu_crashdump";
+
 constexpr const char* dumpManagerService = "xyz.openbmc_project.Dump.Manager";
 constexpr const char* systemDumpPath = "/xyz/openbmc_project/dump/system";
 constexpr const char* systemDumpInterface = "xyz.openbmc_project.Dump.NewDump";
-constexpr const char* systemDumpStagingDir =
-    "/tmp/system-dumps";
-constexpr const char* crashlogArchiveWorkDir = "/tmp";
+constexpr const char* systemDumpStagingDir = "/tmp/system-dumps";
+constexpr const char* crashlogArchiveWorkDir = "/var/lib/pldm/crashlogs";
 constexpr const char* tarCommand = "/usr/bin/tar";
 constexpr auto crashlogFileObjectRetryCount = 30;
 constexpr auto crashlogSizeRetryCount = 180;
 constexpr auto crashlogSizeRetryDelay = std::chrono::seconds(1);
 constexpr auto fileSocketPollTimeoutMs = 5000;
-std::atomic<uint32_t> nextCrashlogSourceId{1};
-std::mutex crashlogWorkerMutex;
 
 struct CrashlogFile
 {
@@ -121,6 +123,7 @@ class EventThreadCalls
 
     ~EventThreadCalls()
     {
+        stop();
         sd_event_source_unref(source);
         close(wakeFd);
     }
@@ -128,15 +131,63 @@ class EventThreadCalls
     EventThreadCalls(const EventThreadCalls&) = delete;
     EventThreadCalls& operator=(const EventThreadCalls&) = delete;
 
+    void stop()
+    {
+        std::lock_guard guard(queueMutex);
+        stopping = true;
+        pending
+            .clear(); // Broken promises wake workers without event-loop work.
+        stopCondition.notify_all();
+    }
+
+    bool waitForStop(std::chrono::milliseconds delay)
+    {
+        std::unique_lock guard(queueMutex);
+        return stopCondition.wait_for(guard, delay, [this] {
+            return stopping;
+        });
+    }
+
+    void setIdentityCheck(std::function<bool()> check)
+    {
+        std::lock_guard guard(queueMutex);
+        identityCheck = std::move(check);
+    }
+
     template <typename F>
-    auto call(F&& function) -> std::invoke_result_t<F>
+    auto call(F&& function, bool checkIdentity = true)
+        -> std::invoke_result_t<F>
     {
         using Result = std::invoke_result_t<F>;
+        std::function<bool()> check;
+        {
+            std::lock_guard guard(queueMutex);
+            if (stopping)
+            {
+                throw std::runtime_error("Crashlog worker is stopping");
+            }
+            if (checkIdentity)
+            {
+                check = identityCheck;
+            }
+        }
         auto task = std::make_shared<std::packaged_task<Result()>>(
-            std::forward<F>(function));
+            [check = std::move(check),
+             function = std::forward<F>(function)]() mutable -> Result {
+                if (check && !check())
+                {
+                    throw std::runtime_error(
+                        "Crashlog endpoint was removed or replaced");
+                }
+                return function();
+            });
         auto result = task->get_future();
         {
             std::lock_guard guard(queueMutex);
+            if (stopping)
+            {
+                throw std::runtime_error("Crashlog worker is stopping");
+            }
             pending.emplace_back([task] { (*task)(); });
         }
 
@@ -180,7 +231,10 @@ class EventThreadCalls
     int wakeFd = -1;
     sd_event_source* source = nullptr;
     std::mutex queueMutex;
+    std::condition_variable stopCondition;
     std::deque<std::function<void()>> pending;
+    std::function<bool()> identityCheck;
+    bool stopping = false;
 };
 
 /** @brief Check whether a state sensor is a Device File update sensor.
@@ -213,7 +267,8 @@ bool isCrashlogFileStateSensor(uint16_t sensorId)
  * @param[in] outputFd Local file descriptor for the temporary staging file.
  * @return Number of bytes copied, or std::nullopt on read/write failure.
  */
-std::optional<size_t> copyFdToFile(int inputFd, int outputFd)
+std::optional<size_t> copyFdToFile(int inputFd, int outputFd,
+                                   size_t expectedSize)
 {
     std::array<uint8_t, 4096> buffer{};
     size_t bytesRead = 0;
@@ -223,11 +278,19 @@ std::optional<size_t> copyFdToFile(int inputFd, int outputFd)
         ssize_t len = read(inputFd, buffer.data(), buffer.size());
         if (len > 0)
         {
+            if (static_cast<size_t>(len) > expectedSize - bytesRead)
+            {
+                return std::nullopt;
+            }
             size_t written = 0;
             while (written < static_cast<size_t>(len))
             {
                 ssize_t rc = write(outputFd, buffer.data() + written,
                                    static_cast<size_t>(len) - written);
+                if (rc == 0)
+                {
+                    return std::nullopt;
+                }
                 if (rc < 0)
                 {
                     if (errno == EINTR)
@@ -306,7 +369,7 @@ std::vector<CrashlogFile> findCrashlogFiles(platform_mc::Manager& manager,
         {
             fileName.pop_back();
         }
-        if (fileName.find(crashlogFileName) == std::string::npos)
+        if (!storage::validName(fileName))
         {
             continue;
         }
@@ -354,7 +417,10 @@ std::vector<CrashlogFile> waitForCrashlogFiles(EventThreadCalls& eventCalls,
             lg2::info("Crashlog PLDM file objects are not available; "
                       "waiting for File Descriptor discovery");
         }
-        std::this_thread::sleep_for(crashlogSizeRetryDelay);
+        if (eventCalls.waitForStop(crashlogSizeRetryDelay))
+        {
+            return {};
+        }
     }
 
     return {};
@@ -414,7 +480,10 @@ std::optional<uint32_t> waitForNonZeroCurrentSize(
                       "waiting for the file provider to publish size",
                       "FILE", file.name);
         }
-        std::this_thread::sleep_for(crashlogSizeRetryDelay);
+        if (eventCalls.waitForStop(crashlogSizeRetryDelay))
+        {
+            return std::nullopt;
+        }
     }
 
     return currentSize;
@@ -454,8 +523,8 @@ bool downloadPldmFileToPath(
 {
     fs::create_directories(outputPath.parent_path());
 
-    auto fd = open(outputPath.c_str(), O_CREAT | O_EXCL | O_WRONLY | O_CLOEXEC,
-                   0600);
+    auto fd = open(outputPath.c_str(),
+                   O_CREAT | O_EXCL | O_WRONLY | O_CLOEXEC | O_NOFOLLOW, 0600);
     if (fd < 0)
     {
         lg2::error("Failed to create crashlog file {PATH}, errno {ERRNO}",
@@ -465,6 +534,7 @@ bool downloadPldmFileToPath(
     pldm::utils::CustomFD outputFd(fd);
 
     std::optional<size_t> bytesRead;
+    bool protocolComplete = false;
     try
     {
         auto transfer = eventCalls.call([descriptor = file.descriptor,
@@ -474,26 +544,39 @@ bool downloadPldmFileToPath(
             {
                 throw std::runtime_error("Crashlog file descriptor removed");
             }
-            auto stream =
-                live->startFileTransfer(0, expectedSize, false);
-            return std::pair{stream.fd, std::move(live)};
+            auto session =
+                live->startRegularTransfer(0, expectedSize, false, true);
+            return std::tuple{session.stream.fd, session.completion,
+                              std::move(live), session.stored};
         });
         try
         {
-            pldm::utils::CustomFD inputFd(transfer.first);
-            bytesRead = copyFdToFile(inputFd(), outputFd());
+            pldm::utils::CustomFD inputFd(std::get<0>(transfer));
+            bytesRead = copyFdToFile(inputFd(), outputFd(), expectedSize);
+            const bool stored =
+                bytesRead && *bytesRead == expectedSize &&
+                fsync(outputFd()) == 0 &&
+                storage::syncDirectory(outputPath.parent_path());
+            std::get<3>(transfer)->set_value(
+                stored ? PLDM_SUCCESS : PLDM_ERROR);
+            // EOF alone does not prove that DfClose succeeded. Never block the
+            // event thread: only this worker waits for the terminal result.
+            auto& terminal = std::get<1>(transfer);
+            protocolComplete = terminal.wait_for(std::chrono::seconds(10)) ==
+                                   std::future_status::ready &&
+                               terminal.get() == PLDM_SUCCESS;
         }
         catch (...)
         {
-            eventCalls.call([live = std::move(transfer.second)]() mutable {
-                live.reset();
-            });
+            eventCalls.call([live = std::move(std::get<2>(
+                                 transfer))]() mutable { live.reset(); },
+                            false);
             throw;
         }
         // Release the last FileDescriptor reference on its owning thread.
-        eventCalls.call([live = std::move(transfer.second)]() mutable {
-            live.reset();
-        });
+        eventCalls.call([live = std::move(std::get<2>(
+                             transfer))]() mutable { live.reset(); },
+                        false);
     }
     catch (const std::exception& e)
     {
@@ -502,18 +585,21 @@ bool downloadPldmFileToPath(
     }
 
     totalBytes = bytesRead.value_or(0);
-    if (totalBytes == 0)
+    if (!protocolComplete || !bytesRead || totalBytes == 0 ||
+        fsync(outputFd()) != 0)
     {
-        fs::remove(outputPath);
+        // Keep the private file even if the terminal response was lost: the
+        // peer may already have released its source after receiving DfClose.
         return false;
     }
     if (expectedSize != 0 && totalBytes != expectedSize)
     {
         lg2::error("PLDM file {FILE} size mismatch: expected {EXPECTED}, "
                    "downloaded {ACTUAL}",
-                   "FILE", file.name, "EXPECTED", expectedSize,
-                   "ACTUAL", totalBytes);
-        fs::remove(outputPath);
+                   "FILE", file.name, "EXPECTED", expectedSize, "ACTUAL",
+                   totalBytes);
+        // Keep the private file even if the terminal response was lost: the
+        // peer may already have released its source after receiving DfClose.
         return false;
     }
 
@@ -591,7 +677,21 @@ bool createCrashlogArchive(const fs::path& workDir, const fs::path& archivePath)
     }
 
     int status = 0;
-    if (waitpid(pid, &status, 0) < 0)
+    auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(60);
+    pid_t waited;
+    while ((waited = waitpid(pid, &status, WNOHANG)) == 0 ||
+           (waited < 0 && errno == EINTR))
+    {
+        if (std::chrono::steady_clock::now() >= deadline)
+        {
+            kill(pid, SIGKILL);
+            while (waitpid(pid, &status, 0) < 0 && errno == EINTR)
+            {}
+            return false;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+    if (waited < 0)
     {
         lg2::error("Failed to wait for tar, errno {ERRNO}", "ERRNO", errno);
         return false;
@@ -617,6 +717,62 @@ bool createCrashlogArchive(const fs::path& workDir, const fs::path& archivePath)
  * @param[in] size Downloaded dump size in bytes.
  * @return PLDM_SUCCESS when Notify accepts the entry.
  */
+using DumpObjects =
+    std::map<std::string, std::map<std::string, std::vector<std::string>>>;
+
+DumpObjects getDumpObjects(sdbusplus::bus_t& bus)
+{
+    auto query =
+        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                            "/xyz/openbmc_project/object_mapper",
+                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    query.append(
+        std::string(systemDumpPath), int32_t{0},
+        std::vector<std::string>{"xyz.openbmc_project.Dump.Entry.System"});
+    DumpObjects objects;
+    auto reply = bus.call(query);
+    reply.read(objects);
+    return objects;
+}
+
+template <typename T>
+T dumpProperty(sdbusplus::bus_t& bus, const std::string& service,
+               const std::string& path, const char* interface,
+               const char* property)
+{
+    auto query = bus.new_method_call(service.c_str(), path.c_str(),
+                                     "org.freedesktop.DBus.Properties", "Get");
+    query.append(interface, property);
+    std::variant<T> value;
+    auto reply = bus.call(query);
+    reply.read(value);
+    return std::get<T>(value);
+}
+
+bool sourceIdExists(uint32_t sourceId)
+{
+    auto bus = sdbusplus::bus::new_default();
+    for (const auto& [path, services] : getDumpObjects(bus))
+    {
+        for (const auto& [service, interfaces] : services)
+        {
+            if (std::ranges::find(interfaces,
+                                  "xyz.openbmc_project.Dump.Entry.System") ==
+                interfaces.end())
+            {
+                continue;
+            }
+            if (dumpProperty<uint32_t>(bus, service, path,
+                                       "xyz.openbmc_project.Dump.Entry.System",
+                                       "SourceDumpId") == sourceId)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 int notifySystemDump(uint32_t sourceId, uint64_t size)
 {
     try
@@ -626,15 +782,42 @@ int notifySystemDump(uint32_t sourceId, uint64_t size)
             bus.new_method_call(dumpManagerService, systemDumpPath,
                                 systemDumpInterface, "Notify");
         method.append(sourceId, size);
-        bus.call_noreply(method);
+        // Notify is synchronous in the Phoenix dump manager, but its return
+        // alone does not prove that the destination copy succeeded.
+        auto reply = bus.call(method);
+        using Progress =
+            sdbusplus::xyz::openbmc_project::Common::server::Progress;
+        for (const auto& [path, services] : getDumpObjects(bus))
+        {
+            for (const auto& [service, interfaces] : services)
+            {
+                if (std::ranges::find(
+                        interfaces, "xyz.openbmc_project.Dump.Entry.System") ==
+                    interfaces.end())
+                {
+                    continue;
+                }
+                if (dumpProperty<uint32_t>(
+                        bus, service, path,
+                        "xyz.openbmc_project.Dump.Entry.System",
+                        "SourceDumpId") == sourceId)
+                {
+                    auto status = dumpProperty<std::string>(
+                        bus, service, path,
+                        "xyz.openbmc_project.Common.Progress", "Status");
+                    return Progress::convertOperationStatusFromString(status) ==
+                                   Progress::OperationStatus::Completed
+                               ? PLDM_SUCCESS
+                               : PLDM_ERROR;
+                }
+            }
+        }
     }
     catch (const std::exception& e)
     {
-        lg2::error("Failed to notify system dump entry: {ERROR}", "ERROR", e);
-        return PLDM_ERROR;
+        lg2::error("Failed to confirm system dump entry: {ERROR}", "ERROR", e);
     }
-
-    return PLDM_SUCCESS;
+    return PLDM_ERROR;
 }
 
 /** @brief Collect one crashlog PLDM file into an archive work directory.
@@ -671,6 +854,14 @@ int collectCrashlogFile(
               "INSTANCE", fileInstance, "FILE", file.name, "SIZE",
               *currentSize);
 
+    const auto space = fs::space(workDir);
+    constexpr uint64_t reserveBytes = 16 * 1024 * 1024;
+    if (space.available < reserveBytes + uint64_t{*currentSize} * 2)
+    {
+        lg2::error(
+            "Insufficient crashlog storage; retaining existing collections");
+        return PLDM_ERROR_NOT_READY;
+    }
     auto outputPath = workDir / file.name;
     uint64_t bytesRead = 0;
     if (!downloadPldmFileToPath(eventCalls, file, outputPath, *currentSize,
@@ -698,13 +889,6 @@ int collectCrashlogFile(
 int collectCrashlog(EventThreadCalls& eventCalls, platform_mc::Manager& manager,
                     pldm_tid_t tid, const std::string& terminusName)
 {
-    std::unique_lock workerGuard(crashlogWorkerMutex, std::try_to_lock);
-    if (!workerGuard.owns_lock())
-    {
-        lg2::info("Crashlog collection is already in progress");
-        return PLDM_SUCCESS;
-    }
-
     auto files = waitForCrashlogFiles(eventCalls, manager, tid);
     if (files.empty())
     {
@@ -713,17 +897,34 @@ int collectCrashlog(EventThreadCalls& eventCalls, platform_mc::Manager& manager,
         return PLDM_ERROR_NOT_READY;
     }
 
-    auto sourceId = nextCrashlogSourceId.fetch_add(1);
+    auto sourceId = storage::reserveSourceId(crashlogArchiveWorkDir);
+    while (sourceIdExists(sourceId))
+    {
+        sourceId = storage::reserveSourceId(crashlogArchiveWorkDir);
+    }
     auto timestamp = getUtcTimestamp();
-    auto workDir = fs::path(crashlogArchiveWorkDir) /
-                   ("pldm-crashlog-" + std::to_string(sourceId) + "-" +
-                    timestamp);
-    auto archivePath = fs::path(systemDumpStagingDir) / std::to_string(sourceId);
+    auto workDir = storage::createWorkDirectory(crashlogArchiveWorkDir);
+    auto archivePath =
+        fs::path(systemDumpStagingDir) / std::to_string(sourceId);
     std::vector<CollectedCrashlogFile> collectedFiles;
 
-    fs::remove_all(workDir);
-    fs::remove(archivePath);
-    fs::create_directories(workDir);
+    // Never overwrite a previous staging file. Failed persistent work is kept
+    // for recovery rather than discarded after the peer has released a source.
+    fs::create_directories(archivePath.parent_path());
+    struct stat stagingStatus{};
+    if (lstat(archivePath.parent_path().c_str(), &stagingStatus) < 0 ||
+        !S_ISDIR(stagingStatus.st_mode) || stagingStatus.st_uid != geteuid() ||
+        (stagingStatus.st_mode & (S_IWGRP | S_IWOTH)))
+    {
+        throw std::runtime_error("Unsafe system dump staging directory");
+    }
+    storage::Fd reservation(
+        open(archivePath.c_str(),
+             O_CREAT | O_EXCL | O_WRONLY | O_CLOEXEC | O_NOFOLLOW, 0600));
+    if (reservation.get() < 0)
+    {
+        return PLDM_ERROR_NOT_READY;
+    }
 
     for (size_t index = 0; index < files.size(); ++index)
     {
@@ -731,7 +932,6 @@ int collectCrashlog(EventThreadCalls& eventCalls, platform_mc::Manager& manager,
                                        collectedFiles);
         if (rc != PLDM_SUCCESS)
         {
-            fs::remove_all(workDir);
             fs::remove(archivePath);
             return rc;
         }
@@ -740,29 +940,152 @@ int collectCrashlog(EventThreadCalls& eventCalls, platform_mc::Manager& manager,
     if (!writeCrashlogManifest(workDir / "manifest.txt", timestamp, tid,
                                 terminusName, sourceId, collectedFiles))
     {
-        fs::remove_all(workDir);
         fs::remove(archivePath);
         return PLDM_ERROR;
     }
 
-    if (!createCrashlogArchive(workDir, archivePath))
+    const auto privateArchive = fs::path(workDir.string() + ".tar.partial");
+    // tar reads a separate child directory below, never its own output file.
+    if (!createCrashlogArchive(workDir, privateArchive))
     {
-        fs::remove_all(workDir);
         fs::remove(archivePath);
         return PLDM_ERROR;
     }
 
+    if (!storage::syncFile(privateArchive) ||
+        !storage::syncDirectory(privateArchive.parent_path()))
+    {
+        return PLDM_ERROR;
+    }
+    storage::Fd archiveInput(
+        open(privateArchive.c_str(), O_RDONLY | O_NOFOLLOW | O_CLOEXEC));
+    const auto privateSize = fs::file_size(privateArchive);
+    auto copiedArchive =
+        archiveInput.get() >= 0
+            ? copyFdToFile(archiveInput.get(), reservation.get(), privateSize)
+            : std::nullopt;
+    if (!copiedArchive || *copiedArchive != privateSize ||
+        fsync(reservation.get()) < 0)
+    {
+        return PLDM_ERROR;
+    }
+    if (!storage::syncFile(archivePath) ||
+        !storage::syncDirectory(archivePath.parent_path()))
+    {
+        return PLDM_ERROR;
+    }
     auto archiveSize = fs::file_size(archivePath);
     auto rc = notifySystemDump(sourceId, archiveSize);
-    fs::remove_all(workDir);
     if (rc != PLDM_SUCCESS)
     {
         fs::remove(archivePath);
         return rc;
     }
 
+    fs::remove_all(workDir);
+    // Keep a durable local archive: the receiver's Completed status does not
+    // guarantee that its destination has been fsynced on this image.
+    fs::rename(privateArchive, fs::path(workDir.string() + ".tar.gz"));
+    storage::syncDirectory(fs::path(crashlogArchiveWorkDir));
     return PLDM_SUCCESS;
 }
+
+class Collector
+{
+  public:
+    Collector() : worker([this](std::stop_token stop) { run(stop); }) {}
+    ~Collector()
+    {
+        calls.stop();
+        worker.request_stop();
+        ready.notify_all();
+        // jthread joins before calls and its event source are destroyed.
+    }
+
+    int enqueue(platform_mc::Manager* manager, pldm_tid_t tid, std::string name)
+    {
+        auto identity = manager->getTerminusIdentity(tid);
+        if (identity.expired())
+        {
+            return PLDM_ERROR_NOT_READY;
+        }
+        std::lock_guard lock(mutex);
+        for (const auto& job : jobs)
+        {
+            if (job.manager == manager && job.tid == tid &&
+                !job.identity.owner_before(identity) &&
+                !identity.owner_before(job.identity))
+            {
+                return PLDM_SUCCESS;
+            }
+        }
+        if (jobs.size() >= 32)
+        {
+            return PLDM_ERROR_NOT_READY;
+        }
+        jobs.push_back({manager, tid, std::move(name), std::move(identity)});
+        ready.notify_one();
+        return PLDM_SUCCESS;
+    }
+
+  private:
+    struct Job
+    {
+        platform_mc::Manager* manager;
+        pldm_tid_t tid;
+        std::string name;
+        std::weak_ptr<platform_mc::Terminus> identity;
+    };
+    void run(std::stop_token stop) noexcept
+    {
+        while (!stop.stop_requested())
+        {
+            Job job;
+            {
+                std::unique_lock lock(mutex);
+                if (!ready.wait(lock, stop, [this] { return !jobs.empty(); }))
+                {
+                    return;
+                }
+                job = std::move(jobs.front());
+                jobs.pop_front();
+            }
+            try
+            {
+                calls.setIdentityCheck([manager = job.manager, tid = job.tid,
+                                        identity = job.identity] {
+                    auto current = manager->getTerminusIdentity(tid);
+                    return !identity.expired() &&
+                           !identity.owner_before(current) &&
+                           !current.owner_before(identity);
+                });
+                const auto rc =
+                    collectCrashlog(calls, *job.manager, job.tid, job.name);
+                if (rc)
+                {
+                    lg2::error("Crashlog collection for {NAME} failed: {RC}",
+                               "NAME", job.name, "RC", rc);
+                }
+            }
+            catch (const std::exception& error)
+            {
+                lg2::error("Crashlog collection failed: {ERROR}", "ERROR",
+                           error);
+            }
+            catch (...)
+            {
+                // Keep the worker alive; errors must never terminate pldmd.
+            }
+        }
+    }
+    EventThreadCalls calls;
+    std::mutex mutex;
+    std::condition_variable_any ready;
+    std::deque<Job> jobs;
+    std::jthread worker;
+};
+
+std::unique_ptr<Collector> collector;
 
 } // namespace
 
@@ -817,37 +1140,11 @@ int processFileStateEvent(platform_mc::Manager* manager, pldm_tid_t tid,
 
     try
     {
-        // The dispatcher is created on the event thread. The worker only
-        // queues calls into it; it never calls FileDescriptor directly.
-        static EventThreadCalls eventCalls;
-        std::thread([manager, tid, name = std::string(*terminusName)]() noexcept {
-            try
-            {
-                try
-                {
-                    auto rc = collectCrashlog(eventCalls, *manager, tid, name);
-                    if (rc != PLDM_SUCCESS)
-                    {
-                        lg2::error(
-                            "Crashlog collection for {NAME} failed, code {RC}",
-                            "NAME", name, "RC", rc);
-                    }
-                }
-                catch (const std::exception& e)
-                {
-                    lg2::error("Crashlog collection failed: {ERROR}", "ERROR",
-                               e);
-                }
-                catch (...)
-                {
-                    lg2::error("Crashlog collection failed with an unknown error");
-                }
-            }
-            catch (...)
-            {
-                // No exception may escape a detached worker thread.
-            }
-        }).detach();
+        if (!collector)
+        {
+            collector = std::make_unique<Collector>();
+        }
+        return collector->enqueue(manager, tid, std::string(*terminusName));
     }
     catch (const std::exception& e)
     {
