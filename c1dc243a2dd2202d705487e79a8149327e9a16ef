@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "025aad78_b852ea59",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-29T04:17:34Z",
+      "side": 1,
+      "message": "Done, it was a stale statement after the rebase. Modified the commit message.",
+      "parentUuid": "f8e4a3e0_42a5b148",
+      "range": {
+        "startLine": 22,
+        "startChar": 24,
+        "endLine": 22,
+        "endChar": 56
+      },
+      "revId": "c1dc243a2dd2202d705487e79a8149327e9a16ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a242d42a_efee3656",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-28T07:46:31Z",
       "side": 1,
       "message": "If the update manager is missing, nothing is sent and nothing is logged, so the update stalls silently. Could we log an error here? Also, does failAndCancelUpdate() handle a missing update manager itself?",
+      "revId": "c1dc243a2dd2202d705487e79a8149327e9a16ef",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdc164ae_5893b1f3",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 1196,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-10-29T04:17:34Z",
+      "side": 1,
+      "message": "Done, added a check if updateManager is nullptr at top and logging an error and returning. the inner checks are gone now.",
+      "parentUuid": "a242d42a_efee3656",
       "revId": "c1dc243a2dd2202d705487e79a8149327e9a16ef",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
