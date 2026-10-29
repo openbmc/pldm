@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b9337b_f5ea0964",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-29T04:40:36Z",
+      "side": 1,
+      "message": "Just a parsing convenience: grepping for the prefix lets us take the remainder of the string directly, avoiding extra parsing logic. (Don\u0027t have to read both ways)\n\nAlso in a case where we use location as the EM config name, like in the example, it makes sense to read it as \n\n`\u003cWhere is the device\u003e \u003cWhat is the device\u003e \u003cWhich sensor of the device\u003e`\n\nover \n\n`\u003cWhat is the device\u003e \u003cWhere is the device\u003e \u003cWhich sensor of the device\u003e`",
+      "parentUuid": "392c0ab2_cd7c601c",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 61
+      },
+      "revId": "ac396ba2288ccf2f01a04d755c79500987c28fb6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f392aa86_96c95202",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-28T06:08:26Z",
       "side": 1,
       "message": "nit: I think we can rewrite this line as follow to improve readability:\n```\nif (!terminusName.empty()) \n{\n    terminusName +\u003d \"_\" + static_cast\u003cstd::string\u003e(tName.value());\n}\n```",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 0
+      },
+      "revId": "ac396ba2288ccf2f01a04d755c79500987c28fb6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f9accd0_8c5f369c",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-10-29T04:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f392aa86_96c95202",
       "range": {
         "startLine": 253,
         "startChar": 8,
