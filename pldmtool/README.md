@@ -248,3 +248,17 @@ Example:
 ```bash
 pldmtool base GetPLDMTypes -v
 ```
+
+## Downstream device discovery
+
+The commands in this section implement DSP0267 v1.3.0. Address the Firmware
+Device Proxy with `-m`; its downstream devices need not have MCTP endpoints.
+
+`QueryDownstreamDevices` reports downstream update support, the current and
+maximum device counts, and dynamic attachment, removal and simultaneous-update
+capabilities (section 11.3, table 20). A proxy may report inventory even when
+firmware updates are unsupported.
+
+```sh
+pldmtool fw_update QueryDownstreamDevices -m 8
+```
