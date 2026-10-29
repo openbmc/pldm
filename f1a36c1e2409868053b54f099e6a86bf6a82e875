@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cfc9937_56d40d21",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 2882,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-10-29T23:26:35Z",
+      "side": 1,
+      "message": "This can be:\n\n```\nPLDM_MSG_DEFINE_P(request, PLDM_PLATFORM_SET_NUMERIC_SENSOR_ENABLE_REQ_BYTES);\n\n```\n\nhttps://github.com/openbmc/libpldm/blob/be4f63e36408921e76d868593176377de84e945e/include/libpldm/base.h#L247-L261",
+      "range": {
+        "startLine": 2879,
+        "startChar": 8,
+        "endLine": 2882,
+        "endChar": 1
+      },
+      "revId": "f1a36c1e2409868053b54f099e6a86bf6a82e875",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ae0b934_f57e36d7",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 2901,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-10-29T23:26:35Z",
+      "side": 1,
+      "message": "This should be unnecessary, the `decode_pldm_platform_set_numeric_sensor_enable_resp()` API must handle this for you.",
+      "range": {
+        "startLine": 2897,
+        "startChar": 7,
+        "endLine": 2901,
+        "endChar": 9
+      },
+      "revId": "f1a36c1e2409868053b54f099e6a86bf6a82e875",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d97c9ee_2ace618c",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 2907,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-10-29T23:26:35Z",
+      "side": 1,
+      "message": "This is a category error as the value of `rc` is 0 or a negative errno. It\u0027s just an accident that `PLDM_SUCCESS` is also defined as 0. You should test for 0 explicitly.",
+      "range": {
+        "startLine": 2907,
+        "startChar": 18,
+        "endLine": 2907,
+        "endChar": 30
+      },
+      "revId": "f1a36c1e2409868053b54f099e6a86bf6a82e875",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73fa9c7a_4cea4cc0",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 2934,
+      "author": {
+        "id": 1000009
+      },
+      "writtenOn": "2026-10-29T23:26:35Z",
+      "side": 1,
+      "message": "Can you rather use `struct pldm_platform_set_numeric_sensor_enable_req` here and then store the option values directly into its members?",
+      "range": {
+        "startLine": 2932,
+        "startChar": 3,
+        "endLine": 2934,
+        "endChar": 28
+      },
+      "revId": "f1a36c1e2409868053b54f099e6a86bf6a82e875",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
