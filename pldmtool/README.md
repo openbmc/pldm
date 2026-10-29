@@ -277,3 +277,17 @@ The command prints inventory only after the entire response has been decoded.
 Malformed tables, invalid transfer sequences, repeated continuation handles and
 error completion codes are reported on stderr. A changed device list aborts the
 query; run it again to obtain a fresh snapshot. Responses are limited to 16 MiB.
+
+`GetDownstreamFirmwareParameters` reports active and pending versions, release
+dates, comparison stamps, activation methods and update capabilities for each
+downstream device (section 11.5, tables 24–26). It uses the same automatic
+reassembly and validation as `QueryDownstreamIdentifiers`.
+
+```sh
+pldmtool fw_update GetDownstreamFirmwareParameters -m 8
+```
+
+Version strings have the printable display used by `GetFirmwareParameters`. The
+additional `VersionStringType` and `VersionStringHex` fields preserve the
+original encoding and bytes, including UTF-16 and non-printable characters. An
+absent pending version or release date is displayed as an empty string.
