@@ -85,7 +85,7 @@
         {
             "ComponentClassification": 10,
             "ComponentIdentifier": 200,
-            "ComponentComparisonStamp": "0x00000000",
+            "ComponentComparisonStamp": "0xFFFFFFFF",
             "ComponentOptions": [],
             "RequestedComponentActivationMethod": [0],
             "ComponentVersionString": "VersionString6"
@@ -93,7 +93,7 @@
         {
             "ComponentClassification": 65535,
             "ComponentIdentifier": 65535,
-            "ComponentComparisonStamp": "0x00000000",
+            "ComponentComparisonStamp": "0xFFFFFFFF",
             "ComponentOptions": [0],
             "RequestedComponentActivationMethod": [2, 3],
             "ComponentVersionString": "VersionString7"
