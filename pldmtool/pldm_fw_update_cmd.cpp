@@ -3,9 +3,14 @@
 #include "common/utils.hpp"
 #include "pldm_cmd_helper.hpp"
 
+#include <endian.h>
 #include <libpldm/firmware_update.h>
 
+#include <algorithm>
 #include <format>
+#include <optional>
+#include <set>
+#include <string_view>
 
 namespace pldmtool
 {
@@ -66,19 +71,54 @@ const std::map<uint8_t, const char*> fdReasonCode{
  * @brief descriptor type to name mapping
  *
  */
-const std::map<DescriptorType, const char*> descriptorName{
-    {PLDM_FWUP_PCI_VENDOR_ID, "PCI Vendor ID"},
-    {PLDM_FWUP_IANA_ENTERPRISE_ID, "IANA Enterprise ID"},
-    {PLDM_FWUP_UUID, "UUID"},
-    {PLDM_FWUP_PNP_VENDOR_ID, "PnP Vendor ID"},
-    {PLDM_FWUP_ACPI_VENDOR_ID, "ACPI Vendor ID"},
-    {PLDM_FWUP_PCI_DEVICE_ID, "PCI Device ID"},
-    {PLDM_FWUP_PCI_SUBSYSTEM_VENDOR_ID, "PCI Subsystem Vendor ID"},
-    {PLDM_FWUP_PCI_SUBSYSTEM_ID, "PCI Subsystem ID"},
-    {PLDM_FWUP_PCI_REVISION_ID, "PCI Revision ID"},
-    {PLDM_FWUP_PNP_PRODUCT_IDENTIFIER, "PnP Product Identifier"},
-    {PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER, "ACPI Product Identifier"},
-    {PLDM_FWUP_VENDOR_DEFINED, "Vendor Defined"}};
+struct DescriptorInfo
+{
+    const char* name;
+    size_t length;
+};
+
+const std::map<DescriptorType, DescriptorInfo> descriptorInfo{
+    {PLDM_FWUP_PCI_VENDOR_ID,
+     {"PCI Vendor ID", PLDM_FWUP_PCI_VENDOR_ID_LENGTH}},
+    {PLDM_FWUP_IANA_ENTERPRISE_ID,
+     {"IANA Enterprise ID", PLDM_FWUP_IANA_ENTERPRISE_ID_LENGTH}},
+    {PLDM_FWUP_UUID, {"UUID", PLDM_FWUP_UUID_LENGTH}},
+    {PLDM_FWUP_PNP_VENDOR_ID,
+     {"PnP Vendor ID", PLDM_FWUP_PNP_VENDOR_ID_LENGTH}},
+    {PLDM_FWUP_ACPI_VENDOR_ID,
+     {"ACPI Vendor ID", PLDM_FWUP_ACPI_VENDOR_ID_LENGTH}},
+    {PLDM_FWUP_IEEE_ASSIGNED_COMPANY_ID,
+     {"IEEE Assigned Company ID", PLDM_FWUP_IEEE_ASSIGNED_COMPANY_ID_LENGTH}},
+    {PLDM_FWUP_SCSI_VENDOR_ID,
+     {"SCSI Vendor ID", PLDM_FWUP_SCSI_VENDOR_ID_LENGTH}},
+    {PLDM_FWUP_PCI_DEVICE_ID,
+     {"PCI Device ID", PLDM_FWUP_PCI_DEVICE_ID_LENGTH}},
+    {PLDM_FWUP_PCI_SUBSYSTEM_VENDOR_ID,
+     {"PCI Subsystem Vendor ID", PLDM_FWUP_PCI_SUBSYSTEM_VENDOR_ID_LENGTH}},
+    {PLDM_FWUP_PCI_SUBSYSTEM_ID,
+     {"PCI Subsystem ID", PLDM_FWUP_PCI_SUBSYSTEM_ID_LENGTH}},
+    {PLDM_FWUP_PCI_REVISION_ID,
+     {"PCI Revision ID", PLDM_FWUP_PCI_REVISION_ID_LENGTH}},
+    {PLDM_FWUP_PNP_PRODUCT_IDENTIFIER,
+     {"PnP Product Identifier", PLDM_FWUP_PNP_PRODUCT_IDENTIFIER_LENGTH}},
+    {PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER,
+     {"ACPI Product Identifier", PLDM_FWUP_ACPI_PRODUCT_IDENTIFIER_LENGTH}},
+    {PLDM_FWUP_ASCII_MODEL_NUMBER_LONG_STRING,
+     {"ASCII Model Number (Long String)",
+      PLDM_FWUP_ASCII_MODEL_NUMBER_LONG_STRING_LENGTH}},
+    {PLDM_FWUP_ASCII_MODEL_NUMBER_SHORT_STRING,
+     {"ASCII Model Number (Short String)",
+      PLDM_FWUP_ASCII_MODEL_NUMBER_SHORT_STRING_LENGTH}},
+    {PLDM_FWUP_SCSI_PRODUCT_ID,
+     {"SCSI Product ID", PLDM_FWUP_SCSI_PRODUCT_ID_LENGTH}},
+    {PLDM_FWUP_UBM_CONTROLLER_DEVICE_CODE,
+     {"UBM Controller Device Code",
+      PLDM_FWUP_UBM_CONTROLLER_DEVICE_CODE_LENGTH}},
+    {PLDM_FWUP_IEEE_EUI_64_ID,
+     {"IEEE EUI-64 ID", PLDM_FWUP_IEEE_EUI_64_ID_LENGTH}},
+    {PLDM_FWUP_PCI_REVISION_ID_RANGE,
+     {"PCI Revision ID Range", PLDM_FWUP_PCI_REVISION_ID_RANGE_LENGTH}},
+    {PLDM_FWUP_VENDOR_DEFINED, {"Vendor Defined", 0}}};
 
 const std::map<std::string, transfer_resp_flag> transferRespFlag{
     {"START", PLDM_START},
@@ -483,23 +523,9 @@ class QueryDeviceIdentifiers : public CommandInterface
      */
     void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override;
     using CommandInterface::CommandInterface;
-
-  private:
-    /**
-     * @brief Method to update QueryDeviceIdentifiers json response in a user
-     * friendly format
-     *
-     * @param[in] descriptors - descriptor json response
-     * @param[in] descriptorType - descriptor type
-     * @param[in] descriptorVal - descriptor value
-     */
-    void updateDescriptor(
-        ordered_json& descriptors, const DescriptorType& descriptorType,
-        const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
-            descriptorVal);
 };
 
-void QueryDeviceIdentifiers::updateDescriptor(
+static void updateDescriptor(
     ordered_json& descriptors, const DescriptorType& descriptorType,
     const std::variant<DescriptorData, VendorDefinedDescriptorInfo>&
         descriptorVal)
@@ -520,12 +546,12 @@ void QueryDeviceIdentifiers::updateDescriptor(
         descDataStream << std::setfill('0') << std::setw(2) << std::hex << byte;
     }
 
-    if (descriptorName.contains(descriptorType))
+    if (descriptorInfo.contains(descriptorType))
     {
         // Update the existing json response if entry is already present
         for (auto& descriptor : descriptors)
         {
-            if (descriptor["Type"] == descriptorName.at(descriptorType))
+            if (descriptor["Type"] == descriptorInfo.at(descriptorType).name)
             {
                 if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
                 {
@@ -544,7 +570,7 @@ void QueryDeviceIdentifiers::updateDescriptor(
         }
         // Entry is not present, add type and value to json response
         ordered_json descriptor = ordered_json::object(
-            {{"Type", descriptorName.at(descriptorType)},
+            {{"Type", descriptorInfo.at(descriptorType).name},
              {"Value", ordered_json::array()}});
         if (descriptorType != PLDM_FWUP_VENDOR_DEFINED)
         {
@@ -1481,6 +1507,265 @@ class QueryDownstreamDevices : public CommandInterface
     }
 };
 
+// Tables 21 and 24 of DSP0267 permit a response body to be split anywhere,
+// including within a device entry. Only decode it after the transfer ends.
+class DownstreamQuery : public CommandInterface
+{
+  public:
+    using CommandInterface::CommandInterface;
+
+    void exec() override
+    {
+        reset();
+        do
+        {
+            CommandInterface::exec();
+        } while (more);
+    }
+
+    void parseResponseMsg(pldm_msg* response, size_t length) override
+    {
+        more = false;
+        if (length == 0)
+        {
+            fail("Missing completion code");
+            return;
+        }
+        if (response->payload[0] != PLDM_SUCCESS)
+        {
+            fail(std::format("Completion code {}", response->payload[0]));
+            return;
+        }
+        // CompletionCode, NextDataTransferHandle and TransferFlag.
+        constexpr size_t prefixSize = 6;
+        if (length < prefixSize)
+        {
+            fail("Missing response data");
+            return;
+        }
+        uint32_t nextHandle = 0;
+        std::memcpy(&nextHandle, response->payload + 1, sizeof(nextHandle));
+        nextHandle = le32toh(nextHandle);
+        const auto flag = response->payload[5];
+        const bool first = responseData.empty();
+        if ((first && flag != PLDM_START && flag != PLDM_START_AND_END) ||
+            (!first && flag != PLDM_MIDDLE && flag != PLDM_END))
+        {
+            fail("Invalid transfer flag sequence");
+            return;
+        }
+        if (length == prefixSize && flag != PLDM_END)
+        {
+            fail("Empty non-final response portion");
+            return;
+        }
+        // Bound memory use when a responder never terminates its transfer.
+        constexpr size_t maxResponseSize = 16 * 1024 * 1024;
+        if (length - prefixSize > maxResponseSize - responseData.size())
+        {
+            fail("Response exceeds the 16 MiB limit");
+            return;
+        }
+        responseData.insert(responseData.end(), response->payload + prefixSize,
+                            response->payload + length);
+        if (flag == PLDM_START || flag == PLDM_MIDDLE)
+        {
+            if (!handles.insert(nextHandle).second)
+            {
+                fail("Repeated continuation handle");
+                return;
+            }
+            dataTransferHandle = nextHandle;
+            more = true;
+            return;
+        }
+
+        // The existing libpldm decoders consume a complete response. Present
+        // the assembled body with a single-part transfer envelope.
+        std::vector<uint8_t> complete(
+            sizeof(pldm_msg_hdr) + prefixSize + responseData.size());
+        auto msg = new (complete.data()) pldm_msg;
+        std::fill_n(msg->payload, prefixSize, 0);
+        msg->payload[5] = PLDM_START_AND_END;
+        std::ranges::copy(responseData, msg->payload + prefixSize);
+        parseCompleteResponse(msg, prefixSize + responseData.size());
+        reset();
+    }
+
+  protected:
+    uint32_t dataTransferHandle = 0;
+
+    uint8_t operation() const
+    {
+        return responseData.empty() ? PLDM_GET_FIRSTPART : PLDM_GET_NEXTPART;
+    }
+
+    void fail(std::string_view reason)
+    {
+        std::cerr << getCommandName() << ": " << reason
+                  << ", EID=" << unsigned(getMCTPEID()) << '\n';
+        reset();
+    }
+
+    virtual void parseCompleteResponse(pldm_msg* response, size_t length) = 0;
+
+  private:
+    void reset()
+    {
+        more = false;
+        dataTransferHandle = 0;
+        responseData.clear();
+        handles.clear();
+    }
+
+    bool more = false;
+    std::vector<uint8_t> responseData;
+    std::set<uint32_t> handles;
+};
+
+class QueryDownstreamIdentifiers : public DownstreamQuery
+{
+  public:
+    using DownstreamQuery::DownstreamQuery;
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_REQ_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+        pldm_query_downstream_identifiers_req req{dataTransferHandle,
+                                                  operation()};
+        auto rc = encode_query_downstream_identifiers_req(
+            instanceId, &req, request,
+            PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_REQ_BYTES);
+        return {rc, requestMsg};
+    }
+
+  private:
+    void parseCompleteResponse(pldm_msg* response, size_t length) override
+    {
+        pldm_query_downstream_identifiers_resp resp{};
+        pldm_downstream_device_iter devs{};
+        auto rc = decode_query_downstream_identifiers_resp(response, length,
+                                                           &resp, &devs);
+        if (rc || length - PLDM_QUERY_DOWNSTREAM_IDENTIFIERS_RESP_MIN_LEN !=
+                      resp.downstream_devices_length)
+        {
+            fail("Invalid downstream identifiers response length");
+            return;
+        }
+
+        ordered_json devices = ordered_json::array();
+        std::set<uint16_t> indices;
+        pldm_downstream_device dev{};
+        foreach_pldm_downstream_device(devs, dev, rc)
+        {
+            if (dev.downstream_device_index > 0x0fff ||
+                !indices.insert(dev.downstream_device_index).second)
+            {
+                fail("Invalid or duplicate downstream device index");
+                return;
+            }
+            if (dev.downstream_descriptor_count == 0)
+            {
+                fail("Missing initial downstream descriptor");
+                return;
+            }
+            ordered_json descriptors = ordered_json::array();
+            std::optional<uint16_t> initialType;
+            pldm_descriptor desc{};
+            foreach_pldm_downstream_device_descriptor(devs, dev, desc, rc)
+            {
+                if (!initialType)
+                {
+                    if (desc.descriptor_type > PLDM_FWUP_SCSI_VENDOR_ID)
+                    {
+                        fail("Invalid initial downstream descriptor");
+                        return;
+                    }
+                    initialType = desc.descriptor_type;
+                }
+                if ((desc.descriptor_type == PLDM_FWUP_VENDOR_DEFINED &&
+                     *initialType != PLDM_FWUP_PCI_VENDOR_ID &&
+                     *initialType != PLDM_FWUP_IANA_ENTERPRISE_ID &&
+                     *initialType != PLDM_FWUP_IEEE_ASSIGNED_COMPANY_ID &&
+                     *initialType != PLDM_FWUP_SCSI_VENDOR_ID) ||
+                    (desc.descriptor_type == PLDM_FWUP_PCI_REVISION_ID_RANGE &&
+                     *initialType != PLDM_FWUP_PCI_VENDOR_ID))
+                {
+                    fail("Descriptor is incompatible with the initial type");
+                    return;
+                }
+                if (!appendDescriptor(descriptors, desc))
+                {
+                    return;
+                }
+            }
+            if (rc)
+            {
+                fail("Invalid downstream descriptor");
+                return;
+            }
+            devices.push_back(
+                {{"DownstreamDeviceIndex", dev.downstream_device_index},
+                 {"DownstreamDescriptorCount", dev.downstream_descriptor_count},
+                 {"Descriptors", std::move(descriptors)}});
+        }
+        if (rc || devs.field.length != 0)
+        {
+            fail("Invalid downstream device table");
+            return;
+        }
+        ordered_json data;
+        fillCompletionCode(resp.completion_code, data, PLDM_FWUP);
+        data["EID"] = getMCTPEID();
+        data["DownstreamDevicesLength"] = resp.downstream_devices_length;
+        data["NumberOfDownstreamDevices"] = resp.number_of_downstream_devices;
+        data["DownstreamDevices"] = std::move(devices);
+        DisplayInJson(data);
+    }
+
+    bool appendDescriptor(ordered_json& descriptors,
+                          const pldm_descriptor& desc)
+    {
+        const auto* bytes = static_cast<const uint8_t*>(desc.descriptor_data);
+        if (desc.descriptor_type != PLDM_FWUP_VENDOR_DEFINED)
+        {
+            if (!descriptorInfo.contains(desc.descriptor_type))
+            {
+                fail("Unknown downstream descriptor type");
+                return false;
+            }
+            if (desc.descriptor_length !=
+                descriptorInfo.at(desc.descriptor_type).length)
+            {
+                fail("Invalid downstream descriptor length");
+                return false;
+            }
+            updateDescriptor(
+                descriptors, desc.descriptor_type,
+                DescriptorData(bytes, bytes + desc.descriptor_length));
+            return true;
+        }
+        uint8_t titleType = 0;
+        variable_field title{};
+        variable_field value{};
+        auto rc = decode_vendor_defined_descriptor_value(
+            bytes, desc.descriptor_length, &titleType, &title, &value);
+        if (rc)
+        {
+            fail("Invalid vendor-defined descriptor");
+            return false;
+        }
+        updateDescriptor(
+            descriptors, desc.descriptor_type,
+            std::make_tuple(
+                pldm::utils::toString(title),
+                DescriptorData(value.ptr, value.ptr + value.length)));
+        return true;
+    }
+};
+
 void registerCommand(CLI::App& app)
 {
     auto fwUpdate =
@@ -1545,6 +1830,11 @@ void registerCommand(CLI::App& app)
         "To query the downstream device capability of the FD");
     commands.push_back(std::make_unique<QueryDownstreamDevices>(
         "fw_update", "QueryDownstreamDevices", queryDownstreamDevices));
+
+    auto queryDownstreamIdentifiers = fwUpdate->add_subcommand(
+        "QueryDownstreamIdentifiers", "To query downstream device identifiers");
+    commands.push_back(std::make_unique<QueryDownstreamIdentifiers>(
+        "fw_update", "QueryDownstreamIdentifiers", queryDownstreamIdentifiers));
 }
 
 } // namespace fw_update

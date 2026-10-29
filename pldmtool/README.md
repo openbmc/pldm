@@ -262,3 +262,18 @@ firmware updates are unsupported.
 ```sh
 pldmtool fw_update QueryDownstreamDevices -m 8
 ```
+
+`QueryDownstreamIdentifiers` reports each downstream device index and its
+descriptors (section 11.4, tables 21–23). It starts with GetFirstPart and
+follows continuation handles until the complete response is available, including
+entries split across replies. Vendor-defined descriptor values retain their hex
+encoding.
+
+```sh
+pldmtool fw_update QueryDownstreamIdentifiers -m 8
+```
+
+The command prints inventory only after the entire response has been decoded.
+Malformed tables, invalid transfer sequences, repeated continuation handles and
+error completion codes are reported on stderr. A changed device list aborts the
+query; run it again to obtain a fresh snapshot. Responses are limited to 16 MiB.
