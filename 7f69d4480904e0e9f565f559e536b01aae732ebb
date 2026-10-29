@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8d34644_dcd51606",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T07:02:00Z",
+      "side": 1,
+      "message": "Shall we add a polling budget here?\nAs the numeric sensor did in the following lines.",
+      "range": {
+        "startLine": 222,
+        "startChar": 8,
+        "endLine": 222,
+        "endChar": 70
+      },
+      "revId": "7f69d4480904e0e9f565f559e536b01aae732ebb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dede7199_bd1fe57f",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T07:02:00Z",
+      "side": 1,
+      "message": "Q: Is logging for success case intentional?",
+      "range": {
+        "startLine": 248,
+        "startChar": 16,
+        "endLine": 250,
+        "endChar": 68
+      },
+      "revId": "7f69d4480904e0e9f565f559e536b01aae732ebb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcbd7136_beed325c",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T07:02:00Z",
+      "side": 1,
+      "message": "Q: Is reading once intended? Don\u0027t we need to poll for the later reading?",
+      "range": {
+        "startLine": 251,
+        "startChar": 16,
+        "endLine": 251,
+        "endChar": 46
+      },
+      "revId": "7f69d4480904e0e9f565f559e536b01aae732ebb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
