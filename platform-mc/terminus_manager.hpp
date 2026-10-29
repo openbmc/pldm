@@ -273,6 +273,7 @@ class TerminusManager
 
     /** @brief Managed termini list */
     TerminiMapper& termini;
+    std::vector<std::shared_ptr<FileDescriptor>> retiredFiles;
 
     /** @brief tables for maintaining assigned TID */
     std::vector<bool> tidPool;

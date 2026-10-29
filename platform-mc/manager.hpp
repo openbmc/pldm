@@ -257,6 +257,13 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
         return terminus->second->getTerminusName();
     }
 
+    std::weak_ptr<Terminus> getTerminusIdentity(pldm_tid_t tid) const
+    {
+        auto current = termini.find(tid);
+        return current == termini.end() ? std::weak_ptr<Terminus>{}
+                                        : current->second;
+    }
+
     /** @brief Get the PLDM File Descriptor objects for a terminus.
      *
      *  @param[in] tid - Terminus ID

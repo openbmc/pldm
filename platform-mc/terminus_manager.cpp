@@ -128,6 +128,17 @@ bool TerminusManager::unmapTid(const pldm_tid_t& tid)
 void TerminusManager::updateMctpEndpointAvailability(const MctpInfo& mctpInfo,
                                                      Availability availability)
 {
+    if (!availability)
+    {
+        auto current = findTerminusPtr(mctpInfo);
+        if (current != termini.end())
+        {
+            for (auto& file : current->second->fileDescriptors)
+            {
+                file->invalidate();
+            }
+        }
+    }
     mctpInfoAvailTable.insert_or_assign(mctpInfo, availability);
 
     if (manager)
@@ -262,6 +273,16 @@ void TerminusManager::removeMctpTerminus(const MctpInfos& mctpInfos)
             manager->stopSensorPolling(it->second->getTid());
         }
 
+        for (auto& file : it->second->fileDescriptors)
+        {
+            file->invalidate();
+            if (file->busy())
+            {
+                retiredFiles.push_back(file);
+            }
+        }
+        std::erase_if(retiredFiles,
+                      [](const auto& file) { return !file->busy(); });
         unmapTid(it->first);
         termini.erase(it);
         mctpInfoAvailTable.erase(mctpInfo);
