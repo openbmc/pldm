@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c9687e_2b8d01bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T06:18:25Z",
+      "side": 1,
+      "message": "https://github.com/openbmc/pldm/blob/dfb79e88936418708941ee030078dc032be20a53/pldmtool/pldm_platform_cmd.cpp#L1415\n\nAnother call site at `pldmtool`, not sure if we should refactor them here as well.",
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19102d04_5cfd96dc",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T06:18:25Z",
+      "side": 1,
+      "message": "One of the similar call site.",
+      "range": {
+        "startLine": 377,
+        "startChar": 12,
+        "endLine": 400,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a9b944_2f739ec6",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T06:18:25Z",
+      "side": 1,
+      "message": "I just noticed that there are several sites having this duplicated code, \nshall we make a helper to reduce the code?",
+      "range": {
+        "startLine": 455,
+        "startChar": 12,
+        "endLine": 478,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60847d75_4b017715",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T06:18:25Z",
+      "side": 1,
+      "message": "Here as well.",
+      "range": {
+        "startLine": 547,
+        "startChar": 8,
+        "endLine": 570,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
