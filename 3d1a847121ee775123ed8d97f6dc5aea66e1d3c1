@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ef531d_6388fbd9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:21:17Z",
+      "side": 1,
+      "message": "Ack, added information about the behaviour with and without this patch",
+      "parentUuid": "1f5be09f_4b5865ec",
+      "revId": "3d1a847121ee775123ed8d97f6dc5aea66e1d3c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fefd1ca7_823d6dbf",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-10-26T11:11:57Z",
       "side": 1,
       "message": "Could you please confirm the behaviour of componentTargets() for an EID that has no inventory entry, since the package path also handles such devices. Does it return an empty map, or can it throw (for example through at())? Also could you confirm that DeviceUpdater takes the result by value or const reference and does not hold a view into a temporary. If it returns an empty map by value, a short note in the commit body would help.",
+      "revId": "3d1a847121ee775123ed8d97f6dc5aea66e1d3c1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96fc1c18_b8594273",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-10-29T16:21:17Z",
+      "side": 1,
+      "message": "Ack, added a note to the commit message. componentTargets() returns an empty map by value when the EID has no component inventory entries. DeviceUpdater takes the map by value and moves it into its own member, so it retains no view into the temporary. Devices without inventory still update, without component-targeted events.",
+      "parentUuid": "fefd1ca7_823d6dbf",
       "revId": "3d1a847121ee775123ed8d97f6dc5aea66e1d3c1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
