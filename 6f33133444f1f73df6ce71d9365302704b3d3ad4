@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f033596b_5e8d975e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T05:17:31Z",
+      "side": 1,
+      "message": "Overall is good, just some minor nit.",
+      "revId": "6f33133444f1f73df6ce71d9365302704b3d3ad4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1040086_31afd606",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-10-29T05:17:31Z",
+      "side": 1,
+      "message": "nit: Not sure if the following version is better.\n```\nif (!terminusName.empty())\n{\n    terminusName +\u003d \"_\";\n}\nterminusName +\u003d static_cast\u003cstd::string\u003e(tName.value());\n```",
+      "range": {
+        "startLine": 252,
+        "startChar": 8,
+        "endLine": 261,
+        "endChar": 9
+      },
+      "revId": "6f33133444f1f73df6ce71d9365302704b3d3ad4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
