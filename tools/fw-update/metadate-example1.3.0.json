@@ -96,7 +96,7 @@
             "ComponentClassification": 65535,
             "ComponentIdentifier": 65535,
             "ComponentComparisonStamp": "0x00000000",
-            "ComponentOptions": [0, 2],
+            "ComponentOptions": [0],
             "RequestedComponentActivationMethod": [2, 3],
             "ComponentVersionString": "VersionString7"
         }

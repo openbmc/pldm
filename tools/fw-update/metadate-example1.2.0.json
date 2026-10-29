@@ -80,8 +80,7 @@
             "ComponentComparisonStamp": "0xFFFFFFFE",
             "ComponentOptions": [1],
             "RequestedComponentActivationMethod": [],
-            "ComponentVersionString": "VersionString5",
-            "ComponentOpaqueDataLength": 0
+            "ComponentVersionString": "VersionString5"
         },
         {
             "ComponentClassification": 10,
@@ -89,18 +88,15 @@
             "ComponentComparisonStamp": "0x00000000",
             "ComponentOptions": [],
             "RequestedComponentActivationMethod": [0],
-            "ComponentVersionString": "VersionString6",
-            "ComponentOpaqueDataLength": 0
+            "ComponentVersionString": "VersionString6"
         },
         {
             "ComponentClassification": 65535,
             "ComponentIdentifier": 65535,
             "ComponentComparisonStamp": "0x00000000",
-            "ComponentOptions": [0, 2],
+            "ComponentOptions": [0],
             "RequestedComponentActivationMethod": [2, 3],
-            "ComponentVersionString": "VersionString7",
-            "ComponentOpaqueDataLength": 16,
-            "ComponentOpaqueData": "4F70656E424D43204F7061717565446174"
+            "ComponentVersionString": "VersionString7"
         }
     ]
 }
