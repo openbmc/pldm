@@ -12,6 +12,7 @@
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/PLDM/File/server.hpp>
 
+#include <optional>
 #include <string>
 
 PHOSPHOR_LOG2_USING;
@@ -97,6 +98,9 @@ class FileDescriptor : virtual public FileInterface
     /** @brief A socket pair to stream file data out upon an Open call.*/
     int sockets[SOCKET_CNT] = {-1, -1};
 
+    /** @brief Original D-Bus Open FD, closed on the next Open or destruction. */
+    std::optional<pldm::utils::CustomFD> dbusClientFd;
+
     /** @brief Coroutine handler for tasks.*/
     std::optional<std::pair<exec::async_scope, std::optional<int>>> taskHandle;
 
@@ -112,13 +116,10 @@ class FileDescriptor : virtual public FileInterface
      *  @param[in] dataSize - Data length to be written
      *  @param[in] data - Pointer to the array of data
      *  @param[in] socket - The socket fd
-     *  @param[in] maxfd - Highest-num fd of all the fd set. maxfd + 1 will be
-     *                     passed as nfds argument to select()
-     *
      *  @return coroutine task returning int
      */
     exec::task<int> writeDataToSocket(
-        size_t dataSize, const uint8_t* const data, int socket, int maxFd);
+        size_t dataSize, const uint8_t* const data, int socket);
 
     /** @brief Call DfRead(s) to read a section of certain length to a buffer.
      *  With reponse data from each part, write it to the socket pair
