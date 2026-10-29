@@ -10,7 +10,6 @@
             "DeviceUpdateOptionFlags": [0],
             "ComponentImageSetVersionString": "VersionString2",
             "ApplicableComponents": [0, 1],
-            "ReferenceManifestData": "0102030405060708090A0B0C0D0E0F10",
             "Descriptors": [
                 {
                     "DescriptorType": 1,
@@ -55,7 +54,6 @@
             "DownstreamDeviceUpdateOptionFlags": [],
             "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString3",
             "ApplicableComponents": [2],
-            "DownstreamDeviceReferenceManifestData": "AABBCCDDEEFF00112233445566778899",
             "Descriptors": [
                 {
                     "DescriptorType": 2,
