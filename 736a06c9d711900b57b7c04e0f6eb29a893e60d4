@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b96fa42_e7f6c4d4",
+        "filename": "tools/fw-update/metadate-example1.0.0.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-10-29T21:35:41Z",
+      "side": 1,
+      "message": "Wouldn\u0027t this be invalid as per the rules u mentioned as it has only type 2 ?\n\nSame goes for next component.",
+      "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
