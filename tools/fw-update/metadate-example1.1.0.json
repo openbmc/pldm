@@ -52,7 +52,6 @@
     "DownstreamDeviceIdentificationArea": [
         {
             "DownstreamDeviceUpdateOptionFlags": [],
-            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString3",
             "ApplicableComponents": [2],
             "Descriptors": [
                 {
@@ -63,7 +62,6 @@
         },
         {
             "DownstreamDeviceUpdateOptionFlags": [],
-            "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString4",
             "ApplicableComponents": [2],
             "Descriptors": [
                 {
