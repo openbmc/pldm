@@ -160,6 +160,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f3e669c_a7d68535",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-10-29T16:44:34Z",
+      "side": 1,
+      "message": "i believe this issue is now resolved as libpldm++ has been fixed to also use a `std::multimap` https://github.com/openbmc/libpldm/commit/be4f63e36408921e76d868593176377de84e945e",
+      "parentUuid": "8b733714_09eaaf36",
+      "revId": "24adc64c379c3bb9110a9380ef7994520044a192",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c78cfdf5_a8dbaf40",

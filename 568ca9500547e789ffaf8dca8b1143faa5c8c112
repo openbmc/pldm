@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a3de5be_aa7fba78",
+        "filename": "fw-update/item_update_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-10-29T16:44:34Z",
+      "side": 1,
+      "message": "This looks like a remaining issue, it seems like toplevel fields like `PackageVersionString` and `PackageHeaderFormatRevision` are not part of the libpldm++ data structure.\n\nsame issue in the 2 other source locations below",
+      "revId": "568ca9500547e789ffaf8dca8b1143faa5c8c112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f73c9238_66ca1274",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-10-29T16:44:34Z",
+      "side": 1,
+      "message": "version should not be dropped here",
+      "revId": "568ca9500547e789ffaf8dca8b1143faa5c8c112",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
