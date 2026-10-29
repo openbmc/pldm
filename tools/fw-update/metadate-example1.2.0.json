@@ -29,7 +29,7 @@
         {
             "DeviceUpdateOptionFlags": [],
             "ComponentImageSetVersionString": "VersionString3",
-            "ApplicableComponents": [0, 1, 2],
+            "ApplicableComponents": [0, 1],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
@@ -53,7 +53,7 @@
         {
             "DownstreamDeviceUpdateOptionFlags": [],
             "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString3",
-            "ApplicableComponents": [0, 1, 2],
+            "ApplicableComponents": [2],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
@@ -64,7 +64,7 @@
         {
             "DownstreamDeviceUpdateOptionFlags": [],
             "DownstreamDeviceSelfContainedActivationMinVersionString": "VersionString4",
-            "ApplicableComponents": [0],
+            "ApplicableComponents": [2],
             "Descriptors": [
                 {
                     "DescriptorType": 2,
@@ -93,8 +93,8 @@
             "ComponentOpaqueDataLength": 0
         },
         {
-            "ComponentClassification": 16,
-            "ComponentIdentifier": 300,
+            "ComponentClassification": 65535,
+            "ComponentIdentifier": 65535,
             "ComponentComparisonStamp": "0x00000000",
             "ComponentOptions": [0, 2],
             "RequestedComponentActivationMethod": [2, 3],
