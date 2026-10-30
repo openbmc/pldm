@@ -583,6 +583,104 @@ TEST(TerminusTest, fruDecoratorsCreationFailureRemovesCreatedTest)
     EXPECT_EQ("B1", first.getRevision()->version());
 }
 
+// Offsets into a record from buildFruRecord() holding a single field
+constexpr size_t fruRecordTypeOffset = 2;
+constexpr size_t fruRecordNumFieldsOffset = 3;
+constexpr size_t fruTlvLengthOffset = 6;
+
+TEST(TerminusTest, fruTruncatedTlvHeaderTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestTruncatedTlvHeader");
+
+    // The record declares two fields but only the first one is present
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+    fru[fruRecordNumFieldsOffset] = 2;
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAsset());
+    EXPECT_EQ("Model1", decorators->getAsset()->model());
+}
+
+TEST(TerminusTest, fruTlvLengthPastTableEndTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestTlvLengthPastEnd");
+
+    // The field claims 64 bytes, the table holds 6
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+    fru[fruTlvLengthOffset] = 64;
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    EXPECT_EQ(nullptr, decorators->getAsset());
+}
+
+TEST(TerminusTest, fruSkippedRecordTlvLengthPastTableEndTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestSkippedTlvLengthPastEnd");
+
+    // An unsupported record whose field length overshoots the end of the
+    // table by two bytes
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+    fru[fruRecordTypeOffset] = 0xFE;
+    fru[fruTlvLengthOffset] += 2;
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    EXPECT_EQ(nullptr, decorators->getAsset());
+}
+
+TEST(TerminusTest, fruUnsupportedRecordIsSkippedTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestUnsupportedRecordSkipped");
+
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Skipped"}});
+    fru[fruRecordTypeOffset] = 0xFE;
+    auto general = buildFruRecord({{PLDM_FRU_FIELD_TYPE_PN, "PN1"}});
+    fru.insert(fru.end(), general.begin(), general.end());
+    t1.updateInventoryWithFru(fru.data(), fru.size());
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    ASSERT_NE(nullptr, decorators->getAsset());
+    EXPECT_EQ("PN1", decorators->getAsset()->partNumber());
+    EXPECT_EQ("", decorators->getAsset()->model());
+}
+
+TEST(TerminusTest, fruTableShorterThanRecordHeaderTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+    t1.setTerminusName("FruTestShortTable");
+
+    auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+    for (size_t size = 1; size < sizeof(pldm_fru_record_data_format); size++)
+    {
+        std::vector<uint8_t> shortTable(fru.begin(), fru.begin() + size);
+        t1.updateInventoryWithFru(shortTable.data(), shortTable.size());
+    }
+
+    auto decorators = t1.getFruDecorators();
+    ASSERT_NE(nullptr, decorators);
+    EXPECT_EQ(nullptr, decorators->getAsset());
+}
+
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
 {
     auto event = sdeventplus::Event::get_default();

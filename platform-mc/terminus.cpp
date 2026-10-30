@@ -677,8 +677,32 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
 static bool isTableEnd(const uint8_t* table, const uint8_t* p,
                        const size_t tableSize)
 {
-    auto offset = p - table;
-    return (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
+    auto offset = static_cast<size_t>(p - table);
+    return (offset >= tableSize) ||
+           (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
+}
+
+/** @brief Get the FRU TLV at p if its header and value lie within the table
+ *  @param[in] table - pointer to FRU record table
+ *  @param[in] p - pointer to the TLV
+ *  @param[in] tableSize - FRU table size
+ *  @return the TLV, or nullptr if it extends past the end of the table
+ */
+static const pldm_fru_record_tlv* getFruTlv(
+    const uint8_t* table, const uint8_t* p, const size_t tableSize)
+{
+    constexpr size_t tlvHeaderSize = sizeof(pldm_fru_record_tlv) - 1;
+    auto offset = static_cast<size_t>(p - table);
+    if (offset > tableSize || (tableSize - offset) < tlvHeaderSize)
+    {
+        return nullptr;
+    }
+    auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(p);
+    if (tlv->length > (tableSize - offset - tlvHeaderSize))
+    {
+        return nullptr;
+    }
+    return tlv;
 }
 
 void Terminus::updateInventoryWithFru(const uint8_t* fruData,
@@ -730,7 +754,14 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             for ([[maybe_unused]] const auto& idx :
                  std::views::iota(0, static_cast<int>(record->num_fru_fields)))
             {
-                auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+                auto tlv = getFruTlv(fruData, ptr, fruLen);
+                if (!tlv)
+                {
+                    lg2::error(
+                        "Malformed FRU TLV in record type {TYPE} of terminus {TID}, dropping the rest of the FRU table",
+                        "TYPE", record->record_type, "TID", tid);
+                    return;
+                }
                 ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
             }
             continue;
@@ -739,7 +770,14 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
         for ([[maybe_unused]] const auto& idx :
              std::views::iota(0, static_cast<int>(record->num_fru_fields)))
         {
-            auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+            auto tlv = getFruTlv(fruData, ptr, fruLen);
+            if (!tlv)
+            {
+                lg2::error(
+                    "Malformed FRU TLV in record type {TYPE} of terminus {TID}, dropping the rest of the FRU table",
+                    "TYPE", record->record_type, "TID", tid);
+                return;
+            }
             std::string fruField{};
             if (tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
             {
