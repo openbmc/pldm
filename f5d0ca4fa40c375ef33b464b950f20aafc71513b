@@ -1,0 +1,22 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf971fb6_49c21383",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-10-30T09:59:05Z",
+      "side": 1,
+      "message": "Per Vishnu\u0027s feedback on 93095: \"We don\u0027t need unit tests for pldmtool. This just adds extra maintenance effort for things that can be directly tested using pldmtool.\"\n\nSo I will drop the tests and the simulated transport from this patch instead of splitting them out. This will be reflected in the next patch set.",
+      "parentUuid": "67d91caa_4dfe00b4",
+      "revId": "f5d0ca4fa40c375ef33b464b950f20aafc71513b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
