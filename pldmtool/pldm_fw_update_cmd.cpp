@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <format>
+#include <limits>
 #include <optional>
 #include <set>
 #include <string_view>
@@ -834,6 +835,97 @@ class RequestUpdate : public CommandInterface
     std::string compImgVerStrType;
     uint8_t compImgVerStrLen;
     std::string compImgSetVerStr;
+};
+
+class RequestDownstreamDeviceUpdate : public CommandInterface
+{
+  public:
+    ~RequestDownstreamDeviceUpdate() override = default;
+    RequestDownstreamDeviceUpdate() = delete;
+    RequestDownstreamDeviceUpdate(const RequestDownstreamDeviceUpdate&) =
+        delete;
+    RequestDownstreamDeviceUpdate(RequestDownstreamDeviceUpdate&&) = delete;
+    RequestDownstreamDeviceUpdate& operator=(
+        const RequestDownstreamDeviceUpdate&) = delete;
+    RequestDownstreamDeviceUpdate& operator=(RequestDownstreamDeviceUpdate&&) =
+        delete;
+
+    explicit RequestDownstreamDeviceUpdate(const char* type, const char* name,
+                                           CLI::App* app) :
+        CommandInterface(type, name, app)
+    {
+        app->add_option("--max-transfer-size", maxTransferSize,
+                        "Maximum downstream device transfer size in bytes")
+            ->required()
+            ->check(CLI::Range(uint64_t{PLDM_FWUP_BASELINE_TRANSFER_SIZE},
+                               uint64_t{std::numeric_limits<uint32_t>::max()}));
+        app->add_option("--max-outstanding-transfer-requests",
+                        maxOutstandingRequests,
+                        "Maximum number of outstanding transfer requests")
+            ->required()
+            ->check(CLI::Range(uint64_t{PLDM_FWUP_MIN_OUTSTANDING_REQ},
+                               uint64_t{std::numeric_limits<uint8_t>::max()}));
+        app->add_option("--package-data-length", packageDataLength,
+                        "Downstream device package data length in bytes")
+            ->required()
+            ->check(CLI::Range(uint64_t{0},
+                               uint64_t{std::numeric_limits<uint16_t>::max()}));
+    }
+
+    std::pair<int, std::vector<uint8_t>> createRequestMsg() override
+    {
+        std::vector<uint8_t> requestMsg(
+            sizeof(pldm_msg_hdr) + PLDM_DOWNSTREAM_DEVICE_UPDATE_REQUEST_BYTES);
+        auto request = new (requestMsg.data()) pldm_msg;
+
+        pldm_request_downstream_device_update_req req{};
+        req.maximum_downstream_device_transfer_size =
+            static_cast<uint32_t>(maxTransferSize);
+        req.maximum_outstanding_transfer_requests =
+            static_cast<uint8_t>(maxOutstandingRequests);
+        req.downstream_device_package_data_length =
+            static_cast<uint16_t>(packageDataLength);
+
+        size_t payloadLength = PLDM_DOWNSTREAM_DEVICE_UPDATE_REQUEST_BYTES;
+        auto rc = encode_request_downstream_device_update_req(
+            instanceId, &req, request, &payloadLength);
+        return {rc, requestMsg};
+    }
+
+    void parseResponseMsg(pldm_msg* responsePtr, size_t payloadLength) override
+    {
+        pldm_request_downstream_device_update_resp resp{};
+        auto rc = decode_request_downstream_device_update_resp(
+            responsePtr, payloadLength, &resp);
+        if (rc)
+        {
+            std::cerr << "Response Message Error: rc=" << rc
+                      << ",cc=" << unsigned(resp.completion_code) << "\n";
+            return;
+        }
+
+        ordered_json data;
+        fillCompletionCode(resp.completion_code, data, PLDM_FWUP);
+        if (resp.completion_code == PLDM_SUCCESS)
+        {
+            data["DownstreamDeviceMetaDataLength"] =
+                resp.downstream_device_meta_data_length;
+            data["DDWillSendGetPackageDataCommand"] = std::format(
+                "0x{:02X}", resp.downstream_device_will_send_get_package_data);
+            if (resp.downstream_device_will_send_get_package_data ==
+                PLDM_DOWNSTREAM_DEVICE_WILL_SEND_GET_PACKAGE_DATA_WITH_LIMIT)
+            {
+                data["GetPackageDataMaximumTransferSize"] =
+                    resp.get_package_data_maximum_transfer_size;
+            }
+        }
+        DisplayInJson(data);
+    }
+
+  private:
+    uint64_t maxTransferSize = 0;
+    uint64_t maxOutstandingRequests = 0;
+    uint64_t packageDataLength = 0;
 };
 
 class PassComponentTable : public CommandInterface
@@ -2060,6 +2152,13 @@ void registerCommand(CLI::App& app)
         "RequestUpdate", "To initiate a firmware update");
     commands.push_back(std::make_unique<RequestUpdate>(
         "fw_update", "RequestUpdate", requestUpdate));
+
+    auto requestDownstreamDeviceUpdate = fwUpdate->add_subcommand(
+        "RequestDownstreamDeviceUpdate",
+        "To enter firmware update mode for downstream devices");
+    commands.push_back(std::make_unique<RequestDownstreamDeviceUpdate>(
+        "fw_update", "RequestDownstreamDeviceUpdate",
+        requestDownstreamDeviceUpdate));
 
     auto passCompTable = fwUpdate->add_subcommand("PassComponentTable",
                                                   "To pass component table");
