@@ -583,6 +583,83 @@ TEST(TerminusTest, fruDecoratorsCreationFailureRemovesCreatedTest)
     EXPECT_EQ("B1", first.getRevision()->version());
 }
 
+TEST(TerminusTest, fruDecoratorsMalformedRecordsTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    constexpr uint8_t recordTypeOem = 0xFE;
+
+    // 1. General record truncated inside TLV header (num_fru_fields=2, only 1
+    // TLV present): first field is applied, truncated second field is rejected
+    {
+        auto t = pldm::platform_mc::Terminus(
+            1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        t.setTerminusName("FruMalformedTruncHdr");
+
+        auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+        fru[3] = 2; // declare 2 fields while only 1 is in the buffer
+        t.updateInventoryWithFru(fru.data(), fru.size());
+
+        auto decorators = t.getFruDecorators();
+        ASSERT_NE(nullptr, decorators);
+        ASSERT_NE(nullptr, decorators->getAsset());
+        EXPECT_EQ("Model1", decorators->getAsset()->model());
+    }
+
+    // 2. General record TLV length exceeds remaining buffer: rejected before
+    // reading the field value
+    {
+        auto t = pldm::platform_mc::Terminus(
+            2, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        t.setTerminusName("FruMalformedOversizedLen");
+
+        auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+        fru[6] = 64; // TLV length 64 > 6 bytes of value in buffer
+        t.updateInventoryWithFru(fru.data(), fru.size());
+
+        auto decorators = t.getFruDecorators();
+        ASSERT_NE(nullptr, decorators);
+        EXPECT_EQ(nullptr, decorators->getAsset());
+    }
+
+    // 3. Non-general record TLV length exceeds remaining buffer, followed by a
+    // valid General record: aborts cleanly instead of underflowing isTableEnd()
+    {
+        auto t = pldm::platform_mc::Terminus(
+            3, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        t.setTerminusName("FruMalformedSkipOversized");
+
+        auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Model1"}});
+        fru[2] = recordTypeOem;
+        fru[6] = 64;
+        auto second = buildFruRecord({{PLDM_FRU_FIELD_TYPE_PN, "PN2"}});
+        fru.insert(fru.end(), second.begin(), second.end());
+        t.updateInventoryWithFru(fru.data(), fru.size());
+
+        auto decorators = t.getFruDecorators();
+        ASSERT_NE(nullptr, decorators);
+        EXPECT_EQ(nullptr, decorators->getAsset());
+    }
+
+    // 4. Positive control: non-general record with valid TLV length is skipped
+    // and the following General record is parsed
+    {
+        auto t = pldm::platform_mc::Terminus(
+            4, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+        t.setTerminusName("FruValidSkipThenGeneral");
+
+        auto fru = buildFruRecord({{PLDM_FRU_FIELD_TYPE_MODEL, "Ignored"}});
+        fru[2] = recordTypeOem;
+        auto second = buildFruRecord({{PLDM_FRU_FIELD_TYPE_PN, "PN2"}});
+        fru.insert(fru.end(), second.begin(), second.end());
+        t.updateInventoryWithFru(fru.data(), fru.size());
+
+        auto decorators = t.getFruDecorators();
+        ASSERT_NE(nullptr, decorators);
+        ASSERT_NE(nullptr, decorators->getAsset());
+        EXPECT_EQ("PN2", decorators->getAsset()->partNumber());
+    }
+}
+
 TEST(TerminusTest, parsePDRTestNoSensorPDR)
 {
     auto event = sdeventplus::Event::get_default();

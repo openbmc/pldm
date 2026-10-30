@@ -677,8 +677,9 @@ std::shared_ptr<NumericSensor> Terminus::getSensorObject(SensorID id)
 static bool isTableEnd(const uint8_t* table, const uint8_t* p,
                        const size_t tableSize)
 {
-    auto offset = p - table;
-    return (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
+    auto offset = static_cast<size_t>(p - table);
+    return (offset >= tableSize) ||
+           (tableSize - offset) < sizeof(struct pldm_fru_record_data_format);
 }
 
 void Terminus::updateInventoryWithFru(const uint8_t* fruData,
@@ -705,6 +706,12 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             utils::DBusHandler::getBus(), inventoryPath);
     }
 
+    if (!fruData)
+    {
+        return;
+    }
+
+    constexpr auto tlvHdrSize = sizeof(pldm_fru_record_tlv) - 1;
     auto ptr = fruData;
     while (!isTableEnd(fruData, ptr, fruLen))
     {
@@ -730,8 +737,24 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
             for ([[maybe_unused]] const auto& idx :
                  std::views::iota(0, static_cast<int>(record->num_fru_fields)))
             {
+                auto offset = static_cast<size_t>(ptr - fruData);
+                if (offset > fruLen || (fruLen - offset) < tlvHdrSize)
+                {
+                    lg2::error(
+                        "Truncated FRU TLV header in record type {TYPE} of terminus {TID}",
+                        "TYPE", record->record_type, "TID", tid);
+                    return;
+                }
                 auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
-                ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                if (tlv->length > (fruLen - offset - tlvHdrSize))
+                {
+                    lg2::error(
+                        "FRU TLV length {LEN} exceeds remaining buffer in record type {TYPE} of terminus {TID}",
+                        "LEN", tlv->length, "TYPE", record->record_type, "TID",
+                        tid);
+                    return;
+                }
+                ptr += tlvHdrSize + tlv->length;
             }
             continue;
         }
@@ -739,7 +762,22 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
         for ([[maybe_unused]] const auto& idx :
              std::views::iota(0, static_cast<int>(record->num_fru_fields)))
         {
+            auto offset = static_cast<size_t>(ptr - fruData);
+            if (offset > fruLen || (fruLen - offset) < tlvHdrSize)
+            {
+                lg2::error(
+                    "Truncated FRU TLV header in General record of terminus {TID}",
+                    "TID", tid);
+                return;
+            }
             auto tlv = reinterpret_cast<const pldm_fru_record_tlv*>(ptr);
+            if (tlv->length > (fruLen - offset - tlvHdrSize))
+            {
+                lg2::error(
+                    "FRU TLV length {LEN} exceeds remaining buffer in General record of terminus {TID}",
+                    "LEN", tlv->length, "TID", tid);
+                return;
+            }
             std::string fruField{};
             if (tlv->type != PLDM_FRU_FIELD_TYPE_IANA)
             {
@@ -747,14 +785,14 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
                     pldm::utils::fruFieldValuestring(tlv->value, tlv->length);
                 if (!strOptional)
                 {
-                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    ptr += tlvHdrSize + tlv->length;
                     continue;
                 }
                 fruField = strOptional.value();
 
                 if (fruField.empty())
                 {
-                    ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                    ptr += tlvHdrSize + tlv->length;
                     continue;
                 }
             }
@@ -794,12 +832,12 @@ void Terminus::updateInventoryWithFru(const uint8_t* fruData,
                         pldm::utils::fruFieldParserU32(tlv->value, tlv->length);
                     if (!iana)
                     {
-                        ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+                        ptr += tlvHdrSize + tlv->length;
                         continue;
                     }
                     break;
             }
-            ptr += sizeof(pldm_fru_record_tlv) - 1 + tlv->length;
+            ptr += tlvHdrSize + tlv->length;
         }
     }
 }
