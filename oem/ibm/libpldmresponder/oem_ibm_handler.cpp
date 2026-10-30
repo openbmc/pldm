@@ -605,7 +605,7 @@ int pldm::responder::oem_ibm_platform::Handler::sendEventToHost(
             tempStream << std::setfill('0') << std::setw(2) << std::hex << byte
                        << " ";
         }
-        std::cout << tempStream.str() << std::endl;
+        debug("{DATA}", "DATA", tempStream.str());
     }
     auto oemPlatformEventMessageResponseHandler = [](mctp_eid_t /*eid*/,
                                                      const pldm_msg* response,
