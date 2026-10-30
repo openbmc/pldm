@@ -704,9 +704,7 @@ int executeCmd(const T&... t)
     int rc = pclose(pipe);
     if (WEXITSTATUS(rc))
     {
-        std::cerr << "Error executing: ";
-        ((std::cerr << " " << t), ...);
-        std::cerr << "\n";
+        error("Error executing: {CMD}", "CMD", cmd.str());
         return -1;
     }
 
