@@ -291,3 +291,27 @@ Version strings have the printable display used by `GetFirmwareParameters`. The
 additional `VersionStringType` and `VersionStringHex` fields preserve the
 original encoding and bytes, including UTF-16 and non-printable characters. An
 absent pending version or release date is displayed as an empty string.
+
+## Downstream device update request
+
+`RequestDownstreamDeviceUpdate` asks a Firmware Device Proxy to enter update
+mode for its downstream devices (DSP0267 v1.3.0, section 12.17, table 45).
+Address the proxy with `-m`. All three request fields are required:
+
+- `--max-transfer-size`: 32–4294967295 bytes.
+- `--max-outstanding-transfer-requests`: 1–255 requests.
+- `--package-data-length`: 0–65535 bytes; use the downstream device package data
+  length from the firmware package, or zero when none is present.
+
+```sh
+pldmtool fw_update RequestDownstreamDeviceUpdate -m 8 \
+    --max-transfer-size 1024 --max-outstanding-transfer-requests 1 \
+    --package-data-length 0
+```
+
+This sends only the initial request; it does not run the remaining update
+sequence or serve firmware or package data. A successful response puts the proxy
+in update mode. It reports the metadata length and
+`DDWillSendGetPackageDataCommand`. `GetPackageDataMaximumTransferSize` is
+displayed only when that flag is `0x02`. Error completion codes are reported
+without success fields, as for `RequestUpdate`.
