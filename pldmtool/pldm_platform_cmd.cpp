@@ -1313,7 +1313,8 @@ class GetPDR : public CommandInterface
         output["containerID"] = unsigned(pdr->container_id);
     }
 
-    void printPDREntityAssociation(uint8_t* data, ordered_json& output)
+    void printPDREntityAssociation(uint8_t* data, const uint16_t respCnt,
+                                   ordered_json& output)
     {
         const std::map<uint8_t, const char*> assocationType = {
             {PLDM_ENTITY_ASSOCIAION_PHYSICAL, "Physical"},
@@ -1325,6 +1326,16 @@ class GetPDR : public CommandInterface
             return;
         }
 
+        constexpr size_t fixedPrefixSize =
+            sizeof(pldm_pdr_hdr) +
+            offsetof(pldm_pdr_entity_association, children);
+        if (respCnt < fixedPrefixSize)
+        {
+            std::cerr << "Failed to get the PDR entity association: "
+                         "truncated record\n";
+            return;
+        }
+
         data += sizeof(pldm_pdr_hdr);
         pldm_pdr_entity_association* pdr =
             std::start_lifetime_as<pldm_pdr_entity_association>(data);
@@ -1332,6 +1343,14 @@ class GetPDR : public CommandInterface
         {
             std::cerr << "Failed to get the PDR eneity association"
                       << std::endl;
+            return;
+        }
+
+        if ((respCnt - fixedPrefixSize) / sizeof(pldm_entity) <
+            pdr->num_children)
+        {
+            std::cerr << "Failed to get the PDR entity association: "
+                         "containedEntityCount exceeds record length\n";
             return;
         }
 
@@ -2169,7 +2188,7 @@ class GetPDR : public CommandInterface
                 printStateEffecterPDR(data, output);
                 break;
             case PLDM_PDR_ENTITY_ASSOCIATION:
-                printPDREntityAssociation(data, output);
+                printPDREntityAssociation(data, respCnt, output);
                 break;
             case PLDM_PDR_FRU_RECORD_SET:
                 printPDRFruRecordSet(data, output);
