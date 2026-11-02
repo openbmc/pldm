@@ -270,6 +270,30 @@
       },
       "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15af39b8_5708c454",
+        "filename": "platform-mc/event_manager.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2026-11-02T15:09:18Z",
+      "side": 1,
+      "message": "Agree that std::filesystem::path is more appropriate for paths. I kept std::string here for consistency with the existing code since the path is already handled as a string throughout this flow. A full migration to std::filesystem::path would require updating the surrounding path-handling logic as well.",
+      "parentUuid": "f3477a47_b0575412",
+      "range": {
+        "startLine": 241,
+        "startChar": 32,
+        "endLine": 241,
+        "endChar": 50
+      },
+      "revId": "516f84b818f36eb371971ba7a432c317b7536b20",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
