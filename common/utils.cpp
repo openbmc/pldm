@@ -2,6 +2,7 @@
 
 #include "common/start_lifetime_as.hpp"
 
+#include <endian.h>
 #include <fcntl.h>
 #include <libpldm/pdr.h>
 #include <libpldm/pldm_types.h>
@@ -18,10 +19,12 @@
 
 #include <algorithm>
 #include <cctype>
+#include <codecvt>
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
 #include <iostream>
+#include <locale>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -762,6 +765,25 @@ std::string_view trimNameForDbus(std::string& name)
         name.erase(nullTerminatorPos);
     }
     return name;
+}
+
+std::optional<std::string> utf16BigEndianToUtf8(std::u16string_view u16String)
+{
+    std::u16string hostOrder(u16String);
+    std::ranges::for_each(hostOrder, [](char16_t& c) { c = be16toh(c); });
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    try
+    {
+        return std::wstring_convert<std::codecvt_utf8_utf16<char16_t>,
+                                    char16_t>{}
+            .to_bytes(hostOrder);
+    }
+    catch (const std::range_error&)
+    {
+        return std::nullopt;
+    }
+#pragma GCC diagnostic pop
 }
 
 bool dbusPropValuesToDouble(const std::string_view& type,

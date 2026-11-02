@@ -1,10 +1,13 @@
 #include "common/utils.hpp"
 #include "mocked_utils.hpp"
 
+#include <endian.h>
 #include <libpldm/platform.h>
 #include <linux/mctp.h>
 
+#include <algorithm>
 #include <chrono>
+#include <string>
 
 #include <gtest/gtest.h>
 
@@ -1106,6 +1109,22 @@ TEST(TrimNameForDbus, goodTest)
     expectedName = "Name_1";
     result = trimNameForDbus(name);
     EXPECT_EQ(expectedName, result);
+}
+
+TEST(utf16BigEndianToUtf8, goodTest)
+{
+    std::u16string name = u"Name 1\u00e9";
+    std::ranges::for_each(name, [](char16_t& c) { c = htobe16(c); });
+    EXPECT_EQ(utf16BigEndianToUtf8(name), "Name 1\xc3\xa9");
+    EXPECT_EQ(utf16BigEndianToUtf8(u""), "");
+}
+
+TEST(utf16BigEndianToUtf8, badTest)
+{
+    // An unpaired high surrogate is not valid UTF-16
+    std::u16string name = {0xd800, u'A'};
+    std::ranges::for_each(name, [](char16_t& c) { c = htobe16(c); });
+    EXPECT_EQ(utf16BigEndianToUtf8(name), std::nullopt);
 }
 
 TEST(dbusPropValuesToDouble, goodTest)

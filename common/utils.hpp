@@ -21,8 +21,10 @@
 #include <cstdint>
 #include <filesystem>
 #include <map>
+#include <optional>
 #include <span>
 #include <string>
+#include <string_view>
 #include <variant>
 #include <vector>
 
@@ -668,6 +670,15 @@ void setFruPresence(const std::string& fruObjPath, bool present);
  *  @return the result string
  */
 std::string_view trimNameForDbus(std::string& name);
+
+/** @brief Convert a big-endian UTF-16 string, as names are encoded in PDRs,
+ *         to UTF-8
+ *
+ *  @param[in] u16String - the UTF-16 code units in big-endian byte order
+ *
+ *  @return the UTF-8 string, or std::nullopt if the input is not valid UTF-16
+ */
+std::optional<std::string> utf16BigEndianToUtf8(std::u16string_view u16String);
 
 /** @brief Convert the number type D-Bus Value to the double
  *
