@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a74ba1c_d0585de8",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:03:52Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "c2948320_71c4ddd5",
+      "range": {
+        "startLine": 205,
+        "startChar": 16,
+        "endLine": 210,
+        "endChar": 73
+      },
+      "revId": "56d748713678f0c773ef80c3a80233759826a7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "781c6f9f_4aa4a58b",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4048f9a6_fcc24fe5",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:03:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "781c6f9f_4aa4a58b",
+      "range": {
+        "startLine": 341,
+        "startChar": 4,
+        "endLine": 342,
+        "endChar": 74
+      },
+      "revId": "56d748713678f0c773ef80c3a80233759826a7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1eb18895_08fd6821",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-10-29T06:40:20Z",
       "side": 1,
       "message": "It seems like we are getting the first result from `getEffecterNames()` only,\nshall we skip the looping once we retrieve the first valid result?",
+      "range": {
+        "startLine": 738,
+        "startChar": 4,
+        "endLine": 738,
+        "endChar": 53
+      },
+      "revId": "56d748713678f0c773ef80c3a80233759826a7b9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbf601e7_56754b4d",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:03:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1eb18895_08fd6821",
       "range": {
         "startLine": 738,
         "startChar": 4,
