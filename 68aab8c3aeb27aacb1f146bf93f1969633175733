@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7207b1c7_ad020e93",
+        "filename": "host-bmc/dbus_to_event_handler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-02T09:49:25Z",
+      "side": 1,
+      "message": "Should we check the type before returning this?",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 30
+      },
+      "revId": "68aab8c3aeb27aacb1f146bf93f1969633175733",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
