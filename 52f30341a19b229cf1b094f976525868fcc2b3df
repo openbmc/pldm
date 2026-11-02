@@ -189,6 +189,30 @@
       },
       "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "401a8aa3_d1ced71d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2026-11-02T05:17:27Z",
+      "side": 1,
+      "message": "How so we deal with PLDM entities that have corresponding FRU EEPROM as well? Who creates the inventory in such case?",
+      "parentUuid": "8bc37456_3c684b38",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 53
+      },
+      "revId": "52f30341a19b229cf1b094f976525868fcc2b3df",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
