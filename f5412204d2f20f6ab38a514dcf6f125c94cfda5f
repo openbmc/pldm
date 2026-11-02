@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "063965d1_2d3faae5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:02:38Z",
+      "side": 1,
+      "message": "Added in a parent commit.",
+      "parentUuid": "84c9687e_2b8d01bf",
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19102d04_5cfd96dc",
@@ -31,6 +49,30 @@
       "writtenOn": "2026-10-29T06:18:25Z",
       "side": 1,
       "message": "One of the similar call site.",
+      "range": {
+        "startLine": 377,
+        "startChar": 12,
+        "endLine": 400,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6632e1ae_6995b74f",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19102d04_5cfd96dc",
       "range": {
         "startLine": 377,
         "startChar": 12,
@@ -64,6 +106,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41deaaf9_706a9200",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81a9b944_2f739ec6",
+      "range": {
+        "startLine": 455,
+        "startChar": 12,
+        "endLine": 478,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60847d75_4b017715",
@@ -77,6 +143,30 @@
       "writtenOn": "2026-10-29T06:18:25Z",
       "side": 1,
       "message": "Here as well.",
+      "range": {
+        "startLine": 547,
+        "startChar": 8,
+        "endLine": 570,
+        "endChar": 26
+      },
+      "revId": "f5412204d2f20f6ab38a514dcf6f125c94cfda5f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a2843f2_db664339",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-02T14:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60847d75_4b017715",
       "range": {
         "startLine": 547,
         "startChar": 8,
