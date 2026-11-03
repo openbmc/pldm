@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8447cc8_dc6bef1f",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 806,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-11-03T10:50:03Z",
+      "side": 1,
+      "message": "Done. Kept mkdtemp rather than mktemp, since mktemp doesn\u0027t create\nthe directory and is unsafe, and added the null check.",
+      "parentUuid": "d9c1ee09_d93d607e",
+      "range": {
+        "startLine": 806,
+        "startChar": 8,
+        "endLine": 806,
+        "endChar": 40
+      },
+      "revId": "43f0abcad77e2f21760f8f7deef5172f1eb919a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c453035d_e0058344",
@@ -47,6 +71,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4553dd16_84d8e972",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-11-03T10:50:03Z",
+      "side": 1,
+      "message": "Added a valid file beside the malformed one. The test now checks\nthat the valid entry still loads.",
+      "parentUuid": "c453035d_e0058344",
+      "range": {
+        "startLine": 839,
+        "startChar": 4,
+        "endLine": 848,
+        "endChar": 65
+      },
+      "revId": "43f0abcad77e2f21760f8f7deef5172f1eb919a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8feb465b_53c80b3a",
@@ -60,6 +108,30 @@
       "writtenOn": "2026-11-03T03:07:17Z",
       "side": 1,
       "message": "I think we can add some more entries and do `ASSERT_THROW()` and `ASSERT_NO_THROW()`, for good and bad cases respectively. \n\nIn this case, I think it will be a better evidence to prove `InvalidDbusConfigEntryIsSkipped`.",
+      "range": {
+        "startLine": 855,
+        "startChar": 4,
+        "endLine": 880,
+        "endChar": 65
+      },
+      "revId": "43f0abcad77e2f21760f8f7deef5172f1eb919a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da1c242_7124d6aa",
+        "filename": "libpldmresponder/test/libpldmresponder_platform_test.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 1003003
+      },
+      "writtenOn": "2026-11-03T10:50:03Z",
+      "side": 1,
+      "message": "Added a valid entry beside the invalid one, with ASSERT_NO_THROW for\nthe valid entry and ASSERT_THROW for the invalid entry. Applied the\nsame pattern to the mismatched-size test.",
+      "parentUuid": "8feb465b_53c80b3a",
       "range": {
         "startLine": 855,
         "startChar": 4,
