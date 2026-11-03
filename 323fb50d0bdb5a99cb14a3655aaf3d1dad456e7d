@@ -61,6 +61,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f707bb6_ae3ed59f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000938
+      },
+      "writtenOn": "2026-11-03T06:47:39Z",
+      "side": 1,
+      "message": "Hi @meghanav@ami.com, I was on vacation and busy with a few other things and was not able to get to this. Will try a test in the next couple of weeks.",
+      "parentUuid": "7dacbe7b_585ba5f9",
+      "revId": "323fb50d0bdb5a99cb14a3655aaf3d1dad456e7d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29785aae_811dfe2c",
         "filename": "host-bmc/host_pdr_handler.cpp",
         "patchSetId": 6
