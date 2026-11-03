@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstring>
 #include <format>
 #include <map>
 #include <memory>
@@ -1290,10 +1291,18 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printPDRFruRecordSet(uint8_t* data, ordered_json& output)
+    void printPDRFruRecordSet(uint8_t* data, const uint16_t respCnt,
+                              ordered_json& output)
     {
         if (data == nullptr)
         {
+            return;
+        }
+
+        if (respCnt < sizeof(pldm_pdr_hdr) + sizeof(pldm_pdr_fru_record_set))
+        {
+            std::cerr << "Failed to get the FRU record set PDR: "
+                         "truncated record\n";
             return;
         }
 
@@ -1394,7 +1403,8 @@ class GetPDR : public CommandInterface
      *  @param[in] data - reference to the Sensor/Effecter Aux Name PDR
      *  @param[out] output - PDRs data fields in Json format
      */
-    void printAuxNamePDR(uint8_t* data, ordered_json& output)
+    void printAuxNamePDR(uint8_t* data, const uint16_t respCnt,
+                         ordered_json& output)
     {
         constexpr uint8_t nullTerminator = 0;
         struct pldm_effecter_aux_name_pdr* auxNamePdr =
@@ -1403,6 +1413,14 @@ class GetPDR : public CommandInterface
         if (!auxNamePdr)
         {
             std::cerr << "Failed to get Aux Name PDR" << std::endl;
+            return;
+        }
+
+        constexpr size_t fixedPrefixSize =
+            offsetof(pldm_effecter_aux_name_pdr, effecter_names);
+        if (respCnt < fixedPrefixSize)
+        {
+            std::cerr << "Failed to get Aux Name PDR: truncated record\n";
             return;
         }
 
@@ -1416,8 +1434,15 @@ class GetPDR : public CommandInterface
         output[sPrefix + "Count"] = int(auxNamePdr->effecter_count);
 
         const uint8_t* ptr = auxNamePdr->effecter_names;
+        const uint8_t* const end = data + respCnt;
         for (auto i : std::views::iota(0, (int)auxNamePdr->effecter_count))
         {
+            if (ptr >= end)
+            {
+                std::cerr << "Failed to parse Aux Name PDR: "
+                             "truncated name string count\n";
+                return;
+            }
             const uint8_t nameStringCount = static_cast<uint8_t>(*ptr);
             ptr += sizeof(uint8_t);
             for (auto j : std::views::iota(0, (int)nameStringCount))
@@ -1428,14 +1453,50 @@ class GetPDR : public CommandInterface
                 std::string entityAuxNameKey =
                     sPrefix + std::to_string(j) + "_entityAuxName" +
                     std::to_string(i);
+
+                // Both strings are terminated by the sender; look for the
+                // terminator only inside the record. PLDM_STR_*_MAX_LEN
+                // include the terminator, as in
+                // Terminus::parseSensorAuxiliaryNamesPDR().
+                const size_t tagWindow = std::min<size_t>(
+                    static_cast<size_t>(end - ptr), PLDM_STR_UTF_8_MAX_LEN);
+                const auto* tagEnd = static_cast<const uint8_t*>(
+                    std::memchr(ptr, nullTerminator, tagWindow));
+                if (tagEnd == nullptr)
+                {
+                    std::cerr << "Failed to parse Aux Name PDR: "
+                                 "unterminated language tag\n";
+                    return;
+                }
                 std::string nameLanguageTag(reinterpret_cast<const char*>(ptr),
-                                            0, PLDM_STR_UTF_8_MAX_LEN);
-                ptr += nameLanguageTag.size() + sizeof(nullTerminator);
-                std::u16string u16NameString(
-                    reinterpret_cast<const char16_t*>(ptr), 0,
+                                            static_cast<size_t>(tagEnd - ptr));
+                ptr = tagEnd + sizeof(nullTerminator);
+
+                // The UTF-16 name can start at an odd offset, so copy each
+                // code unit instead of reading through a char16_t pointer.
+                const size_t nameWindow = std::min<size_t>(
+                    static_cast<size_t>(end - ptr) / sizeof(char16_t),
                     PLDM_STR_UTF_16_MAX_LEN);
-                ptr += (u16NameString.size() + sizeof(nullTerminator)) *
-                       sizeof(uint16_t);
+                std::u16string u16NameString;
+                size_t unit = 0;
+                for (; unit < nameWindow; ++unit)
+                {
+                    char16_t codeUnit = 0;
+                    std::memcpy(&codeUnit, ptr + unit * sizeof(codeUnit),
+                                sizeof(codeUnit));
+                    if (codeUnit == 0)
+                    {
+                        break;
+                    }
+                    u16NameString.push_back(codeUnit);
+                }
+                if (unit == nameWindow)
+                {
+                    std::cerr << "Failed to parse Aux Name PDR: "
+                                 "unterminated name string\n";
+                    return;
+                }
+                ptr += (unit + 1) * sizeof(char16_t);
                 std::transform(u16NameString.cbegin(), u16NameString.cend(),
                                u16NameString.begin(),
                                [](uint16_t utf16) { return be16toh(utf16); });
@@ -1579,9 +1640,25 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printStateEffecterPDR(const uint8_t* data, ordered_json& output)
+    void printStateEffecterPDR(const uint8_t* data, const uint16_t respCnt,
+                               ordered_json& output)
     {
+        constexpr size_t fixedPrefixSize =
+            offsetof(pldm_state_effecter_pdr, possible_states);
+        if (respCnt < fixedPrefixSize)
+        {
+            std::cerr << "Failed to get the state effecter PDR: "
+                         "truncated record\n";
+            return;
+        }
+
         auto pdr = reinterpret_cast<const pldm_state_effecter_pdr*>(data);
+        if (pdr->effecter_init >= effecterInit.size())
+        {
+            std::cerr << "Failed to get the state effecter PDR: "
+                         "reserved effecterInit value\n";
+            return;
+        }
 
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["effecterID"] = pdr->effecter_id;
@@ -1595,14 +1672,29 @@ class GetPDR : public CommandInterface
         output["compositeEffecterCount"] =
             unsigned(pdr->composite_effecter_count);
 
+        constexpr size_t statesHeaderSize =
+            offsetof(state_effecter_possible_states, states);
         auto statesPtr = pdr->possible_states;
+        size_t remaining = respCnt - fixedPrefixSize;
         auto compEffCount = pdr->composite_effecter_count;
 
         while (compEffCount--)
         {
+            if (remaining < statesHeaderSize)
+            {
+                std::cerr << "Failed to get the state effecter PDR: "
+                             "compositeEffecterCount exceeds record length\n";
+                return;
+            }
             auto state =
                 reinterpret_cast<const state_effecter_possible_states*>(
                     statesPtr);
+            if (remaining - statesHeaderSize < state->possible_states_size)
+            {
+                std::cerr << "Failed to get the state effecter PDR: "
+                             "possibleStatesSize exceeds record length\n";
+                return;
+            }
             output.emplace(("stateSetID[" + std::to_string(compEffCount) + "]"),
                            getStateSetName(state->state_set_id));
             output.emplace(
@@ -1615,11 +1707,10 @@ class GetPDR : public CommandInterface
                     printPossibleStates(state->possible_states_size,
                                         state->states)));
 
-            if (compEffCount)
-            {
-                statesPtr += sizeof(state_effecter_possible_states) +
-                             state->possible_states_size - 1;
-            }
+            const size_t stateSize =
+                statesHeaderSize + state->possible_states_size;
+            statesPtr += stateSize;
+            remaining -= stateSize;
         }
     }
 
@@ -1839,12 +1930,28 @@ class GetPDR : public CommandInterface
         }
     }
 
-    void printTerminusLocatorPDR(const uint8_t* data, ordered_json& output)
+    void printTerminusLocatorPDR(const uint8_t* data, const uint16_t respCnt,
+                                 ordered_json& output)
     {
         const std::array<std::string_view, 4> terminusLocatorType = {
             "UID", "MCTP_EID", "SMBusRelative", "systemSoftware"};
 
+        constexpr size_t fixedPrefixSize =
+            offsetof(pldm_terminus_locator_pdr, terminus_locator_value);
+        if (respCnt < fixedPrefixSize)
+        {
+            std::cerr << "Failed to get the terminus locator PDR: "
+                         "truncated record\n";
+            return;
+        }
+
         auto pdr = reinterpret_cast<const pldm_terminus_locator_pdr*>(data);
+        if (pdr->terminus_locator_type >= terminusLocatorType.size())
+        {
+            std::cerr << "Failed to get the terminus locator PDR: "
+                         "reserved terminusLocatorType value\n";
+            return;
+        }
 
         output["PLDMTerminusHandle"] = pdr->terminus_handle;
         output["validity"] = (pdr->validity ? "valid" : "notValid");
@@ -1857,6 +1964,15 @@ class GetPDR : public CommandInterface
 
         if (pdr->terminus_locator_type == PLDM_TERMINUS_LOCATOR_TYPE_MCTP_EID)
         {
+            if (pdr->terminus_locator_value_size <
+                    sizeof(pldm_terminus_locator_type_mctp_eid) ||
+                respCnt - fixedPrefixSize <
+                    sizeof(pldm_terminus_locator_type_mctp_eid))
+            {
+                std::cerr << "Failed to get the terminus locator PDR: "
+                             "MCTP EID locator value is truncated\n";
+                return;
+            }
             auto locatorValue =
                 reinterpret_cast<const pldm_terminus_locator_type_mctp_eid*>(
                     pdr->terminus_locator_value);
@@ -2126,6 +2242,14 @@ class GetPDR : public CommandInterface
         output["nextRecordHandle"] = nextRecordHndl;
         output["responseCount"] = respCnt;
 
+        if (respCnt < sizeof(pldm_pdr_hdr))
+        {
+            std::cerr << "Failed to get PDR message: record is shorter than "
+                         "the PDR header\n";
+            displayPDR(output);
+            return;
+        }
+
         struct pldm_pdr_hdr* pdr = (struct pldm_pdr_hdr*)data;
         if (!pdr)
         {
@@ -2169,7 +2293,7 @@ class GetPDR : public CommandInterface
         switch (pdr->type)
         {
             case PLDM_TERMINUS_LOCATOR_PDR:
-                printTerminusLocatorPDR(data, output);
+                printTerminusLocatorPDR(data, respCnt, output);
                 break;
             case PLDM_STATE_SENSOR_PDR:
                 printStateSensorPDR(data, output);
@@ -2182,16 +2306,16 @@ class GetPDR : public CommandInterface
                 break;
             case PLDM_SENSOR_AUXILIARY_NAMES_PDR:
             case PLDM_EFFECTER_AUXILIARY_NAMES_PDR:
-                printAuxNamePDR(data, output);
+                printAuxNamePDR(data, respCnt, output);
                 break;
             case PLDM_STATE_EFFECTER_PDR:
-                printStateEffecterPDR(data, output);
+                printStateEffecterPDR(data, respCnt, output);
                 break;
             case PLDM_PDR_ENTITY_ASSOCIATION:
                 printPDREntityAssociation(data, respCnt, output);
                 break;
             case PLDM_PDR_FRU_RECORD_SET:
-                printPDRFruRecordSet(data, output);
+                printPDRFruRecordSet(data, respCnt, output);
                 break;
             case PLDM_COMPACT_NUMERIC_SENSOR_PDR:
                 printCompactNumericSensorPDR(data, output);
@@ -2206,6 +2330,11 @@ class GetPDR : public CommandInterface
                 break;
         }
 
+        displayPDR(output);
+    }
+
+    void displayPDR(const ordered_json& output)
+    {
         if (!isFirstPDR)
         {
             std::cout << ",\n";
