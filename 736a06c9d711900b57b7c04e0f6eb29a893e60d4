@@ -16,6 +16,24 @@
       "message": "Wouldn\u0027t this be invalid as per the rules u mentioned as it has only type 2 ?\n\nSame goes for next component.",
       "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cf1e417_1f47d488",
+        "filename": "tools/fw-update/metadate-example1.0.0.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-11-04T15:48:28Z",
+      "side": 1,
+      "message": "DSP0267 Table 8 – Descriptor Identifier Table\n\ndefines `0x0002 - UUID`  as a valid initial descriptor for FrimwareDeviceIdentificationArea.\n\nSee the section about vendor defined descriptor\n```\nIf the Device or package header uses a Vendor\nDefined value then the initial descriptor shall be set\nto either PCI Vendor ID, IANA Enterprise ID, IEEE\nAssigned Company ID, or SCSI Vendor ID\n```\n\nso the initial descriptor is restricted further if there is a vendor defined descriptor present but for the device here there is only one descriptor which is not vendor defined. The device defined above this one has a vendor defined descriptor but it\u0027s different device.\n\nIn my interpretation it means that it is fine.\n\nLet me know if there is some other interpretation which you think is more appropriate.",
+      "parentUuid": "3b96fa42_e7f6c4d4",
+      "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
