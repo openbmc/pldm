@@ -269,7 +269,8 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        compInfoIter->second.classificationIndex;
     // ComponentComparisonStamp
     CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
         ComponentImageInfoPos::CompComparisonStampPos)>(comp);
@@ -409,7 +410,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        compInfoIter->second.classificationIndex;
 
     // UpdateOptionFlags
     bitfield32_t updateOptionFlags;
@@ -886,6 +888,15 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
     if (applyResult == PLDM_FWUP_APPLY_SUCCESS ||
         applyResult == PLDM_FWUP_APPLY_SUCCESS_WITH_ACTIVATION_METHOD)
     {
+        const auto key = std::make_pair(std::get<0>(comp), std::get<1>(comp));
+        const auto entry = compInfo.find(key);
+        const auto supported = entry == compInfo.end()
+                                   ? uint16_t{0}
+                                   : entry->second.activationMethods;
+        componentActivation.recordApplied(
+            applicableComponents[componentIndex],
+            static_cast<uint16_t>(std::get<4>(comp).to_ulong()), supported,
+            applyResult, compActivationModification.value);
         info(
             "Component endpoint ID '{EID}' with '{COMPONENT_VERSION}' apply complete.",
             "EID", eid, "COMPONENT_VERSION", compVersion);
@@ -965,8 +976,9 @@ void DeviceUpdater::sendActivateFirmwareRequest()
         sizeof(pldm_msg_hdr) + sizeof(struct pldm_activate_firmware_req));
     auto requestMsg = new (request.data()) pldm_msg;
 
+    selfContainedActivationReq = componentActivation.requestSelfContained();
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
+        instanceId, selfContainedActivationReq, requestMsg,
         sizeof(pldm_activate_firmware_req));
     if (rc)
     {
@@ -1032,6 +1044,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
 
     activationComplete = true;
+    activationEstimateSeconds = estimatedTimeForActivation;
     if (updateManager == nullptr)
     {
         return;
