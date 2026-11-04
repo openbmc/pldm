@@ -37,6 +37,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db110f9a_314e4f32",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-11-04T04:08:59Z",
+      "side": 1,
+      "message": "datetime is now truncated to the encoded time resolution, so it can no longer be const. The remaining locals are const.",
+      "parentUuid": "5cbca842_42aff494",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9c3ecb5_871d330e",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-11-04T04:08:59Z",
+      "side": 1,
+      "message": "Done in PS4. The output is truncated to the time resolution (year → 2026, month → 2026-08, day → 2026-08-20, hour → 2026-08-20T15, minute → 2026-08-20T15:30, second → …:45, 10 ms → …:45.12, and so on). A field known only to its tens digit keeps that digit followed by * (for example 15:3*), following the CIM DateTime convention the spec references for this byte. The UTC offset is rendered at its own resolution (+05, +05:3*, +05:30) and omitted when unspecified. Reserved resolution values are reported as malformed.",
+      "parentUuid": "88966aec_1f89cf30",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "613b92e3_91972629",
         "filename": "pldmtool/pldm_fru_cmd.cpp",
         "patchSetId": 3
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-19T09:45:57Z",
       "side": 1,
       "message": "I am now feeling that ,we should have automated tests for year, month, day, and second resolutions, as well as positive/negative UTC offsets, unspecified UTC, null resolution, and invalid length. Coarse resolution cases would catch the formatting issue above.\n\nWhen we started the project pldmtool was very tiny, and was just a developer only tool to test only the bmc pldm stack. Now that this has been instrumental in catching issues even from devices \u0026 pldm stack has been scaled to various companies , i think its time to get the tests added.",
+      "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94bd11cf_1392970e",
+        "filename": "pldmtool/pldm_fru_cmd.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1002771
+      },
+      "writtenOn": "2026-11-04T04:08:59Z",
+      "side": 1,
+      "message": "Agreed. PS4 moves the decoder into pldm_timestamp104.cpp and adds pldmtool/test/pldm_timestamp104_test.cpp, which covers every time and UTC resolution, positive and negative offsets, unspecified UTC, null and reserved resolutions, and invalid lengths. This also adds the first pldmtool/test directory, so later pldmtool tests have a place to go.",
+      "parentUuid": "613b92e3_91972629",
       "revId": "ad448cbffe946c69120b5bc85c452b747a255973",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
