@@ -1,0 +1,9 @@
+Code-Review+1: Alex Chen <alex_chen@supermicro.com>
+Code-Review+1: Meghana Vangapandu <meghanav@ami.com>
+Code-Review+2: ManojKiran Eda <manojkiran.eda@gmail.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: ManojKiran Eda <manojkiran.eda@gmail.com>
+Submitted-at: Thu, 05 Nov 2026 03:20:06 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/pldm/+/96364
+Project: openbmc/pldm
+Branch: refs/heads/master
