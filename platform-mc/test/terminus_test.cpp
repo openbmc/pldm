@@ -618,3 +618,51 @@ TEST(TerminusTest, parsePDRTestNoSensorPDR)
     auto sensorAuxNames = t1.getSensorAuxiliaryNames(1);
     EXPECT_EQ(nullptr, sensorAuxNames);
 }
+
+namespace
+{
+// Well-formed Entity Auxiliary Names PDR whose name resolves the terminus name
+// to "S0_1".
+std::vector<uint8_t> validEntityAuxNamesPdr()
+{
+    return {
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number =1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+}
+} // namespace
+
+TEST(TerminusTest, parsePDRSkipsRecordShorterThanHeader)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    // Neither record has room for a PDR header.
+    t1.pdrs.emplace_back(std::vector<uint8_t>{});
+    t1.pdrs.emplace_back(std::vector<uint8_t>{0x1, 0x0, 0x0, 0x0, 0x1});
+    t1.pdrs.emplace_back(validEntityAuxNamesPdr());
+    t1.parseTerminusPDRs();
+
+    // The valid record after the bad ones is still parsed.
+    EXPECT_EQ("S0_1", t1.getTerminusName().value());
+}
