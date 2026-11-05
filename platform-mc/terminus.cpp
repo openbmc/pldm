@@ -165,6 +165,16 @@ void Terminus::parseTerminusPDRs()
 {
     for (auto& pdr : pdrs)
     {
+        // The PDRs come from the remote terminus, so make sure there is a
+        // complete PDR header before reading the type from it.
+        if (pdr.size() < sizeof(pldm_pdr_hdr))
+        {
+            lg2::error(
+                "Terminus {TID}: PDR record of {SIZE} bytes is too short for a PDR header, skipping.",
+                "TID", tid, "SIZE", pdr.size());
+            continue;
+        }
+
         auto pdrHdr = std::start_lifetime_as<pldm_pdr_hdr>(pdr.data());
         switch (pdrHdr->type)
         {
