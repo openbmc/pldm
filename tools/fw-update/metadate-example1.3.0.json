@@ -13,12 +13,12 @@
             "ReferenceManifestData": "0102030405060708090A0B0C0D0E0F10",
             "Descriptors": [
                 {
-                    "DescriptorType": 2,
-                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5B"
-                },
-                {
                     "DescriptorType": 1,
                     "DescriptorData": "47160000"
+                },
+                {
+                    "DescriptorType": 2,
+                    "DescriptorData": "1244D2648D7D4718A030FC8A56587D5B"
                 },
                 {
                     "DescriptorType": 65535,
