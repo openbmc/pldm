@@ -48,6 +48,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "484b039c_a82c1c3a",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-06T08:47:01Z",
+      "side": 1,
+      "message": "Acknowledged.",
+      "parentUuid": "7ea4afbb_06ce7214",
+      "range": {
+        "startLine": 222,
+        "startChar": 8,
+        "endLine": 222,
+        "endChar": 70
+      },
+      "revId": "7f69d4480904e0e9f565f559e536b01aae732ebb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dede7199_bd1fe57f",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "It is intentional since the value changes only when pldmd sets it, and every set reads the value back.",
       "parentUuid": "bcbd7136_beed325c",
+      "range": {
+        "startLine": 251,
+        "startChar": 16,
+        "endLine": 251,
+        "endChar": 46
+      },
+      "revId": "7f69d4480904e0e9f565f559e536b01aae732ebb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffdba3e1_e8c75e65",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-06T08:47:01Z",
+      "side": 1,
+      "message": "Acknowledged.",
+      "parentUuid": "1dc5bbd1_fbb225bc",
       "range": {
         "startLine": 251,
         "startChar": 16,
