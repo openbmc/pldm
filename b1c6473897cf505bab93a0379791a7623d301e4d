@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f044409_4877ce01",
+        "filename": "oem/meta/event/oem_event_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2026-11-09T16:31:13Z",
+      "side": 1,
+      "message": "Can\u0027t you use a `std::min` or a `std::clamp` call here?  I think both of those better express the intent than an if-statement.\n\n```\nmcaSeverity \u003d std::min(mcaSeverity, errorSeverityDetail.size() - 1);\n```",
+      "revId": "b1c6473897cf505bab93a0379791a7623d301e4d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
