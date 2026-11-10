@@ -183,12 +183,58 @@ TEST_F(DeviceUpdaterTest, MalformedTransferCompleteKeepsWatchdog)
             reinterpret_cast<const pldm_msg*>(transferCompleteReq.data()),
             payloadLength);
         ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
-        EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_DATA);
+        EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_LENGTH);
     }
 
     // Rejected requests must leave the 60-second transfer watchdog armed.
     EXPECT_GT(event.run(std::chrono::seconds(65)), 0);
     EXPECT_EQ(event.run(std::chrono::milliseconds(1)), 0);
+}
+
+TEST_F(DeviceUpdaterTest, RequestFwDataBelowBaselineTransferSize)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    // Length 16 is below PLDM_FWUP_BASELINE_TRANSFER_SIZE (32)
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
+                     0x00, 0x10, 0x00, 0x00, 0x00};
+    auto requestMsg = reinterpret_cast<const pldm_msg*>(reqFwDataReq.data());
+    auto response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)],
+              PLDM_FWUP_INVALID_TRANSFER_LENGTH);
+}
+
+TEST_F(DeviceUpdaterTest, MalformedRequestsReportInvalidLength)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> transferCompleteReq{
+        0x8B, 0x05, PLDM_TRANSFER_COMPLETE, PLDM_FWUP_TRANSFER_SUCCESS};
+    auto response = deviceUpdater.transferComplete(
+        reinterpret_cast<const pldm_msg*>(transferCompleteReq.data()), 0);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyCompleteReq{
+        0x8C, 0x05, PLDM_VERIFY_COMPLETE, PLDM_FWUP_VERIFY_SUCCESS};
+    response = deviceUpdater.verifyComplete(
+        reinterpret_cast<const pldm_msg*>(verifyCompleteReq.data()), 0);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_LENGTH);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> applyCompleteReq{
+        0x8D, 0x05, PLDM_APPLY_COMPLETE, PLDM_FWUP_APPLY_SUCCESS};
+    response = deviceUpdater.applyComplete(
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq.data()), 0);
+    ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_LENGTH);
 }
 
 TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
