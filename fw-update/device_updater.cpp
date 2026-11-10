@@ -662,10 +662,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         // technically this should never happen, as its an invariant
         // but check to prefer a failed fw update over a pldm crash
         progress[componentIndex].reportFwUpdate(length);
-        if (updateManager != nullptr)
-        {
-            updateManager->updateActivationProgress();
-        }
+        updateManager->updateActivationProgress();
     }
 
     response.resize(sizeof(pldm_msg_hdr) + sizeof(completionCode) + length);
@@ -813,10 +810,7 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
     if (componentIndex < progress.size())
     {
         progress[componentIndex].updateState(UpdateProgress::state::Verify);
-        if (updateManager != nullptr)
-        {
-            updateManager->updateActivationProgress();
-        }
+        updateManager->updateActivationProgress();
     }
     if (verifyResult == PLDM_FWUP_VERIFY_SUCCESS)
     {
@@ -892,10 +886,7 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         if (componentIndex < progress.size())
         {
             progress[componentIndex].updateState(UpdateProgress::state::Apply);
-            if (updateManager != nullptr)
-            {
-                updateManager->updateActivationProgress();
-            }
+            updateManager->updateActivationProgress();
         }
         if (componentIndex == applicableComponents.size() - 1)
         {
@@ -903,26 +894,19 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
             componentUpdateStatus.clear();
             componentUpdateStatus[componentIndex] =
                 ComponentUpdateStatus::Accepted;
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
-                              this));
-            }
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendActivateFirmwareRequest, this));
         }
         else
         {
             componentIndex++;
             componentUpdateStatus[componentIndex] =
                 ComponentUpdateStatus::Accepted;
-            if (updateManager != nullptr)
-            {
-                pldmRequest = std::make_unique<sdeventplus::source::Defer>(
-                    updateManager->event,
-                    std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
-                              componentIndex));
-            }
+            pldmRequest = std::make_unique<sdeventplus::source::Defer>(
+                updateManager->event,
+                std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
+                          componentIndex));
         }
     }
     else
@@ -930,11 +914,8 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         error(
             "Failed to apply component endpoint ID '{EID}' and version '{COMPONENT_VERSION}', error - {ERROR}",
             "EID", eid, "COMPONENT_VERSION", compVersion, "ERROR", applyResult);
-        if (updateManager != nullptr)
-        {
-            events::generateActivateFailed(targetPath, pkgVersion);
-            updateManager->updateDeviceCompletion(eid, false);
-        }
+        events::generateActivateFailed(targetPath, pkgVersion);
+        updateManager->updateDeviceCompletion(eid, false);
         componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Failed;
         sendCancelUpdateComponentRequest();
     }
@@ -1032,11 +1013,6 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
     }
 
     activationComplete = true;
-    if (updateManager == nullptr)
-    {
-        return;
-    }
-
     updateManager->updateActivationProgress();
     updateManager->updateDeviceCompletion(eid, true);
 }
@@ -1231,10 +1207,7 @@ void DeviceUpdater::cancelUpdate(mctp_eid_t eid, const pldm_msg* response,
     // update did not complete whatever the CancelUpdate response. If the
     // CancelUpdate itself fails, the firmware device exits update mode when
     // its FD_T1 timeout expires.
-    if (updateManager != nullptr)
-    {
-        updateManager->updateDeviceCompletion(eid, false);
-    }
+    updateManager->updateDeviceCompletion(eid, false);
 }
 
 uint8_t DeviceUpdater::getProgress() const
