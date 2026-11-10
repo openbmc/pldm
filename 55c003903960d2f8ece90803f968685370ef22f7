@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc53fad8_63d35458",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "GetFirmwareParameters is only sent after QueryDeviceIdentifiers succeeds, and so far we have only seen QueryDeviceIdentifiers fail.",
+      "parentUuid": "89c180f6_9cced336",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 39
+      },
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc5f51d9_0bb9df81",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-10-28T07:42:54Z",
       "side": 1,
       "message": "Can we stop the request along with erasing the entry? Currently if the eid is removed while a request is in flight, removing this entry does not stop the request.",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e691fd_ba9784f9",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "Done. The instance ID of the in-flight QueryDeviceIdentifiers is tracked now, and removeFDs() unregisters that request before erasing the entry.",
+      "parentUuid": "dc5f51d9_0bb9df81",
       "revId": "55c003903960d2f8ece90803f968685370ef22f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00df4e47_c86d73c3",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "Done. InventoryManager now takes the event loop from Manager.",
+      "parentUuid": "908285d6_fe3e9ce7",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f45f0d3_4fbc8d2a",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-10-28T07:42:54Z",
       "side": 1,
       "message": "Can we change this to warning and also update the message? The message reads as final in the current form",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "047fbda8_8a5ab9f4",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "Done. A retryable completion code is logged as a warning now; the error is only logged for non-retryable codes or when the retries are exhausted.",
+      "parentUuid": "3f45f0d3_4fbc8d2a",
       "revId": "55c003903960d2f8ece90803f968685370ef22f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +176,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfafac4c_4e1f0a90",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "This retry only runs when the FD actually replies with PLDM_ERROR or PLDM_ERROR_NOT_READY. A timeout after the requester\u0027s retries goes through the no-response path and does not schedule a retry here, so the two do not stack. At most 3 extra requests are sent here.",
+      "parentUuid": "f0a985dc_383d84ed",
+      "range": {
+        "startLine": 170,
+        "startChar": 36,
+        "endLine": 170,
+        "endChar": 68
+      },
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "916d87c8_e894ae5e",
@@ -111,6 +213,24 @@
       "writtenOn": "2026-10-28T05:10:36Z",
       "side": 1,
       "message": "A late error response can schedule a retry after removal. Can we prevent that?",
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7de497b2_800b7a2d",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1002484
+      },
+      "writtenOn": "2026-11-10T06:27:05Z",
+      "side": 1,
+      "message": "Done. The retry state is created in discoverFDs() and erased in removeFDs(), and the retry path uses find(), so a late response after removal no longer schedules a retry.",
+      "parentUuid": "916d87c8_e894ae5e",
       "revId": "55c003903960d2f8ece90803f968685370ef22f7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
