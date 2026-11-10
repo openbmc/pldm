@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a02d707_263faae7",
+        "filename": "fw-update/test/device_updater_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000274
+      },
+      "writtenOn": "2026-11-10T17:24:20Z",
+      "side": 1,
+      "message": "Please add more test cases for better coverage. We can emulate invalid length for all four FD initiated commands - we need to have coverage for less number of bytes \u0026 more number of bytes as well.",
+      "revId": "af2b4f99f0a47d8bbe95c3900a6f16f7a766a48f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
