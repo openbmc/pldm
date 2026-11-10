@@ -22,6 +22,30 @@
       },
       "revId": "e9da710460d70372cbbe8fa8f6f708b28e4865be",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a0c96a_e610d5c7",
+        "filename": "pldmd/pldmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-10T18:56:53Z",
+      "side": 1,
+      "message": "Its a static function which only exists in this cpp. There\u0027s no precedence for UT for these functions",
+      "parentUuid": "98f55195_a4ac781a",
+      "range": {
+        "startLine": 144,
+        "startChar": 35,
+        "endLine": 144,
+        "endChar": 49
+      },
+      "revId": "e9da710460d70372cbbe8fa8f6f708b28e4865be",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
