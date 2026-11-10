@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500fa154_a935c522",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000274
+      },
+      "writtenOn": "2026-11-10T17:53:35Z",
+      "side": 1,
+      "message": "nit: can you reframe this? It is not clear what is meant by it retains no view into the temporary..",
+      "range": {
+        "startLine": 15,
+        "startChar": 51,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "e8287f029ddc1cdd2358829cb35e99a2da158070",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
