@@ -432,15 +432,7 @@ int main(int argc, char** argv)
 
     bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 #ifndef SYSTEM_SPECIFIC_BIOS_JSON
-    try
-    {
-        bus.request_name(PLDMService);
-    }
-    catch (const sdbusplus::exception_t& e)
-    {
-        error("Failed to request D-Bus name {NAME} with error {ERROR}.", "NAME",
-              PLDMService, "ERROR", e);
-    }
+    requestPLDMServiceName();
 #endif
     IO io(event, pldmTransport.getEventSource(), EPOLLIN, std::move(callback));
 #ifdef LIBPLDMRESPONDER
