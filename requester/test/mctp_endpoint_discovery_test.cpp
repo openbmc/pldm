@@ -10,6 +10,59 @@
 
 using ::testing::_;
 
+class MalformedMctpEndpointTest : public testing::TestWithParam<std::string>
+{};
+
+TEST_P(MalformedMctpEndpointTest, IgnoresInvalidPropertyType)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::MctpDiscovery discovery(bus, {});
+    pldm::dbus::PropertyMap properties{
+        {MCTPEndpoint::property_names::network_id, uint32_t{1}},
+        {MCTPEndpoint::property_names::eid, uint8_t{13}},
+        {MCTPEndpoint::property_names::supported_message_types,
+         std::vector<uint8_t>{1}}};
+    properties.at(GetParam()) = std::string("invalid");
+    pldm::dbus::InterfaceMap interfaces{{MCTPEndpoint::interface, properties}};
+    auto msg = bus.new_signal("/test", "org.freedesktop.DBus.ObjectManager",
+                              "InterfacesAdded");
+    msg.append(sdbusplus::object_path{"/test/endpoint"}, interfaces);
+    ASSERT_EQ(0, sd_bus_message_seal(msg.get(), 0, 0));
+
+    pldm::MctpInfosWithPath added;
+    EXPECT_NO_THROW(discovery.getAddedMctpInfos(msg, added));
+    EXPECT_TRUE(added.empty());
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    EndpointProperties, MalformedMctpEndpointTest,
+    testing::Values(MCTPEndpoint::property_names::network_id,
+                    MCTPEndpoint::property_names::eid,
+                    MCTPEndpoint::property_names::supported_message_types));
+
+TEST(MctpEndpointDiscoveryTest, AddsPldmEndpointWithUnavailableConnectivity)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::MctpDiscovery discovery(bus, {});
+    pldm::dbus::InterfaceMap interfaces{
+        {MCTPEndpoint::interface,
+         {{MCTPEndpoint::property_names::network_id, uint32_t{1}},
+          {MCTPEndpoint::property_names::eid, uint8_t{13}},
+          {MCTPEndpoint::property_names::supported_message_types,
+           std::vector<uint8_t>{1}}}}};
+    auto msg = bus.new_signal("/test", "org.freedesktop.DBus.ObjectManager",
+                              "InterfacesAdded");
+    msg.append(sdbusplus::object_path{"/test/endpoint"}, interfaces);
+    ASSERT_EQ(0, sd_bus_message_seal(msg.get(), 0, 0));
+
+    pldm::MctpInfosWithPath added;
+    discovery.getAddedMctpInfos(msg, added);
+    ASSERT_EQ(added.size(), 1);
+    EXPECT_EQ(added.front().first, "/test/endpoint");
+    EXPECT_EQ(std::get<pldm::eid>(added.front().second), 13);
+    EXPECT_EQ(std::get<pldm::NetworkId>(added.front().second), 1);
+}
+
 class TestMctpDiscovery : public ::testing::Test
 {
   public:
