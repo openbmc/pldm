@@ -590,8 +590,9 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         error(
             "Failed to decode request firmware date request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        completionCode = rc;
         rc = encode_request_firmware_data_resp(
-            request->hdr.instance_id, PLDM_ERROR_INVALID_DATA, responseMsg,
+            request->hdr.instance_id, completionCode, responseMsg,
             sizeof(completionCode));
         if (rc)
         {
@@ -736,8 +737,9 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
         error(
             "Failed to decode TransferComplete request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        completionCode = rc;
         rc = encode_transfer_complete_resp(request->hdr.instance_id,
-                                           PLDM_ERROR_INVALID_DATA, responseMsg,
+                                           completionCode, responseMsg,
                                            sizeof(completionCode));
         if (rc)
         {
@@ -805,8 +807,9 @@ Response DeviceUpdater::verifyComplete(const pldm_msg* request,
         error(
             "Failed to decode verify complete request of endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
+        completionCode = rc;
         rc = encode_verify_complete_resp(request->hdr.instance_id,
-                                         PLDM_ERROR_INVALID_DATA, responseMsg,
+                                         completionCode, responseMsg,
                                          sizeof(completionCode));
         if (rc)
         {
@@ -877,9 +880,10 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         error(
             "Failed to decode apply complete request for endpoint ID '{EID}', response code '{RC}'",
             "EID", eid, "RC", rc);
-        rc = encode_apply_complete_resp(request->hdr.instance_id,
-                                        PLDM_ERROR_INVALID_DATA, responseMsg,
-                                        sizeof(completionCode));
+        completionCode = rc;
+        rc =
+            encode_apply_complete_resp(request->hdr.instance_id, completionCode,
+                                       responseMsg, sizeof(completionCode));
         if (rc)
         {
             error(
