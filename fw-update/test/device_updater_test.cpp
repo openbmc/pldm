@@ -15,13 +15,13 @@
 using namespace pldm;
 using namespace pldm::fw_update;
 
-/** @brief Minimal no-op UpdateManagerBase for tests without D-Bus */
+/** @brief Minimal UpdateManagerBase for tests without D-Bus */
 class TestUpdateManager : public UpdateManagerBase
 {
   public:
     using UpdateManagerBase::UpdateManagerBase;
 
-    void updateDeviceCompletion(mctp_eid_t /*eid*/, bool /*status*/) override {}
+    MOCK_METHOD(void, updateDeviceCompletion, (mctp_eid_t, bool), (override));
     void updateActivationProgress() override {}
     void activatePackage() override {}
     void resetActivationState() override {}
@@ -150,6 +150,65 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
         0xA2, 0x72, 0x33, 0x00, 0x3C, 0x7E, 0x28, 0x36, 0x10, 0x90, 0x38, 0xFB};
     EXPECT_EQ(response, compFirst512B);
     EXPECT_EQ(deviceUpdater.getProgress(), 48);
+}
+
+TEST_F(DeviceUpdaterTest, TransferWatchdog)
+{
+    constexpr mctp_eid_t eid = 1;
+    auto event = sdeventplus::Event::get_default();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    testing::StrictMock<TestUpdateManager> updateManager(event, reqHandler,
+                                                         instanceIdDb);
+    DeviceUpdater deviceUpdater(eid, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, &updateManager);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        reqFwDataReq{0x8A, 0x05, 0x15, 0x00, 0x00, 0x00,
+                     0x00, 0x00, 0x02, 0x00, 0x00};
+    auto response = deviceUpdater.requestFwData(
+        reinterpret_cast<const pldm_msg*>(reqFwDataReq.data()),
+        sizeof(pldm_request_firmware_data_req));
+    ASSERT_GT(response.size(), sizeof(pldm_msg_hdr));
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_CALL(updateManager, updateDeviceCompletion(eid, false)).Times(1);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 2> transferCompleteReq{
+        0x8B, 0x05, PLDM_TRANSFER_COMPLETE, PLDM_FWUP_TRANSFER_SUCCESS, 0x00};
+    for (size_t payloadLength : {0, 2})
+    {
+        SCOPED_TRACE(payloadLength);
+        response = deviceUpdater.transferComplete(
+            reinterpret_cast<const pldm_msg*>(transferCompleteReq.data()),
+            payloadLength);
+        ASSERT_EQ(response.size(), sizeof(pldm_msg_hdr) + sizeof(uint8_t));
+        EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_ERROR_INVALID_DATA);
+    }
+
+    // A second device requests the whole 1024-byte image, repeating the last
+    // chunk as if its response was lost
+    DeviceUpdater lastRequestUpdater(2, package, fwDeviceIDRecord,
+                                     compImageInfos, compInfo, 512,
+                                     &updateManager);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                                      sizeof(pldm_request_firmware_data_req)>
+        lastChunkReq{0x8C, 0x05, 0x15, 0x00, 0x02, 0x00,
+                     0x00, 0x00, 0x02, 0x00, 0x00};
+    for (const auto& req : {reqFwDataReq, lastChunkReq, lastChunkReq})
+    {
+        response = lastRequestUpdater.requestFwData(
+            reinterpret_cast<const pldm_msg*>(req.data()),
+            sizeof(pldm_request_firmware_data_req));
+        ASSERT_GT(response.size(), sizeof(pldm_msg_hdr));
+        ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    }
+
+    // Rejected requests must leave the 60-second transfer watchdog armed,
+    // while the last data request stops it, so only the first device's
+    // update is canceled.
+    EXPECT_GT(event.run(std::chrono::seconds(65)), 0);
+    EXPECT_EQ(event.run(std::chrono::milliseconds(1)), 0);
 }
 
 TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)

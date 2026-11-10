@@ -686,6 +686,17 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
         return response;
     }
 
+    // The request reaching the end of the image is the last one expected
+    if (length >= componentBytesRemaining)
+    {
+        if (reqFwDataTimer)
+        {
+            reqFwDataTimer->stop();
+            reqFwDataTimer.reset();
+        }
+        return response;
+    }
+
     if (!reqFwDataTimer)
     {
         if (offset != 0)
@@ -717,12 +728,6 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
     Response response(sizeof(pldm_msg_hdr) + sizeof(completionCode), 0);
     auto responseMsg = new (response.data()) pldm_msg;
 
-    if (reqFwDataTimer)
-    {
-        reqFwDataTimer->stop();
-        reqFwDataTimer.reset();
-    }
-
     uint8_t transferResult = 0;
     auto rc =
         decode_transfer_complete_req(request, payloadLength, &transferResult);
@@ -741,6 +746,12 @@ Response DeviceUpdater::transferComplete(const pldm_msg* request,
                 "EID", eid, "RC", rc);
         }
         return response;
+    }
+
+    if (reqFwDataTimer)
+    {
+        reqFwDataTimer->stop();
+        reqFwDataTimer.reset();
     }
 
     const auto& applicableComponents =
