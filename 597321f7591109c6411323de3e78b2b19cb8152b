@@ -22,6 +22,30 @@
       },
       "revId": "597321f7591109c6411323de3e78b2b19cb8152b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ca04427_9b874154",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-10T17:26:24Z",
+      "side": 1,
+      "message": "The FD would retry the transfer complete command again if there\u0027s an issue in the send which is part of the spec. Even if it doesn\u0027t, I think we can safely assume that the FD has stopped requesting for data at this stage and we can stop the timer",
+      "parentUuid": "eee9d6b7_5ddf589c",
+      "range": {
+        "startLine": 740,
+        "startChar": 3,
+        "endLine": 744,
+        "endChar": 5
+      },
+      "revId": "597321f7591109c6411323de3e78b2b19cb8152b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
