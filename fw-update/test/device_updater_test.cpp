@@ -31,7 +31,10 @@ class DeviceUpdaterTest : public testing::Test
 {
   protected:
     DeviceUpdaterTest() :
-        package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate)
+        package("./test_pkg", std::ios::binary | std::ios::in | std::ios::ate),
+        reqHandler(nullptr, event, instanceIdDb, false, std::chrono::seconds(1),
+                   2, std::chrono::milliseconds(100)),
+        updateManager(event, reqHandler, instanceIdDb)
     {
         fwDeviceIDRecord = {
             1,
@@ -52,6 +55,10 @@ class DeviceUpdaterTest : public testing::Test
     FirmwareDeviceIDRecord fwDeviceIDRecord;
     ComponentImageInfos compImageInfos;
     ComponentInfo compInfo;
+    sdeventplus::Event event = sdeventplus::Event::get_default();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler;
+    TestUpdateManager updateManager;
 };
 
 TEST_F(DeviceUpdaterTest, validatePackage)
@@ -82,7 +89,7 @@ TEST_F(DeviceUpdaterTest, validatePackage)
 TEST_F(DeviceUpdaterTest, ReadPackage512B)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -155,7 +162,7 @@ TEST_F(DeviceUpdaterTest, ReadPackage512B)
 TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     // A missing response cannot be handled, so the handlers report it to their
     // caller, which abandons the update with CancelUpdate.
@@ -179,7 +186,7 @@ TEST_F(DeviceUpdaterTest, UnhandledResponsesReportedToCaller)
 TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     // The component starts at byte 139. In the affected implementation,
     // compOffset + offset wraps to zero and offset + length wraps to 373.
@@ -198,7 +205,7 @@ TEST_F(DeviceUpdaterTest, RejectWrappedOffsetBeforeComponent)
 TEST_F(DeviceUpdaterTest, AllowBaselinePaddingAtComponentEnd)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -218,7 +225,7 @@ TEST_F(DeviceUpdaterTest, AllowBaselinePaddingAtComponentEnd)
 TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
@@ -235,12 +242,6 @@ TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
 TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 {
     constexpr mctp_eid_t eid = 1;
-    auto event = sdeventplus::Event::get_default();
-    TestInstanceIdDb instanceIdDb;
-    requester::Handler<requester::Request> reqHandler(
-        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
-        std::chrono::milliseconds(100));
-    TestUpdateManager updateManager(event, reqHandler, instanceIdDb);
 
     // Bind to the map-owned entry, as UpdateManager::processStream does
     ComponentInfoMap componentInfoMap{{eid, compInfo}};
@@ -269,7 +270,7 @@ TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 TEST_F(DeviceUpdaterTest, FullUpdateProgress)
 {
     DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
-                                compInfo, 512, nullptr);
+                                compInfo, 512, &updateManager);
 
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
