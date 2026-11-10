@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a64c02f_b148e33e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-10T19:06:39Z",
+      "side": 1,
+      "message": "We\u0027ve had cases where GetFWParams fails even after QueryDeviceIdentifiers pass. Its entirely possilbe that an FD can become busy right after responding to QueryDeviceIdentifiers, so I think we can make the change",
+      "parentUuid": "bc53fad8_63d35458",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 39
+      },
+      "revId": "55c003903960d2f8ece90803f968685370ef22f7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc5f51d9_0bb9df81",
         "filename": "fw-update/inventory_manager.cpp",
         "patchSetId": 3
