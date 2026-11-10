@@ -135,24 +135,13 @@ static std::optional<Response> processRxMsg(
                                                     request, requestLen);
             }
         }
-        catch (const std::out_of_range& e)
+        catch (const std::exception& e)
         {
-            uint8_t completion_code = PLDM_ERROR_UNSUPPORTED_PLDM_CMD;
-            response.resize(sizeof(pldm_msg_hdr));
-            auto responseHdr = new (response.data()) pldm_msg_hdr;
-            pldm_header_info header{};
-            header.msg_type = PLDM_RESPONSE;
-            header.instance = hdrFields.instance;
-            header.pldm_type = hdrFields.pldm_type;
-            header.command = hdrFields.command;
-            if (PLDM_SUCCESS != pack_pldm_header(&header, responseHdr))
-            {
-                error(
-                    "Failed to add response header for processing Rx, error - {ERROR}",
-                    "ERROR", e);
-                return std::nullopt;
-            }
-            response.insert(response.end(), completion_code);
+            error(
+                "Failed to process request from endpoint ID '{EID}', error - {ERROR}",
+                "EID", eid, "ERROR", e, "TYPE", lg2::hex, hdrFields.pldm_type,
+                "COMMAND", lg2::hex, hdrFields.command);
+            response = CmdHandler::ccOnlyResponse(request, PLDM_ERROR);
         }
         return response;
     }
