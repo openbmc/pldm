@@ -46,6 +46,30 @@
       },
       "revId": "e55190a89e0355fe11b95d7b43e680be9bd0b79d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51dbf211_f83d890e",
+        "filename": "fw-update/package_parser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-11-10T15:07:33Z",
+      "side": 0,
+      "message": "i believe we should put some of these restrictions here in the user code rather than in libpldm++\n\n\u003e When ComponentOptions bit 1 is not set, this field should use the value of 0xFFFFFFFF.\n\n\u0027should\u0027, not \u0027shall\u0027\nhttps://www.iso.org/sites/directives/current/part2/index.xhtml#_idTextAnchor078\n\nmeaning the spec does not require it, so we either need parsing options or check this in user code.\n\nFor the `ComponentSize \u003d\u003d 0` i did not find anything in the spec. The image makes it look as if the component image is not empty and non-empty images create problems for user code.\n\nRegarding the `ComponentLocationOffset` validation, a patch for that is in the pipe:\nhttps://gerrit.openbmc.org/c/openbmc/libpldm/+/97009 . Thanks for finding these gaps 👍\n\nplanning to add the missing checks to the user code here with the next revision once the required `PackageVersionString` field and other metadata is provided by libpldm++",
+      "parentUuid": "a04d92e6_0461acc8",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 63
+      },
+      "revId": "e55190a89e0355fe11b95d7b43e680be9bd0b79d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
