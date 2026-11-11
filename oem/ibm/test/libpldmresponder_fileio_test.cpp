@@ -6,6 +6,7 @@
 #include "libpldmresponder/file_io_type_lid.hpp"
 #include "libpldmresponder/file_io_type_pcie.hpp"
 #include "libpldmresponder/file_io_type_pel.hpp"
+#include "libpldmresponder/file_io_type_progress_src.hpp"
 #include "libpldmresponder/file_table.hpp"
 
 #include <libpldm/base.h>
@@ -1012,4 +1013,28 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(rc, PLDM_SUCCESS);
     ASSERT_EQ(length, in.size() - 1);
     ASSERT_EQ(response.size(), in.size() - 1);
+}
+
+class TestProgressCodeHandler : public testing::Test
+{
+  protected:
+    pldm::responder::ProgressCodeHandler handler{0};
+};
+
+TEST_F(TestProgressCodeHandler, WriteWithInsufficientBufferLength)
+{
+    // Test with buffer length < 48 bytes (too short)
+    std::vector<uint8_t> buffer(47, 0xAB);
+    uint32_t length = 47;
+    int rc = handler.write(reinterpret_cast<const char*>(buffer.data()), 0,
+                           length, nullptr);
+    ASSERT_EQ(rc, PLDM_ERROR_INVALID_LENGTH);
+}
+
+TEST_F(TestProgressCodeHandler, WriteWithNullBuffer)
+{
+    // Test with null buffer
+    uint32_t length = 48;
+    int rc = handler.write(nullptr, 0, length, nullptr);
+    ASSERT_EQ(rc, PLDM_ERROR);
 }
