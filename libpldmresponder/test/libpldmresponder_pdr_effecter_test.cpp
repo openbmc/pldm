@@ -47,79 +47,114 @@ TEST(GeneratePDRByStateEffecter, testGoodJson)
     pdr_utils::PdrEntry e;
     auto record2 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record2, nullptr);
-    pldm_state_effecter_pdr* pdr =
-        std::start_lifetime_as<pldm_state_effecter_pdr>(e.data);
+    pldm_platform_state_effecter_pdr pdr{};
+    variable_field possibleStates{};
+    ASSERT_EQ(decode_pldm_platform_state_effecter_pdr(e.data, e.size, &pdr,
+                                                      &possibleStates),
+              0);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 2);
-    ASSERT_EQ(pdr->hdr.version, 1);
-    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
-    ASSERT_EQ(pdr->hdr.record_change_num, 0);
-    ASSERT_EQ(pdr->hdr.length, 23);
+    ASSERT_EQ(pdr.hdr.record_handle, 2);
+    ASSERT_EQ(pdr.hdr.version, 1);
+    ASSERT_EQ(pdr.hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr.hdr.record_change_num, 0);
+    ASSERT_EQ(pdr.hdr.length, 23);
 
-    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
-    ASSERT_EQ(pdr->effecter_id, 1);
-    ASSERT_EQ(pdr->entity_type, 33);
-    ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
-    ASSERT_EQ(pdr->effecter_semantic_id, 0);
-    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
-    ASSERT_EQ(pdr->has_description_pdr, false);
-    ASSERT_EQ(pdr->composite_effecter_count, 2);
-    state_effecter_possible_states* states =
-        std::start_lifetime_as<state_effecter_possible_states>(
-            pdr->possible_states);
-    ASSERT_EQ(states->state_set_id, 196);
-    ASSERT_EQ(states->possible_states_size, 1);
-    bitfield8_t bf1{};
-    bf1.byte = 2;
-    ASSERT_EQ(states->states[0].byte, bf1.byte);
+    ASSERT_EQ(pdr.terminus_handle, pldm::TERMINUS_HANDLE);
+    ASSERT_EQ(pdr.effecter_id, 1);
+    ASSERT_EQ(pdr.entity_type, 33);
+    ASSERT_EQ(pdr.entity_instance_number, 0);
+    ASSERT_EQ(pdr.container_id, 0);
+    ASSERT_EQ(pdr.effecter_semantic_id, 0);
+    ASSERT_EQ(pdr.effecter_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr.effecter_description_pdr, false);
+    ASSERT_EQ(pdr.composite_effecter_count, 2);
+
+    pldm_platform_state_effecter_possible_states states{};
+    variable_field stateBits{};
+    size_t entrySize = possibleStates.length;
+    ASSERT_EQ(decode_pldm_platform_state_effecter_possible_states(
+                  possibleStates.ptr, &entrySize, &states, &stateBits),
+              0);
+    ASSERT_EQ(states.state_set_id, 196);
+    ASSERT_EQ(states.possible_states_size, 1);
+    ASSERT_EQ(stateBits.length, 1);
+    ASSERT_EQ(stateBits.ptr[0], 2);
 
     const auto& [dbusMappings1, dbusValMaps1] =
-        handler.getDbusObjMaps(pdr->effecter_id);
+        handler.getDbusObjMaps(pdr.effecter_id);
     ASSERT_EQ(dbusMappings1[0].objectPath, "/foo/bar");
 
     // Check second PDR
     auto record3 = pdr::getRecordByHandle(outRepo, 3, e);
     ASSERT_NE(record3, nullptr);
-    pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(e.data);
+    ASSERT_EQ(decode_pldm_platform_state_effecter_pdr(e.data, e.size, &pdr,
+                                                      &possibleStates),
+              0);
 
-    ASSERT_EQ(pdr->hdr.record_handle, 3);
-    ASSERT_EQ(pdr->hdr.version, 1);
-    ASSERT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
-    ASSERT_EQ(pdr->hdr.record_change_num, 0);
-    ASSERT_EQ(pdr->hdr.length, 24);
+    ASSERT_EQ(pdr.hdr.record_handle, 3);
+    ASSERT_EQ(pdr.hdr.version, 1);
+    ASSERT_EQ(pdr.hdr.type, PLDM_STATE_EFFECTER_PDR);
+    ASSERT_EQ(pdr.hdr.record_change_num, 0);
+    ASSERT_EQ(pdr.hdr.length, 24);
 
-    ASSERT_EQ(pdr->terminus_handle, pldm::TERMINUS_HANDLE);
-    ASSERT_EQ(pdr->effecter_id, 2);
-    ASSERT_EQ(pdr->entity_type, 100);
-    ASSERT_EQ(pdr->entity_instance, 0);
-    ASSERT_EQ(pdr->container_id, 0);
-    ASSERT_EQ(pdr->effecter_semantic_id, 0);
-    ASSERT_EQ(pdr->effecter_init, PLDM_NO_INIT);
-    ASSERT_EQ(pdr->has_description_pdr, false);
-    ASSERT_EQ(pdr->composite_effecter_count, 2);
-    states = std::start_lifetime_as<state_effecter_possible_states>(
-        pdr->possible_states);
-    ASSERT_EQ(states->state_set_id, 197);
-    ASSERT_EQ(states->possible_states_size, 1);
-    bf1.byte = 2;
-    ASSERT_EQ(states->states[0].byte, bf1.byte);
-    states = std::start_lifetime_as<state_effecter_possible_states>(
-        pdr->possible_states + sizeof(state_effecter_possible_states));
-    ASSERT_EQ(states->state_set_id, 198);
-    ASSERT_EQ(states->possible_states_size, 2);
-    bitfield8_t bf2[2];
-    bf2[0].byte = 38;
-    bf2[1].byte = 128;
-    ASSERT_EQ(states->states[0].byte, bf2[0].byte);
-    ASSERT_EQ(states->states[1].byte, bf2[1].byte);
+    ASSERT_EQ(pdr.terminus_handle, pldm::TERMINUS_HANDLE);
+    ASSERT_EQ(pdr.effecter_id, 2);
+    ASSERT_EQ(pdr.entity_type, 100);
+    ASSERT_EQ(pdr.entity_instance_number, 0);
+    ASSERT_EQ(pdr.container_id, 0);
+    ASSERT_EQ(pdr.effecter_semantic_id, 0);
+    ASSERT_EQ(pdr.effecter_init, PLDM_NO_INIT);
+    ASSERT_EQ(pdr.effecter_description_pdr, false);
+    ASSERT_EQ(pdr.composite_effecter_count, 2);
+
+    entrySize = possibleStates.length;
+    ASSERT_EQ(decode_pldm_platform_state_effecter_possible_states(
+                  possibleStates.ptr, &entrySize, &states, &stateBits),
+              0);
+    ASSERT_EQ(states.state_set_id, 197);
+    ASSERT_EQ(states.possible_states_size, 1);
+    ASSERT_EQ(stateBits.length, 1);
+    ASSERT_EQ(stateBits.ptr[0], 2);
+
+    possibleStates.ptr += entrySize;
+    possibleStates.length -= entrySize;
+    entrySize = possibleStates.length;
+    ASSERT_EQ(decode_pldm_platform_state_effecter_possible_states(
+                  possibleStates.ptr, &entrySize, &states, &stateBits),
+              0);
+    ASSERT_EQ(states.state_set_id, 198);
+    ASSERT_EQ(states.possible_states_size, 2);
+    ASSERT_EQ(stateBits.length, 2);
+    ASSERT_EQ(stateBits.ptr[0], 38);
+    ASSERT_EQ(stateBits.ptr[1], 128);
 
     const auto& [dbusMappings2, dbusValMaps2] =
-        handler.getDbusObjMaps(pdr->effecter_id);
+        handler.getDbusObjMaps(pdr.effecter_id);
     ASSERT_EQ(dbusMappings2[0].objectPath, "/foo/bar");
     ASSERT_EQ(dbusMappings2[1].objectPath, "/foo/bar");
 
     ASSERT_THROW(handler.getDbusObjMaps(0xDEAD), std::exception);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
+}
+
+TEST(GeneratePDRByStateEffecter, testStateOutOfRange)
+{
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(_, _)).Times(0);
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, 0, nullptr,
+                    "./pdr_jsons/state_effecter/state_out_of_range", inPDRRepo,
+                    nullptr, nullptr, nullptr, nullptr, nullptr, event);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_EFFECTER_PDR);
+
+    EXPECT_EQ(outRepo.getRecordCount(), 0);
 
     pldm_pdr_destroy(inPDRRepo);
     pldm_pdr_destroy(outPDRRepo);

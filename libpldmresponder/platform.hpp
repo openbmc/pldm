@@ -348,8 +348,9 @@ class Handler : public CmdHandler
         using namespace pldm::utils;
         using StateSetNum = uint8_t;
 
-        state_effecter_possible_states* states = nullptr;
-        pldm_state_effecter_pdr* pdr = nullptr;
+        struct pldm_platform_state_effecter_pdr pdr{};
+        struct variable_field possibleStates{};
+        bool found = false;
         uint8_t compEffecterCnt = stateField.size();
 
         std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)>
@@ -372,18 +373,23 @@ class Handler : public CmdHandler
         auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
         while (pdrRecord)
         {
-            pdr = new (pdrEntry.data) pldm_state_effecter_pdr;
-            if (pdr->effecter_id != effecterId)
+            int rc = decode_pldm_platform_state_effecter_pdr(
+                pdrEntry.data, pdrEntry.size, &pdr, &possibleStates);
+            if (rc)
             {
-                pdr = nullptr;
+                error(
+                    "Failed to decode state effecter PDR with record handle '{RECORD_HANDLE}', error - {RC}",
+                    "RECORD_HANDLE",
+                    stateEffecterPDRs.getRecordHandle(pdrRecord), "RC", rc);
+            }
+            if (rc || pdr.effecter_id != effecterId)
+            {
                 pdrRecord =
                     stateEffecterPDRs.getNextRecord(pdrRecord, pdrEntry);
                 continue;
             }
 
-            states = reinterpret_cast<state_effecter_possible_states*>(
-                pdr->possible_states);
-            if (compEffecterCnt > pdr->composite_effecter_count)
+            if (compEffecterCnt > pdr.composite_effecter_count)
             {
                 error(
                     "The requester sent wrong composite effecter count '{COMPOSITE_EFFECTER_COUNT}' for the effecter ID '{EFFECTERID}'.",
@@ -391,10 +397,11 @@ class Handler : public CmdHandler
                     effecterId);
                 return PLDM_ERROR_INVALID_DATA;
             }
+            found = true;
             break;
         }
 
-        if (!pdr)
+        if (!found)
         {
             return PLDM_PLATFORM_INVALID_EFFECTER_ID;
         }
@@ -407,14 +414,31 @@ class Handler : public CmdHandler
             for (uint8_t currState = 0; currState < compEffecterCnt;
                  ++currState)
             {
+                struct pldm_platform_state_effecter_possible_states states{};
+                struct variable_field stateBits{};
+                size_t entrySize = possibleStates.length;
+                int decodeRc =
+                    decode_pldm_platform_state_effecter_possible_states(
+                        possibleStates.ptr, &entrySize, &states, &stateBits);
+                if (decodeRc)
+                {
+                    error(
+                        "Failed to decode possible states of composite effecter ID '{COMPOSITE_EFFECTER_ID}' for effecter ID '{EFFECTERID}', error - {RC}",
+                        "COMPOSITE_EFFECTER_ID", currState, "EFFECTERID",
+                        effecterId, "RC", decodeRc);
+                    return PLDM_ERROR;
+                }
+                possibleStates.ptr += entrySize;
+                possibleStates.length -= entrySize;
+
                 std::vector<StateSetNum> allowed{};
                 // computation is based on table 79 from DSP0248 v1.1.1
                 uint8_t bitfieldIndex =
                     stateField[currState].effecter_state / 8;
                 uint8_t bit = stateField[currState].effecter_state -
                               (8 * bitfieldIndex);
-                if (states->possible_states_size < bitfieldIndex ||
-                    !(states->states[bitfieldIndex].byte & (1 << bit)))
+                if (bitfieldIndex >= stateBits.length ||
+                    !(stateBits.ptr[bitfieldIndex] & (1 << bit)))
                 {
                     error(
                         "Invalid state set value for effecter ID '{EFFECTERID}', effecter state '{EFFECTER_STATE}', composite effecter ID '{COMPOSITE_EFFECTER_ID}' and path '{PATH}'.",
@@ -448,13 +472,6 @@ class Handler : public CmdHandler
                         return PLDM_ERROR;
                     }
                 }
-                uint8_t* nextState =
-                    reinterpret_cast<uint8_t*>(states) +
-                    sizeof(state_effecter_possible_states) -
-                    sizeof(states->states) +
-                    (states->possible_states_size * sizeof(states->states));
-                states = reinterpret_cast<state_effecter_possible_states*>(
-                    nextState);
             }
         }
         catch (const std::out_of_range& e)

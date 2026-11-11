@@ -256,10 +256,13 @@ TEST(getPDR, testFindPDR)
             std::start_lifetime_as<pldm_pdr_hdr>(resp->record_data);
         if (hdr->type == PLDM_STATE_EFFECTER_PDR)
         {
-            pldm_state_effecter_pdr* pdr =
-                std::start_lifetime_as<pldm_state_effecter_pdr>(
-                    resp->record_data);
-            if (pdr->entity_type == 100)
+            pldm_platform_state_effecter_pdr pdr{};
+            variable_field possibleStates{};
+            ASSERT_EQ(decode_pldm_platform_state_effecter_pdr(
+                          resp->record_data, resp->response_count, &pdr,
+                          &possibleStates),
+                      0);
+            if (pdr.entity_type == 100)
             {
                 found = true;
                 // Rest of the PDR can be accessed as need be
@@ -301,9 +304,12 @@ TEST(setStateEffecterStatesHandler, testGoodRequest)
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record1, nullptr);
-    pldm_state_effecter_pdr* pdr =
-        std::start_lifetime_as<pldm_state_effecter_pdr>(e.data);
-    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    pldm_platform_state_effecter_pdr pdr{};
+    variable_field possibleStates{};
+    ASSERT_EQ(decode_pldm_platform_state_effecter_pdr(e.data, e.size, &pdr,
+                                                      &possibleStates),
+              0);
+    EXPECT_EQ(pdr.hdr.type, PLDM_STATE_EFFECTER_PDR);
 
     std::vector<set_effecter_state_field> stateField;
     stateField.push_back({PLDM_REQUEST_SET, 1});
@@ -349,9 +355,12 @@ TEST(setStateEffecterStatesHandler, testBadRequest)
     pdr_utils::PdrEntry e;
     auto record1 = pdr::getRecordByHandle(outRepo, 2, e);
     ASSERT_NE(record1, nullptr);
-    pldm_state_effecter_pdr* pdr =
-        std::start_lifetime_as<pldm_state_effecter_pdr>(e.data);
-    EXPECT_EQ(pdr->hdr.type, PLDM_STATE_EFFECTER_PDR);
+    pldm_platform_state_effecter_pdr pdr{};
+    variable_field possibleStates{};
+    ASSERT_EQ(decode_pldm_platform_state_effecter_pdr(e.data, e.size, &pdr,
+                                                      &possibleStates),
+              0);
+    EXPECT_EQ(pdr.hdr.type, PLDM_STATE_EFFECTER_PDR);
 
     std::vector<set_effecter_state_field> stateField;
     stateField.push_back({PLDM_REQUEST_SET, 3});
