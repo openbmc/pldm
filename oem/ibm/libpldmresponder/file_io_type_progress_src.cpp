@@ -57,19 +57,23 @@ int ProgressCodeHandler::write(const char* buffer, uint32_t /*offset*/,
 {
     static constexpr auto StartOffset = 40;
     static constexpr auto EndOffset = 48;
-    if (buffer != nullptr)
+    if (buffer == nullptr)
     {
-        // read the data from the pointed location
-        std::vector<uint8_t> secondaryCode(buffer, buffer + length);
-
-        // Get the primary code from the offset 40 bytes in the received buffer
-
-        std::vector<uint8_t> primaryCode(secondaryCode.begin() + StartOffset,
-                                         secondaryCode.begin() + EndOffset);
-
-        return setRawBootProperty(std::make_tuple(primaryCode, secondaryCode));
+        return PLDM_ERROR;
     }
-    return PLDM_ERROR;
+    if (length < EndOffset)
+    {
+        return PLDM_ERROR_INVALID_LENGTH;
+    }
+
+    // read the data from the pointed location
+    std::vector<uint8_t> secondaryCode(buffer, buffer + length);
+
+    // Get the primary code from the offset 40 bytes in the received buffer
+    std::vector<uint8_t> primaryCode(secondaryCode.begin() + StartOffset,
+                                     secondaryCode.begin() + EndOffset);
+
+    return setRawBootProperty(std::make_tuple(primaryCode, secondaryCode));
 }
 
 } // namespace responder
