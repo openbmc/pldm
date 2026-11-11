@@ -774,6 +774,148 @@ TEST_F(UuidGroupingTest, anEndpointThatIsNotAvailableTakesOverWhenItIsAvailable)
     EXPECT_EQ(mapper.mapped.at(10), (pldm::Endpoint{2, 10}));
 }
 
+namespace
+{
+
+// MctpDiscovery with a check that the test answers when it chooses to, like the
+// endpoint would
+class UuidCheckTest : public ::testing::Test
+{
+  protected:
+    struct Check
+    {
+        pldm::PeerId peer;
+        std::function<void(bool)> answered;
+    };
+
+    UuidCheckTest() :
+        registry(std::make_unique<pldm::PooledPeerIdPolicy>(), &mapper),
+        discovery(
+            pldm::utils::DBusHandler::getBus(),
+            std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&handler},
+            &registry, true,
+            [this](pldm::PeerId peer, std::function<void(bool)> answered) {
+                checks.push_back({peer, std::move(answered)});
+            })
+    {}
+
+    void discover(const std::string& path, const pldm::MctpInfo& info)
+    {
+        discovery.addToExistingMctpInfos({{path, info}});
+        discovery.handleMctpEndpoints({{path, info}});
+    }
+
+    pldm::MctpInfo onNetwork(pldm::NetworkId network)
+    {
+        return pldm::MctpInfo(10, "same-device", "", network, std::nullopt);
+    }
+
+    void answer(size_t index, bool answered)
+    {
+        // A copy, as answering can start another check
+        auto callback = checks.at(index).answered;
+        callback(answered);
+    }
+
+    PeerAwareHandler handler;
+    pldm::FakeMapper mapper;
+    pldm::EndpointRegistry registry;
+    std::vector<Check> checks;
+    pldm::MctpDiscovery discovery;
+};
+} // namespace
+
+TEST_F(UuidCheckTest, anEndpointIsGivenToTheHandlersOnceItAnswers)
+{
+    discover(pathNetworkOne, onNetwork(1));
+
+    // It is asked first
+    ASSERT_EQ(checks.size(), 1);
+    EXPECT_EQ(checks[0].peer, 10);
+    EXPECT_TRUE(handler.added.empty());
+
+    answer(0, true);
+
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{1, 10}));
+    EXPECT_EQ(handler.added[0].peer, 10);
+}
+
+TEST_F(UuidCheckTest, theNextEndpointIsTriedWhenOneDoesNotAnswer)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+    // The second one stands by while the first one is asked
+    ASSERT_EQ(checks.size(), 1);
+
+    answer(0, false);
+
+    // The first one is put back on standby, the second one is asked
+    EXPECT_TRUE(handler.added.empty());
+    ASSERT_EQ(checks.size(), 2);
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{1, 10}), std::nullopt);
+    EXPECT_EQ(mapper.mapped.at(10), (pldm::Endpoint{2, 10}));
+
+    answer(1, true);
+
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{2, 10}));
+    EXPECT_EQ(handler.added[0].peer, 10);
+}
+
+TEST_F(UuidCheckTest, noEndpointIsGivenToTheHandlersWhenNoneAnswers)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    discover(pathNetworkTwo, onNetwork(2));
+
+    answer(0, false);
+    answer(1, false);
+
+    // None is left to ask, and none is bound in the transport
+    EXPECT_TRUE(handler.added.empty());
+    EXPECT_EQ(checks.size(), 2);
+    EXPECT_TRUE(mapper.mapped.empty());
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{1, 10}), std::nullopt);
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{2, 10}), std::nullopt);
+}
+
+TEST_F(UuidCheckTest, anEndpointThatDidNotAnswerIsAskedAgainWhenItIsAvailable)
+{
+    discover(pathNetworkOne, onNetwork(1));
+    answer(0, false);
+    ASSERT_EQ(checks.size(), 1);
+
+    changeConnectivity(discovery, pathNetworkOne, "Unavailable");
+    changeConnectivity(discovery, pathNetworkOne, "Available");
+
+    ASSERT_EQ(checks.size(), 2);
+    EXPECT_TRUE(handler.added.empty());
+
+    answer(1, true);
+
+    ASSERT_EQ(handler.added.size(), 1);
+    EXPECT_EQ(pldm::toEndpoint(handler.added[0].mctpInfo),
+              (pldm::Endpoint{1, 10}));
+}
+
+TEST_F(UuidCheckTest, anEndpointRemovedWhileItIsCheckedIsNotGivenToTheHandlers)
+{
+    discover(pathNetworkOne, onNetwork(1));
+
+    removeEndpoint(discovery, pathNetworkOne);
+
+    // The handlers never knew it, and its PeerId is free again
+    EXPECT_TRUE(handler.removed.empty());
+    EXPECT_EQ(registry.peerOf(pldm::Endpoint{1, 10}), std::nullopt);
+
+    // A late answer is ignored
+    answer(0, true);
+
+    EXPECT_TRUE(handler.added.empty());
+}
+
 TEST(MctpEndpointDiscoveryTest, endpointsWithTheSameUuidAreNotGroupedByDefault)
 {
     auto& bus = pldm::utils::DBusHandler::getBus();

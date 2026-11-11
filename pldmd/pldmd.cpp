@@ -361,16 +361,47 @@ int main(int argc, char** argv)
         std::make_unique<fw_update::Manager>(&dbusHandler, event, reqHandler,
                                              instanceIdDb, endpointRegistry);
 #if defined(PLDM_NETWORK_SUPPORT)
-    // One device can be reachable over more than one MCTP Network
+    // One device can be reachable over more than one MCTP Network. An endpoint
+    // of it is only used once it answers a GetTID.
     constexpr bool groupByUuid = true;
+    ReachabilityCheck reachabilityCheck =
+        [&reqHandler,
+         &instanceIdDb](PeerId peer, std::function<void(bool)> answered) {
+            // When the request cannot be sent the endpoint is not known to be
+            // dead, so it is not held back
+            auto instanceId = instanceIdDb.next(peer);
+            if (!instanceId)
+            {
+                answered(true);
+                return;
+            }
+            pldm::Request request(sizeof(pldm_msg_hdr));
+            auto requestMsg = new (request.data()) pldm_msg;
+            if (encode_get_tid_req(*instanceId, requestMsg))
+            {
+                instanceIdDb.free(peer, *instanceId);
+                answered(true);
+                return;
+            }
+            auto rc = reqHandler.registerRequest(
+                peer, *instanceId, PLDM_BASE, PLDM_GET_TID, std::move(request),
+                [answered](PeerId, const pldm_msg* response, size_t respLen) {
+                    answered(response != nullptr && respLen != 0);
+                });
+            if (rc)
+            {
+                answered(true);
+            }
+        };
 #else
     constexpr bool groupByUuid = false;
+    ReachabilityCheck reachabilityCheck = nullptr;
 #endif
     MctpDiscovery mctpDiscoveryHandler(
         bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*>{fwManager.get(),
                                                          platformManager.get()},
-        &endpointRegistry, groupByUuid);
+        &endpointRegistry, groupByUuid, std::move(reachabilityCheck));
     auto callback = [verbose, &invoker, &reqHandler, &fwManager, &pldmTransport,
                      &endpointRegistry,
                      TID](IO& io, int fd, uint32_t revents) mutable {

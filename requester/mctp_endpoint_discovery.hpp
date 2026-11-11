@@ -11,6 +11,8 @@
 #include <xyz/openbmc_project/Common/UUID/common.hpp>
 #include <xyz/openbmc_project/MCTP/Endpoint/client.hpp>
 
+#include <cstdint>
+#include <functional>
 #include <initializer_list>
 #include <map>
 #include <set>
@@ -115,6 +117,14 @@ class MctpDiscoveryHandlerIntf
     }
 };
 
+/** @brief Tells whether an endpoint answers a PLDM request
+ *
+ *  It is called with the PeerId of the endpoint and a function that it has to
+ *  call, once, with true if the endpoint answered and with false if it did not.
+ */
+using ReachabilityCheck =
+    std::function<void(PeerId, std::function<void(bool)>)>;
+
 class MctpDiscovery
 {
   public:
@@ -143,11 +153,18 @@ class MctpDiscovery
      *                        keeps standing by until it is. A loss of
      *                        connectivity does not switch to another one. An
      *                        empty UUID never groups.
+     *  @param[in] reachabilityCheck - when set, an endpoint of a device that is
+     *                        grouped by UUID is only given to the handlers once
+     *                        it answers. One that does not is put back on
+     *                        standby and the next one is tried, until one
+     *                        answers or none is left. One that did not answer
+     *                        is tried again when it is available again.
      */
     explicit MctpDiscovery(
         sdbusplus::bus_t& bus,
         std::initializer_list<MctpDiscoveryHandlerIntf*> list,
-        EndpointRegistry* registry = nullptr, bool groupByUuid = false);
+        EndpointRegistry* registry = nullptr, bool groupByUuid = false,
+        ReachabilityCheck reachabilityCheck = nullptr);
 
     /** @brief reference to the systemd bus */
     sdbusplus::bus_t& bus;
@@ -174,8 +191,13 @@ class MctpDiscovery
     /** @brief Whether the endpoints with the same UUID are one device */
     bool groupByUuid;
 
+    /** @brief Tells whether an endpoint answers, when it has to be checked
+     *         before it is given to the handlers
+     */
+    ReachabilityCheck reachabilityCheck;
+
     /** @brief The object path of the endpoint of each UUID that is given to
-     *         the handlers, when grouping by UUID
+     *         the handlers, or is being checked, when grouping by UUID
      */
     std::map<UUID, dbus::ObjectPath> activeByUuid;
 
@@ -188,6 +210,19 @@ class MctpDiscovery
      *         only an endpoint that can be reached takes over
      */
     std::set<dbus::ObjectPath> unavailable;
+
+    /** @brief The endpoints that are being checked, and the number of the
+     *         check, so that the answer to an old check is ignored
+     */
+    std::map<dbus::ObjectPath, uint64_t> checking;
+
+    /** @brief The number of the last check */
+    uint64_t lastCheck = 0;
+
+    /** @brief The endpoints that did not answer. They stand by and are not
+     *         tried again until they are available again.
+     */
+    std::set<dbus::ObjectPath> notAnswering;
 
     /** @brief The existing MCTP endpoints and their D-Bus object paths */
     MctpInfosWithPath existingMctpInfos;
@@ -280,13 +315,43 @@ class MctpDiscovery
     bool standsBy(const dbus::ObjectPath& path, const MctpInfo& mctpInfo);
 
     /** @brief Give the handlers the first endpoint, in the order of discovery,
-     *         that stands by for the active endpoint of a UUID, is available
-     *         and can get a PeerId. Used when the active endpoint is removed,
-     *         and when one that stands by becomes available and none is active.
+     *         that stands by for the active endpoint of a UUID, is available,
+     *         did not fail to answer and can get a PeerId. Used when the active
+     *         endpoint is removed or does not answer, and when one that stands
+     *         by becomes available and none is active.
      *
      *  @param[in] uuid - the UUID of the device
      */
     void promoteStandby(const UUID& uuid);
+
+    /** @brief Give the added endpoints to the handlers
+     *
+     *  @param[in] discovered - the endpoints and their PeerIds
+     */
+    void giveToHandlers(const std::vector<DiscoveredEndpoint>& discovered);
+
+    /** @brief Start to check that an endpoint answers, before it is given to
+     *         the handlers
+     *
+     *  @param[in] path - the D-Bus object path of the endpoint
+     *  @param[in] mctpInfo - information of the endpoint
+     *  @param[in] peer - the PeerId of the endpoint
+     */
+    void checkReachable(const dbus::ObjectPath& path, const MctpInfo& mctpInfo,
+                        PeerId peer);
+
+    /** @brief The endpoint was checked: give it to the handlers if it answered,
+     *         otherwise put it back on standby and try the next one
+     *
+     *  @param[in] path - the D-Bus object path of the endpoint
+     *  @param[in] mctpInfo - information of the endpoint
+     *  @param[in] peer - the PeerId of the endpoint
+     *  @param[in] check - the number of the check, ignored if it is not the
+     *                     last one of the endpoint
+     *  @param[in] answered - whether the endpoint answered
+     */
+    void checked(const dbus::ObjectPath& path, const MctpInfo& mctpInfo,
+                 PeerId peer, uint64_t check, bool answered);
 
     /** @brief Get MCTP Endpoint D-Bus Properties in the
      *         `xyz.openbmc_project.MCTP.Endpoint` D-Bus interface

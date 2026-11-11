@@ -30,7 +30,8 @@ auto findByObjectPath(const MctpInfosWithPath& mctpInfos,
 MctpDiscovery::MctpDiscovery(
     sdbusplus::bus_t& bus,
     std::initializer_list<MctpDiscoveryHandlerIntf*> list,
-    EndpointRegistry* suppliedRegistry, bool groupByUuid) :
+    EndpointRegistry* suppliedRegistry, bool groupByUuid,
+    ReachabilityCheck reachabilityCheck) :
     bus(bus),
     mctpEndpointAddedSignal(
         bus, interfacesAdded(MCTPPath),
@@ -47,7 +48,7 @@ MctpDiscovery::MctpDiscovery(
                       : std::make_unique<EndpointRegistry>(
                             std::make_unique<IdentityPeerIdPolicy>())),
     registry(suppliedRegistry ? *suppliedRegistry : *ownedRegistry),
-    groupByUuid(groupByUuid)
+    groupByUuid(groupByUuid), reachabilityCheck(std::move(reachabilityCheck))
 {
     std::map<MctpInfo, std::pair<dbus::ObjectPath, Availability>>
         currentMctpInfoMap;
@@ -327,6 +328,8 @@ void MctpDiscovery::propertiesChangedCb(sdbusplus::message_t& msg)
                 if (availability)
                 {
                     unavailable.erase(objPath);
+                    // It is tried again, as it may answer now
+                    notAnswering.erase(objPath);
                 }
                 else
                 {
@@ -426,10 +429,19 @@ void MctpDiscovery::removeEndpoints(sdbusplus::message_t& msg)
          std::get<3>(mctpInfo), "EID", std::get<0>(mctpInfo));
     MctpInfos removedInfos{mctpInfo};
     existingMctpInfos.erase(it);
-    handleRemovedMctpEndpoints(removedInfos);
+    if (checking.erase(objPath.str) > 0)
+    {
+        // The handlers were not given this endpoint yet
+        registry.release(toEndpoint(mctpInfo));
+    }
+    else
+    {
+        handleRemovedMctpEndpoints(removedInfos);
+    }
     removeConfigs(removedInfos);
 
     unavailable.erase(objPath.str);
+    notAnswering.erase(objPath.str);
     const auto& uuid = std::get<1>(mctpInfo);
     if (standby.erase(objPath.str) == 0 && groupByUuid)
     {
@@ -468,11 +480,12 @@ bool MctpDiscovery::standsBy(const dbus::ObjectPath& path,
 void MctpDiscovery::promoteStandby(const UUID& uuid)
 {
     // In the order of discovery. One that is not available stays on standby,
-    // it takes over when it is available again, see propertiesChangedCb()
+    // it takes over when it is available again, see propertiesChangedCb(). So
+    // does one that did not answer.
     for (const auto& [path, mctpInfo] : existingMctpInfos)
     {
         if (!standby.contains(path) || std::get<1>(mctpInfo) != uuid ||
-            unavailable.contains(path))
+            unavailable.contains(path) || notAnswering.contains(path))
         {
             continue;
         }
@@ -509,13 +522,26 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
                 "ENDPOINT", formatEndpoint(endpoint), "PATH", path);
             continue;
         }
-        if (groupByUuid && std::get<1>(mctpInfo) != emptyUUID)
+        const bool grouped = groupByUuid && std::get<1>(mctpInfo) != emptyUUID;
+        if (grouped)
         {
             activeByUuid[std::get<1>(mctpInfo)] = path;
+        }
+        if (grouped && reachabilityCheck)
+        {
+            // It is given to the handlers once it answers
+            checkReachable(path, mctpInfo, *peer);
+            continue;
         }
         discovered.push_back({*peer, mctpInfo});
     }
 
+    giveToHandlers(discovered);
+}
+
+void MctpDiscovery::giveToHandlers(
+    const std::vector<DiscoveredEndpoint>& discovered)
+{
     for (const auto& handler : handlers)
     {
         if (handler)
@@ -523,6 +549,53 @@ void MctpDiscovery::handleMctpEndpoints(const MctpInfosWithPath& endpoints)
             handler->handleConfigurations(configurations);
             handler->handleEndpoints(discovered);
         }
+    }
+}
+
+void MctpDiscovery::checkReachable(const dbus::ObjectPath& path,
+                                   const MctpInfo& mctpInfo, PeerId peer)
+{
+    const auto check = ++lastCheck;
+    checking[path] = check;
+    info("Checking that endpoint {ENDPOINT} at {PATH} answers", "ENDPOINT",
+         formatEndpoint(toEndpoint(mctpInfo)), "PATH", path);
+    reachabilityCheck(peer, [this, path, mctpInfo, peer, check](bool answered) {
+        checked(path, mctpInfo, peer, check, answered);
+    });
+}
+
+void MctpDiscovery::checked(const dbus::ObjectPath& path,
+                            const MctpInfo& mctpInfo, PeerId peer,
+                            uint64_t check, bool answered)
+{
+    auto it = checking.find(path);
+    if (it == checking.end() || it->second != check)
+    {
+        // The endpoint was removed, or checked again, in the meantime
+        return;
+    }
+    checking.erase(it);
+
+    if (answered)
+    {
+        giveToHandlers(std::vector<DiscoveredEndpoint>{{peer, mctpInfo}});
+        return;
+    }
+
+    const UUID uuid = std::get<1>(mctpInfo);
+    error(
+        "Endpoint {ENDPOINT} at {PATH} does not answer, it stands by and another endpoint of the device with UUID '{UUID}' is tried",
+        "ENDPOINT", formatEndpoint(toEndpoint(mctpInfo)), "PATH", path, "UUID",
+        uuid);
+    notAnswering.insert(path);
+    registry.release(toEndpoint(mctpInfo));
+    standby.insert(path);
+    activeByUuid.erase(uuid);
+    promoteStandby(uuid);
+    if (!activeByUuid.contains(uuid))
+    {
+        error("No endpoint of the device with UUID '{UUID}' answers", "UUID",
+              uuid);
     }
 }
 
