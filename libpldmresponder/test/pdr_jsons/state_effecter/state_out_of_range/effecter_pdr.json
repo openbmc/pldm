@@ -1,0 +1,33 @@
+{
+    "effecterPDRs": [
+        {
+            "pdrType": 11,
+            "entries": [
+                {
+                    "type": 33,
+                    "instance": 0,
+                    "container": 0,
+                    "effecters": [
+                        {
+                            "set": {
+                                "id": 196,
+                                "size": 1,
+                                "states": [1, 8]
+                            },
+                            "dbus": {
+                                "path": "/foo/bar",
+                                "interface": "xyz.openbmc_project.Foo.Bar",
+                                "property_name": "propertyName",
+                                "property_type": "string",
+                                "property_values": [
+                                    "xyz.openbmc_project.Foo.Bar.V1",
+                                    "xyz.openbmc_project.Foo.Bar.V8"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

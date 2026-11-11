@@ -935,8 +935,6 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
                         uint8_t compEffecterCnt, uint16_t& entityType,
                         uint16_t& entityInstance, uint16_t& stateSetId)
 {
-    pldm_state_effecter_pdr* pdr = nullptr;
-
     std::unique_ptr<pldm_pdr, decltype(&pldm_pdr_destroy)> stateEffecterPdrRepo(
         pldm_pdr_init(), pldm_pdr_destroy);
     if (!stateEffecterPdrRepo)
@@ -957,23 +955,41 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     auto pdrRecord = stateEffecterPDRs.getFirstRecord(pdrEntry);
     while (pdrRecord)
     {
-        pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(pdrEntry.data);
-        assert(pdr != nullptr);
-        if (pdr->effecter_id != effecterId)
+        struct pldm_platform_state_effecter_pdr pdr{};
+        struct variable_field possibleStates{};
+        int rc = decode_pldm_platform_state_effecter_pdr(
+            pdrEntry.data, pdrEntry.size, &pdr, &possibleStates);
+        if (rc)
         {
-            pdr = nullptr;
+            error(
+                "Failed to decode state effecter PDR with record handle '{RECORD_HANDLE}', error - {RC}",
+                "RECORD_HANDLE", stateEffecterPDRs.getRecordHandle(pdrRecord),
+                "RC", rc);
+        }
+        if (rc || pdr.effecter_id != effecterId)
+        {
             pdrRecord = stateEffecterPDRs.getNextRecord(pdrRecord, pdrEntry);
             continue;
         }
 
-        auto tmpEntityType = pdr->entity_type;
-        auto tmpEntityInstance = pdr->entity_instance;
-        auto tmpPossibleStates =
-            reinterpret_cast<state_effecter_possible_states*>(
-                pdr->possible_states);
-        auto tmpStateSetId = tmpPossibleStates->state_set_id;
+        struct pldm_platform_state_effecter_possible_states states{};
+        struct variable_field stateBits{};
+        size_t entrySize = possibleStates.length;
+        rc = decode_pldm_platform_state_effecter_possible_states(
+            possibleStates.ptr, &entrySize, &states, &stateBits);
+        if (rc)
+        {
+            error(
+                "Failed to decode possible states for effecter ID '{EFFECTERID}', error - {RC}",
+                "EFFECTERID", effecterId, "RC", rc);
+            return false;
+        }
 
-        if (compEffecterCnt > pdr->composite_effecter_count)
+        auto tmpEntityType = pdr.entity_type;
+        auto tmpEntityInstance = pdr.entity_instance_number;
+        auto tmpStateSetId = states.state_set_id;
+
+        if (compEffecterCnt > pdr.composite_effecter_count)
         {
             error(
                 "The requester sent wrong composite effecter count '{COMPOSITE_EFFECTER_COUNT}' for the effecter ID '{EFFECTERID}'.",

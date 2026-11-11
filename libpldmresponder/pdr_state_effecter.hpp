@@ -47,28 +47,21 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
                     "STATE_EFFECTER_PDR", PLDM_STATE_EFFECTER_PDR);
                 throw InternalFailure();
             }
-            pdrSize += sizeof(state_effecter_possible_states) -
-                       sizeof(bitfield8_t) + (sizeof(bitfield8_t) * statesSize);
+            pdrSize += PLDM_PLATFORM_STATE_EFFECTER_POSSIBLE_STATES_MIN_LENGTH +
+                       statesSize;
         }
-        pdrSize += sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+        pdrSize += PLDM_PLATFORM_STATE_EFFECTER_PDR_MIN_LENGTH;
 
-        std::vector<uint8_t> entry{};
-        entry.resize(pdrSize);
+        std::vector<uint8_t> entry(pdrSize, 0);
 
-        pldm_state_effecter_pdr* pdr = new (entry.data())
-            pldm_state_effecter_pdr;
-        if (!pdr)
-        {
-            error("Failed to get state effecter PDR.");
-            continue;
-        }
-        pdr->hdr.record_handle = 0;
-        pdr->hdr.version = 1;
-        pdr->hdr.type = PLDM_STATE_EFFECTER_PDR;
-        pdr->hdr.record_change_num = 0;
-        pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+        struct pldm_platform_state_effecter_pdr pdr{};
+        pdr.hdr.record_handle = 0;
+        pdr.hdr.version = 1;
+        pdr.hdr.type = PLDM_STATE_EFFECTER_PDR;
+        pdr.hdr.record_change_num = 0;
+        pdr.hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
-        pdr->terminus_handle = TERMINUS_HANDLE;
+        pdr.terminus_handle = TERMINUS_HANDLE;
 
         try
         {
@@ -76,22 +69,22 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
             auto& associatedEntityMap = handler.getAssociateEntityMap();
             if (entity_path != "" && associatedEntityMap.contains(entity_path))
             {
-                pdr->entity_type =
+                pdr.entity_type =
                     associatedEntityMap.at(entity_path).entity_type;
-                pdr->entity_instance =
+                pdr.entity_instance_number =
                     associatedEntityMap.at(entity_path).entity_instance_num;
-                pdr->container_id =
+                pdr.container_id =
                     associatedEntityMap.at(entity_path).entity_container_id;
             }
             else
             {
-                pdr->entity_type = e.value("type", 0);
-                pdr->entity_instance = e.value("instance", 0);
-                pdr->container_id = e.value("container", 0);
+                pdr.entity_type = e.value("type", 0);
+                pdr.entity_instance_number = e.value("instance", 0);
+                pdr.container_id = e.value("container", 0);
 
                 // do not create the PDR when the FRU or the entity path is not
                 // present
-                if (!pdr->entity_type)
+                if (!pdr.entity_type)
                 {
                     continue;
                 }
@@ -99,42 +92,63 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         catch (const std::exception&)
         {
-            pdr->entity_type = e.value("type", 0);
-            pdr->entity_instance = e.value("instance", 0);
-            pdr->container_id = e.value("container", 0);
+            pdr.entity_type = e.value("type", 0);
+            pdr.entity_instance_number = e.value("instance", 0);
+            pdr.container_id = e.value("container", 0);
         }
 
-        pdr->effecter_semantic_id = 0;
-        pdr->effecter_init = PLDM_NO_INIT;
-        pdr->has_description_pdr = false;
-        pdr->composite_effecter_count = effecters.size();
+        pdr.effecter_semantic_id = 0;
+        pdr.effecter_init = PLDM_NO_INIT;
+        pdr.effecter_description_pdr = false;
+        pdr.composite_effecter_count = effecters.size();
 
         pldm::responder::pdr_utils::DbusMappings dbusMappings{};
         pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
-        uint8_t* start =
-            entry.data() + sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t);
+        size_t offset = PLDM_PLATFORM_STATE_EFFECTER_PDR_MIN_LENGTH;
         for (const auto& effecter : effecters)
         {
             auto set = effecter.value("set", empty);
-            state_effecter_possible_states* possibleStates =
-                reinterpret_cast<state_effecter_possible_states*>(start);
-            possibleStates->state_set_id = set.value("id", 0);
-            possibleStates->possible_states_size = set.value("size", 0);
+            struct pldm_platform_state_effecter_possible_states
+                possibleStates{};
+            possibleStates.state_set_id = set.value("id", 0);
+            possibleStates.possible_states_size = set.value("size", 0);
 
-            start += sizeof(possibleStates->state_set_id) +
-                     sizeof(possibleStates->possible_states_size);
+            std::vector<uint8_t> stateBits(possibleStates.possible_states_size,
+                                           0);
             static const std::vector<uint8_t> emptyStates{};
             pldm::responder::pdr_utils::PossibleValues stateValues;
             auto states = set.value("states", emptyStates);
             for (const auto& state : states)
             {
                 auto index = state / 8;
+                if (index >= possibleStates.possible_states_size)
+                {
+                    error(
+                        "Malformed PDR JSON; state '{STATE}' exceeds possible states size '{SIZE}' for state set '{STATE_SET}'",
+                        "STATE", state, "SIZE",
+                        possibleStates.possible_states_size, "STATE_SET",
+                        possibleStates.state_set_id);
+                    throw InternalFailure();
+                }
                 auto bit = state - (index * 8);
-                bitfield8_t* bf = reinterpret_cast<bitfield8_t*>(start + index);
-                bf->byte |= 1 << bit;
+                stateBits[index] |= 1 << bit;
                 stateValues.emplace_back(state);
             }
-            start += possibleStates->possible_states_size;
+
+            struct variable_field stateField{stateBits.data(),
+                                             stateBits.size()};
+            size_t encodedSize = entry.size() - offset;
+            int rc = encode_pldm_platform_state_effecter_possible_states(
+                &possibleStates, &stateField, entry.data() + offset,
+                &encodedSize);
+            if (rc)
+            {
+                error(
+                    "Failed to encode possible states for state set '{STATE_SET}' of state effecter PDR, error - {RC}",
+                    "STATE_SET", possibleStates.state_set_id, "RC", rc);
+                throw InternalFailure();
+            }
+            offset += encodedSize;
 
             auto dbusEntry = effecter.value("dbus", empty);
             auto objectPath = dbusEntry.value("path", "");
@@ -166,8 +180,18 @@ void generateStateEffecterPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         if (!(dbusMappings.empty() && dbusValMaps.empty()))
         {
-            pdr->effecter_id = handler.getNextEffecterId();
-            handler.addDbusObjMaps(pdr->effecter_id,
+            pdr.effecter_id = handler.getNextEffecterId();
+            size_t encodedSize = PLDM_PLATFORM_STATE_EFFECTER_PDR_MIN_LENGTH;
+            int rc = encode_pldm_platform_state_effecter_pdr(&pdr, entry.data(),
+                                                             &encodedSize);
+            if (rc)
+            {
+                error(
+                    "Failed to encode state effecter PDR for effecter ID '{EFFECTER_ID}', error - {RC}",
+                    "EFFECTER_ID", pdr.effecter_id, "RC", rc);
+                continue;
+            }
+            handler.addDbusObjMaps(pdr.effecter_id,
                                    std::make_tuple(std::move(dbusMappings),
                                                    std::move(dbusValMaps)));
             pldm::responder::pdr_utils::PdrEntry pdrEntry{};
