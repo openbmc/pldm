@@ -34,6 +34,24 @@
       "parentUuid": "3b96fa42_e7f6c4d4",
       "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6653a577_86c3ea2f",
+        "filename": "tools/fw-update/metadate-example1.0.0.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-11-11T19:24:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5cf1e417_1f47d488",
+      "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
