@@ -73,6 +73,33 @@ TEST(GeneratePDRByStateSensor, testGoodJson)
     pldm_pdr_destroy(outPDRRepo);
 }
 
+TEST(GeneratePDRByStateSensor, testStateOutOfRange)
+{
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
+        requestPayload{};
+    auto req = std::start_lifetime_as<pldm_msg>(requestPayload.data());
+    size_t requestPayloadLength = requestPayload.size() - sizeof(pldm_msg_hdr);
+
+    MockdBusHandler mockedUtils;
+    EXPECT_CALL(mockedUtils, getService(_, _)).Times(0);
+
+    auto inPDRRepo = pldm_pdr_init();
+    auto outPDRRepo = pldm_pdr_init();
+    Repo outRepo(outPDRRepo);
+    auto event = sdeventplus::Event::get_default();
+    Handler handler(&mockedUtils, 0, nullptr,
+                    "./pdr_jsons/state_sensor/state_out_of_range", inPDRRepo,
+                    nullptr, nullptr, nullptr, nullptr, nullptr, event);
+    handler.getPDR(req, requestPayloadLength);
+    Repo inRepo(inPDRRepo);
+    getRepoByType(inRepo, outRepo, PLDM_STATE_SENSOR_PDR);
+
+    EXPECT_EQ(outRepo.getRecordCount(), 0);
+
+    pldm_pdr_destroy(inPDRRepo);
+    pldm_pdr_destroy(outPDRRepo);
+}
+
 TEST(GeneratePDR, testMalformedJson)
 {
     std::array<uint8_t, sizeof(pldm_msg_hdr) + PLDM_GET_PDR_REQ_BYTES>
