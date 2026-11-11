@@ -45,6 +45,50 @@ using InventoryItem = sdbusplus::common::xyz::openbmc_project::inventory::Item;
 constexpr const char* MCTP_INTERFACE_CC = "au.com.codeconstruct.MCTP.Endpoint1";
 constexpr const char* MCTP_ENDPOINT_RECOVER_METHOD = "Recover";
 
+namespace
+{
+
+/** @brief Check whether a State Effecter PDR has a composite effecter with
+ *         the given state set ID
+ *
+ *  @param[in] pdr - decoded fixed fields of the State Effecter PDR
+ *  @param[in] possibleStates - the possible_states[] region returned by
+ *                              decode_pldm_platform_state_effecter_pdr()
+ *  @param[in] stateSetId - state set ID to look for
+ *
+ *  @return true if a composite effecter carries @p stateSetId, false if none
+ *          does or a possible_states[] entry fails to decode
+ */
+bool stateEffecterHasStateSet(const pldm_platform_state_effecter_pdr& pdr,
+                              variable_field possibleStates,
+                              uint16_t stateSetId)
+{
+    for (uint8_t i = 0; i < pdr.composite_effecter_count; i++)
+    {
+        struct pldm_platform_state_effecter_possible_states states{};
+        struct variable_field stateBits{};
+        size_t entrySize = possibleStates.length;
+        int rc = decode_pldm_platform_state_effecter_possible_states(
+            possibleStates.ptr, &entrySize, &states, &stateBits);
+        if (rc)
+        {
+            error(
+                "Failed to decode possible states of state effecter ID '{EFFECTER_ID}', error {RC}",
+                "EFFECTER_ID", pdr.effecter_id, "RC", rc);
+            return false;
+        }
+        if (states.state_set_id == stateSetId)
+        {
+            return true;
+        }
+        possibleStates.ptr += entrySize;
+        possibleStates.length -= entrySize;
+    }
+    return false;
+}
+
+} // namespace
+
 std::vector<std::vector<uint8_t>> findStateEffecterPDR(
     uint8_t /*tid*/, uint16_t entityID, uint16_t stateSetId,
     const pldm_pdr* repo)
@@ -61,30 +105,21 @@ std::vector<std::vector<uint8_t>> findStateEffecterPDR(
                                                   record, &outData, &size);
             if (record)
             {
-                auto pdr =
-                    std::start_lifetime_as<pldm_state_effecter_pdr>(outData);
-                auto compositeEffecterCount = pdr->composite_effecter_count;
-                auto possible_states_start = pdr->possible_states;
-
-                for (auto effecters = 0x00; effecters < compositeEffecterCount;
-                     effecters++)
+                struct pldm_platform_state_effecter_pdr pdr{};
+                struct variable_field possibleStates{};
+                int rc = decode_pldm_platform_state_effecter_pdr(
+                    outData, size, &pdr, &possibleStates);
+                if (rc)
                 {
-                    auto possibleStates =
-                        std::start_lifetime_as<state_effecter_possible_states>(
-                            possible_states_start);
-                    auto setId = possibleStates->state_set_id;
-                    auto possibleStateSize =
-                        possibleStates->possible_states_size;
+                    error("Failed to decode state effecter PDR, error {RC}",
+                          "RC", rc);
+                    continue;
+                }
 
-                    if (pdr->entity_type == entityID && setId == stateSetId)
-                    {
-                        std::vector<uint8_t> effecter_pdr(&outData[0],
-                                                          &outData[size]);
-                        pdrs.emplace_back(std::move(effecter_pdr));
-                        break;
-                    }
-                    possible_states_start += possibleStateSize + sizeof(setId) +
-                                             sizeof(possibleStateSize);
+                if (pdr.entity_type == entityID &&
+                    stateEffecterHasStateSet(pdr, possibleStates, stateSetId))
+                {
+                    pdrs.emplace_back(&outData[0], &outData[size]);
                 }
             }
 
@@ -535,27 +570,23 @@ uint16_t findStateEffecterId(const pldm_pdr* pdrRepo, uint16_t entityType,
                                               record, &pdrData, &pdrSize);
         if (record && (localOrRemote ^ pldm_pdr_record_is_remote(record)))
         {
-            auto pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(pdrData);
-            auto compositeEffecterCount = pdr->composite_effecter_count;
-            auto possible_states_start = pdr->possible_states;
-
-            for (auto effecters = 0x00; effecters < compositeEffecterCount;
-                 effecters++)
+            struct pldm_platform_state_effecter_pdr pdr{};
+            struct variable_field possibleStates{};
+            int rc = decode_pldm_platform_state_effecter_pdr(
+                pdrData, pdrSize, &pdr, &possibleStates);
+            if (rc)
             {
-                auto possibleStates =
-                    std::start_lifetime_as<state_effecter_possible_states>(
-                        possible_states_start);
-                auto setId = possibleStates->state_set_id;
-                auto possibleStateSize = possibleStates->possible_states_size;
+                error("Failed to decode state effecter PDR, error {RC}", "RC",
+                      rc);
+                continue;
+            }
 
-                if (entityType == pdr->entity_type &&
-                    entityInstance == pdr->entity_instance &&
-                    containerId == pdr->container_id && stateSetId == setId)
-                {
-                    return pdr->effecter_id;
-                }
-                possible_states_start += possibleStateSize + sizeof(setId) +
-                                         sizeof(possibleStateSize);
+            if (entityType == pdr.entity_type &&
+                entityInstance == pdr.entity_instance_number &&
+                containerId == pdr.container_id &&
+                stateEffecterHasStateSet(pdr, possibleStates, stateSetId))
+            {
+                return pdr.effecter_id;
             }
         }
     } while (record);
@@ -908,8 +939,17 @@ EffecterPDRs getStateEffecterPDRsByType(uint16_t entityType,
         while ((record = pldm_pdr_find_record_by_type(
                     repo, PLDM_STATE_EFFECTER_PDR, record, &outData, &size)))
         {
-            auto pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(outData);
-            if (pdr && pdr->entity_type == entityType)
+            struct pldm_platform_state_effecter_pdr pdr{};
+            struct variable_field possibleStates{};
+            int rc = decode_pldm_platform_state_effecter_pdr(
+                outData, size, &pdr, &possibleStates);
+            if (rc)
+            {
+                error("Failed to decode state effecter PDR, error {RC}", "RC",
+                      rc);
+                continue;
+            }
+            if (pdr.entity_type == entityType)
             {
                 pdrs.emplace_back(outData, outData + size);
             }
@@ -926,13 +966,19 @@ std::vector<pldm::pdr::EffecterID> findEffecterIds(
     auto pdrs = getStateEffecterPDRsByType(entityType, pdrRepo);
     for (const auto& pdr : pdrs)
     {
-        auto effecterPdr =
-            reinterpret_cast<const pldm_state_effecter_pdr*>(pdr.data());
-        if (effecterPdr && effecterPdr->entity_type == entityType &&
-            effecterPdr->entity_instance == entityInstance &&
-            effecterPdr->container_id == containerId)
+        struct pldm_platform_state_effecter_pdr effecterPdr{};
+        struct variable_field possibleStates{};
+        int rc = decode_pldm_platform_state_effecter_pdr(
+            pdr.data(), pdr.size(), &effecterPdr, &possibleStates);
+        if (rc)
         {
-            effecterIDs.emplace_back(effecterPdr->effecter_id);
+            error("Failed to decode state effecter PDR, error {RC}", "RC", rc);
+            continue;
+        }
+        if (effecterPdr.entity_instance_number == entityInstance &&
+            effecterPdr.container_id == containerId)
+        {
+            effecterIDs.emplace_back(effecterPdr.effecter_id);
         }
     }
     return effecterIDs;
