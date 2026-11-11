@@ -59,9 +59,10 @@ class Handler : public oem_fru::Handler
 
   private:
     /** @brief pointer to BMC's primary PDR repo */
-    const pldm_pdr* pdrRepo;
+    const pldm_pdr* pdrRepo = nullptr;
 
-    pldm::responder::fru::Handler* fruHandler; //!< pointer to PLDM fru handler
+    //!< pointer to PLDM fru handler
+    pldm::responder::fru::Handler* fruHandler = nullptr;
 
     /** @brief update the DBus property
      *
