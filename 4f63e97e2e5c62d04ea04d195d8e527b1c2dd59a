@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34c62b8e_d81f3561",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-11T07:56:00Z",
+      "side": 1,
+      "message": "Ack, used std::get_if instead",
+      "parentUuid": "39728b8b_42f34d1f",
+      "range": {
+        "startLine": 222,
+        "startChar": 21,
+        "endLine": 222,
+        "endChar": 29
+      },
+      "revId": "4f63e97e2e5c62d04ea04d195d8e527b1c2dd59a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f92da7a8_8a6abd5a",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-11-11T03:27:10Z",
       "side": 1,
       "message": "nit: May be we can reword this as error(\"Endpoint {EID}, networkId {NET} supports PLDM, but it is degraded\") ? We could avoid hardcoding the mctpd name in logs because mctpd service is an implementation choice",
+      "range": {
+        "startLine": 238,
+        "startChar": 15,
+        "endLine": 238,
+        "endChar": 46
+      },
+      "revId": "4f63e97e2e5c62d04ea04d195d8e527b1c2dd59a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba598cda_d31bdb0e",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-11T07:56:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "f92da7a8_8a6abd5a",
       "range": {
         "startLine": 238,
         "startChar": 15,
