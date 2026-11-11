@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96638d7f_61bfb58a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2026-11-11T19:26:35Z",
+      "side": 1,
+      "message": "@deepak.kodihalli.83@gmail.com @manojkiran.eda@gmail.com\nCan you please review this patch as libpldm++ has started imposing these specification requirements and the related examples in pldm repo are not following these guidelines.",
+      "revId": "736a06c9d711900b57b7c04e0f6eb29a893e60d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b96fa42_e7f6c4d4",
