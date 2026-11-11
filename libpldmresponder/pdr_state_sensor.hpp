@@ -47,32 +47,21 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
                     "STATE_SENSOR_PDR", PLDM_STATE_SENSOR_PDR);
                 throw InternalFailure();
             }
-            pdrSize += sizeof(state_sensor_possible_states) -
-                       sizeof(bitfield8_t) + (sizeof(bitfield8_t) * statesSize);
+            pdrSize += PLDM_PLATFORM_STATE_SENSOR_POSSIBLE_STATES_MIN_LENGTH +
+                       statesSize;
         }
-        pdrSize += sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+        pdrSize += PLDM_PLATFORM_STATE_SENSOR_PDR_MIN_LENGTH;
 
-        std::vector<uint8_t> entry{};
-        entry.resize(pdrSize);
+        std::vector<uint8_t> entry(pdrSize, 0);
 
-        pldm_state_sensor_pdr* pdr =
-            reinterpret_cast<pldm_state_sensor_pdr*>(entry.data());
-        if (!pdr)
-        {
-            error("Failed to get state sensor PDR.");
-            continue;
-        }
-        pdr->hdr.record_handle = 0;
-        pdr->hdr.version = 1;
-        pdr->hdr.type = PLDM_STATE_SENSOR_PDR;
-        pdr->hdr.record_change_num = 0;
-        pdr->hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
+        struct pldm_platform_state_sensor_pdr pdr{};
+        pdr.hdr.record_handle = 0;
+        pdr.hdr.version = 1;
+        pdr.hdr.type = PLDM_STATE_SENSOR_PDR;
+        pdr.hdr.record_change_num = 0;
+        pdr.hdr.length = pdrSize - sizeof(pldm_pdr_hdr);
 
-        HTOLE32(pdr->hdr.record_handle);
-        HTOLE16(pdr->hdr.record_change_num);
-        HTOLE16(pdr->hdr.length);
-
-        pdr->terminus_handle = TERMINUS_HANDLE;
+        pdr.terminus_handle = TERMINUS_HANDLE;
 
         try
         {
@@ -80,22 +69,22 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
             auto& associatedEntityMap = handler.getAssociateEntityMap();
             if (entity_path != "" && associatedEntityMap.contains(entity_path))
             {
-                pdr->entity_type =
+                pdr.entity_type =
                     associatedEntityMap.at(entity_path).entity_type;
-                pdr->entity_instance =
+                pdr.entity_instance_number =
                     associatedEntityMap.at(entity_path).entity_instance_num;
-                pdr->container_id =
+                pdr.container_id =
                     associatedEntityMap.at(entity_path).entity_container_id;
             }
             else
             {
-                pdr->entity_type = e.value("type", 0);
-                pdr->entity_instance = e.value("instance", 0);
-                pdr->container_id = e.value("container", 0);
+                pdr.entity_type = e.value("type", 0);
+                pdr.entity_instance_number = e.value("instance", 0);
+                pdr.container_id = e.value("container", 0);
 
                 // do not create the PDR when the FRU or the entity path is not
                 // present
-                if (!pdr->entity_type)
+                if (!pdr.entity_type)
                 {
                     continue;
                 }
@@ -103,51 +92,66 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
         }
         catch (const std::exception&)
         {
-            pdr->entity_type = e.value("type", 0);
-            pdr->entity_instance = e.value("instance", 0);
-            pdr->container_id = e.value("container", 0);
+            pdr.entity_type = e.value("type", 0);
+            pdr.entity_instance_number = e.value("instance", 0);
+            pdr.container_id = e.value("container", 0);
         }
 
-        pdr->sensor_init = PLDM_NO_INIT;
-        pdr->sensor_auxiliary_names_pdr = false;
+        pdr.sensor_init = PLDM_NO_INIT;
+        pdr.sensor_auxiliary_names_pdr = false;
         if (sensors.size() > 8)
         {
             throw std::runtime_error("sensor size must be less than 8");
         }
-        pdr->composite_sensor_count = sensors.size();
-
-        HTOLE16(pdr->terminus_handle);
-        HTOLE16(pdr->entity_type);
-        HTOLE16(pdr->entity_instance);
-        HTOLE16(pdr->container_id);
+        pdr.composite_sensor_count = sensors.size();
 
         pldm::responder::pdr_utils::DbusMappings dbusMappings{};
         pldm::responder::pdr_utils::DbusValMaps dbusValMaps{};
-        uint8_t* start =
-            entry.data() + sizeof(pldm_state_sensor_pdr) - sizeof(uint8_t);
+        size_t offset = PLDM_PLATFORM_STATE_SENSOR_PDR_MIN_LENGTH;
         for (const auto& sensor : sensors)
         {
             auto set = sensor.value("set", empty);
-            state_sensor_possible_states* possibleStates =
-                reinterpret_cast<state_sensor_possible_states*>(start);
-            possibleStates->state_set_id = set.value("id", 0);
-            HTOLE16(possibleStates->state_set_id);
-            possibleStates->possible_states_size = set.value("size", 0);
+            struct pldm_platform_state_sensor_possible_states possibleStates{};
+            possibleStates.state_set_id = set.value("id", 0);
+            possibleStates.possible_states_size = set.value("size", 0);
 
-            start += sizeof(possibleStates->state_set_id) +
-                     sizeof(possibleStates->possible_states_size);
+            std::vector<uint8_t> stateBits(possibleStates.possible_states_size,
+                                           0);
             static const std::vector<uint8_t> emptyStates{};
             pldm::responder::pdr_utils::PossibleValues stateValues;
             auto states = set.value("states", emptyStates);
             for (const auto& state : states)
             {
                 auto index = state / 8;
+                if (index >= possibleStates.possible_states_size)
+                {
+                    error(
+                        "Malformed PDR JSON; state '{STATE}' exceeds possible states size '{SIZE}' for state set '{STATE_SET}'",
+                        "STATE", state, "SIZE",
+                        possibleStates.possible_states_size, "STATE_SET",
+                        possibleStates.state_set_id);
+                    throw InternalFailure();
+                }
                 auto bit = state - (index * 8);
-                bitfield8_t* bf = reinterpret_cast<bitfield8_t*>(start + index);
-                bf->byte |= 1 << bit;
+                stateBits[index] |= 1 << bit;
                 stateValues.emplace_back(state);
             }
-            start += possibleStates->possible_states_size;
+
+            struct variable_field stateField{stateBits.data(),
+                                             stateBits.size()};
+            size_t encodedSize = entry.size() - offset;
+            int rc = encode_pldm_platform_state_sensor_possible_states(
+                &possibleStates, &stateField, entry.data() + offset,
+                &encodedSize);
+            if (rc)
+            {
+                error(
+                    "Failed to encode possible states for state set '{STATE_SET}' of state sensor PDR, error - {RC}",
+                    "STATE_SET", possibleStates.state_set_id, "RC", rc);
+                throw InternalFailure();
+            }
+            offset += encodedSize;
+
             auto dbusEntry = sensor.value("dbus", empty);
             auto objectPath = dbusEntry.value("path", "");
             auto interface = dbusEntry.value("interface", "");
@@ -179,10 +183,19 @@ void generateStateSensorPDR(const DBusInterface& dBusIntf, const Json& json,
 
         if (!(dbusMappings.empty() && dbusValMaps.empty()))
         {
-            pdr->sensor_id = handler.getNextSensorId();
-            HTOLE16(pdr->sensor_id);
+            pdr.sensor_id = handler.getNextSensorId();
+            size_t encodedSize = PLDM_PLATFORM_STATE_SENSOR_PDR_MIN_LENGTH;
+            int rc = encode_pldm_platform_state_sensor_pdr(&pdr, entry.data(),
+                                                           &encodedSize);
+            if (rc)
+            {
+                error(
+                    "Failed to encode state sensor PDR for sensor ID '{SENSOR_ID}', error - {RC}",
+                    "SENSOR_ID", pdr.sensor_id, "RC", rc);
+                continue;
+            }
             handler.addDbusObjMaps(
-                pdr->sensor_id,
+                pdr.sensor_id,
                 std::make_tuple(std::move(dbusMappings),
                                 std::move(dbusValMaps)),
                 pldm::responder::pdr_utils::TypeId::PLDM_SENSOR_ID);
