@@ -257,7 +257,7 @@ class FruImpl
     pldm::responder::platform::Handler* platformHandler = nullptr;
 
     /** @OEM platform handler */
-    pldm::responder::oem_platform::Handler* oemPlatformHandler;
+    pldm::responder::oem_platform::Handler* oemPlatformHandler = nullptr;
 
     std::map<dbus::ObjectPath, pldm_entity_node*> objToEntityNode{};
 

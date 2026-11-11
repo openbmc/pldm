@@ -244,11 +244,11 @@ class CodeUpdate
     std::vector<std::unique_ptr<sdbusplus::match>>
         fwUpdateMatcher; //!< pointer to capture the interface added signal for
                          //!< new image
-    pldm::responder::oem_platform::Handler*
-        oemPlatformHandler; //!< oem platform handler
-    uint16_t markerLidSensorId;
-    uint16_t firmwareUpdateSensorId;
-    uint16_t bootSideRenameStateSensorId;
+    //!< oem platform handler
+    pldm::responder::oem_platform::Handler* oemPlatformHandler = nullptr;
+    uint16_t markerLidSensorId = 0;
+    uint16_t firmwareUpdateSensorId = 0;
+    uint16_t bootSideRenameStateSensorId = 0;
     /** @brief D-Bus property changed signal match for image activation */
     std::unique_ptr<sdbusplus::match> imageActivationMatch;
 
