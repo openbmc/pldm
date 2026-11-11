@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2803acfd_ce834de4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-11T10:23:17Z",
+      "side": 1,
+      "message": "I have made some major changes. The previous network support patchset 29 was trying to work with a pldm whose state was tightly bound to the fact that EID \u003d\u003d TID. It was more of a hack to introduce network support to PLDM. \n\nNow I have broken the patch into a series of patches so that it architecturally brings in support to pldm to identify the fact that an endpoint will have both netowrk and eid. Further info in the docs/mctp_networks.md file introduced as part of this new patchset 30.",
+      "revId": "4e7fe619adb1aaf709647cbb8ef669eee52b881f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
