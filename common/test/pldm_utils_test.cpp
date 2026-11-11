@@ -174,6 +174,66 @@ TEST(parseEffecterData, testBadDecodeEffecterData)
     EXPECT_EQ(effecterField, std::nullopt);
 }
 
+namespace
+{
+
+// Encodes a State Effecter PDR with one composite effecter per entry of
+// stateSetIds, each carrying a one-byte possibleStates bitfield.
+std::vector<uint8_t> makeStateEffecterPdr(
+    pldm_platform_state_effecter_pdr fixed,
+    const std::vector<uint16_t>& stateSetIds)
+{
+    constexpr uint8_t possibleStatesSize = 1;
+    constexpr size_t entrySize =
+        PLDM_PLATFORM_STATE_EFFECTER_POSSIBLE_STATES_MIN_LENGTH +
+        possibleStatesSize;
+    std::vector<uint8_t> pdr(PLDM_PLATFORM_STATE_EFFECTER_PDR_MIN_LENGTH +
+                             stateSetIds.size() * entrySize);
+
+    fixed.hdr.type = PLDM_STATE_EFFECTER_PDR;
+    fixed.hdr.length = pdr.size() - sizeof(pldm_pdr_hdr);
+    fixed.composite_effecter_count = stateSetIds.size();
+
+    size_t len = pdr.size();
+    EXPECT_EQ(
+        0, encode_pldm_platform_state_effecter_pdr(&fixed, pdr.data(), &len));
+    size_t offset = len;
+
+    const uint8_t possibleStates = 0;
+    struct variable_field bits{};
+    bits.ptr = &possibleStates;
+    bits.length = possibleStatesSize;
+
+    for (auto stateSetId : stateSetIds)
+    {
+        struct pldm_platform_state_effecter_possible_states states{};
+        states.state_set_id = stateSetId;
+        states.possible_states_size = possibleStatesSize;
+
+        len = pdr.size() - offset;
+        EXPECT_EQ(0, encode_pldm_platform_state_effecter_possible_states(
+                         &states, &bits, pdr.data() + offset, &len));
+        offset += len;
+    }
+
+    return pdr;
+}
+
+pldm_platform_state_effecter_pdr stateEffecterFixed(
+    uint32_t recordHandle, uint16_t entityType, uint16_t entityInstance = 0,
+    uint16_t containerId = 0, uint16_t effecterId = 0)
+{
+    struct pldm_platform_state_effecter_pdr fixed{};
+    fixed.hdr.record_handle = recordHandle;
+    fixed.entity_type = entityType;
+    fixed.entity_instance_number = entityInstance;
+    fixed.container_id = containerId;
+    fixed.effecter_id = effecterId;
+    return fixed;
+}
+
+} // namespace
+
 TEST(FindStateEffecterPDR, testOneMatch)
 {
     auto repo = pldm_pdr_init();
@@ -181,21 +241,7 @@ TEST(FindStateEffecterPDR, testOneMatch)
     uint16_t entityID = 33;
     uint16_t stateSetId = 196;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 33;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 196;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 33), {196});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
@@ -214,21 +260,7 @@ TEST(FindStateEffecterPDR, testNoMatch)
     uint16_t entityID = 44;
     uint16_t stateSetId = 196;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 33;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 196;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 33), {196});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
@@ -247,10 +279,6 @@ TEST(FindStateEffecterPDR, testEmptyRepo)
     uint16_t entityID = 33;
     uint16_t stateSetId = 196;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
     EXPECT_EQ(record.empty(), true);
@@ -263,41 +291,12 @@ TEST(FindStateEffecterPDR, testMoreMatch)
     auto repo = pldm_pdr_init();
     uint8_t tid = 1;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 31;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 129;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 31), {129});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
-    std::vector<uint8_t> pdr_second(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
-
-    auto state_second = new (rec_second->possible_states)
-        state_effecter_possible_states;
-
-    rec_second->hdr.type = 11;
-    rec_second->hdr.record_handle = 2;
-    rec_second->entity_type = 31;
-    rec_second->container_id = 0;
-    rec_second->composite_effecter_count = 1;
-    state_second->state_set_id = 129;
-    state_second->possible_states_size = 1;
+    auto pdr_second = makeStateEffecterPdr(stateEffecterFixed(2, 31), {129});
 
     handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
@@ -322,41 +321,12 @@ TEST(FindStateEffecterPDR, testManyNoMatch)
     uint16_t entityID = 33;
     uint16_t stateSetId = 196;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 34;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 198;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 34), {198});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
-    std::vector<uint8_t> pdr_second(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
-
-    auto state_second = new (rec_second->possible_states)
-        state_effecter_possible_states;
-
-    rec_second->hdr.type = 11;
-    rec_second->hdr.record_handle = 2;
-    rec_second->entity_type = 39;
-    rec_second->container_id = 0;
-    rec_second->composite_effecter_count = 1;
-    state_second->state_set_id = 169;
-    state_second->possible_states_size = 1;
+    auto pdr_second = makeStateEffecterPdr(stateEffecterFixed(2, 39), {169});
 
     handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
@@ -377,41 +347,12 @@ TEST(FindStateEffecterPDR, testOneMatchOneNoMatch)
     uint16_t entityID = 67;
     uint16_t stateSetId = 192;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 32;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 198;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 32), {198});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
-    std::vector<uint8_t> pdr_second(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
-
-    auto state_second = new (rec_second->possible_states)
-        state_effecter_possible_states;
-
-    rec_second->hdr.type = 11;
-    rec_second->hdr.record_handle = 2;
-    rec_second->entity_type = 67;
-    rec_second->container_id = 0;
-    rec_second->composite_effecter_count = 1;
-    state_second->state_set_id = 192;
-    state_second->possible_states_size = 1;
+    auto pdr_second = makeStateEffecterPdr(stateEffecterFixed(2, 67), {192});
 
     handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
@@ -433,63 +374,24 @@ TEST(FindStateEffecterPDR, testOneMatchManyNoMatch)
     uint16_t entityID = 67;
     uint16_t stateSetId = 192;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-
-    auto state = new (rec->possible_states) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 32;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 198;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 32), {198});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
 
-    std::vector<uint8_t> pdr_second(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
-
-    auto rec_second = new (pdr_second.data()) pldm_state_effecter_pdr;
-
-    auto state_second = new (rec_second->possible_states)
-        state_effecter_possible_states;
-
-    rec_second->hdr.type = 11;
-    rec_second->hdr.record_handle = 2;
-    rec_second->entity_type = 67;
-    rec_second->container_id = 0;
-    rec_second->composite_effecter_count = 1;
-    state_second->state_set_id = 192;
-    state_second->possible_states_size = 1;
+    auto pdr_second = makeStateEffecterPdr(stateEffecterFixed(2, 67), {192});
 
     handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr_second.data(), pdr_second.size(), false, 1,
                            &handle),
               0);
 
-    std::vector<uint8_t> pdr_third(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states));
+    auto pdr_third = makeStateEffecterPdr(stateEffecterFixed(3, 69), {199});
 
-    auto rec_third = new (pdr_third.data()) pldm_state_effecter_pdr;
-
-    auto state_third = new (rec_third->possible_states)
-        state_effecter_possible_states;
-
-    rec_third->hdr.type = 11;
-    rec_third->hdr.record_handle = 3;
-    rec_third->entity_type = 69;
-    rec_third->container_id = 0;
-    rec_third->composite_effecter_count = 1;
-    state_third->state_set_id = 199;
-    state_third->possible_states_size = 1;
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr_third.data(), pdr_third.size(), false, 1,
+                           &handle),
+              0);
 
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
@@ -506,34 +408,7 @@ TEST(FindStateEffecterPDR, testCompositeEffecter)
     uint16_t entityID = 67;
     uint16_t stateSetId = 192;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states) * 3);
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-    auto state_start = rec->possible_states;
-
-    auto state = new (state_start) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 67;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 3;
-    state->state_set_id = 198;
-    state->possible_states_size = 1;
-
-    state_start += state->possible_states_size + sizeof(state->state_set_id) +
-                   sizeof(state->possible_states_size);
-    state = new (state_start) state_effecter_possible_states;
-    state->state_set_id = 193;
-    state->possible_states_size = 1;
-
-    state_start += state->possible_states_size + sizeof(state->state_set_id) +
-                   sizeof(state->possible_states_size);
-    state = new (state_start) state_effecter_possible_states;
-    state->state_set_id = 192;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 67), {198, 193, 192});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
@@ -552,34 +427,7 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
     uint16_t entityID = 67;
     uint16_t stateSetId = 192;
 
-    std::vector<uint8_t> pdr(
-        sizeof(struct pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(struct state_effecter_possible_states) * 3);
-
-    auto rec = new (pdr.data()) pldm_state_effecter_pdr;
-    auto state_start = rec->possible_states;
-
-    auto state = new (state_start) state_effecter_possible_states;
-
-    rec->hdr.type = 11;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 34;
-    rec->container_id = 0;
-    rec->composite_effecter_count = 3;
-    state->state_set_id = 198;
-    state->possible_states_size = 1;
-
-    state_start += state->possible_states_size + sizeof(state->state_set_id) +
-                   sizeof(state->possible_states_size);
-    state = new (state_start) state_effecter_possible_states;
-    state->state_set_id = 193;
-    state->possible_states_size = 1;
-
-    state_start += state->possible_states_size + sizeof(state->state_set_id) +
-                   sizeof(state->possible_states_size);
-    state = new (state_start) state_effecter_possible_states;
-    state->state_set_id = 123;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 34), {198, 193, 123});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
@@ -587,6 +435,93 @@ TEST(FindStateEffecterPDR, testNoMatchCompositeEffecter)
     auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
 
     EXPECT_EQ(record.empty(), true);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateEffecterPDR, testTruncatedRecordSkipped)
+{
+    auto repo = pldm_pdr_init();
+    uint8_t tid = 1;
+    uint16_t entityID = 67;
+    uint16_t stateSetId = 192;
+
+    // hdr.length still covers the possibleStates byte dropped here
+    auto truncated = makeStateEffecterPdr(stateEffecterFixed(1, 67), {192});
+    truncated.pop_back();
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, truncated.data(), truncated.size(), false, 1,
+                           &handle),
+              0);
+
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(2, 67), {192});
+
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    auto record = findStateEffecterPDR(tid, entityID, stateSetId, repo);
+
+    ASSERT_EQ(record.size(), 1);
+    EXPECT_EQ(pdr, record[0]);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateEffecterId, testCompositeMatch)
+{
+    auto repo = pldm_pdr_init();
+
+    auto pdr =
+        makeStateEffecterPdr(stateEffecterFixed(1, 67, 1, 2, 10), {198, 192});
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    EXPECT_EQ(findStateEffecterId(repo, 67, 1, 2, 192, true), 10);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateEffecterId, testNoMatch)
+{
+    auto repo = pldm_pdr_init();
+
+    auto pdr =
+        makeStateEffecterPdr(stateEffecterFixed(1, 67, 1, 2, 10), {198, 192});
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    EXPECT_EQ(findStateEffecterId(repo, 67, 3, 2, 192, true),
+              PLDM_INVALID_EFFECTER_ID);
+    EXPECT_EQ(findStateEffecterId(repo, 67, 1, 2, 193, true),
+              PLDM_INVALID_EFFECTER_ID);
+    EXPECT_EQ(findStateEffecterId(repo, 67, 1, 2, 192, false),
+              PLDM_INVALID_EFFECTER_ID);
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindStateEffecterId, testTruncatedRecordSkipped)
+{
+    auto repo = pldm_pdr_init();
+
+    auto truncated =
+        makeStateEffecterPdr(stateEffecterFixed(1, 67, 1, 2, 10), {192});
+    truncated.pop_back();
+
+    uint32_t handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, truncated.data(), truncated.size(), false, 1,
+                           &handle),
+              0);
+
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(2, 67, 1, 2, 11), {192});
+
+    handle = 0;
+    ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 1, &handle), 0);
+
+    EXPECT_EQ(findStateEffecterId(repo, 67, 1, 2, 192, true), 11);
 
     pldm_pdr_destroy(repo);
 }
@@ -1408,39 +1343,13 @@ TEST(GetStateEffecterPDRsByType, testMultipleMatches)
     auto repo = pldm_pdr_init();
     uint16_t entityType = 33;
 
-    // Add first PDR
-    std::vector<uint8_t> pdr1(
-        sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(state_effecter_possible_states));
-
-    auto* rec1 = new (pdr1.data()) pldm_state_effecter_pdr{};
-    auto* state1 = new (rec1->possible_states) state_effecter_possible_states{};
-
-    rec1->hdr.type = PLDM_STATE_EFFECTER_PDR;
-    rec1->hdr.record_handle = 1;
-    rec1->entity_type = entityType;
-    rec1->composite_effecter_count = 1;
-    state1->state_set_id = 196;
-    state1->possible_states_size = 1;
+    auto pdr1 = makeStateEffecterPdr(stateEffecterFixed(1, entityType), {196});
 
     uint32_t handle = 0;
     ASSERT_EQ(
         pldm_pdr_add(repo, pdr1.data(), pdr1.size(), false, 0xFF, &handle), 0);
 
-    // Add the second PDR
-    std::vector<uint8_t> pdr2(
-        sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t) +
-        sizeof(state_effecter_possible_states));
-
-    auto* rec2 = new (pdr2.data()) pldm_state_effecter_pdr{};
-    auto* state2 = new (rec2->possible_states) state_effecter_possible_states{};
-
-    rec2->hdr.type = PLDM_STATE_EFFECTER_PDR;
-    rec2->hdr.record_handle = 2;
-    rec2->entity_type = entityType;
-    rec2->composite_effecter_count = 1;
-    state2->state_set_id = 197;
-    state2->possible_states_size = 1;
+    auto pdr2 = makeStateEffecterPdr(stateEffecterFixed(2, entityType), {197});
 
     handle = 0;
     ASSERT_EQ(
@@ -1457,18 +1366,7 @@ TEST(GetStateEffecterPDRsByType, testNoMatch)
     auto repo = pldm_pdr_init();
     uint16_t entityType = 33;
 
-    std::vector<uint8_t> pdr(sizeof(pldm_state_effecter_pdr) - sizeof(uint8_t) +
-                             sizeof(state_effecter_possible_states));
-
-    auto* rec = new (pdr.data()) pldm_state_effecter_pdr{};
-    auto* state = new (rec->possible_states) state_effecter_possible_states{};
-
-    rec->hdr.type = PLDM_STATE_EFFECTER_PDR;
-    rec->hdr.record_handle = 1;
-    rec->entity_type = 99;
-    rec->composite_effecter_count = 1;
-    state->state_set_id = 196;
-    state->possible_states_size = 1;
+    auto pdr = makeStateEffecterPdr(stateEffecterFixed(1, 99), {196});
 
     uint32_t handle = 0;
     ASSERT_EQ(pldm_pdr_add(repo, pdr.data(), pdr.size(), false, 0xFF, &handle),
@@ -1487,6 +1385,29 @@ TEST(GetStateEffecterPDRsByType, testEmptyRepo)
     auto pdrs = getStateEffecterPDRsByType(33, repo);
 
     EXPECT_TRUE(pdrs.empty());
+
+    pldm_pdr_destroy(repo);
+}
+
+TEST(FindEffecterIds, testMatchesInstanceAndContainer)
+{
+    auto repo = pldm_pdr_init();
+
+    auto pdr1 = makeStateEffecterPdr(stateEffecterFixed(1, 33, 1, 0, 5), {196});
+
+    uint32_t handle = 0;
+    ASSERT_EQ(
+        pldm_pdr_add(repo, pdr1.data(), pdr1.size(), false, 0xFF, &handle), 0);
+
+    auto pdr2 = makeStateEffecterPdr(stateEffecterFixed(2, 33, 2, 0, 6), {196});
+
+    handle = 0;
+    ASSERT_EQ(
+        pldm_pdr_add(repo, pdr2.data(), pdr2.size(), false, 0xFF, &handle), 0);
+
+    auto ids = findEffecterIds(repo, 33, 1, 0);
+    ASSERT_EQ(ids.size(), 1);
+    EXPECT_EQ(ids[0], 5);
 
     pldm_pdr_destroy(repo);
 }
