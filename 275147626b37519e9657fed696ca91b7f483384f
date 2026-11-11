@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "809c073c_1f89c4a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-11-11T04:14:34Z",
+      "side": 1,
+      "message": "What goes wrong today without this check? We should say what the current behaviour is and why GetStatus is needed before the next UpdateComponent or ActivateFirmware.",
+      "revId": "275147626b37519e9657fed696ca91b7f483384f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2965cb30_1b345efc",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 961,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-11-11T04:14:34Z",
+      "side": 1,
+      "message": "Can we call this from a Defer like is done currently on lines 537, 551, 1227 and 1242.\n\nHere they are called inside the GetStatus response handler. If either throws InstanceIdError (lines 989 and 386), requester::Handler::handleResponse() skips its cleanup (requester/handler.hpp:391) and nothing more is sent to that endpoint.",
+      "revId": "275147626b37519e9657fed696ca91b7f483384f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f77adc85_aa3d9c7d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-11-11T04:14:34Z",
+      "side": 1,
+      "message": "This reports the failure without sending CancelUpdate. failAndCancelUpdate() was added for this in https://gerrit.openbmc.org/c/openbmc/pldm/+/93480. Could we call it here, and skip it only when the FD already reports IDLE?",
+      "revId": "275147626b37519e9657fed696ca91b7f483384f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "608e0a01_09b3828d",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 1002605
+      },
+      "writtenOn": "2026-11-11T04:14:34Z",
+      "side": 1,
+      "message": "nit: can we use std::start_lifetime_as\u003cpldm_msg\u003e here, like sendCancelUpdateRequest() does at line 1273?",
+      "revId": "275147626b37519e9657fed696ca91b7f483384f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
