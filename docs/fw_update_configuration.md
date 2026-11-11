@@ -22,6 +22,35 @@ To enable inotify-based firmware update monitoring:
 meson setup build -Dfw-update-pkg-inotify=enabled
 ```
 
+## Firmware Component Names
+
+pldmd publishes each firmware component of a device as
+`/xyz/openbmc_project/software/<Board>_<Device>_Component_<Identifier>_<n>`,
+where `<Device>` is the device name, by default the `Name` of the entity-manager
+record that configures the device's MCTP endpoint, and `<n>` is a random number.
+
+The configuration can name the components instead, in a `PLDMFirmwareComponents`
+record with the same `Name` as that MCTP record and in the same configuration,
+which for an `MCTPUSBDevice` is the platform configuration:
+
+```json
+{
+  "FirmwareComponents": [
+    { "ComponentIdentifier": 2, "Name": "Firmware_A" },
+    { "ComponentIdentifier": 4, "Name": "Firmware_B" }
+  ],
+  "Name": "Device_0",
+  "Type": "PLDMFirmwareComponents"
+}
+```
+
+A component the record names is published as
+`/xyz/openbmc_project/software/<Name>_<n>`, without the board, so the name must
+be unique in the system. Its pre and post update conditions are looked up by
+that name instead of `<Device>_Component_<Identifier>`. A name starts with a
+letter and consists of letters, digits and `_`. pldmd logs an error for a name
+it cannot use as an object path element and keeps the device-based name.
+
 ## Pre and Post Update Condition Services
 
 PLDM firmware update supports optional pre and post update condition services

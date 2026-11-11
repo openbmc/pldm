@@ -7,6 +7,9 @@
 #include <xyz/openbmc_project/Inventory/Item/Board/common.hpp>
 #include <xyz/openbmc_project/Software/Version/common.hpp>
 
+#include <algorithm>
+#include <cctype>
+
 using InventoryItemBoard =
     sdbusplus::common::xyz::openbmc_project::inventory::item::Board;
 using SoftwareVersion =
@@ -16,6 +19,94 @@ PHOSPHOR_LOG2_USING;
 
 namespace pldm::fw_update
 {
+
+namespace
+{
+
+constexpr auto firmwareComponentsInterface =
+    "xyz.openbmc_project.Configuration.PLDMFirmwareComponents";
+
+std::optional<SoftwareName> getConfiguredComponentName(
+    const pldm::utils::DBusHandler& handler, const InventoryPath& recordPath,
+    CompIdentifier compIdentifier)
+{
+    pldm::utils::GetSubTreeResponse records;
+    try
+    {
+        records = handler.getSubtree(
+            std::filesystem::path(recordPath).parent_path().string(), 1,
+            {firmwareComponentsInterface});
+    }
+    catch (const sdbusplus::exception_t& e)
+    {
+        error(
+            "Failed to look up the firmware component names of {PATH}: {ERROR}",
+            "PATH", recordPath, "ERROR", e);
+        return std::nullopt;
+    }
+
+    const auto record =
+        std::ranges::find(records, recordPath,
+                          &pldm::utils::GetSubTreeResponse::value_type::first);
+    if (record == records.end() || record->second.empty())
+    {
+        return std::nullopt;
+    }
+
+    // Each FirmwareComponents entry is an interface FirmwareComponents<N>
+    const auto& [service, interfaces] = record->second.front();
+    const auto entryInterface =
+        std::string(firmwareComponentsInterface) + ".FirmwareComponents";
+    for (const auto& interface : interfaces)
+    {
+        if (!interface.starts_with(entryInterface))
+        {
+            continue;
+        }
+
+        pldm::utils::PropertyMap entry;
+        try
+        {
+            entry = handler.getDbusPropertiesVariant(
+                service.c_str(), recordPath.c_str(), interface.c_str());
+        }
+        catch (const sdbusplus::exception_t& e)
+        {
+            error("Failed to read {INTERFACE} at {PATH}: {ERROR}", "INTERFACE",
+                  interface, "PATH", recordPath, "ERROR", e);
+            continue;
+        }
+
+        const auto identifierEntry = entry.find("ComponentIdentifier");
+        const auto* identifier =
+            identifierEntry == entry.end()
+                ? nullptr
+                : std::get_if<uint64_t>(&identifierEntry->second);
+        if (identifier == nullptr || *identifier != compIdentifier)
+        {
+            continue;
+        }
+
+        const auto nameEntry = entry.find("Name");
+        const auto* name = nameEntry == entry.end()
+                               ? nullptr
+                               : std::get_if<std::string>(&nameEntry->second);
+        if (name == nullptr || name->empty() ||
+            !std::ranges::all_of(*name, [](char c) {
+                return std::isalnum(static_cast<unsigned char>(c)) || c == '_';
+            }))
+        {
+            error(
+                "Ignoring the configured name of firmware component {IDENTIFIER} at {PATH}, it is not a valid object path element",
+                "IDENTIFIER", compIdentifier, "PATH", recordPath);
+            return std::nullopt;
+        }
+        return *name;
+    }
+    return std::nullopt;
+}
+
+} // namespace
 
 void FirmwareInventoryManager::createFirmwareEntry(
     const SoftwareIdentifier& softwareIdentifier,
@@ -33,8 +124,9 @@ void FirmwareInventoryManager::createFirmwareEntry(
     // placeholder path so that a software object can still be created.
 
     auto& eid = softwareIdentifier.first;
+    const auto inventoryPath = getInventoryPath(eid);
     auto boardPath =
-        getInventoryPath(eid)
+        inventoryPath
             .and_then([&](const auto& path) {
                 return getBoardPath(*dbusHandler, path);
             })
@@ -42,11 +134,20 @@ void FirmwareInventoryManager::createFirmwareEntry(
                 "/xyz/openbmc_project/inventory/system/board/PLDM_Device"});
     const auto boardName = boardPath.filename().string();
 
-    const auto softwarePath = std::format(
-        "{}/{}_{}", SoftwareVersion::namespace_path, boardName, softwareName);
+    // A configured name must be unique in the system, so it omits the board
+    const auto configuredName = inventoryPath.and_then([&](const auto& path) {
+        return getConfiguredComponentName(*dbusHandler, path,
+                                          softwareIdentifier.second);
+    });
+    const auto name = configuredName.value_or(softwareName);
+    const auto softwarePath =
+        configuredName
+            ? std::format("{}/{}", SoftwareVersion::namespace_path, name)
+            : std::format("{}/{}_{}", SoftwareVersion::namespace_path,
+                          boardName, name);
     const auto generatedId = std::to_string(utils::generateSwId());
 
-    auto conditions = conditionConfigManager.conditions(softwareName);
+    auto conditions = conditionConfigManager.conditions(name);
     auto conditionArg = generateArg(boardName);
 
     updateManager.createUpdateManager(
