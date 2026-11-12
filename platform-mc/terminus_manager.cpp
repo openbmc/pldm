@@ -717,7 +717,7 @@ exec::task<int> TerminusManager::sendRecvPldmMsg(
 
     if (rc == PLDM_ERROR_NOT_READY)
     {
-        // Call Recover() to check enpoint's availability
+        // Call Recover() to check endpoint's availability
         // Set endpoint's availability in mctpInfoTable to false in advance
         // to prevent message forwarding through this endpoint while mctpd
         // is checking the endpoint.

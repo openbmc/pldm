@@ -62,7 +62,7 @@ class PlatformManager
      *  @param[in] recordHndl - Record handle
      *  @param[in] dataTransferHndl - Data transfer handle
      *  @param[in] transferOpFlag - Transfer Operation Flag
-     *  @param[in] requstCnt - Request Count of data
+     *  @param[in] requestCnt - Request Count of data
      *  @param[in] recordChgNum - Record change number
      *  @param[out] nextRecordHndl - Next record handle
      *  @param[out] nextDataTransferHndl - Next data transfer handle
@@ -129,7 +129,7 @@ class PlatformManager
      *              configured via the setEventReceiver command
      *  @param[out] synchronyConfigurationSupported - event messaging styles
      *              supported by the terminus
-     *  @param[out] numerEventClassReturned - number of eventClass enumerated
+     *  @param[out] numberEventClassReturned - number of eventClass enumerated
      *              bytes
      *  @param[out] eventClass - vector of eventClass the device can generate
      *  @return coroutine return_value - PLDM completion code
@@ -137,7 +137,7 @@ class PlatformManager
     exec::task<int> eventMessageSupported(
         pldm_tid_t tid, uint8_t formatVersion, uint8_t& synchronyConfiguration,
         bitfield8_t& synchronyConfigurationSupported,
-        uint8_t& numerEventClassReturned, std::vector<uint8_t>& eventClass);
+        uint8_t& numberEventClassReturned, std::vector<uint8_t>& eventClass);
 
     /** @brief Get FRU Record Tables from remote MCTP Endpoint
      *

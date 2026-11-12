@@ -156,7 +156,7 @@ const std::map<const char*, pldm_firmware_update_commands>
         {"RequestDownstreamDeviceUpdate",
          PLDM_REQUEST_DOWNSTREAM_DEVICE_UPDATE},
         {"GetComponentOpaqueData", PLDM_GET_COMPONENT_OPAQUE_DATA},
-        {"UpdateSecurityRevision", PLDM_UPTATE_SECURITY_REVISION}};
+        {"UpdateSecurityRevision", PLDM_UPDATE_SECURITY_REVISION}};
 
 const std::map<const char*, pldm_rde_commands> pldmRdeCmds{
     {"NegotiateRedfishParameters", PLDM_RDE_CMD_NEGOTIATE_REDFISH_PARAMETERS},

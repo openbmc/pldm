@@ -129,7 +129,7 @@ class CodeUpdate
 
     /* @brief Method to set the RequestedActivation D-Bus property
      *        on end update to Active by fetching the newImageID and
-     *        clearning it once RequestedActivation is set or on error
+     *        clearing it once RequestedActivation is set or on error
      * @param[in] codeUpdate - codeUpdate pointer
      * @return - Completion codes
      */

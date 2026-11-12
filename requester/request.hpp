@@ -142,7 +142,7 @@ class Request final : public RequestRetryTimer
      *
      *  @param[in] pldm_transport - PLDM transport object
      *  @param[in] eid - endpoint ID of the remote MCTP endpoint
-     *  @param[in] currrentSendbuffSize - the current send buffer size
+     *  @param[in] currentSendbuffSize - the current send buffer size
      *  @param[in] event - reference to PLDM daemon's main event loop
      *  @param[in] requestMsg - PLDM request message
      *  @param[in] numRetries - number of request retries

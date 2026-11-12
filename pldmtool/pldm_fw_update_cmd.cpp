@@ -1173,7 +1173,7 @@ class ActivateFirmware : public CommandInterface
                               CLI::App* app) : CommandInterface(type, name, app)
     {
         app->add_option("--self_contained_activation_request",
-                        selfContainedActivRequest,
+                        selfContainedActiveRequest,
                         "Self contained activation request")
             ->required()
             ->transform(CLI::CheckedTransformer(pldmSelfContainedActivation,
@@ -1185,7 +1185,7 @@ class ActivateFirmware : public CommandInterface
         std::vector<uint8_t> requestMsg(sizeof(pldm_msg_hdr));
         auto request = new (requestMsg.data()) pldm_msg;
         auto rc = encode_activate_firmware_req(
-            instanceId, selfContainedActivRequest, request,
+            instanceId, selfContainedActiveRequest, request,
             sizeof(pldm_activate_firmware_req));
 
         return {rc, requestMsg};
@@ -1218,7 +1218,7 @@ class ActivateFirmware : public CommandInterface
     }
 
   private:
-    bool8_t selfContainedActivRequest;
+    bool8_t selfContainedActiveRequest;
 };
 
 class CancelUpdateComponent : public CommandInterface

@@ -56,7 +56,7 @@ TEST(BIOSAttribute, CtorTest)
     EXPECT_EQ(readOnly.readOnly, true);
 
     auto jsonReadOnlyError = R"({
-      "attribute_nam":"ReadOnly"
+      "attribute_name":"ReadOnly"
     })"_json;
     using Json = nlohmann::json;
 
