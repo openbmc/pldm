@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce612777_c902460e",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-12T08:32:26Z",
+      "side": 1,
+      "message": "findOverallTerminusEntityAuxiliaryNames - added helper function. appreciate your review.",
+      "parentUuid": "35f864d9_36cb2d8b",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 0
+      },
+      "revId": "cd7678ccea26607590ce231c0e81da2bd203fa6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a99f9abf_d4c65c40",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-29T08:00:18Z",
       "side": 1,
       "message": "This looked similar to the one above.",
+      "range": {
+        "startLine": 114,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 11
+      },
+      "revId": "cd7678ccea26607590ce231c0e81da2bd203fa6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c491f10_2f139f14",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-12T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a99f9abf_d4c65c40",
       "range": {
         "startLine": 114,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2f2aaf2_a0d91df0",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-12T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f35a5717_8685195f",
+      "range": {
+        "startLine": 148,
+        "startChar": 16,
+        "endLine": 148,
+        "endChar": 78
+      },
+      "revId": "cd7678ccea26607590ce231c0e81da2bd203fa6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62704f48_e381ffa8",
@@ -83,6 +155,30 @@
       "writtenOn": "2026-10-29T08:00:18Z",
       "side": 1,
       "message": "Here as well. Perhaps we can refactor them altogether.",
+      "range": {
+        "startLine": 141,
+        "startChar": 4,
+        "endLine": 150,
+        "endChar": 11
+      },
+      "revId": "cd7678ccea26607590ce231c0e81da2bd203fa6f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dbb2a5f_1a98be79",
+        "filename": "platform-mc/terminus.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-12T08:32:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62704f48_e381ffa8",
       "range": {
         "startLine": 141,
         "startChar": 4,
