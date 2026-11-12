@@ -59,6 +59,8 @@ TEST(FirmwareInventoryTest, ConstructorSetsProperties)
               std::format("{}_{}", expectedSoftwarePath, expectedSoftwareHash));
     auto associationTuples = inventory.getAssociation().associations();
     ASSERT_FALSE(associationTuples.empty());
+    EXPECT_EQ(std::get<0>(associationTuples[0]), "ran_on");
+    EXPECT_EQ(std::get<1>(associationTuples[0]), "running");
     EXPECT_EQ(std::get<2>(associationTuples[0]), expectedEndpointPath);
     EXPECT_EQ(inventory.getVersion().version(), expectedSoftwareVersion);
     EXPECT_EQ(inventory.getVersion().purpose(), expectedPurpose);
