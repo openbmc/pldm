@@ -129,12 +129,12 @@ class FruImpl
      *  @param[out] response - Populate response with the FRU table got by
      *                         options
      *  @param[in] fruTableHandle - The fru table handle
-     *  @param[in] recordSetIdentifer - The record set identifier
+     *  @param[in] recordSetIdentifier - The record set identifier
      *  @param[in] recordType - The record type
      *  @param[in] fieldType - The field type
      */
     int getFRURecordByOption(Response& response, uint16_t fruTableHandle,
-                             uint16_t recordSetIdentifer, uint8_t recordType,
+                             uint16_t recordSetIdentifier, uint8_t recordType,
                              uint8_t fieldType);
 
     /** @brief FRU table is built by processing the D-Bus inventory namespace

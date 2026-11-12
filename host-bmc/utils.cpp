@@ -13,7 +13,7 @@ namespace hostbmc
 {
 namespace utils
 {
-Entities getParentEntites(const EntityAssociations& entityAssoc)
+Entities getParentEntities(const EntityAssociations& entityAssoc)
 {
     Entities parents{};
     for (const auto& et : entityAssoc)
@@ -162,7 +162,7 @@ void updateEntityAssociation(
     pldm::responder::oem_platform::Handler* oemPlatformHandler)
 {
     std::vector<pldm_entity_node*> parentsEntity =
-        getParentEntites(entityAssoc);
+        getParentEntities(entityAssoc);
     for (const auto& entity : parentsEntity)
     {
         fs::path path{"/xyz/openbmc_project/inventory"};

@@ -695,7 +695,7 @@ class GetPDR : public CommandInterface
         {PLDM_ENTITY_FAN, "Fan"},
         {PLDM_ENTITY_PELTIER_COOLING_DEVICE, "Peltier Cooling Device"},
         {PLDM_ENTITY_LIQUID_COOLING_DEVICE, "Liquid Cooling Device"},
-        {PLDM_ENTITY_LIQUID_COOLING_SUBSYSTEM, "Liquid Colling Subsystem"},
+        {PLDM_ENTITY_LIQUID_COOLING_SUBSYSTEM, "Liquid Cooling Subsystem"},
         {PLDM_ENTITY_LIQUID_COOLING_INPUT_MANIFOLD,
          "Liquid Cooling Input Manifold"},
         {PLDM_ENTITY_LIQUID_COOLING_OUTPUT_MANIFOLD,
@@ -1315,7 +1315,7 @@ class GetPDR : public CommandInterface
 
     void printPDREntityAssociation(uint8_t* data, ordered_json& output)
     {
-        const std::map<uint8_t, const char*> assocationType = {
+        const std::map<uint8_t, const char*> associationType = {
             {PLDM_ENTITY_ASSOCIAION_PHYSICAL, "Physical"},
             {PLDM_ENTITY_ASSOCIAION_LOGICAL, "Logical"},
         };
@@ -1336,10 +1336,10 @@ class GetPDR : public CommandInterface
         }
 
         output["containerID"] = int(pdr->container_id);
-        if (assocationType.contains(pdr->association_type))
+        if (associationType.contains(pdr->association_type))
         {
             output["associationType"] =
-                assocationType.at(pdr->association_type);
+                associationType.at(pdr->association_type);
         }
         else
         {
@@ -1940,7 +1940,7 @@ class GetPDR : public CommandInterface
         }
 
         output["supportedThresholds"] = pdr.supported_thresholds.byte;
-        output["thresholAndHysteresisVolatility"] =
+        output["thresholdAndHysteresisVolatility"] =
             pdr.threshold_and_hysteresis_volatility.byte;
         output["stateTransitionInterval"] = pdr.state_transition_interval;
         output["updateInterval"] = pdr.update_interval;

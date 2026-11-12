@@ -99,11 +99,11 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
         0,
         0,
         0x80,
-        0x3f, // stateTransistionInterval=1.0
+        0x3f, // stateTransitionInterval=1.0
         0,
         0,
         0x80,
-        0x3f,                          // updateInverval=1.0
+        0x3f,                          // updateInterval=1.0
         255,                           // maxReadable
         0,                             // minReadable
         PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
@@ -134,7 +134,7 @@ TEST_F(EventManagerTest, processNumericSensorEventTest)
         0x1,
         0x0,  // Entity instance number =1
         0,
-        0,    // Overal system
+        0,    // Overall system
         0,    // shared Name Count one name only
         01,   // nameStringCount
         0x65, 0x6e, 0x00,
@@ -284,9 +284,9 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
         0,                             // supportedThresholds
         0,                             // thresholdAndHysteresisVolatility
         0, 0, 0x80,
-        0x3f,                          // stateTransistionInterval=1.0
+        0x3f,                          // stateTransitionInterval=1.0
         0, 0, 0x80,
-        0x3f,                          // updateInverval=1.0
+        0x3f,                          // updateInterval=1.0
         255,                           // maxReadable
         0,                             // minReadable
         PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
@@ -329,7 +329,7 @@ TEST_F(EventManagerTest, SetEventReceiverTest)
             0x1,
             0x0,  // Entity instance number =1
             0,
-            0,    // Overal system
+            0,    // Overall system
             0,    // shared Name Count one name only
             01,   // nameStringCount
             0x65, 0x6e, 0x00,

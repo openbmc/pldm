@@ -748,7 +748,7 @@ void NumericSensor::updateReading(bool available, bool functional, double value)
             {
                 valueIntf->value(newValue);
                 // Refresh timestamp only when the new value is valid
-                // and considering this is done irrespecitve of the
+                // and considering this is done irrespective of the
                 // value change, do not emit signals.
                 if (std::isfinite(newValue))
                 {

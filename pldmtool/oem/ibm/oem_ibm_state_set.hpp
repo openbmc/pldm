@@ -24,10 +24,10 @@ enum pldm_oem_ibm_cu_state_set_values
  */
 enum pldm_oem_ibm_verification_state_set_values
 {
-    OEM_IBM_STATE_SET_VERFICATION_VALID = 0,
-    OEM_IBM_STATE_SET_VERFICATION_ENTITLEMENT_FAIL = 1,
-    OEM_IBM_STATE_SET_VERFICATION_BANNED_PLATFORM_FAIL = 2,
-    OEM_IBM_STATE_SET_VERFICATION_MIN_MIF_FAIL = 4,
+    OEM_IBM_STATE_SET_VERIFICATION_VALID = 0,
+    OEM_IBM_STATE_SET_VERIFICATION_ENTITLEMENT_FAIL = 1,
+    OEM_IBM_STATE_SET_VERIFICATION_BANNED_PLATFORM_FAIL = 2,
+    OEM_IBM_STATE_SET_VERIFICATION_MIN_MIF_FAIL = 4,
 };
 
 /** @brief PLDM OEM IBM system power state possible state set values
@@ -74,11 +74,11 @@ extern const std::map<uint8_t, std::string> SetOemIBMFWUpdateStateValues{
 /** @brief Map for PLDM OEM IBM verification state possible state values
  */
 extern const std::map<uint8_t, std::string> SetOemIBMVerStateValues{
-    {OEM_IBM_STATE_SET_VERFICATION_VALID, "Valid"},
-    {OEM_IBM_STATE_SET_VERFICATION_ENTITLEMENT_FAIL, "Entitlement Fail"},
-    {OEM_IBM_STATE_SET_VERFICATION_BANNED_PLATFORM_FAIL,
+    {OEM_IBM_STATE_SET_VERIFICATION_VALID, "Valid"},
+    {OEM_IBM_STATE_SET_VERIFICATION_ENTITLEMENT_FAIL, "Entitlement Fail"},
+    {OEM_IBM_STATE_SET_VERIFICATION_BANNED_PLATFORM_FAIL,
      "Banned Platform Fail"},
-    {OEM_IBM_STATE_SET_VERFICATION_MIN_MIF_FAIL, "Minimum MIF Fail"}};
+    {OEM_IBM_STATE_SET_VERIFICATION_MIN_MIF_FAIL, "Minimum MIF Fail"}};
 
 /** @brief Map for PLDM OEM IBM systerm power state possible state values
  */

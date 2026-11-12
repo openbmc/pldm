@@ -126,9 +126,9 @@ TEST_F(PlatformManagerTest, initTerminusTest)
         0,                             // supportedThresholds
         0,                             // thresholdAndHysteresisVolatility
         0, 0, 0x80,
-        0x3f,                          // stateTransistionInterval=1.0
+        0x3f,                          // stateTransitionInterval=1.0
         0, 0, 0x80,
-        0x3f,                          // updateInverval=1.0
+        0x3f,                          // updateInterval=1.0
         255,                           // maxReadable
         0,                             // minReadable
         PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
@@ -294,9 +294,9 @@ TEST_F(PlatformManagerTest, parseTerminusNameTest)
         0,                             // supportedThresholds
         0,                             // thresholdAndHysteresisVolatility
         0, 0, 0x80,
-        0x3f,                          // stateTransistionInterval=1.0
+        0x3f,                          // stateTransitionInterval=1.0
         0, 0, 0x80,
-        0x3f,                          // updateInverval=1.0
+        0x3f,                          // updateInterval=1.0
         255,                           // maxReadable
         0,                             // minReadable
         PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat
@@ -454,9 +454,9 @@ TEST_F(PlatformManagerTest, initTerminusDontSupportGetPDRTest)
         0,                             // supportedThresholds
         0,                             // thresholdAndHysteresisVolatility
         0, 0, 0x80,
-        0x3f,                          // stateTransistionInterval=1.0
+        0x3f,                          // stateTransitionInterval=1.0
         0, 0, 0x80,
-        0x3f,                          // updateInverval=1.0
+        0x3f,                          // updateInterval=1.0
         255,                           // maxReadable
         0,                             // minReadable
         PLDM_RANGE_FIELD_FORMAT_UINT8, // rangeFieldFormat

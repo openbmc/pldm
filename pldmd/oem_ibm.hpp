@@ -215,7 +215,7 @@ class OemIBM
     /** @brief pointer to the CodeUpdate class*/
     std::unique_ptr<pldm::responder::CodeUpdate> codeUpdate{};
 
-    /** @brief pointer to the SlotHanlder class*/
+    /** @brief pointer to the SlotHandler class*/
     std::unique_ptr<pldm::responder::SlotHandler> slotHandler{};
 
     /** @brief oem IBM Platform handler*/
