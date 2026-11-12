@@ -16,7 +16,7 @@ FirmwareInventory::FirmwareInventory(
                SoftwareActivation::action::defer_emit)
 {
     this->association.associations(
-        {{"running", "ran_on", associatedEndpoint.c_str()}});
+        {{"ran_on", "running", associatedEndpoint.c_str()}});
     this->version.version(softwareVersion.c_str());
     this->version.purpose(purpose);
     this->activation.activation(SoftwareActivation::Activations::Active);
