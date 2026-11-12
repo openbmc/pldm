@@ -59,7 +59,7 @@ class InventoryManager
 
     /** @brief Discover the firmware identifiers and component details of FDs
      *
-     *  Inventory commands QueryDeviceIdentifiers and GetFirmwareParmeters
+     *  Inventory commands QueryDeviceIdentifiers and GetFirmwareParameters
      *  commands are sent to every FD and the response is used to populate
      *  the firmware identifiers and component details of the FDs.
      *

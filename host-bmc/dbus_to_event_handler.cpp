@@ -96,7 +96,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
         // that means that the sensor with the sensor id has
         // custom behaviour(or probably an oem sensor) in
         // sending events that cannot be captured via standard
-        // dbus-json infastructure
+        // dbus-json infrastructure
         return;
     }
 
@@ -179,7 +179,7 @@ void DbusToPLDMEvent::sendStateSensorEvent(SensorId sensorId,
                     }
                 }
             });
-        stateSensorMatchs.emplace_back(std::move(stateSensorMatch));
+        stateSensorMatches.emplace_back(std::move(stateSensorMatch));
     }
 }
 

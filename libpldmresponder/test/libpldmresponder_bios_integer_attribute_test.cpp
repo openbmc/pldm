@@ -52,11 +52,11 @@ TEST_F(TestBIOSIntegerAttribute, CtorTest)
          "lower_bound" : 1,
          "upper_bound" : 15,
          "scalar_increment" : 1,
-         "default_valu" : 2,
+         "default_value" : 2,
          "read_only" : true,
          "help_text" : "HelpText",
          "display_name" : "DisplayName"
-      })"_json; // default_valu -> default_value
+      })"_json; // default_value -> default_value
     EXPECT_THROW((BIOSIntegerAttribute{jsonIntegerReadOnlyError, nullptr}),
                  Json::exception);
 
