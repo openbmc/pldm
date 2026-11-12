@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d24c7f2f_84202c41",
+        "filename": "common/transport.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T14:57:19Z",
+      "side": 1,
+      "message": "Can you update this comment?",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9482c0a5_6eae916f",
+        "filename": "common/transport.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T14:57:19Z",
+      "side": 1,
+      "message": "The meson option doesn\u0027t yet exist in the patch, could you reword this?",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b29b1aea_f03dba70",
+        "filename": "common/transport.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T14:57:19Z",
+      "side": 1,
+      "message": "Can you add a doxygen comment please?",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
