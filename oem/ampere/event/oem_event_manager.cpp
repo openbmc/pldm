@@ -138,7 +138,7 @@ EventToMsgMap_t dimmStatusToMsgMap = {
 /*
     A map between PHY training failure syndrome and logging strings.
     Using
-   pldm::oem::dimm::training_faillure::phy_syndrome::phy_training_failure_syndrome
+   pldm::oem::dimm::training_failure::phy_syndrome::phy_training_failure_syndrome
 */
 EventToMsgMap_t phyTrainingFailureSyndromeToMsgMap = {
     {phy_syndrome::NA, "(N/A)"},
@@ -155,7 +155,7 @@ EventToMsgMap_t phyTrainingFailureSyndromeToMsgMap = {
 /*
     A map between DIMM training failure syndrome and logging strings.
     Using
-   pldm::oem::dimm::training_faillure::dimm_syndrome::dimm_training_failure_syndrome
+   pldm::oem::dimm::training_failure::dimm_syndrome::dimm_training_failure_syndrome
 */
 EventToMsgMap_t dimmTrainingFailureSyndromeToMsgMap = {
     {dimm_syndrome::NA, "(N/A)"},
@@ -168,7 +168,7 @@ EventToMsgMap_t dimmTrainingFailureSyndromeToMsgMap = {
 /*
     A map between DIMM training failure type and a pair of <logging strings -
    syndrome map>. Using
-   pldm::oem::dimm::training_faillure::dimm_training_failure_type
+   pldm::oem::dimm::training_failure::dimm_training_failure_type
 */
 std::unordered_map<uint8_t, std::pair<std::string, EventToMsgMap_t>>
     dimmTrainingFailureTypeMap = {

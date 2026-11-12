@@ -219,7 +219,7 @@ void FruImpl::buildFRUTable()
                                              TERMINUS_HANDLE);
     if (rc < 0)
     {
-        // pldm_entity_assocation_pdr_add() assert()ed on failure
+        // pldm_entity_association_pdr_add() assert()ed on failure
         error("Failed to add PLDM entity association PDR, response code '{RC}'",
               "RC", rc);
         throw std::runtime_error("Failed to add PLDM entity association PDR");
@@ -684,7 +684,7 @@ void FruImpl::getFRURecordTableMetadata()
 
 int FruImpl::getFRURecordByOption(
     std::vector<uint8_t>& fruData, uint16_t /* fruTableHandle */,
-    uint16_t recordSetIdentifer, uint8_t recordType, uint8_t fieldType)
+    uint16_t recordSetIdentifier, uint8_t recordType, uint8_t fieldType)
 {
     using sum = uint32_t;
 
@@ -701,7 +701,7 @@ int FruImpl::getFRURecordByOption(
 
     int rc = get_fru_record_by_option(
         table.data(), table.size() - padBytes, fruData.data(), &recordTableSize,
-        recordSetIdentifer, recordType, fieldType);
+        recordSetIdentifier, recordType, fieldType);
 
     if (rc != PLDM_SUCCESS || recordTableSize == 0)
     {
