@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9493f77b_4e25f03b",
+        "filename": "common/endpoint.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "nit: Can we rename this to `MctpInfoWithPeer` since this could also reference removed endpoints?",
+      "range": {
+        "startLine": 25,
+        "startChar": 7,
+        "endLine": 25,
+        "endChar": 25
+      },
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04bd9510_8b8fe2b4",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "There\u0027s a similar error log already being printed in acquire(). Can we have acquire() return an std::unexpected object with appropriate error messages?",
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7075290c_4510d091",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "Can you add a check similar to the one on line 446?",
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b72bd1_0c36016a",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "Can we iterate on removed instead or move the release call to 442?",
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a8e6f00_c28453df",
+        "filename": "requester/mctp_endpoint_discovery.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "Please update this function as well to filter endpoints like in added and removed functions",
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b3eb99_2d49e5a9",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "nit: `using DiscoveredEndpoints \u003d std::vector\u003cDiscoveredEndpoint\u003e`",
+      "range": {
+        "startLine": 69,
+        "startChar": 14,
+        "endLine": 69,
+        "endChar": 45
+      },
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23fc74d3_eb97bef9",
+        "filename": "requester/mctp_endpoint_discovery.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T17:54:06Z",
+      "side": 1,
+      "message": "This function doesn\u0027t belong in the Intf class, maybe consider moving it to endpoint.hpp?",
+      "revId": "75e0292ac85c467ea8a1523183d68c00ea15e69b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
