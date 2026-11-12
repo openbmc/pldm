@@ -16,6 +16,23 @@
       "message": "I have made some major changes. The previous network support patchset 29 was trying to work with a pldm whose state was tightly bound to the fact that EID \u003d\u003d TID. It was more of a hack to introduce network support to PLDM. \n\nNow I have broken the patch into a series of patches so that it architecturally brings in support to pldm to identify the fact that an endpoint will have both netowrk and eid. Further info in the docs/mctp_networks.md file introduced as part of this new patchset 30.",
       "revId": "4e7fe619adb1aaf709647cbb8ef669eee52b881f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c94556e_b49517ab",
+        "filename": "docs/mctp_networks.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T13:24:07Z",
+      "side": 1,
+      "message": "Can you explain the reasoning behind 247? 8 bits should give us 254 values since 0 and 0xff are reserved",
+      "revId": "4e7fe619adb1aaf709647cbb8ef669eee52b881f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
