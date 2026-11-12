@@ -8,6 +8,7 @@
 #include <xyz/openbmc_project/Logging/Entry/client.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/event.hpp>
 
+#include <cmath>
 #include <limits>
 
 PHOSPHOR_LOG2_USING;
@@ -794,11 +795,17 @@ void NumericSensor::handleErrGetSensorReading()
     operationalStatusIntf->functional(false);
     if (!useMetricInterface)
     {
-        valueIntf->value(std::numeric_limits<double>::quiet_NaN());
+        if (!std::isnan(valueIntf->value()))
+        {
+            valueIntf->value(std::numeric_limits<double>::quiet_NaN());
+        }
     }
     else
     {
-        metricIntf->value(std::numeric_limits<double>::quiet_NaN());
+        if (!std::isnan(metricIntf->value()))
+        {
+            metricIntf->value(std::numeric_limits<double>::quiet_NaN());
+        }
     }
 }
 
