@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef78b2d6_123e97dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "Please update the doxygen comments everywhere with this patch",
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbfec99_a2311e4a",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "There\u0027s no production code where updateManager is nullptr, there\u0027s a patch https://gerrit.openbmc.org/c/openbmc/pldm/+/97003 to address this. We can then remove the describe function from DeviceUpdater after the check is removed",
+      "range": {
+        "startLine": 582,
+        "startChar": 4,
+        "endLine": 582,
+        "endChar": 33
+      },
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76d4462a_ea29e5ac",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "nit: `ENDPOINT` -\u003e `PEER`. Please update it everywhere else in the patch",
+      "range": {
+        "startLine": 612,
+        "startChar": 75,
+        "endLine": 612,
+        "endChar": 83
+      },
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fecbe98c_9d4d16ac",
+        "filename": "fw-update/manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "Can we stop inflight requests as well here? Currently if a new endpoint is added with the same peer, we would be forwarding the requests to a different device",
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "221285bc_74252026",
+        "filename": "fw-update/update_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "nit: update comment",
+      "range": {
+        "startLine": 204,
+        "startChar": 8,
+        "endLine": 204,
+        "endChar": 51
+      },
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f12d0f7_a7cbbdc7",
+        "filename": "fw-update/update_manager.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-12T18:30:09Z",
+      "side": 1,
+      "message": "Update comment",
+      "range": {
+        "startLine": 179,
+        "startChar": 16,
+        "endLine": 179,
+        "endChar": 47
+      },
+      "revId": "19e01010a47456ce5283c228234c48af54e56532",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
