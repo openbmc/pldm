@@ -88,6 +88,48 @@ void updateContainerId(pldm_entity_association_tree* entityTree,
     }
 }
 
+/** @brief Update the container ID of a State Effecter PDR in place
+ *
+ *  @param[in] entityTree - entity association tree to look the entity up in
+ *  @param[in,out] pdr - encoded State Effecter PDR
+ *  @param[out] terminusHandle - PLDMTerminusHandle of the PDR
+ *
+ *  @return 0 on success, otherwise the libpldm error code
+ */
+int updateStateEffecterContainerId(pldm_entity_association_tree* entityTree,
+                                   std::vector<uint8_t>& pdr,
+                                   uint16_t& terminusHandle)
+{
+    struct pldm_platform_state_effecter_pdr effecter{};
+    struct variable_field possibleStates{};
+
+    auto rc = decode_pldm_platform_state_effecter_pdr(
+        pdr.data(), pdr.size(), &effecter, &possibleStates);
+    if (rc)
+    {
+        return rc;
+    }
+    terminusHandle = effecter.terminus_handle;
+
+    if (entityTree == nullptr)
+    {
+        return 0;
+    }
+
+    pldm_entity entity{effecter.entity_type, effecter.entity_instance_number,
+                       effecter.container_id};
+    auto node = pldm_entity_association_tree_find_with_locality(
+        entityTree, &entity, true);
+    if (!node)
+    {
+        return 0;
+    }
+
+    effecter.container_id = pldm_entity_extract(node).entity_container_id;
+    size_t len = pdr.size();
+    return encode_pldm_platform_state_effecter_pdr(&effecter, pdr.data(), &len);
+}
+
 HostPDRHandler::HostPDRHandler(
     int /* mctp_fd */, uint8_t mctp_eid, sdeventplus::Event& event,
     pldm_pdr* repo, const std::string& eventsJsonsDir,
@@ -510,6 +552,7 @@ void HostPDRHandler::processHostPDRs(
     uint16_t terminusHandle = 0;
     uint16_t pdrTerminusHandle = 0;
     uint8_t tid = 0;
+    bool pdrValid = true;
 
     uint8_t completionCode{};
     uint32_t nextDataTransferHandle{};
@@ -631,9 +674,17 @@ void HostPDRHandler::processHostPDRs(
                 }
                 else if (pdrHdr->type == PLDM_STATE_EFFECTER_PDR)
                 {
-                    pdrTerminusHandle =
-                        extractTerminusHandle<pldm_state_effecter_pdr>(pdr);
-                    updateContainerId<pldm_state_effecter_pdr>(entityTree, pdr);
+                    rc = updateStateEffecterContainerId(entityTree, pdr,
+                                                        pdrTerminusHandle);
+                    if (rc)
+                    {
+                        error(
+                            "Failed to update state effecter PDR with record handle '{RECORD_HANDLE}', error - {RC}",
+                            "RECORD_HANDLE",
+                            static_cast<uint32_t>(pdrHdr->record_handle), "RC",
+                            rc);
+                        pdrValid = false;
+                    }
                 }
                 else if (pdrHdr->type == PLDM_NUMERIC_EFFECTER_PDR)
                 {
@@ -657,7 +708,7 @@ void HostPDRHandler::processHostPDRs(
                         nextRecordHandle = 0;
                     }
                 }
-                else
+                else if (pdrValid)
                 {
                     rc = pldm_pdr_add(repo, pdr.data(), respCount, true,
                                       pdrTerminusHandle, &rh);
