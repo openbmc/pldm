@@ -190,19 +190,24 @@ bool SoftPowerOff::getEffecterID(pldm::pdr::EntityType& entityType,
         auto responseMsg = bus.call(method, dbusTimeout);
 
         responseMsg.read(response);
-        if (response.size())
-        {
-            for (auto& rep : response)
-            {
-                auto softoffPdr =
-                    std::start_lifetime_as<pldm_state_effecter_pdr>(rep.data());
-                effecterID = softoffPdr->effecter_id;
-            }
-        }
-        else
+        if (response.empty())
         {
             return false;
         }
+
+        const auto& effecterPdr = response.back();
+        struct pldm_platform_state_effecter_pdr pdr{};
+        struct variable_field possibleStates{};
+        int rc = decode_pldm_platform_state_effecter_pdr(
+            effecterPdr.data(), effecterPdr.size(), &pdr, &possibleStates);
+        if (rc)
+        {
+            error("Failed to decode state effecter PDR, response code '{RC}'",
+                  "RC", rc);
+            return false;
+        }
+
+        effecterID = pdr.effecter_id;
     }
     catch (const sdbusplus::exception_t& e)
     {
