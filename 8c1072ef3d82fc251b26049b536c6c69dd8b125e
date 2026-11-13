@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06b007da_128a305a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-11-13T09:35:24Z",
+      "side": 1,
+      "message": "Good point, will split this out into a separate patch in the next revision - the CLI command implementation here, and the Meson integration test (with simulated transport) as its own follow-up patch with a detailed commit message explaining the simulated-transport setup.",
+      "parentUuid": "67d91caa_4dfe00b4",
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314e3928_b0e03665",
@@ -41,6 +59,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af4a15c0_48dad9e0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-11-13T09:35:24Z",
+      "side": 1,
+      "message": "Acknowledged — trimmed the Tested section to only the pending-work caveat (production-ABI integration and target-device validation), removed the CI-redundant details as suggested.",
+      "parentUuid": "314e3928_b0e03665",
+      "range": {
+        "startLine": 25,
+        "startChar": 31,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc29e636_9b2a9cd9",
@@ -54,6 +96,30 @@
       "writtenOn": "2026-10-16T09:19:01Z",
       "side": 1,
       "message": "Do we need this since we already added a check for it at line 2223?",
+      "range": {
+        "startLine": 2248,
+        "startChar": 12,
+        "endLine": 2250,
+        "endChar": 66
+      },
+      "revId": "8c1072ef3d82fc251b26049b536c6c69dd8b125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d4ac9f3_c84f914d",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2250,
+      "author": {
+        "id": 1003057
+      },
+      "writtenOn": "2026-11-13T09:35:24Z",
+      "side": 1,
+      "message": "Good catch,the effecterCount range check is redundant since CLI::Range already enforces 1 to MAX_COUNT at parse time. removed that part.",
+      "parentUuid": "fc29e636_9b2a9cd9",
       "range": {
         "startLine": 2248,
         "startChar": 12,
