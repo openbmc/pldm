@@ -1013,3 +1013,57 @@ TEST(readFileByType, testReadFile)
     ASSERT_EQ(length, in.size() - 1);
     ASSERT_EQ(response.size(), in.size() - 1);
 }
+
+TEST(writeFileByType, testWriteWithMismatchedLength)
+{
+    // Test that writeFileByType rejects requests where the payload length
+    // does not match PLDM_RW_FILE_BY_TYPE_REQ_BYTES + declared write length.
+    // This prevents reading past the end of the message buffer.
+    uint8_t host_eid = 0;
+    int hostSocketFd = 0;
+
+    const auto hdr_size = sizeof(pldm_msg_hdr);
+    // Request: 14 byte header + 10 bytes of write data
+    std::array<uint8_t, hdr_size + PLDM_RW_FILE_BY_TYPE_REQ_BYTES + 10>
+        requestMsg{};
+    auto req = reinterpret_cast<pldm_msg*>(requestMsg.data());
+    size_t correctPayloadLength = requestMsg.size() - hdr_size;
+    struct pldm_read_write_file_by_type_req* request =
+        reinterpret_cast<struct pldm_read_write_file_by_type_req*>(
+            req->payload);
+    request->file_type = PLDM_FILE_TYPE_PEL;
+    request->file_handle = 0;
+    request->offset = 0;
+    request->length = 10;
+
+    std::unique_ptr<oem_platform::Handler> oemPlatformHandler{};
+    oem_ibm::Handler handler(oemPlatformHandler.get(), hostSocketFd, host_eid,
+                             nullptr, nullptr);
+
+    // Test 1: payload length too short (mismatch: 14+5 vs declared 10)
+    auto response =
+        handler.writeFileByType(req, PLDM_RW_FILE_BY_TYPE_REQ_BYTES + 5);
+    auto responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    struct pldm_read_write_file_by_type_resp* resp =
+        reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
+            responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    // Test 2: payload length too long (mismatch: 14+15 vs declared 10)
+    response =
+        handler.writeFileByType(req, PLDM_RW_FILE_BY_TYPE_REQ_BYTES + 15);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_ERROR_INVALID_LENGTH, resp->completion_code);
+
+    // Test 3: matching length passes the length check. Use an unknown file
+    // type so the handler lookup fails before any file I/O, proving the
+    // length check let a correct payload through.
+    request->file_type = 0xFFFF;
+    response = handler.writeFileByType(req, correctPayloadLength);
+    responsePtr = reinterpret_cast<pldm_msg*>(response.data());
+    resp = reinterpret_cast<struct pldm_read_write_file_by_type_resp*>(
+        responsePtr->payload);
+    ASSERT_EQ(PLDM_INVALID_FILE_TYPE, resp->completion_code);
+}

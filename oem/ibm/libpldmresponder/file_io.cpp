@@ -919,6 +919,18 @@ Response Handler::writeFileByType(const pldm_msg* request, size_t payloadLength)
         return response;
     }
 
+    if (payloadLength != PLDM_RW_FILE_BY_TYPE_REQ_BYTES + length)
+    {
+        error(
+            "Failed to write file by type as payload length '{LENGTH}' does not match declared write length {WRITE_LEN}",
+            "LENGTH", payloadLength, "WRITE_LEN",
+            PLDM_RW_FILE_BY_TYPE_REQ_BYTES + length);
+        encodeRWTypeResponseHandler(request->hdr.instance_id,
+                                    PLDM_WRITE_FILE_BY_TYPE,
+                                    PLDM_ERROR_INVALID_LENGTH, 0, responsePtr);
+        return response;
+    }
+
     std::unique_ptr<FileHandler> handler{};
     try
     {
