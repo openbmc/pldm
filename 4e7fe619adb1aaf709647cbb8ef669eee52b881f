@@ -33,6 +33,24 @@
       "message": "Can you explain the reasoning behind 247? 8 bits should give us 254 values since 0 and 0xff are reserved",
       "revId": "4e7fe619adb1aaf709647cbb8ef669eee52b881f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6f04d91_097ffc35",
+        "filename": "docs/mctp_networks.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-13T05:27:14Z",
+      "side": 1,
+      "message": "It matches the current PLDM limitation of having 7 \u003c PLDM devices \u003c 254, because we did TID \u003d EID (The identity policy that we will mention in this doc).\n\nSo before this change PLDM could only support 247 endpoints, so I just kept it so I don\u0027t stray too far from current behavior while still adding network support.",
+      "parentUuid": "5c94556e_b49517ab",
+      "revId": "4e7fe619adb1aaf709647cbb8ef669eee52b881f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
