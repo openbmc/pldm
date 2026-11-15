@@ -25,8 +25,8 @@ static constexpr uint8_t componentVerifyProgressPercent = 98;
 static constexpr uint8_t componentApplyProgressPercent = 99;
 static constexpr uint8_t firmwareActivationProgressPercent = 100;
 
-UpdateProgress::UpdateProgress(uint32_t totalSize, mctp_eid_t eid) :
-    progress{}, eid{eid}, totalSize{totalSize}, totalUpdated{},
+UpdateProgress::UpdateProgress(uint32_t totalSize) :
+    progress{}, totalSize{totalSize}, totalUpdated{},
     currentState{state::Update}
 {}
 
@@ -58,38 +58,33 @@ void UpdateProgress::updateState(state newState)
     currentState = newState;
 }
 
-void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
+std::expected<void, std::string_view> UpdateProgress::reportFwUpdate(
+    uint32_t amountUpdated)
 {
     if (currentState != state::Update)
     {
-        error("invalid state when updating progress: eid {EID}", "EID", eid);
-        return;
+        return std::unexpected("invalid state of device for update");
     }
 
     if (amountUpdated > totalSize)
     {
-        error("invalid size when updating progress: eid {EID}", "EID", eid);
-        return;
+        return std::unexpected("invalid transfer size for component");
     }
 
     if (amountUpdated + totalUpdated > totalSize)
     {
-        error("invalid total size when updating progress: eid {EID}", "EID",
-              eid);
-        return;
+        return std::unexpected("invalid total transfer size for component");
     }
 
     if (totalSize == 0)
     {
-        error("invalid package size when updating progress: eid {EID}", "EID",
-              eid);
-        return;
+        return std::unexpected("invalid component size for update");
     }
 
     totalUpdated += amountUpdated;
     progress = static_cast<uint8_t>(std::floor(
         1.0 * componentXferProgressPercent * totalUpdated / totalSize));
-    return;
+    return {};
 }
 
 DeviceUpdater::DeviceUpdater(
@@ -113,7 +108,7 @@ DeviceUpdater::DeviceUpdater(
     {
         const auto& componentSize =
             std::get<6>(compImageInfos[applicableComponent]);
-        progress.emplace_back(componentSize, eid);
+        progress.emplace_back(componentSize);
     }
 }
 
@@ -661,7 +656,13 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     {
         // technically this should never happen, as its an invariant
         // but check to prefer a failed fw update over a pldm crash
-        progress[componentIndex].reportFwUpdate(length);
+        const auto reported = progress[componentIndex].reportFwUpdate(length);
+        if (!reported)
+        {
+            error(
+                "Failed to update progress for endpoint ID '{EID}', error - {ERROR}",
+                "EID", eid, "ERROR", reported.error());
+        }
         if (updateManager != nullptr)
         {
             updateManager->updateActivationProgress();

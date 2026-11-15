@@ -314,3 +314,18 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     deviceUpdater.activateFirmware(0, activateMsg, 3);
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+TEST(UpdateProgress, RejectInvalidTransfers)
+{
+    UpdateProgress progress(100);
+    EXPECT_FALSE(progress.reportFwUpdate(101));
+    EXPECT_TRUE(progress.reportFwUpdate(60));
+    EXPECT_FALSE(progress.reportFwUpdate(41));
+    EXPECT_EQ(progress.getProgress(), 58);
+
+    progress.updateState(UpdateProgress::state::Verify);
+    EXPECT_FALSE(progress.reportFwUpdate(1));
+
+    UpdateProgress empty(0);
+    EXPECT_FALSE(empty.reportFwUpdate(0));
+}
