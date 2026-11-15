@@ -15,13 +15,13 @@
 using namespace pldm;
 using namespace pldm::fw_update;
 
-/** @brief Minimal no-op UpdateManagerBase for tests without D-Bus */
+/** @brief Minimal UpdateManagerBase for tests without D-Bus */
 class TestUpdateManager : public UpdateManagerBase
 {
   public:
     using UpdateManagerBase::UpdateManagerBase;
 
-    void updateDeviceCompletion(mctp_eid_t /*eid*/, bool /*status*/) override {}
+    MOCK_METHOD(void, updateDeviceCompletion, (mctp_eid_t, bool), (override));
     void updateActivationProgress() override {}
     void activatePackage() override {}
     void resetActivationState() override {}
@@ -345,4 +345,28 @@ TEST_F(DeviceUpdaterTest, PaddedLastChunkCompletesTransferProgress)
     EXPECT_TRUE(std::all_of(response.end() - 8, response.end(),
                             [](uint8_t value) { return value == 0; }));
     EXPECT_EQ(deviceUpdater.getProgress(), 97);
+}
+
+TEST_F(DeviceUpdaterTest, ActivationNotRequired)
+{
+    constexpr mctp_eid_t eid = 1;
+    auto event = sdeventplus::Event::get_default();
+    TestInstanceIdDb instanceIdDb;
+    requester::Handler<requester::Request> reqHandler(
+        nullptr, event, instanceIdDb, false, std::chrono::seconds(1), 2,
+        std::chrono::milliseconds(100));
+    testing::StrictMock<TestUpdateManager> updateManager(event, reqHandler,
+                                                         instanceIdDb);
+    DeviceUpdater deviceUpdater(eid, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, &updateManager);
+
+    // A device that needs no activation completes the update successfully
+    EXPECT_CALL(updateManager, updateDeviceCompletion(eid, true)).Times(1);
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1>
+        activateFirmwareResp{0x0E, 0x05, PLDM_ACTIVATE_FIRMWARE,
+                             PLDM_FWUP_ACTIVATION_NOT_REQUIRED};
+    deviceUpdater.activateFirmware(
+        eid, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
