@@ -10,6 +10,7 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
+#include <expected>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -64,9 +65,8 @@ class UpdateProgress
      * size
      *
      * @param[in] totalSize the size in bytes of a component for a given device
-     * @param[in] eid the eid of the device this class tracks progress for
      */
-    UpdateProgress(uint32_t totalSize, mctp_eid_t eid);
+    explicit UpdateProgress(uint32_t totalSize);
     ~UpdateProgress() = default;
     UpdateProgress& operator=(UpdateProgress&&) = default;
     UpdateProgress& operator=(const UpdateProgress&) = delete;
@@ -84,9 +84,10 @@ class UpdateProgress
     /** @brief called when servicing RequestFirmwareData commands
      *
      * @param[in] amountUpdate the length of firmware transmitted, in bytes
-     * @return true on success, false on failure
+     * @return nothing if the amount was counted, otherwise the error message
      */
-    void reportFwUpdate(uint32_t amountUpdated);
+    [[nodiscard]] std::expected<void, std::string_view> reportFwUpdate(
+        uint32_t amountUpdated);
 
     /** @brief get the progress as a percentage of this component
      *
@@ -106,10 +107,6 @@ class UpdateProgress
      */
     uint8_t progress;
 
-    /**
-     * @brief the eid of the device this object tracks
-     */
-    mctp_eid_t eid;
     /**
      * @brief the total size in bytes of this component
      */
