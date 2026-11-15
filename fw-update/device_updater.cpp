@@ -1020,7 +1020,13 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    if (completionCode)
+    if (completionCode == PLDM_FWUP_ACTIVATION_NOT_REQUIRED)
+    {
+        // The firmware was activated automatically or is already pending
+        info("Firmware activation not required for endpoint ID '{EID}'", "EID",
+             eid);
+    }
+    else if (completionCode)
     {
         // Handle error scenario
         error(
