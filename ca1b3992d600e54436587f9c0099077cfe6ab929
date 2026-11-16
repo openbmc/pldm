@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde27ca5_df9c04f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "What does bmcweb pass as the apply time for update-multipart when the client doesn\u0027t set @Redfish.OperationApplyTime?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67cf0f0e_960b14d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "Do we raise a different event after self-contained activation? There should be a way to tell it apart from updates that still need an external reset.",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b751a9af_4c6a7911",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "What happens to components that don\u0027t support self-contained activation when OperationApplyTime is Immediate?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb54676_8293f632",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1259,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we create an ActivateFailed event here ?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed6dd191_37785d73",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "same here, no event is created. Can we create a failure event at all the applicable error paths ?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac909d9_fe5d86c2",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "nit - @param is missing in doc comment",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80e878f6_333c3ec7",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "nit: @param is missing for estimatedTime, and also add add the units.",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a85179d_683dc418",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T19:22:09Z",
+      "side": 1,
+      "message": "Apart from storing activation methods in CompInfo, this rework looks independent of self-contained activation. Can it be a separate commit?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
