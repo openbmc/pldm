@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4d5675_9348979b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T09:55:52Z",
+      "side": 1,
+      "message": "do we see this issue in the target update path as well ?\nAre we fixing both the paths ?",
+      "revId": "f8ec88f2a2689db49bfabeae69ad24398cb1c4a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "777b078f_1fe43cfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T09:55:52Z",
+      "side": 1,
+      "message": "Can we add a test with an actual CancelUpdateComponent response on a released updater?",
+      "revId": "f8ec88f2a2689db49bfabeae69ad24398cb1c4a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a95efd14_8c66a4e0",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1002325
+      },
+      "writtenOn": "2026-11-16T09:55:52Z",
+      "side": 1,
+      "message": "nit - Could guarded() return auto and drop the alias?",
+      "revId": "f8ec88f2a2689db49bfabeae69ad24398cb1c4a3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
