@@ -1,5 +1,18 @@
-test_src = declare_dependency(
-    sources: [
+platform_mc_test_deps = [
+    gtest,
+    gmock,
+    libpldm_dep,
+    libpldmutils,
+    nlohmann_json_dep,
+    phosphor_dbus_interfaces,
+    phosphor_logging_dep,
+    sdbusplus,
+    sdeventplus,
+]
+
+platform_mc_test_lib = static_library(
+    'platform_mc_test_common',
+    [
         '../terminus_manager.cpp',
         '../terminus.cpp',
         '../platform_manager.cpp',
@@ -10,7 +23,13 @@ test_src = declare_dependency(
         '../dbus_to_terminus_effecters.cpp',
         '../../requester/mctp_endpoint_discovery.cpp',
     ],
+    implicit_include_directories: false,
     include_directories: ['../../requester', '../../pldmd'],
+    dependencies: platform_mc_test_deps,
+)
+test_src = declare_dependency(
+    include_directories: ['../../requester', '../../pldmd'],
+    link_whole: platform_mc_test_lib,
 )
 
 tests = [
@@ -30,18 +49,7 @@ foreach t : tests
             t.underscorify(),
             t + '.cpp',
             implicit_include_directories: false,
-            dependencies: [
-                gtest,
-                gmock,
-                libpldm_dep,
-                libpldmutils,
-                nlohmann_json_dep,
-                phosphor_dbus_interfaces,
-                phosphor_logging_dep,
-                sdbusplus,
-                sdeventplus,
-                test_src,
-            ],
+            dependencies: platform_mc_test_deps + [test_src],
         ),
         workdir: meson.current_source_dir(),
     )
