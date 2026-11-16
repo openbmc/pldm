@@ -235,6 +235,16 @@ class DeviceUpdater
     bool updateComponent(mctp_eid_t eid, const pldm_msg* response,
                          size_t respMsgLen);
 
+    /** @brief Handle a request sent by the firmware device during the update
+     *
+     *  @param[in] command - PLDM command of the request
+     *  @param[in] request - Request message
+     *  @param[in] payloadLength - Request message payload length
+     *  @return Response - PLDM Response message
+     */
+    Response handleRequest(uint8_t command, const pldm_msg* request,
+                           size_t payloadLength);
+
     /** @brief Handler for RequestFirmwareData request
      *
      *  @param[in] request - Request message

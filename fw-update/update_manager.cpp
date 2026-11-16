@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
+#include "pldmd/handler.hpp"
 #include "systemd_interface.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -318,45 +319,14 @@ void UpdateManager::updateDeviceCompletion(mctp_eid_t eid, bool status)
 Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
                                       const pldm_msg* request, size_t reqMsgLen)
 {
-    Response response(sizeof(pldm_msg), 0);
-    if (deviceUpdaterMap.contains(eid))
+    auto search = deviceUpdaterMap.find(eid);
+    if (search == deviceUpdaterMap.end())
     {
-        auto search = deviceUpdaterMap.find(eid);
-        if (command == PLDM_REQUEST_FIRMWARE_DATA)
-        {
-            return search->second->requestFwData(request, reqMsgLen);
-        }
-        else if (command == PLDM_TRANSFER_COMPLETE)
-        {
-            return search->second->transferComplete(request, reqMsgLen);
-        }
-        else if (command == PLDM_VERIFY_COMPLETE)
-        {
-            return search->second->verifyComplete(request, reqMsgLen);
-        }
-        else if (command == PLDM_APPLY_COMPLETE)
-        {
-            return search->second->applyComplete(request, reqMsgLen);
-        }
-        else
-        {
-            auto ptr = new (response.data()) pldm_msg;
-            auto rc = encode_cc_only_resp(
-                request->hdr.instance_id, request->hdr.type,
-                request->hdr.command, PLDM_ERROR_INVALID_DATA, ptr);
-            assert(rc == PLDM_SUCCESS);
-        }
-    }
-    else
-    {
-        auto ptr = new (response.data()) pldm_msg;
-        auto rc = encode_cc_only_resp(request->hdr.instance_id,
-                                      request->hdr.type, +request->hdr.command,
-                                      PLDM_FWUP_COMMAND_NOT_EXPECTED, ptr);
-        assert(rc == PLDM_SUCCESS);
+        return responder::CmdHandler::ccOnlyResponse(
+            request, PLDM_FWUP_COMMAND_NOT_EXPECTED);
     }
 
-    return response;
+    return search->second->handleRequest(command, request, reqMsgLen);
 }
 
 void UpdateManager::activatePackage()

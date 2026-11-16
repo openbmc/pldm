@@ -1,10 +1,10 @@
 #include "item_update_manager.hpp"
 
 #include "activation.hpp"
-#include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "events.hpp"
 #include "package_parser.hpp"
+#include "pldmd/handler.hpp"
 #include "systemd_interface.hpp"
 
 #include <fcntl.h>
@@ -13,7 +13,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <span>
@@ -283,40 +282,13 @@ void ItemUpdateManager::teardownUpdate()
 Response ItemUpdateManager::handleRequest(
     mctp_eid_t eid, uint8_t command, const pldm_msg* request, size_t reqMsgLen)
 {
-    Response response(sizeof(pldm_msg), 0);
     if (eid != this->eid || !deviceUpdater)
     {
-        auto ptr = std::start_lifetime_as<pldm_msg>(response.data());
-        auto rc = encode_cc_only_resp(request->hdr.instance_id,
-                                      request->hdr.type, request->hdr.command,
-                                      PLDM_FWUP_COMMAND_NOT_EXPECTED, ptr);
-        assert(rc == PLDM_SUCCESS);
-        return response;
+        return responder::CmdHandler::ccOnlyResponse(
+            request, PLDM_FWUP_COMMAND_NOT_EXPECTED);
     }
 
-    if (command == PLDM_REQUEST_FIRMWARE_DATA)
-    {
-        return deviceUpdater->requestFwData(request, reqMsgLen);
-    }
-    else if (command == PLDM_TRANSFER_COMPLETE)
-    {
-        return deviceUpdater->transferComplete(request, reqMsgLen);
-    }
-    else if (command == PLDM_VERIFY_COMPLETE)
-    {
-        return deviceUpdater->verifyComplete(request, reqMsgLen);
-    }
-    else if (command == PLDM_APPLY_COMPLETE)
-    {
-        return deviceUpdater->applyComplete(request, reqMsgLen);
-    }
-
-    auto ptr = std::start_lifetime_as<pldm_msg>(response.data());
-    auto rc =
-        encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
-                            request->hdr.command, PLDM_ERROR_INVALID_DATA, ptr);
-    assert(rc == PLDM_SUCCESS);
-    return response;
+    return deviceUpdater->handleRequest(command, request, reqMsgLen);
 }
 
 void ItemUpdateManager::activatePackage()

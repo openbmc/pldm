@@ -232,6 +232,22 @@ TEST_F(DeviceUpdaterTest, RejectOffsetPastComponentEnd)
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_FWUP_DATA_OUT_OF_RANGE);
 }
 
+TEST_F(DeviceUpdaterTest, RejectUnexpectedDeviceRequest)
+{
+    DeviceUpdater deviceUpdater(0, package, fwDeviceIDRecord, compImageInfos,
+                                compInfo, 512, nullptr);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr)> request{
+        0x8A, 0x05, PLDM_REQUEST_UPDATE};
+    auto response = deviceUpdater.handleRequest(
+        PLDM_REQUEST_UPDATE, reinterpret_cast<const pldm_msg*>(request.data()),
+        0);
+
+    const Response expected{0x0A, 0x05, PLDM_REQUEST_UPDATE,
+                            PLDM_ERROR_UNSUPPORTED_PLDM_CMD};
+    EXPECT_EQ(response, expected);
+}
+
 TEST_F(DeviceUpdaterTest, CompInfoOutlivesInventoryEntry)
 {
     constexpr mctp_eid_t eid = 1;
