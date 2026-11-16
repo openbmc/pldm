@@ -207,7 +207,7 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_return PLDM_SUCCESS;
         }
 
-        auto& terminus = terminusIt->second;
+        auto terminus = terminusIt->second;
         if (!terminus)
         {
             lg2::info(

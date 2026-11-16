@@ -37,7 +37,7 @@ exec::task<int> Manager::pollForPlatformEvent(
     auto it = termini.find(tid);
     if (it != termini.end())
     {
-        auto& terminus = it->second;
+        auto terminus = it->second;
         co_await eventManager.pollForPlatformEventTask(tid,
                                                        pollDataTransferHandle);
         terminus->pollEvent = false;
