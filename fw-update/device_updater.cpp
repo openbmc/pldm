@@ -3,6 +3,7 @@
 #include "activation.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "events.hpp"
+#include "pldmd/handler.hpp"
 #include "update_manager.hpp"
 
 #include <libpldm/firmware_update.h>
@@ -573,6 +574,25 @@ void DeviceUpdater::createRequestFwDataTimer()
         events::generateTransferFailed(targetPath, pkgVersion);
         updateManager->updateDeviceCompletion(eid, false);
     });
+}
+
+Response DeviceUpdater::handleRequest(uint8_t command, const pldm_msg* request,
+                                      size_t payloadLength)
+{
+    switch (command)
+    {
+        case PLDM_REQUEST_FIRMWARE_DATA:
+            return requestFwData(request, payloadLength);
+        case PLDM_TRANSFER_COMPLETE:
+            return transferComplete(request, payloadLength);
+        case PLDM_VERIFY_COMPLETE:
+            return verifyComplete(request, payloadLength);
+        case PLDM_APPLY_COMPLETE:
+            return applyComplete(request, payloadLength);
+        default:
+            return responder::CmdHandler::ccOnlyResponse(
+                request, PLDM_ERROR_INVALID_DATA);
+    }
 }
 
 Response DeviceUpdater::requestFwData(const pldm_msg* request,
