@@ -1,7 +1,4 @@
-fw_update_test_src = declare_dependency(sources: fw_update_sources)
-
 test_deps = [
-    fw_update_test_src,
     gmock,
     gtest,
     libpldm_dep,
@@ -12,6 +9,15 @@ test_deps = [
     sdbusplus,
     sdeventplus,
 ]
+
+fw_update_test_lib = static_library(
+    'fw_update_test_common',
+    fw_update_sources,
+    implicit_include_directories: false,
+    include_directories: '../../pldmd',
+    dependencies: test_deps,
+)
+test_deps += declare_dependency(link_whole: fw_update_test_lib)
 
 tests = [
     'inventory_manager_test',

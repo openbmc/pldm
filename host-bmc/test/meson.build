@@ -12,6 +12,26 @@ test_sources = [
     '../dbus/pcie_slot.cpp',
 ]
 
+host_bmc_test_deps = [
+    gtest,
+    gmock,
+    libpldm_dep,
+    libpldmutils,
+    nlohmann_json_dep,
+    phosphor_dbus_interfaces,
+    phosphor_logging_dep,
+    sdbusplus,
+    sdeventplus,
+]
+
+host_bmc_test_lib = static_library(
+    'host_bmc_test_common',
+    test_sources,
+    implicit_include_directories: false,
+    dependencies: host_bmc_test_deps,
+)
+host_bmc_test_deps += declare_dependency(link_whole: host_bmc_test_lib)
+
 tests = ['utils_test', 'custom_dbus_test']
 
 foreach t : tests
@@ -20,19 +40,8 @@ foreach t : tests
         executable(
             t.underscorify(),
             t + '.cpp',
-            test_sources,
             implicit_include_directories: false,
-            dependencies: [
-                gtest,
-                gmock,
-                libpldm_dep,
-                libpldmutils,
-                nlohmann_json_dep,
-                phosphor_dbus_interfaces,
-                phosphor_logging_dep,
-                sdbusplus,
-                sdeventplus,
-            ],
+            dependencies: host_bmc_test_deps,
         ),
         workdir: meson.current_source_dir(),
     )
