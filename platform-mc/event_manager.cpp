@@ -237,14 +237,15 @@ int EventManager::processNumericSensorEvent(pldm_tid_t tid, uint16_t sensorId,
         "TID", tid, "SID", sensorId, "VAL", value, "PSTATE", previousEventState,
         "ESTATE", eventState);
 
-    if (!termini.contains(tid) || !termini[tid])
+    auto terminusIt = termini.find(tid);
+    if (terminusIt == termini.end() || !terminusIt->second)
     {
         lg2::error("Terminus ID {TID} is not in the managing list.", "TID",
                    tid);
         return PLDM_ERROR;
     }
 
-    auto& terminus = termini[tid];
+    auto& terminus = terminusIt->second;
 
     auto sensor = terminus->getSensorObject(sensorId);
     if (!sensor)
@@ -302,9 +303,10 @@ int EventManager::processCperEvent(pldm_tid_t tid, uint16_t eventId,
         return rc;
     }
 
-    if (termini.contains(tid) && termini[tid])
+    auto terminusIt = termini.find(tid);
+    if (terminusIt != termini.end() && terminusIt->second)
     {
-        auto tmp = termini[tid]->getTerminusName();
+        auto tmp = terminusIt->second->getTerminusName();
         if (tmp && !tmp.value().empty())
         {
             terminusName = static_cast<std::string>(tmp.value());
