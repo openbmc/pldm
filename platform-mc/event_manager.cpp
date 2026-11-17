@@ -454,26 +454,22 @@ void EventManager::callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
                                            uint16_t eventId,
                                            std::vector<uint8_t>& eventMessage)
 {
-    try
+    auto handlersIt = eventHandlers.find(eventClass);
+    if (handlersIt == eventHandlers.end())
     {
-        const auto& handlers = eventHandlers.at(eventClass);
-        for (const auto& handler : handlers)
-        {
-            auto rc =
-                handler(tid, eventId, eventMessage.data(), eventMessage.size());
-            if (rc != PLDM_SUCCESS)
-            {
-                lg2::error(
-                    "Failed to handle platform event msg for terminus {TID}, event {EVENTID} return {RET}",
-                    "TID", tid, "EVENTID", eventId, "RET", rc);
-            }
-        }
+        return;
     }
-    catch (const std::out_of_range& e)
+
+    for (const auto& handler : handlersIt->second)
     {
-        lg2::error(
-            "Failed to handle platform event msg for terminus {TID}, event {EVENTID} error - {ERROR}",
-            "TID", tid, "EVENTID", eventId, "ERROR", e);
+        auto rc =
+            handler(tid, eventId, eventMessage.data(), eventMessage.size());
+        if (rc != PLDM_SUCCESS)
+        {
+            lg2::error(
+                "Failed to handle platform event msg for terminus {TID}, event {EVENTID} return {RET}",
+                "TID", tid, "EVENTID", eventId, "RET", rc);
+        }
     }
 }
 
@@ -539,11 +535,8 @@ exec::task<int> EventManager::pollForPlatformEventTask(
         if (transferOperationFlag == PLDM_ACKNOWLEDGEMENT_ONLY)
         {
             /* Handle the polled event after finish ACK it */
-            if (eventHandlers.contains(polledEventClass))
-            {
-                callPolledEventHandlers(polledEventTid, polledEventClass,
-                                        polledEventId, eventMessage);
-            }
+            callPolledEventHandlers(polledEventTid, polledEventClass,
+                                    polledEventId, eventMessage);
             eventMessage.clear();
 
             if (eventId == PLDM_PLATFORM_EVENT_ID_ACK)
