@@ -454,10 +454,15 @@ void EventManager::callPolledEventHandlers(pldm_tid_t tid, uint8_t eventClass,
                                            uint16_t eventId,
                                            std::vector<uint8_t>& eventMessage)
 {
+    auto handlersIt = eventHandlers.find(eventClass);
+    if (handlersIt == eventHandlers.end())
+    {
+        return;
+    }
+
     try
     {
-        const auto& handlers = eventHandlers.at(eventClass);
-        for (const auto& handler : handlers)
+        for (const auto& handler : handlersIt->second)
         {
             auto rc =
                 handler(tid, eventId, eventMessage.data(), eventMessage.size());
@@ -539,11 +544,8 @@ exec::task<int> EventManager::pollForPlatformEventTask(
         if (transferOperationFlag == PLDM_ACKNOWLEDGEMENT_ONLY)
         {
             /* Handle the polled event after finish ACK it */
-            if (eventHandlers.contains(polledEventClass))
-            {
-                callPolledEventHandlers(polledEventTid, polledEventClass,
-                                        polledEventId, eventMessage);
-            }
+            callPolledEventHandlers(polledEventTid, polledEventClass,
+                                    polledEventId, eventMessage);
             eventMessage.clear();
 
             if (eventId == PLDM_PLATFORM_EVENT_ID_ACK)
