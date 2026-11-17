@@ -16,6 +16,24 @@
       "message": "pollForPlatformEvent (manager.cpp:40) should copy shared_ptr for consistency.",
       "revId": "2c8bf7526cbdcc3c63bd7eedca183834947376c9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "043205cd_2d6299c2",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-17T09:02:00Z",
+      "side": 1,
+      "message": "good catch. thanks. fixed.",
+      "parentUuid": "0223dad8_7be9308f",
+      "revId": "2c8bf7526cbdcc3c63bd7eedca183834947376c9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
