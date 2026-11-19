@@ -7,6 +7,7 @@
 #include <libpldm/firmware_update.h>
 
 #include <memory>
+#include <string_view>
 
 #include <gtest/gtest.h>
 
@@ -220,6 +221,15 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
     EXPECT_TRUE(outComponentInfoMap.empty());
     EXPECT_TRUE(updateManager.updateManagers.empty());
 
+    // So does a table that ends before its declared component count
+    constexpr size_t shortPayloadLength1 =
+        respPayloadLength1 - sizeof(pldm_component_parameter_entry) -
+        std::string_view{"Comp2v3.0"}.size();
+    inventoryManager.getFirmwareParameters(1, responseMsg1,
+                                           shortPayloadLength1);
+    EXPECT_TRUE(outComponentInfoMap.empty());
+    EXPECT_TRUE(updateManager.updateManagers.empty());
+
     inventoryManager.getFirmwareParameters(1, responseMsg1, respPayloadLength1);
 
     ComponentInfoMap componentInfoMap1{
@@ -259,7 +269,14 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x6f, 0x6d, 0x70, 0x33, 0x76, 0x34, 0x2e, 0x30};
     auto responseMsg2 =
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp2.data());
+
+    // The zero padding after the declared component invalidates the table
     inventoryManager.getFirmwareParameters(2, responseMsg2, respPayloadLength2);
+    EXPECT_FALSE(outComponentInfoMap.contains(2));
+
+    constexpr size_t tablePayloadLength2 = 71;
+    inventoryManager.getFirmwareParameters(2, responseMsg2,
+                                           tablePayloadLength2);
 
     ComponentInfoMap componentInfoMap2{
         {1,

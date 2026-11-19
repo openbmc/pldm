@@ -677,7 +677,7 @@ void InventoryManager::getFirmwareParameters(
     ComponentInfo componentInfo{};
     std::vector<std::pair<CompIdentifier, std::string>> componentVersions;
 
-    while (fwParams.comp_count-- && (compParamTableLen > 0))
+    for (uint16_t index = 0; index < fwParams.comp_count; ++index)
     {
         auto rc = decode_get_firmware_parameters_resp_comp_entry(
             compParamPtr, compParamTableLen, &compEntry, &activeCompVerStr,
@@ -702,6 +702,13 @@ void InventoryManager::getFirmwareParameters(
                         activeCompVerStr.length + pendingCompVerStr.length;
         compParamTableLen -= sizeof(pldm_component_parameter_entry) +
                              activeCompVerStr.length + pendingCompVerStr.length;
+    }
+
+    if (compParamTableLen != 0)
+    {
+        error("Unexpected component parameter table data for endpoint ID {EID}",
+              "EID", eid);
+        return;
     }
 
     // Publish after parsing, so that every item gets the complete component map
