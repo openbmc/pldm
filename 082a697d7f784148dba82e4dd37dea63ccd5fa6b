@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49fcf81d_a418c6a1",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1906,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:46:38Z",
+      "side": 1,
+      "message": "casting an integer type to double (inside `pldm::utils::getSensorDataValue`) and again casting that double back to integer is not be ideal.",
+      "range": {
+        "startLine": 1906,
+        "startChar": 31,
+        "endLine": 1906,
+        "endChar": 51
+      },
+      "revId": "082a697d7f784148dba82e4dd37dea63ccd5fa6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6baee050_39bd93e6",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1909,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:46:38Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "revId": "082a697d7f784148dba82e4dd37dea63ccd5fa6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0333777_dd646498",
+        "filename": "pldmtool/pldm_platform_cmd.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2537,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:46:38Z",
+      "side": 1,
+      "message": "May be we can make `getSensorDataValue` return int64_t and caller would cast it to double whenever needed? I am also ok if we want to use std::optional as return type to handle errors.",
+      "revId": "082a697d7f784148dba82e4dd37dea63ccd5fa6b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
