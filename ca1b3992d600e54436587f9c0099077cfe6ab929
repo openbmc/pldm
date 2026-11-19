@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ee695d2_b8a24d47",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "The default is OnReset today, which is the behavior today",
+      "parentUuid": "fde27ca5_df9c04f7",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67cf0f0e_960b14d0",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-11-16T19:22:09Z",
       "side": 1,
       "message": "Do we raise a different event after self-contained activation? There should be a way to tell it apart from updates that still need an external reset.",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ca77bd0_55dbd837",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "We will need to add a separate event for SelfContained activation, but there exists a ResetRequired event which is already part of the schema (will take this up in a follow up patch on the belo series). Events on bundled updates are currently blocked pending this series https://gerrit.openbmc.org/q/topic:%22pldm-component-update-events%22",
+      "parentUuid": "67cf0f0e_960b14d0",
       "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf7c7a6_4a6e6c86",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "We send an activation without the self contained bit set and it would be the same as if the ApplyTime value was OnReset",
+      "parentUuid": "b751a9af_4c6a7911",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afb54676_8293f632",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-11-16T19:22:09Z",
       "side": 1,
       "message": "Shouldn\u0027t we create an ActivateFailed event here ?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa6a3770_7661a357",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1259,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afb54676_8293f632",
       "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d3fa50_e9655e27",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1269,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "Ack, added events at all failure paths in the code",
+      "parentUuid": "ed6dd191_37785d73",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ac909d9_fe5d86c2",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-11-16T19:22:09Z",
       "side": 1,
       "message": "nit - @param is missing in doc comment",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a9651dc_5e05b35a",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ac909d9_fe5d86c2",
       "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -120,6 +228,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55f6868_c27398be",
+        "filename": "fw-update/device_updater.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80e878f6_333c3ec7",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a85179d_683dc418",
@@ -133,6 +259,24 @@
       "writtenOn": "2026-11-16T19:22:09Z",
       "side": 1,
       "message": "Apart from storing activation methods in CompInfo, this rework looks independent of self-contained activation. Can it be a separate commit?",
+      "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2b99797_e71752ac",
+        "filename": "fw-update/inventory_manager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 680,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-19T19:17:58Z",
+      "side": 1,
+      "message": "Ack, raised a new patch in the series to address the inventory changes",
+      "parentUuid": "0a85179d_683dc418",
       "revId": "ca1b3992d600e54436587f9c0099077cfe6ab929",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
