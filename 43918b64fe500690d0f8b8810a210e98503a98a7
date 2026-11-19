@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e329319_380bc2c4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T09:46:16Z",
+      "side": 1,
+      "message": "This is implicit from CI result on the patch. Add info on testing here that you had performed on a platform.",
+      "revId": "43918b64fe500690d0f8b8810a210e98503a98a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "834430c4_aa72e470",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T09:46:16Z",
+      "side": 1,
+      "message": "Suggest creating this directly inside the test case below that consumes it.",
+      "revId": "43918b64fe500690d0f8b8810a210e98503a98a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e989e1ae_2391d6f5",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T09:46:16Z",
+      "side": 1,
+      "message": "This is not quite true since last pdr is valid.",
+      "revId": "43918b64fe500690d0f8b8810a210e98503a98a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f06a6e1c_ece85bda",
+        "filename": "platform-mc/test/terminus_test.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T09:46:16Z",
+      "side": 1,
+      "message": "Should we check for empty / invalid terminus name after adding bad pdr also?",
+      "revId": "43918b64fe500690d0f8b8810a210e98503a98a7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
