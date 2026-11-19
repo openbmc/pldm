@@ -208,6 +208,18 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
             0x30};
     auto responseMsg1 =
         reinterpret_cast<const pldm_msg*>(getFirmwareParametersResp1.data());
+
+    // Endpoint 1 is identified, so its firmware inventory gets published
+    outDescriptorMap[1] = {{PLDM_FWUP_IANA_ENTERPRISE_ID,
+                            std::vector<uint8_t>{0x0a, 0x0b, 0x0c, 0x0d}}};
+    inventoryManager.firmwareDeviceNameMap[1] = "Device";
+
+    // A truncated table publishes nothing
+    inventoryManager.getFirmwareParameters(1, responseMsg1,
+                                           respPayloadLength1 - 1);
+    EXPECT_TRUE(outComponentInfoMap.empty());
+    EXPECT_TRUE(updateManager.updateManagers.empty());
+
     inventoryManager.getFirmwareParameters(1, responseMsg1, respPayloadLength1);
 
     ComponentInfoMap componentInfoMap1{
@@ -218,6 +230,15 @@ TEST_F(InventoryManagerTest, getFirmwareParametersResponse)
            compClassificationIndex2}}}};
     EXPECT_EQ(outComponentInfoMap.size(), componentInfoMap1.size());
     EXPECT_EQ(outComponentInfoMap, componentInfoMap1);
+
+    // The device item and each component item know every component
+    for (CompIdentifier id :
+         {CompIdentifier{0}, compIdentifier1, compIdentifier2})
+    {
+        SCOPED_TRACE(id);
+        EXPECT_EQ(*updateManager.componentInfoMap.at({1, id}),
+                  componentInfoMap1.at(1));
+    }
 
     // constexpr uint16_t compCount = 1;
     // constexpr std::string_view activeCompImageSetVersion{"DeviceVer2.0"};

@@ -37,6 +37,7 @@ foreach t : tests
         executable(
             t.underscorify(),
             t + '.cpp',
+            cpp_args: t == 'inventory_manager_test' ? ['-fno-access-control'] : [],
             implicit_include_directories: false,
             include_directories: '../../pldmd',
             dependencies: test_deps,
