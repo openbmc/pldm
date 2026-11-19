@@ -538,6 +538,11 @@ class DeviceUpdater
     /** @brief Report an event for every component whose apply completed */
     void reportApplied(EventGenerator generate) const;
 
+    /** @brief Report AwaitToActivate for every applied component that does
+     *         not run the new image after a successful update
+     */
+    void reportAwaitingActivation() const;
+
     /** @brief Component index is used to track the current component being
      *         updated if multiple components are applicable for the FD.
      *         It is also used to keep track of the next component in

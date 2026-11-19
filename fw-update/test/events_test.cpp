@@ -377,8 +377,10 @@ class ComponentEventsTest : public EventsTest
     fw::pkg::ComponentImageInfos images{
         {10, 100, 0xffffffff, 0, 0, 0, 512, "first-version"},
         {10, 200, 0xffffffff, 0, 0, 512, 512, "second-version"}};
-    fw::ComponentInfo componentInfo{{{10, 100}, fw::CompInfo{1, 0}},
-                                    {{10, 200}, fw::CompInfo{2, 0}}};
+    // Automatic activation: nothing awaits activation after the update
+    fw::ComponentInfo componentInfo{
+        {{10, 100}, fw::CompInfo{1, 1 << PLDM_ACTIVATION_AUTOMATIC}},
+        {{10, 200}, fw::CompInfo{2, 1 << PLDM_ACTIVATION_AUTOMATIC}}};
     fw::ComponentTargets targets{
         {100,
          sdbusplus::object_path("/xyz/openbmc_project/software/component100")},
@@ -473,6 +475,43 @@ TEST_F(ComponentEventsTest, SkippedComponentDoesNotReportSuccess)
                  "second-version");
     expectCommit(1, event_intf::UpdateSuccessful::errName, 100,
                  "first-version");
+}
+
+TEST_F(ComponentEventsTest, PendingComponentAwaitsActivation)
+{
+    componentInfo = {
+        {{10, 100}, fw::CompInfo{1, 1 << PLDM_ACTIVATION_AUTOMATIC}},
+        {{10, 200}, fw::CompInfo{2, 1 << PLDM_ACTIVATION_SYSTEM_REBOOT}}};
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    completeComponent(updater);
+    eventServer.clear();
+    activate(updater);
+    ASSERT_EQ(eventServer.committed().size(), 3);
+    expectCommit(0, event_intf::UpdateSuccessful::errName, 100,
+                 "first-version");
+    expectCommit(1, event_intf::UpdateSuccessful::errName, 200,
+                 "second-version");
+    expectCommit(2, event_intf::AwaitToActivate::errName, 200,
+                 "second-version");
+}
+
+TEST_F(ComponentEventsTest, SelfContainedActivationLeavesOthersPending)
+{
+    componentInfo = {
+        {{10, 100}, fw::CompInfo{1, 1 << PLDM_ACTIVATION_SELF_CONTAINED}},
+        {{10, 200}, fw::CompInfo{2, 1 << PLDM_ACTIVATION_SYSTEM_REBOOT}}};
+    fw::DeviceUpdater updater(eid, package, record, images, componentInfo, 512,
+                              &manager, targets);
+    completeComponent(updater);
+    completeComponent(updater);
+    eventServer.clear();
+    updater.selfContainedActivationRequested = true;
+    updater.completeUpdate(true);
+    ASSERT_EQ(eventServer.committed().size(), 3);
+    expectCommit(2, event_intf::AwaitToActivate::errName, 200,
+                 "second-version");
 }
 
 TEST_F(ComponentEventsTest, MissingInventoryDoesNotFallBackToDevice)
