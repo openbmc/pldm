@@ -148,4 +148,12 @@ void generateUpdateNotApplicable(
         "UpdateNotApplicable", targetPath, imageIdentifier);
 }
 
+void generateAwaitToActivate(
+    const std::optional<sdbusplus::object_path>& targetPath,
+    const std::string& imageIdentifier)
+{
+    generateImageFirst<event_intf::AwaitToActivate>(
+        "AwaitToActivate", targetPath, imageIdentifier);
+}
+
 } // namespace pldm::fw_update::events

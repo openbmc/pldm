@@ -106,4 +106,15 @@ void generateUpdateNotApplicable(
     const std::optional<sdbusplus::object_path>& targetPath,
     const std::string& imageIdentifier);
 
+/** @brief The image was applied but is not active until an action, such as a
+ *         reset
+ *
+ *  @param[in] targetPath - Software object updated, nullopt to report
+ *                          nothing
+ *  @param[in] imageIdentifier - ComponentVersionString, empty if unavailable
+ */
+void generateAwaitToActivate(
+    const std::optional<sdbusplus::object_path>& targetPath,
+    const std::string& imageIdentifier);
+
 } // namespace pldm::fw_update::events

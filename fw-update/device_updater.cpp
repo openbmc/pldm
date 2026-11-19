@@ -144,6 +144,32 @@ void DeviceUpdater::reportApplied(EventGenerator generate) const
     }
 }
 
+void DeviceUpdater::reportAwaitingActivation() const
+{
+    const auto& applicableComponents =
+        std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
+    for (auto index : appliedComponents)
+    {
+        auto applied =
+            appliedActivationMethods.find(applicableComponents[index]);
+        if (applied == appliedActivationMethods.end())
+        {
+            continue;
+        }
+        auto supports = [methods = applied->second](auto method) {
+            return (methods & (1 << method)) != 0;
+        };
+        // Already running the new image
+        if (supports(PLDM_ACTIVATION_AUTOMATIC) ||
+            (selfContainedActivationRequested &&
+             supports(PLDM_ACTIVATION_SELF_CONTAINED)))
+        {
+            continue;
+        }
+        report(events::generateAwaitToActivate, index);
+    }
+}
+
 DeviceUpdater::~DeviceUpdater()
 {
     aliveToken.reset();
@@ -169,6 +195,10 @@ void DeviceUpdater::completeUpdate(bool success)
     completionPending = true;
     reportApplied(success ? events::generateUpdateSuccessful
                           : events::generateActivateFailed);
+    if (success)
+    {
+        reportAwaitingActivation();
+    }
     if (activationPollTimer)
     {
         activationPollTimer->stop();
@@ -1163,6 +1193,7 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
 
     updateManager->updateActivationProgress();
     reportApplied(events::generateUpdateSuccessful);
+    reportAwaitingActivation();
     updateManager->updateDeviceCompletion(eid, true);
 }
 
