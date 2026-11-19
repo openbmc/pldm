@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf368333_5e342980",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1541,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "instead can we have different `value` objects for each assertion?",
+      "range": {
+        "startLine": 1540,
+        "startChar": 0,
+        "endLine": 1541,
+        "endChar": 44
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f392bb4_c10647f2",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1576,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "same comment as above.",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520af3fe_e0bbc27f",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1647,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "Can you add more info what his test does exactly?",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8945591_ffb4b703",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1663,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "if we have this, do we really need `testUnrecognizedDataSizeIsNaN`?",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72db7b56_72ceea33",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "nit: make this const.",
+      "range": {
+        "startLine": 829,
+        "startChar": 34,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4f61f9f_d1205240",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1002395
+      },
+      "writtenOn": "2026-11-19T10:19:54Z",
+      "side": 1,
+      "message": "Can we use more descriptive name here?",
+      "range": {
+        "startLine": 691,
+        "startChar": 43,
+        "endLine": 691,
+        "endChar": 65
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
