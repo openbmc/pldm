@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a5119ce9_939df270",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-20T09:51:02Z",
+      "side": 1,
+      "message": "The wording was picked from the spec but the pending activation path is not actually reachable in this codebase. I\u0027ve updated the commit message",
+      "parentUuid": "1b36e3f0_3a73d6b9",
+      "range": {
+        "startLine": 9,
+        "startChar": 66,
+        "endLine": 10,
+        "endChar": 26
+      },
+      "revId": "1115267965026b40fbbdd58fe57657530335e1cc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "68e7fb89_b47ca909",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
