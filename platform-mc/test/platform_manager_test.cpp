@@ -536,3 +536,71 @@ TEST_F(PlatformManagerTest, negativeInitTerminusTest2)
     EXPECT_EQ(0, terminus->pdrs.size());
     EXPECT_EQ(0, terminus->numericSensors.size());
 }
+
+TEST_F(PlatformManagerTest, initTerminusOversizedFruRecordTableTest)
+{
+    // The terminus answers GetFRURecordTable with more data than the
+    // receive buffer can hold. The response must be rejected instead of
+    // being copied past the end of the buffer.
+    auto mappedTid =
+        mockTerminusManager.mapTid(pldm::MctpInfo(10, "", "", 1, std::nullopt));
+    auto tid = mappedTid.value();
+    termini[tid] = std::make_shared<pldm::platform_mc::Terminus>(
+        tid, 1 << PLDM_BASE | 1 << PLDM_FRU, event);
+    auto terminus = termini[tid];
+
+    // Set supported commands by terminus
+    auto size = PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8);
+    std::vector<uint8_t> pldmCmds(size);
+    for (uint8_t cmd :
+         {PLDM_GET_FRU_RECORD_TABLE_METADATA, PLDM_GET_FRU_RECORD_TABLE})
+    {
+        auto idx = PLDM_FRU * (PLDM_MAX_CMDS_PER_TYPE / 8) + (cmd / 8);
+        pldmCmds[idx] = pldmCmds[idx] | (1 << (cmd % 8));
+    }
+    terminus->setSupportedCommands(pldmCmds);
+
+    // queue GetFRURecordTableMetadata response with one record
+    constexpr size_t fruMetadataLen =
+        PLDM_GET_FRU_RECORD_TABLE_METADATA_RESP_BYTES;
+    // Payload layout: completion code, FRU data major/minor version, FRU
+    // table maximum size (4), FRU table length (4), total record set
+    // identifiers (2), total table records (2), checksum (4)
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + fruMetadataLen> fruMetadataResp{
+        0x0,          0x04, PLDM_GET_FRU_RECORD_TABLE_METADATA,
+        PLDM_SUCCESS, 0x1,  0x0,
+        0x0,          0x10, 0x0,
+        0x0,          0x0,  0x10,
+        0x0,          0x0,  0x1,
+        0x0,          0x1,  0x0,
+        0x0,          0x0,  0x0,
+        0x0};
+    auto rc = mockTerminusManager.enqueueResponse(
+        std::start_lifetime_as<pldm_msg>(fruMetadataResp.data()),
+        sizeof(fruMetadataResp));
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    // queue GetFRURecordTable response carrying 2048 bytes of table data,
+    // twice the size of the receive buffer (1024 bytes)
+    constexpr size_t fruTableDataLen = 2048;
+    std::vector<uint8_t> fruTableResp(
+        sizeof(pldm_msg_hdr) + PLDM_GET_FRU_RECORD_TABLE_MIN_RESP_BYTES +
+        fruTableDataLen);
+    fruTableResp[1] = 0x04;
+    fruTableResp[2] = PLDM_GET_FRU_RECORD_TABLE;
+    fruTableResp[3] = PLDM_SUCCESS;
+    fruTableResp[8] = PLDM_START_AND_END; // transfer flag, no further data
+    rc = mockTerminusManager.enqueueResponse(
+        std::start_lifetime_as<pldm_msg>(fruTableResp.data()),
+        fruTableResp.size());
+    EXPECT_EQ(rc, PLDM_SUCCESS);
+
+    mockTerminusManager.updateMctpEndpointAvailability(
+        pldm::MctpInfo(10, "", "", 1, std::nullopt), true);
+
+    stdexec::sync_wait(platformManager.initTerminus());
+    utils::runEventLoopForSeconds(event, 1);
+    // The FRU table is discarded, but terminus initialization continues
+    EXPECT_EQ(true, terminus->initialized);
+    EXPECT_EQ(0, terminus->pdrs.size());
+}
