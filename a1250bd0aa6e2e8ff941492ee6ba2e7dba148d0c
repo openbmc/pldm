@@ -24,6 +24,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d481f4b_0dc0f73b",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1541,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "Acknowledged, uses independent `value` for each assertion in PS16.",
+      "parentUuid": "cf368333_5e342980",
+      "range": {
+        "startLine": 1540,
+        "startChar": 0,
+        "endLine": 1541,
+        "endChar": 44
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f392bb4_c10647f2",
@@ -37,6 +61,24 @@
       "writtenOn": "2026-11-19T10:19:54Z",
       "side": 1,
       "message": "same comment as above.",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ca47b83_cd6ec1c8",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1576,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "Done in PS16.",
+      "parentUuid": "7f392bb4_c10647f2",
       "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -58,6 +100,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb2233d5_fb7adefe",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1647,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "I have removed this test in PS16, as I found it is not necessary.\nThe sweep only re-checked integer-to-double conversion which is exact for these sizes.",
+      "parentUuid": "520af3fe_e0bbc27f",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8945591_ffb4b703",
@@ -71,6 +131,24 @@
       "writtenOn": "2026-11-19T10:19:54Z",
       "side": 1,
       "message": "if we have this, do we really need `testUnrecognizedDataSizeIsNaN`?",
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c00a1b_549a74cc",
+        "filename": "common/test/pldm_utils_test.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1663,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "Removed in PS16.",
+      "parentUuid": "e8945591_ffb4b703",
       "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -98,6 +176,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bdee934_6f69a4cf",
+        "filename": "common/utils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "Sure, done in PS16.",
+      "parentUuid": "72db7b56_72ceea33",
+      "range": {
+        "startLine": 829,
+        "startChar": 34,
+        "endLine": 829,
+        "endChar": 48
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4f61f9f_d1205240",
@@ -111,6 +213,30 @@
       "writtenOn": "2026-11-19T10:19:54Z",
       "side": 1,
       "message": "Can we use more descriptive name here?",
+      "range": {
+        "startLine": 691,
+        "startChar": 43,
+        "endLine": 691,
+        "endChar": 65
+      },
+      "revId": "a1250bd0aa6e2e8ff941492ee6ba2e7dba148d0c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ffc637c_8e7c0377",
+        "filename": "common/utils.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T03:26:40Z",
+      "side": 1,
+      "message": "Renamed to `pldm_sensor_readings_data_type`.",
+      "parentUuid": "c4f61f9f_d1205240",
       "range": {
         "startLine": 691,
         "startChar": 43,
