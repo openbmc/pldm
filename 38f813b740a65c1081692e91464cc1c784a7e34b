@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae9515a2_d78e887b",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T06:17:11Z",
+      "side": 1,
+      "message": "Done in PS16.",
+      "parentUuid": "55cc78c0_dd04d8af",
+      "revId": "38f813b740a65c1081692e91464cc1c784a7e34b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "857e02c2_59328204",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba4b955c_66060fe9",
+        "filename": "platform-mc/numeric_sensor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T06:17:11Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "857e02c2_59328204",
+      "revId": "38f813b740a65c1081692e91464cc1c784a7e34b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1618f945_c691b29b",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-11-19T10:36:55Z",
       "side": 1,
       "message": "Add info on testing done if any for sensor reading update as well in commit message. Remove info on unit tests in commit message.",
+      "revId": "38f813b740a65c1081692e91464cc1c784a7e34b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d18a0ea_3b44d32f",
+        "filename": "platform-mc/sensor_manager.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1002885
+      },
+      "writtenOn": "2026-11-20T06:17:11Z",
+      "side": 1,
+      "message": "Acknowledged, done in PS15.",
+      "parentUuid": "1618f945_c691b29b",
       "revId": "38f813b740a65c1081692e91464cc1c784a7e34b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
