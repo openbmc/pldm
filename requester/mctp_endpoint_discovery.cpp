@@ -8,6 +8,7 @@
 #include <phosphor-logging/lg2.hpp>
 
 #include <algorithm>
+#include <cctype>
 #include <map>
 #include <string>
 #include <vector>
@@ -447,7 +448,17 @@ std::string MctpDiscovery::getNameFromProperties(
         error("Missing name property");
         return "";
     }
-    return std::get<std::string>(properties.at("Name"));
+    auto name = std::get<std::string>(properties.at("Name"));
+    // Object paths are built from the name
+    if (!std::ranges::all_of(name, [](unsigned char c) {
+            return std::isalnum(c) || c == '_';
+        }))
+    {
+        error("Ignoring name '{NAME}' that is not valid in an object path",
+              "NAME", name);
+        return "";
+    }
+    return name;
 }
 
 std::string MctpDiscovery::constructMctpReactorObjectPath(

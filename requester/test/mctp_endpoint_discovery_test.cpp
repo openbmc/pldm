@@ -24,6 +24,12 @@ class TestMctpDiscovery : public ::testing::Test
     {
         mctpDiscovery.searchConfigurationFor(handler, mctpInfo);
     }
+    static std::string getNameFromProperties(
+        pldm::MctpDiscovery& mctpDiscovery,
+        const pldm::utils::PropertyMap& properties)
+    {
+        return mctpDiscovery.getNameFromProperties(properties);
+    }
 };
 
 TEST(MctpEndpointDiscoveryTest, SingleHandleMctpEndpoint)
@@ -220,6 +226,21 @@ TEST(MctpEndpointDiscoveryTest, badSearchConfigurationFor)
     auto configuration =
         TestMctpDiscovery::getConfigurations(*mctpDiscoveryHandler);
     EXPECT_EQ(configuration.size(), 0);
+}
+
+TEST(MctpEndpointDiscoveryTest, rejectNameInvalidInObjectPath)
+{
+    auto& bus = pldm::utils::DBusHandler::getBus();
+    pldm::MockManager manager;
+    pldm::MctpDiscovery mctpDiscovery(
+        bus, std::initializer_list<pldm::MctpDiscoveryHandlerIntf*>{&manager});
+
+    EXPECT_EQ(TestMctpDiscovery::getNameFromProperties(
+                  mctpDiscovery, {{"Name", std::string("Device_0")}}),
+              "Device_0");
+    EXPECT_EQ(TestMctpDiscovery::getNameFromProperties(
+                  mctpDiscovery, {{"Name", std::string("Device 0")}}),
+              "");
 }
 
 TEST(MctpEndpointDiscoveryTest, removeEndpointsMatchFound)

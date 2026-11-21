@@ -241,7 +241,8 @@ class MctpDiscovery
     /** @brief An internal helper function to get the name property from the
      * properties
      * @param[in] properties - the properties of the D-Bus object
-     * @return the name property
+     * @return the name property, or an empty string if it is missing or not
+     *         valid in an object path
      */
     std::string getNameFromProperties(const utils::PropertyMap& properties);
 
