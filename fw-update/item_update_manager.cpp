@@ -272,7 +272,15 @@ void ItemUpdateManager::completeUpdate(bool status)
 
 void ItemUpdateManager::teardownUpdate()
 {
-    deviceUpdater.reset();
+    if (deviceUpdater)
+    {
+        // The updater can be running the callback that completed the update
+        releasedUpdater = std::move(deviceUpdater);
+        releaseUpdaterEvent = std::make_unique<sdeventplus::source::Defer>(
+            event, [this](sdeventplus::source::EventBase&) {
+                releasedUpdater.reset();
+            });
+    }
     packageDataStream.reset();
     packageMap.reset();
     dupFd.reset();

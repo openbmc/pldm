@@ -218,9 +218,10 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     /**
      * @brief Common teardown path for cleaning up update resources
      *
-     * Resets deviceUpdater, packageDataStream, packageMap, dupFd and
-     * marks updateInProgress as false. Should be called from all cleanup
-     * paths to ensure consistent resource management.
+     * Releases deviceUpdater once the event loop runs again, resets
+     * packageDataStream, packageMap, dupFd and marks updateInProgress as
+     * false. Should be called from all cleanup paths to ensure consistent
+     * resource management.
      */
     void teardownUpdate();
 
@@ -228,6 +229,9 @@ class ItemUpdateManager : public UpdateManagerBase, public ItemUpdateIntf
     std::unique_ptr<ActivationProgress> activationProgress;
     std::unique_ptr<pkg::PackageParser> parser;
     std::unique_ptr<DeviceUpdater> deviceUpdater;
+    /** @brief The updater of the last update until the event loop runs again */
+    std::unique_ptr<DeviceUpdater> releasedUpdater;
+    std::unique_ptr<sdeventplus::source::Defer> releaseUpdaterEvent;
     /**
      * @brief Start time of the firmware update flow
      *
