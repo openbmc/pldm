@@ -45,12 +45,20 @@ class ItemUpdateManagerTest : public testing::Test
         return manager.activationProgress.get();
     }
 
-    // StartUpdate defers the package processing to the event loop
+    static software::Activation::Activations activationOf(
+        ItemUpdateManager& manager)
+    {
+        return manager.inProgressActivation->activation();
+    }
+
+    // StartUpdate defers the package processing to the event loop, after the
+    // release of the previous update's updater
     void startUpdate(ItemUpdateManager& manager)
     {
         ASSERT_NE(packageFd, -1);
         manager.startUpdate(sdbusplus::message::unix_fd{packageFd});
-        event.run(std::nullopt);
+        while (sd_event_run(event.get(), 0) > 0)
+        {}
     }
 
     // RequestFirmwareData for a 512-byte chunk at the given offset
@@ -130,4 +138,21 @@ TEST_F(ItemUpdateManagerTest, activationProgressRestartsAfterTeardown)
     ASSERT_GT(response.size(), sizeof(pldm_msg));
     EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(progressOf(manager)->progress(), 48);
+}
+
+TEST_F(ItemUpdateManagerTest, failedTransferFailsUpdate)
+{
+    ItemUpdateManager manager(eid, event, handler, instanceIdDb, objPath, "sw",
+                              descriptors, componentInfo);
+    startUpdate(manager);
+
+    // The updater cancels the component after the failure completed the update
+    std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> transferCompleteReq{
+        0x8A, 0x05, PLDM_TRANSFER_COMPLETE, PLDM_FWUP_FD_ABORTED_TRANSFER};
+    auto response = manager.handleRequest(
+        eid, PLDM_TRANSFER_COMPLETE,
+        reinterpret_cast<const pldm_msg*>(transferCompleteReq.data()), 1);
+    ASSERT_GT(response.size(), sizeof(pldm_msg_hdr));
+    EXPECT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(activationOf(manager), software::Activation::Activations::Failed);
 }
