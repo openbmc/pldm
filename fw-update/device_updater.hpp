@@ -83,10 +83,11 @@ class UpdateProgress
 
     /** @brief called when servicing RequestFirmwareData commands
      *
-     * @param[in] amountUpdate the length of firmware transmitted, in bytes
+     * @param[in] offset the offset of the firmware transmitted, in bytes
+     * @param[in] length the length of firmware transmitted, in bytes
      * @return true on success, false on failure
      */
-    void reportFwUpdate(uint32_t amountUpdated);
+    void reportFwUpdate(uint32_t offset, uint32_t length);
 
     /** @brief get the progress as a percentage of this component
      *
@@ -115,7 +116,7 @@ class UpdateProgress
      */
     uint32_t totalSize;
     /**
-     * @brief the total number of bytes sent
+     * @brief the end of the furthest firmware data sent, in bytes
      */
     uint32_t totalUpdated;
     /**
