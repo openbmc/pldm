@@ -9,6 +9,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <functional>
 
 PHOSPHOR_LOG2_USING;
@@ -58,24 +59,11 @@ void UpdateProgress::updateState(state newState)
     currentState = newState;
 }
 
-void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
+void UpdateProgress::reportFwUpdate(uint32_t offset, uint32_t length)
 {
     if (currentState != state::Update)
     {
         error("invalid state when updating progress: eid {EID}", "EID", eid);
-        return;
-    }
-
-    if (amountUpdated > totalSize)
-    {
-        error("invalid size when updating progress: eid {EID}", "EID", eid);
-        return;
-    }
-
-    if (amountUpdated + totalUpdated > totalSize)
-    {
-        error("invalid total size when updating progress: eid {EID}", "EID",
-              eid);
         return;
     }
 
@@ -86,7 +74,9 @@ void UpdateProgress::reportFwUpdate(uint32_t amountUpdated)
         return;
     }
 
-    totalUpdated += amountUpdated;
+    // The FD can request the same data again, so count how far it has read
+    const auto end = std::min<uint64_t>(uint64_t{offset} + length, totalSize);
+    totalUpdated = std::max(totalUpdated, static_cast<uint32_t>(end));
     progress = static_cast<uint8_t>(std::floor(
         1.0 * componentXferProgressPercent * totalUpdated / totalSize));
     return;
@@ -660,7 +650,7 @@ Response DeviceUpdater::requestFwData(const pldm_msg* request,
     {
         // technically this should never happen, as its an invariant
         // but check to prefer a failed fw update over a pldm crash
-        progress[componentIndex].reportFwUpdate(dataBytes);
+        progress[componentIndex].reportFwUpdate(offset, dataBytes);
         if (updateManager != nullptr)
         {
             updateManager->updateActivationProgress();

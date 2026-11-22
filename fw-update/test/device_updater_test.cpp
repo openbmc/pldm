@@ -281,6 +281,12 @@ TEST_F(DeviceUpdaterTest, FullUpdateProgress)
     ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
     EXPECT_EQ(deviceUpdater.getProgress(), 48);
 
+    // Requesting the same data again does not advance the progress
+    response = deviceUpdater.requestFwData(
+        requestMsg, sizeof(pldm_request_firmware_data_req));
+    ASSERT_EQ(response[sizeof(pldm_msg_hdr)], PLDM_SUCCESS);
+    EXPECT_EQ(deviceUpdater.getProgress(), 48);
+
     constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) +
                                       sizeof(pldm_request_firmware_data_req)>
         reqFwDataReq2{0x8B, 0x05, 0x15, 0x00, 0x02, 0x00,
