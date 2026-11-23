@@ -1,6 +1,7 @@
 #include "update_manager.hpp"
 
 #include "activation.hpp"
+#include "common/invariant.hpp"
 #include "common/utils.hpp"
 #include "package_parser.hpp"
 #include "systemd_interface.hpp"
@@ -8,7 +9,6 @@
 #include <phosphor-logging/lg2.hpp>
 #include <sdeventplus/source/event.hpp>
 
-#include <cassert>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -202,7 +202,8 @@ void UpdateManager::processStream(std::istream& package, uintmax_t packageSize)
             fwDeviceIDRecords[deviceUpdaterInfo.second];
         auto search = componentInfoMap.find(deviceUpdaterInfo.first);
         // associatePkgToDevices only returns EIDs with non-empty comp info
-        assert(search != componentInfoMap.end());
+        requireInvariant(search != componentInfoMap.end(),
+                         "associated endpoint has no component information");
         deviceUpdaterMap.emplace(
             deviceUpdaterInfo.first,
             std::make_unique<DeviceUpdater>(
@@ -344,7 +345,8 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
             auto rc = encode_cc_only_resp(
                 request->hdr.instance_id, request->hdr.type,
                 request->hdr.command, PLDM_ERROR_INVALID_DATA, ptr);
-            assert(rc == PLDM_SUCCESS);
+            requireInvariant(rc == PLDM_SUCCESS,
+                             "failed to encode completion response");
         }
     }
     else
@@ -353,7 +355,8 @@ Response UpdateManager::handleRequest(mctp_eid_t eid, uint8_t command,
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
                                       request->hdr.type, +request->hdr.command,
                                       PLDM_FWUP_COMMAND_NOT_EXPECTED, ptr);
-        assert(rc == PLDM_SUCCESS);
+        requireInvariant(rc == PLDM_SUCCESS,
+                         "failed to encode completion response");
     }
 
     return response;

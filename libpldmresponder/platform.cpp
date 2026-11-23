@@ -1,5 +1,6 @@
 #include "platform.hpp"
 
+#include "common/invariant.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "common/types.hpp"
 #include "common/utils.hpp"
@@ -886,7 +887,8 @@ bool isOemStateSensor(Handler& handler, uint16_t sensorId,
     while (pdrRecord)
     {
         pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
-        assert(pdr != nullptr);
+        requireInvariant(pdr != nullptr,
+                         "state sensor or effecter PDR is null");
         if (pdr->sensor_id != sensorId)
         {
             pdr = nullptr;
@@ -958,7 +960,8 @@ bool isOemStateEffecter(Handler& handler, uint16_t effecterId,
     while (pdrRecord)
     {
         pdr = std::start_lifetime_as<pldm_state_effecter_pdr>(pdrEntry.data);
-        assert(pdr != nullptr);
+        requireInvariant(pdr != nullptr,
+                         "state sensor or effecter PDR is null");
         if (pdr->effecter_id != effecterId)
         {
             pdr = nullptr;

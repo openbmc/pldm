@@ -1,6 +1,7 @@
 #include "item_update_manager.hpp"
 
 #include "activation.hpp"
+#include "common/invariant.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "events.hpp"
@@ -13,7 +14,6 @@
 
 #include <phosphor-logging/lg2.hpp>
 
-#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <span>
@@ -290,7 +290,8 @@ Response ItemUpdateManager::handleRequest(
         auto rc = encode_cc_only_resp(request->hdr.instance_id,
                                       request->hdr.type, request->hdr.command,
                                       PLDM_FWUP_COMMAND_NOT_EXPECTED, ptr);
-        assert(rc == PLDM_SUCCESS);
+        requireInvariant(rc == PLDM_SUCCESS,
+                         "failed to encode completion response");
         return response;
     }
 
@@ -315,7 +316,8 @@ Response ItemUpdateManager::handleRequest(
     auto rc =
         encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
                             request->hdr.command, PLDM_ERROR_INVALID_DATA, ptr);
-    assert(rc == PLDM_SUCCESS);
+    requireInvariant(rc == PLDM_SUCCESS,
+                     "failed to encode completion response");
     return response;
 }
 
