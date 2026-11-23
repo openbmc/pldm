@@ -9,6 +9,7 @@ project(
         'werror=true',
         'cpp_std=c++23',
         'buildtype=debugoptimized',
+        'b_ndebug=true',
     ],
 )
 
