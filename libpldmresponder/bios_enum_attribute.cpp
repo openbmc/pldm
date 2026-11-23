@@ -1,5 +1,6 @@
 #include "bios_enum_attribute.hpp"
 
+#include "common/invariant.hpp"
 #include "common/utils.hpp"
 
 #include <phosphor-logging/lg2.hpp>
@@ -37,7 +38,8 @@ BIOSEnumAttribute::BIOSEnumAttribute(const Json& entry,
     {
         valueDisplayNames.emplace_back(val);
     }
-    assert(defaultValues.size() == 1);
+    requireInvariant(defaultValues.size() == 1,
+                     "BIOS enum attribute must have one default");
     defaultValue = defaultValues[0];
     if (dBusMap.has_value())
     {
@@ -206,7 +208,8 @@ void BIOSEnumAttribute::setAttrValueOnDbus(
     auto [pvHdls, _] = table::attribute::decodeEnumEntry(attrEntry);
     auto currHdls = table::attribute_value::decodeEnumEntry(attrValueEntry);
 
-    assert(currHdls.size() == 1);
+    requireInvariant(currHdls.size() == 1,
+                     "BIOS enum attribute must have one current value");
     auto valueString = stringTable.findString(pvHdls[currHdls[0]]);
 
     auto it = std::find_if(valMap.begin(), valMap.end(),

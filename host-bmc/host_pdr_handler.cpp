@@ -1,5 +1,6 @@
 #include "host_pdr_handler.hpp"
 
+#include "common/invariant.hpp"
 #include "common/types.hpp"
 #include "host-bmc/utils.hpp"
 
@@ -18,7 +19,6 @@
 #include <sdeventplus/source/time.hpp>
 #include <xyz/openbmc_project/State/Host/client.hpp>
 
-#include <cassert>
 #include <memory>
 #include <type_traits>
 
@@ -370,7 +370,8 @@ void HostPDRHandler::mergeEntityAssociations(
 void HostPDRHandler::sendPDRRepositoryChgEvent(std::vector<uint8_t>&& pdrTypes,
                                                uint8_t eventDataFormat)
 {
-    assert(eventDataFormat == FORMAT_IS_PDR_HANDLES);
+    requireInvariant(eventDataFormat == FORMAT_IS_PDR_HANDLES,
+                     "repository change event must contain PDR handles");
 
     // Extract from the PDR repo record handles of PDRs we want the host
     // to pull up.

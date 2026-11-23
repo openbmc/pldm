@@ -1,8 +1,9 @@
 #pragma once
 
+#include "common/invariant.hpp"
+
 #include <libpldm/base.h>
 
-#include <cassert>
 #include <functional>
 #include <map>
 #include <vector>
@@ -57,7 +58,8 @@ class CmdHandler
         auto rc =
             encode_cc_only_resp(request->hdr.instance_id, request->hdr.type,
                                 request->hdr.command, cc, ptr);
-        assert(rc == PLDM_SUCCESS);
+        requireInvariant(rc == PLDM_SUCCESS,
+                         "failed to encode completion response");
         return response;
     }
 

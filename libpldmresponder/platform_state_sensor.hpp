@@ -1,5 +1,6 @@
 #pragma once
 
+#include "common/invariant.hpp"
 #include "common/start_lifetime_as.hpp"
 #include "common/utils.hpp"
 #include "host-bmc/dbus_to_event_handler.hpp"
@@ -111,7 +112,7 @@ int getStateSensorReadingsHandler(
     while (pdrRecord)
     {
         pdr = std::start_lifetime_as<pldm_state_sensor_pdr>(pdrEntry.data);
-        assert(pdr != nullptr);
+        requireInvariant(pdr != nullptr, "state sensor PDR is null");
         if (pdr->sensor_id != sensorId)
         {
             pdr = nullptr;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common/instance_id.hpp"
+#include "common/invariant.hpp"
 #include "common/transport.hpp"
 #include "common/types.hpp"
 #include "request.hpp"
@@ -14,7 +15,6 @@
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/event.hpp>
 
-#include <cassert>
 #include <chrono>
 #include <deque>
 #include <functional>
@@ -183,7 +183,8 @@ class Handler
             // This condition is not possible, if a response is received
             // before the instance ID expiry, then the response handler
             // is executed and the entry will be removed.
-            assert(false);
+            requireInvariant(
+                false, "expired request is missing from the request table");
         }
     }
 
@@ -543,7 +544,8 @@ struct SendRecvMsgOperation
     void onComplete(mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
     {
         stopCallback.reset();
-        assert(eid == this->requestKey.eid);
+        requireInvariant(eid == this->requestKey.eid,
+                         "response endpoint does not match the request");
         auto rc = PLDM_SUCCESS;
         if (!response && !respMsgLen)
         {
