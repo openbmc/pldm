@@ -14,6 +14,8 @@
 #include <string>
 #include <string_view>
 
+class DeviceUpdaterTestHelper;
+
 namespace pldm
 {
 
@@ -132,6 +134,7 @@ class UpdateProgress
 class DeviceUpdater
 {
   public:
+    friend class ::DeviceUpdaterTestHelper;
     DeviceUpdater() = delete;
     DeviceUpdater(const DeviceUpdater&) = delete;
     DeviceUpdater(DeviceUpdater&&) = default;
@@ -423,6 +426,11 @@ class DeviceUpdater
      *        the device level
      */
     bool activationComplete;
+
+    /** @brief SelfContainedActivationRequest for ActivateFirmware, true if any
+     *         component reports self-contained activation support
+     */
+    bool selfContainedActivationReq = false;
 };
 
 } // namespace fw_update

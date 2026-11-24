@@ -114,7 +114,17 @@ using CompIdentifier = uint16_t;
 using SoftwareIdentifier = std::pair<eid, CompIdentifier>;
 using CompKey = std::pair<CompClassification, CompIdentifier>;
 using CompClassificationIndex = uint8_t;
-using ComponentInfo = std::map<CompKey, CompClassificationIndex>;
+struct CompParams
+{
+    CompClassificationIndex index;
+    uint16_t activationMethods;
+
+    CompParams(CompClassificationIndex index, uint16_t activationMethods = 0) :
+        index(index), activationMethods(activationMethods)
+    {}
+    bool operator==(const CompParams&) const = default;
+};
+using ComponentInfo = std::map<CompKey, CompParams>;
 using ComponentInfoMap = std::unordered_map<eid, ComponentInfo>;
 
 namespace base

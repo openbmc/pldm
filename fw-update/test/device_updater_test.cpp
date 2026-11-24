@@ -54,6 +54,34 @@ class DeviceUpdaterTest : public testing::Test
     ComponentInfo compInfo;
 };
 
+class DeviceUpdaterTestHelper : public DeviceUpdater
+{
+  public:
+    using DeviceUpdater::DeviceUpdater;
+    bool getSelfContainedActivationReq() const
+    {
+        return selfContainedActivationReq;
+    }
+};
+
+TEST_F(DeviceUpdaterTest, SelfContainedActivationNotRequired)
+{
+    compInfo = {{std::make_pair(10, 100), CompParams{1, 0x0000}},
+                {std::make_pair(10, 200), CompParams{2, 0x0004}}};
+    DeviceUpdaterTestHelper deviceUpdater(
+        0, package, fwDeviceIDRecord, compImageInfos, compInfo, 512, nullptr);
+    EXPECT_FALSE(deviceUpdater.getSelfContainedActivationReq());
+}
+
+TEST_F(DeviceUpdaterTest, SelfContainedActivationRequired)
+{
+    compInfo = {{std::make_pair(10, 100), CompParams{1, 0x0000}},
+                {std::make_pair(10, 200), CompParams{2, 0x0002}}};
+    DeviceUpdaterTestHelper deviceUpdater(
+        0, package, fwDeviceIDRecord, compImageInfos, compInfo, 512, nullptr);
+    EXPECT_TRUE(deviceUpdater.getSelfContainedActivationReq());
+}
+
 TEST_F(DeviceUpdaterTest, validatePackage)
 {
     constexpr uintmax_t testPkgSize = 1163;

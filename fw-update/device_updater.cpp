@@ -9,6 +9,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
 #include <functional>
 
 PHOSPHOR_LOG2_USING;
@@ -105,6 +106,12 @@ DeviceUpdater::DeviceUpdater(
     pkgVersion(pkgVersion), targetPath(std::move(targetPath)),
     activationComplete{false}
 {
+    selfContainedActivationReq =
+        std::ranges::any_of(compInfo, [](const auto& comp) {
+            return comp.second.activationMethods &
+                   (1U << PLDM_ACTIVATION_SELF_CONTAINED);
+        });
+
     const auto& applicableComponents =
         std::get<pkg::ApplicableComponents>(fwDeviceIDRecord);
     // create as many progress objects as there are components
@@ -268,7 +275,8 @@ void DeviceUpdater::sendPassCompTableRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        compInfoIter->second.index;
     // ComponentComparisonStamp
     pkg::CompComparisonStamp compComparisonStamp = std::get<static_cast<size_t>(
         pkg::ComponentImageInfoPos::CompComparisonStampPos)>(comp);
@@ -406,7 +414,8 @@ void DeviceUpdater::sendUpdateComponentRequest(size_t offset)
         updateManager->updateDeviceCompletion(eid, false);
         return;
     }
-    CompClassificationIndex compClassificationIndex = compInfoIter->second;
+    CompClassificationIndex compClassificationIndex =
+        compInfoIter->second.index;
 
     // UpdateOptionFlags
     bitfield32_t updateOptionFlags;
@@ -965,7 +974,7 @@ void DeviceUpdater::sendActivateFirmwareRequest()
     auto requestMsg = new (request.data()) pldm_msg;
 
     auto rc = encode_activate_firmware_req(
-        instanceId, PLDM_NOT_ACTIVATE_SELF_CONTAINED_COMPONENTS, requestMsg,
+        instanceId, selfContainedActivationReq, requestMsg,
         sizeof(pldm_activate_firmware_req));
     if (rc)
     {
