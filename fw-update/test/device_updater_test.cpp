@@ -370,3 +370,144 @@ TEST_F(DeviceUpdaterTest, ActivationNotRequired)
         activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
     EXPECT_EQ(deviceUpdater.getProgress(), 100);
 }
+
+/** @brief UpdateComponent response declining a component with the given
+ *         ComponentCompatibilityResponse code
+ */
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9> updateComponentDeclined(
+    uint8_t respCode)
+{
+    return {0x0A,     0x05, 0x14, PLDM_SUCCESS, PLDM_CCR_COMP_CANNOT_BE_UPDATED,
+            respCode, 0x00, 0x00, 0x00,         0x00,
+            0x00,     0x00};
+}
+
+class DeviceUpdaterManagerTest : public DeviceUpdaterTest
+{
+  protected:
+    DeviceUpdaterManagerTest() :
+        event(sdeventplus::Event::get_default()),
+        reqHandler(nullptr, event, instanceIdDb, false),
+        manager(event, reqHandler, instanceIdDb)
+    {}
+
+    /** @brief Build a copy of the fixture's device record and component image
+     *         info list describing a device with two applicable components
+     */
+    void makeTwoComponents(pkg::FirmwareDeviceIDRecord& record,
+                           pkg::ComponentImageInfos& comps)
+    {
+        record = fwDeviceIDRecord;
+        std::get<pkg::ApplicableComponents>(record) =
+            pkg::ApplicableComponents{0, 1};
+        comps = compImageInfos;
+        comps.push_back(compImageInfos[0]);
+    }
+
+    sdeventplus::Event event;
+    TestInstanceIdDb instanceIdDb;
+    pldm::requester::Handler<pldm::requester::Request> reqHandler;
+    testing::NiceMock<TestUpdateManager> manager;
+};
+
+namespace
+{
+// UpdateComponent response indicating the component can be updated
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 9>
+    updateComponentCanBeUpdatedResp = {
+        0x0A, 0x05, 0x14, PLDM_SUCCESS, PLDM_CCR_COMP_CAN_BE_UPDATED,
+        0x00, 0x00, 0x00, 0x00,         0x00,
+        0x00, 0x00};
+// VerifyComplete request with a successful verify result
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1> verifyCompleteReq = {
+    0x8C, 0x05, 0x17, PLDM_FWUP_VERIFY_SUCCESS};
+// ApplyComplete request with a successful apply result
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyCompleteReq = {
+    0x8D, 0x05, 0x18, PLDM_FWUP_APPLY_SUCCESS, 0x00, 0x00};
+// ActivateFirmware response with a success completion code
+constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> activateFirmwareResp = {
+    0x0E, 0x05, 0x1A, PLDM_SUCCESS, 0x00, 0x00};
+} // namespace
+
+// Drive the given component through a successful update-and-apply flow
+static void applyComponentSuccessfully(DeviceUpdater& deviceUpdater)
+{
+    deviceUpdater.updateComponent(
+        0,
+        reinterpret_cast<const pldm_msg*>(
+            updateComponentCanBeUpdatedResp.data()),
+        updateComponentCanBeUpdatedResp.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.verifyComplete(
+        reinterpret_cast<const pldm_msg*>(verifyCompleteReq.data()),
+        verifyCompleteReq.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.applyComplete(
+        reinterpret_cast<const pldm_msg*>(applyCompleteReq.data()),
+        applyCompleteReq.size() - sizeof(pldm_msg_hdr));
+}
+
+TEST_F(DeviceUpdaterManagerTest,
+       FailedComponentFailsDeviceDespiteAnotherSucceeding)
+{
+    // One component is declined for a non-identical reason while another
+    // component on the same device updates successfully; the overall device
+    // update must fail.
+    pkg::FirmwareDeviceIDRecord record;
+    pkg::ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    auto fail = updateComponentDeclined(PLDM_CCRC_COMP_COMPARISON_STAMP_LOWER);
+    deviceUpdater.updateComponent(
+        0, reinterpret_cast<const pldm_msg*>(fail.data()),
+        fail.size() - sizeof(pldm_msg_hdr));
+
+    applyComponentSuccessfully(deviceUpdater);
+
+    EXPECT_CALL(manager, updateDeviceCompletion(0, false));
+    deviceUpdater.activateFirmware(
+        0, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+
+    EXPECT_EQ(deviceUpdater.getProgress(), 100);
+}
+
+TEST_F(DeviceUpdaterManagerTest,
+       CancelledComponentFailsDeviceDespiteAnotherSucceeding)
+{
+    // The first component updates successfully, while applying the last
+    // component fails and it is cancelled with CancelUpdateComponent. The
+    // device is still activated for the first component, but the overall
+    // device update must fail.
+    pkg::FirmwareDeviceIDRecord record;
+    pkg::ComponentImageInfos comps;
+    makeTwoComponents(record, comps);
+    DeviceUpdater deviceUpdater(0, package, record, comps, compInfo, 512,
+                                &manager);
+
+    applyComponentSuccessfully(deviceUpdater);
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 3> applyFailedReq = {
+        0x8D, 0x05, 0x18, PLDM_FWUP_APPLY_FAILURE_MEMORY_ISSUE, 0x00, 0x00};
+    deviceUpdater.updateComponent(
+        0,
+        reinterpret_cast<const pldm_msg*>(
+            updateComponentCanBeUpdatedResp.data()),
+        updateComponentCanBeUpdatedResp.size() - sizeof(pldm_msg_hdr));
+    deviceUpdater.applyComplete(
+        reinterpret_cast<const pldm_msg*>(applyFailedReq.data()),
+        applyFailedReq.size() - sizeof(pldm_msg_hdr));
+
+    constexpr std::array<uint8_t, sizeof(pldm_msg_hdr) + 1>
+        cancelUpdateComponentResp = {0x0A, 0x05, PLDM_CANCEL_UPDATE_COMPONENT,
+                                     PLDM_SUCCESS};
+    deviceUpdater.cancelUpdateComponent(
+        0, reinterpret_cast<const pldm_msg*>(cancelUpdateComponentResp.data()),
+        cancelUpdateComponentResp.size() - sizeof(pldm_msg_hdr));
+
+    // Only the completion reported once the firmware is activated is checked
+    EXPECT_CALL(manager, updateDeviceCompletion(0, false));
+    deviceUpdater.activateFirmware(
+        0, reinterpret_cast<const pldm_msg*>(activateFirmwareResp.data()),
+        activateFirmwareResp.size() - sizeof(pldm_msg_hdr));
+}
