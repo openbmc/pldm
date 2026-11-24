@@ -530,7 +530,6 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
             {
                 if (compStatus.second == ComponentUpdateStatus::Accepted)
                 {
-                    componentIndex = 0;
                     pldmRequest = std::make_unique<sdeventplus::source::Defer>(
                         updateManager->event,
                         std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
@@ -557,7 +556,6 @@ bool DeviceUpdater::updateComponent(mctp_eid_t eid, const pldm_msg* response,
         "Component at endpoint ID '{EID}' with version '{COMPONENT_VERSION}' can be updated",
         "EID", eid, "COMPONENT_VERSION", compVersion);
     events::generateTransferringToComponent(targetPath, pkgVersion);
-    componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
     createRequestFwDataTimer();
     return true;
 }
@@ -896,12 +894,15 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
                 updateManager->updateActivationProgress();
             }
         }
+        // The component image for the current component has been applied
+        // successfully. Record it against the current component rather than
+        // the next one so the per-component status stays accurate.
+        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
         if (componentIndex == applicableComponents.size() - 1)
         {
-            componentIndex = 0;
-            componentUpdateStatus.clear();
-            componentUpdateStatus[componentIndex] =
-                ComponentUpdateStatus::Accepted;
+            // All components have been processed. Keep the status of every
+            // component so that activateFirmware can determine the overall
+            // device result.
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -913,8 +914,6 @@ Response DeviceUpdater::applyComplete(const pldm_msg* request,
         else
         {
             componentIndex++;
-            componentUpdateStatus[componentIndex] =
-                ComponentUpdateStatus::Accepted;
             if (updateManager != nullptr)
             {
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
@@ -1042,8 +1041,20 @@ void DeviceUpdater::activateFirmware(mctp_eid_t eid, const pldm_msg* response,
         return;
     }
 
+    // The device update succeeds only if no applicable component failed to
+    // update.
+    bool success = true;
+    for (const auto& compStatus : componentUpdateStatus)
+    {
+        if (compStatus.second == ComponentUpdateStatus::Failed)
+        {
+            success = false;
+            break;
+        }
+    }
+
     updateManager->updateActivationProgress();
-    updateManager->updateDeviceCompletion(eid, true);
+    updateManager->updateDeviceCompletion(eid, success);
 }
 
 void DeviceUpdater::sendCancelUpdateComponentRequest()
@@ -1125,9 +1136,8 @@ void DeviceUpdater::cancelUpdateComponent(
             if (compStatus.second == ComponentUpdateStatus::Accepted)
             {
                 // If at least one component update succeeded, proceed with
-                // activation
-                componentIndex = 0;
-                componentUpdateStatus.clear();
+                // activation. The cancelled component stays failed, so the
+                // device update is reported as failed.
                 pldmRequest = std::make_unique<sdeventplus::source::Defer>(
                     updateManager->event,
                     std::bind(&DeviceUpdater::sendActivateFirmwareRequest,
@@ -1140,9 +1150,8 @@ void DeviceUpdater::cancelUpdateComponent(
     }
     else
     {
-        // Move to next component and update its status
+        // Move to next component
         componentIndex++;
-        componentUpdateStatus[componentIndex] = ComponentUpdateStatus::Accepted;
         pldmRequest = std::make_unique<sdeventplus::source::Defer>(
             updateManager->event,
             std::bind(&DeviceUpdater::sendUpdateComponentRequest, this,
