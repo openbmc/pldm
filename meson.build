@@ -293,6 +293,7 @@ executable(
     'platform-mc/event_manager.cpp',
     'platform-mc/dbus_to_terminus_effecters.cpp',
     'platform-mc/entity.cpp',
+    'platform-mc/state_effecter.cpp',
     'platform-mc/state_sensor.cpp',
     'platform-mc/state_set.cpp',
     oem_files,

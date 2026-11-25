@@ -271,6 +271,20 @@ void Terminus::parseTerminusPDRs()
                 stateSensorPdrs.emplace_back(std::move(parsedPdr));
                 break;
             }
+            case PLDM_STATE_EFFECTER_PDR:
+            {
+                auto parsedPdr = parseStateEffecterPDR(pdr);
+                if (!parsedPdr)
+                {
+                    lg2::error(
+                        "Failed to parse PDR with type {TYPE} handle {HANDLE}",
+                        "TYPE", pdrHdr->type, "HANDLE",
+                        static_cast<uint32_t>(pdrHdr->record_handle));
+                    continue;
+                }
+                stateEffecterPdrs.emplace_back(std::move(parsedPdr));
+                break;
+            }
             case PLDM_ENTITY_AUXILIARY_NAMES_PDR:
             {
                 auto entityNames = parseEntityAuxiliaryNamesPDR(pdr);
@@ -330,6 +344,11 @@ void Terminus::parseTerminusPDRs()
     }
 
     addEntities();
+
+    /* A state set which a state effecter controls is not set from a state
+     * sensor, so the state effecters are bound to their entities first.
+     */
+    addStateEffecters();
 
     addStateSensors();
 
@@ -426,6 +445,59 @@ std::shared_ptr<StateSensorInfo> Terminus::parseStateSensorPDR(
             "Failed to walk possible states of State Sensor PDR of sensorID {SENSORID}, error - {ERROR}",
             "SENSORID", info->pdr.sensor_id, "ERROR", rc);
         return nullptr;
+    }
+
+    return info;
+}
+
+std::shared_ptr<StateEffecterInfo> Terminus::parseStateEffecterPDR(
+    const std::vector<uint8_t>& pdrData)
+{
+    auto info = std::make_shared<StateEffecterInfo>();
+    variable_field possibleStates{};
+    int rc = decode_pldm_platform_state_effecter_pdr(
+        pdrData.data(), pdrData.size(), &info->pdr, &possibleStates);
+    if (rc)
+    {
+        lg2::error("Failed to decode State Effecter PDR, error - {ERROR}",
+                   "ERROR", rc);
+        return nullptr;
+    }
+
+    const uint8_t* data = possibleStates.ptr;
+    size_t remaining = possibleStates.length;
+    for (uint8_t offset = 0; offset < info->pdr.composite_effecter_count;
+         offset++)
+    {
+        pldm_platform_state_effecter_possible_states states{};
+        variable_field bitfield{};
+        size_t consumed = remaining;
+        rc = decode_pldm_platform_state_effecter_possible_states(
+            data, &consumed, &states, &bitfield);
+        if (rc)
+        {
+            lg2::error(
+                "Failed to decode possible states of State Effecter PDR of effecterID {EFFECTERID}, error - {ERROR}",
+                "EFFECTERID", info->pdr.effecter_id, "ERROR", rc);
+            return nullptr;
+        }
+
+        PossibleStates possibleStateValues{};
+        for (size_t byteIndex = 0; byteIndex < bitfield.length; byteIndex++)
+        {
+            for (uint8_t bit = 0; bit < 8; bit++)
+            {
+                if (bitfield.ptr[byteIndex] & (1 << bit))
+                {
+                    possibleStateValues.insert(byteIndex * 8 + bit);
+                }
+            }
+        }
+
+        info->componentInfo.emplace_back(states.state_set_id,
+                                         std::move(possibleStateValues));
+        data += consumed;
+        remaining -= consumed;
     }
 
     return info;
@@ -679,6 +751,54 @@ void Terminus::addStateSensors()
         stateSensors.emplace_back(
             std::make_shared<StateSensor>(tid, info, std::move(stateSets)));
     }
+}
+
+void Terminus::addStateEffecters()
+{
+    for (const auto& info : stateEffecterPdrs)
+    {
+        EntityKey key{info->pdr.entity_type, info->pdr.entity_instance_number,
+                      info->pdr.container_id};
+
+        auto stateSets = getEntityStateSets(key);
+        if (!stateSets)
+        {
+            lg2::error(
+                "Terminus ID {TID}: Skip state effecter {EFFECTERID} - no D-Bus object for Entity type {TYPE} instance {INSTANCE} container {CONTAINER}.",
+                "TID", tid, "EFFECTERID", info->pdr.effecter_id, "TYPE",
+                key.type, "INSTANCE", key.instanceIdx, "CONTAINER",
+                key.containerId);
+            continue;
+        }
+
+        auto stateEffecter =
+            std::make_shared<StateEffecter>(tid, info, std::move(stateSets));
+        if (!stateEffecter->hasExposedOffset())
+        {
+            lg2::info(
+                "Terminus ID {TID}: Skip state effecter {EFFECTERID} - no effecter offset is exposed.",
+                "TID", tid, "EFFECTERID", info->pdr.effecter_id);
+            continue;
+        }
+
+        stateEffecters.emplace_back(std::move(stateEffecter));
+    }
+}
+
+std::shared_ptr<StateEffecter> Terminus::getStateEffecterObject(EffecterID id)
+{
+    auto it = std::find_if(
+        stateEffecters.begin(), stateEffecters.end(),
+        [id](const std::shared_ptr<StateEffecter>& stateEffecter) {
+            return stateEffecter && stateEffecter->getEffecterId() == id;
+        });
+
+    if (it != stateEffecters.end())
+    {
+        return *it;
+    }
+
+    return nullptr;
 }
 
 std::shared_ptr<StateSensor> Terminus::getStateSensorObject(SensorID id)

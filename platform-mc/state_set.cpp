@@ -19,6 +19,15 @@ std::unique_ptr<StateSetBase> createStateSet(
     }
 }
 
+bool isWritableStateSet(StateSetId stateSetId)
+{
+    switch (stateSetId)
+    {
+        default:
+            return false;
+    }
+}
+
 StateSetBase* StateSets::getStateSet(StateSetId stateSetId)
 {
     auto it = stateSets.find(stateSetId);
