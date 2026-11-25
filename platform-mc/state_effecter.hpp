@@ -115,6 +115,30 @@ class StateEffecter
      */
     EnableState enableState = EnableState::pending;
 
+    /** @brief Publish the state which one composite effecter reports on the
+     *         state set property of the entity
+     *  @details `Table 54 - GetStateEffecterStates stateField format` of
+     *           DSP0248 v1.3.0 makes presentState meaningful only while the
+     *           composite effecter is enabled, so the property is kept for
+     *           any other operational state, and for a state which is not
+     *           one of the possible states of the composite effecter.
+     *
+     *  @param[in] offset - effecter offset of the composite effecter
+     *  @param[in] opState - the effecterOperationalState of
+     *                       GetStateEffecterStates
+     *  @param[in] presentState - the presentState of GetStateEffecterStates
+     */
+    void updatePresentState(uint8_t offset, uint8_t opState,
+                            uint8_t presentState);
+
+    /** @brief Whether the getter of the effecter is active, so that
+     *         GetStateEffecterStates is sent on the next polling pass of the
+     *         terminus. The getter starts active after discovery, and stops
+     *         when no composite effecter reports enabled-updatePending or
+     *         when GetStateEffecterStates fails.
+     */
+    bool getterActive = true;
+
   private:
     /** @brief Terminus ID which the effecter belongs to */
     pldm_tid_t tid;

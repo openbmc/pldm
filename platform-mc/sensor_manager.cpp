@@ -243,6 +243,12 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_return rc;
         }
 
+        rc = co_await readStateEffecters(tid, terminus);
+        if (rc != PLDM_SUCCESS)
+        {
+            co_return rc;
+        }
+
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
 
         auto& numericSensors = terminus->numericSensors;
@@ -810,6 +816,140 @@ exec::task<int> SensorManager::setStateEffecterEnables(
     {
         effecter->enableState = StateEffecter::EnableState::enabled;
     }
+
+    co_return resp.completion_code;
+}
+
+exec::task<int> SensorManager::readStateEffecters(
+    pldm_tid_t tid, std::shared_ptr<Terminus> terminus)
+{
+    if (!terminus)
+    {
+        lg2::error("Call `readStateEffecters` with null `terminus` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    /* Copy the list, as the terminus may drop its effecters while a command
+     * is in flight
+     */
+    auto stateEffecters = terminus->stateEffecters;
+    for (const auto& effecter : stateEffecters)
+    {
+        if (!effecter || !effecter->getterActive)
+        {
+            continue;
+        }
+
+        if (effecter->requiresEnable() &&
+            effecter->enableState == StateEffecter::EnableState::pending)
+        {
+            continue;
+        }
+
+        auto rc = co_await getStateEffecterStates(effecter);
+        if (!isSensorPollTimerRunning(tid))
+        {
+            co_return PLDM_ERROR;
+        }
+
+        if (rc != PLDM_SUCCESS)
+        {
+            effecter->getterActive = false;
+            lg2::error(
+                "Failed to get state effecter states for effecter {ID} of terminus {TID}, error: {RC}",
+                "ID", effecter->getEffecterId(), "TID", tid, "RC", rc);
+        }
+    }
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> SensorManager::getStateEffecterStates(
+    std::shared_ptr<StateEffecter> effecter)
+{
+    if (!effecter)
+    {
+        lg2::error(
+            "Call `getStateEffecterStates` with null `effecter` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = effecter->getTid();
+    auto effecterId = effecter->getEffecterId();
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    auto rc = encode_get_state_effecter_states_req(
+        0, effecterId, requestMsg, PLDM_GET_STATE_EFFECTER_STATES_REQ_BYTES);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request GetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send GetStateEffecterStates message for terminus {TID}, effecter Id {ID}, error {RC}",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!isSensorPollTimerRunning(tid))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    pldm_get_state_effecter_states_resp resp{};
+    rc = decode_get_state_effecter_states_resp(responseMsg, responseLen, &resp);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response GetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (resp.completion_code != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : GetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", effecterId, "CC", resp.completion_code);
+        co_return resp.completion_code;
+    }
+
+    /* The getter keeps reading while a composite effecter still moves to a
+     * requested state
+     */
+    bool updatePending = false;
+    auto count = std::min(resp.comp_effecter_count,
+                          effecter->getCompositeEffecterCount());
+    for (uint8_t offset = 0; offset < count; offset++)
+    {
+        const auto& field = resp.field[offset];
+        if (field.effecter_op_state ==
+            EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING)
+        {
+            updatePending = true;
+        }
+        effecter->updatePresentState(offset, field.effecter_op_state,
+                                     field.present_state);
+    }
+    effecter->getterActive = updatePending;
 
     co_return resp.completion_code;
 }

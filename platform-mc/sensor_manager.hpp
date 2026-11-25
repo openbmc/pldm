@@ -155,6 +155,27 @@ class SensorManager
     exec::task<int> setStateEffecterEnables(
         std::shared_ptr<StateEffecter> effecter);
 
+    /** @brief Read the state effecters of a terminus whose getter is active
+     *
+     *  An effecter which waits for SetStateEffecterEnables is read once the
+     *  command completes.
+     *
+     *  @param[in] tid - Destination TID
+     *  @param[in] terminus - the terminus which owns the state effecters
+     *  @return coroutine return_value - PLDM_ERROR when the polling of the
+     *          terminus stopped, PLDM_SUCCESS otherwise
+     */
+    exec::task<int> readStateEffecters(pldm_tid_t tid,
+                                       std::shared_ptr<Terminus> terminus);
+
+    /** @brief Sending getStateEffecterStates command for the state effecter
+     *
+     *  @param[in] effecter - the state effecter to be read
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> getStateEffecterStates(
+        std::shared_ptr<StateEffecter> effecter);
+
     /** @brief Reference to to PLDM daemon's main event loop.
      */
     sdeventplus::Event& event;
