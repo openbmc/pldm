@@ -6,6 +6,14 @@
 #include "firmware_inventory_manager.hpp"
 #include "requester/handler.hpp"
 
+#include <sdeventplus/clock.hpp>
+#include <sdeventplus/utility/timer.hpp>
+
+#include <memory>
+#include <optional>
+#include <string_view>
+#include <utility>
+
 namespace pldm
 {
 
@@ -41,6 +49,7 @@ class InventoryManager
      *                                        by the BMC.
      *  @param[out] componentInfoMap - Populate the component info for the FDs
      *                                 managed by the BMC.
+     *  @param[in] event - PLDM daemon's main event loop
      */
     explicit InventoryManager(
         const pldm::utils::DBusHandler* dbusHandler,
@@ -49,12 +58,13 @@ class InventoryManager
         DownstreamDescriptorMap& downstreamDescriptorMap,
         ComponentInfoMap& componentInfoMap,
         const Configurations& configurations,
-        AggregateUpdateManager& updateManager) :
+        AggregateUpdateManager& updateManager, sdeventplus::Event& event) :
         handler(handler), instanceIdDb(instanceIdDb),
         descriptorMap(descriptorMap),
         downstreamDescriptorMap(downstreamDescriptorMap),
         componentInfoMap(componentInfoMap), configurations(configurations),
-        firmwareInventoryManager(dbusHandler, configurations, updateManager)
+        firmwareInventoryManager(dbusHandler, configurations, updateManager),
+        event(event)
     {}
 
     /** @brief Discover the firmware identifiers and component details of FDs
@@ -185,6 +195,45 @@ class InventoryManager
      */
     void sendGetFirmwareParametersRequest(mctp_eid_t eid);
 
+    /** @brief Schedule a delayed retry of an inventory request after a
+     *         retryable completion code
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] requestName - Name of the request, for logging
+     *  @param[in] sendRequest - Sender of the request to retry
+     */
+    void scheduleInventoryRequestRetry(
+        mctp_eid_t eid, std::string_view requestName,
+        void (InventoryManager::*sendRequest)(mctp_eid_t));
+
+    /** @brief Send a scheduled inventory request retry
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void sendInventoryRequestRetry(mctp_eid_t eid);
+
+    /** @brief Remember the in-flight inventory request of an endpoint
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     *  @param[in] instanceId - Instance ID of the request
+     *  @param[in] command - PLDM command of the request
+     */
+    void trackInventoryRequest(mctp_eid_t eid, uint8_t instanceId,
+                               uint8_t command);
+
+    /** @brief Forget the in-flight inventory request of an endpoint
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void untrackInventoryRequest(mctp_eid_t eid);
+
+    /** @brief Stop the in-flight inventory request and any pending retry of
+     *         an endpoint, and drop its retry state
+     *
+     *  @param[in] eid - Remote MCTP endpoint
+     */
+    void stopInventoryRequests(mctp_eid_t eid);
+
     /** @brief PLDM request handler */
     pldm::requester::Handler<pldm::requester::Request>& handler;
 
@@ -197,6 +246,28 @@ class InventoryManager
     /** @brief Firmware Device names of the managed FDs */
     std::map<eid, SoftwareName> firmwareDeviceNameMap;
 
+    using RetryTimer =
+        sdeventplus::utility::Timer<sdeventplus::ClockId::Monotonic>;
+
+    /** @brief State of inventory request retries for an endpoint */
+    struct InventoryRequestRetry
+    {
+        std::unique_ptr<RetryTimer> timer;
+        uint8_t count = 0;
+        /** @brief Request to send when the timer expires */
+        std::string_view requestName;
+        void (InventoryManager::*sendRequest)(mctp_eid_t) = nullptr;
+        /** @brief Instance ID and command of the in-flight request */
+        std::optional<std::pair<uint8_t, uint8_t>> inFlight;
+    };
+
+    /** @brief Inventory request retries per endpoint
+     *
+     *  An entry exists from discoverFDs() until removeFDs(). Retries are only
+     *  scheduled for endpoints that have an entry.
+     */
+    std::map<eid, InventoryRequestRetry> inventoryRequestRetries;
+
     /** @brief Downstream Device identifiers of the managed FDs */
     DownstreamDescriptorMap& downstreamDescriptorMap;
 
@@ -208,6 +279,9 @@ class InventoryManager
 
     /** @brief Dbus Inventory Item Manager */
     FirmwareInventoryManager firmwareInventoryManager;
+
+    /** @brief PLDM daemon's main event loop */
+    sdeventplus::Event& event;
 };
 
 /**

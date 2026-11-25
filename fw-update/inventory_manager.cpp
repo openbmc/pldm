@@ -6,6 +6,7 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <chrono>
 #include <format>
 
 PHOSPHOR_LOG2_USING;
@@ -14,11 +15,27 @@ namespace pldm
 {
 namespace fw_update
 {
+namespace
+{
+constexpr uint8_t inventoryRequestMaxRetries = 3;
+constexpr auto inventoryRequestRetryBaseDelay = std::chrono::seconds(5);
+
+bool isRetryableCompletionCode(uint8_t completionCode)
+{
+    return completionCode == PLDM_ERROR ||
+           completionCode == PLDM_ERROR_NOT_READY;
+}
+} // namespace
+
 void InventoryManager::discoverFDs(const MctpInfos& mctpInfos)
 {
     for (const auto& mctpInfo : mctpInfos)
     {
         auto eid = std::get<pldm::eid>(mctpInfo);
+        // Drop the state of a previous discovery so that its late response
+        // cannot clear the tracking of the new request.
+        stopInventoryRequests(eid);
+        inventoryRequestRetries.emplace(eid, InventoryRequestRetry{});
         try
         {
             sendQueryDeviceIdentifiersRequest(eid);
@@ -42,6 +59,104 @@ void InventoryManager::removeFDs(const MctpInfos& mctpInfos)
         downstreamDescriptorMap.erase(eid);
         componentInfoMap.erase(eid);
         firmwareInventoryManager.deleteFirmwareEntry(eid);
+        stopInventoryRequests(eid);
+    }
+}
+
+void InventoryManager::stopInventoryRequests(mctp_eid_t eid)
+{
+    auto it = inventoryRequestRetries.find(eid);
+    if (it == inventoryRequestRetries.end())
+    {
+        return;
+    }
+
+    if (const auto& inFlight = it->second.inFlight)
+    {
+        handler.unregisterRequest(eid, inFlight->first, PLDM_FWUP,
+                                  inFlight->second);
+    }
+    // Erasing the entry also destroys the timer of a pending retry.
+    inventoryRequestRetries.erase(it);
+}
+
+void InventoryManager::scheduleInventoryRequestRetry(
+    mctp_eid_t eid, std::string_view requestName,
+    void (InventoryManager::*sendRequest)(mctp_eid_t))
+{
+    auto it = inventoryRequestRetries.find(eid);
+    if (it == inventoryRequestRetries.end())
+    {
+        // The endpoint was removed, e.g. the response arrived after
+        // removeFDs(). Do not retry.
+        info("Not retrying {REQUEST} for untracked endpoint ID {EID}",
+             "REQUEST", requestName, "EID", eid);
+        return;
+    }
+
+    auto& retry = it->second;
+    if (retry.count >= inventoryRequestMaxRetries)
+    {
+        error("Giving up {REQUEST} for endpoint ID {EID} after {COUNT} retries",
+              "REQUEST", requestName, "EID", eid, "COUNT", retry.count);
+        return;
+    }
+
+    ++retry.count;
+    retry.requestName = requestName;
+    retry.sendRequest = sendRequest;
+    const auto delay = inventoryRequestRetryBaseDelay * retry.count;
+    if (!retry.timer)
+    {
+        retry.timer =
+            std::make_unique<RetryTimer>(event, [this, eid](RetryTimer&) {
+                sendInventoryRequestRetry(eid);
+            });
+    }
+
+    warning(
+        "Retrying {REQUEST} for endpoint ID {EID} in {DELAY} seconds, attempt {COUNT}",
+        "REQUEST", requestName, "EID", eid, "DELAY", delay.count(), "COUNT",
+        retry.count);
+    retry.timer->restartOnce(delay);
+}
+
+void InventoryManager::sendInventoryRequestRetry(mctp_eid_t eid)
+{
+    auto it = inventoryRequestRetries.find(eid);
+    if (it == inventoryRequestRetries.end() || !it->second.sendRequest)
+    {
+        return;
+    }
+
+    const auto requestName = it->second.requestName;
+    try
+    {
+        (this->*(it->second.sendRequest))(eid);
+    }
+    catch (const std::exception& e)
+    {
+        error("Failed to retry {REQUEST} for endpoint ID {EID} with {ERROR}",
+              "REQUEST", requestName, "EID", eid, "ERROR", e);
+    }
+}
+
+void InventoryManager::trackInventoryRequest(mctp_eid_t eid, uint8_t instanceId,
+                                             uint8_t command)
+{
+    if (auto it = inventoryRequestRetries.find(eid);
+        it != inventoryRequestRetries.end())
+    {
+        it->second.inFlight = std::make_pair(instanceId, command);
+    }
+}
+
+void InventoryManager::untrackInventoryRequest(mctp_eid_t eid)
+{
+    if (auto it = inventoryRequestRetries.find(eid);
+        it != inventoryRequestRetries.end())
+    {
+        it->second.inFlight.reset();
     }
 }
 
@@ -82,11 +197,15 @@ void InventoryManager::sendQueryDeviceIdentifiersRequest(mctp_eid_t eid)
         throw std::runtime_error(
             "Failed to send QueryDeviceIdentifiers request");
     }
+
+    trackInventoryRequest(eid, instanceId, PLDM_QUERY_DEVICE_IDENTIFIERS);
 }
 
 void InventoryManager::queryDeviceIdentifiers(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
+    untrackInventoryRequest(eid);
+
     if (response == nullptr || !respMsgLen)
     {
         error(
@@ -113,10 +232,31 @@ void InventoryManager::queryDeviceIdentifiers(
 
     if (completionCode)
     {
-        error(
-            "Failed to query device identifiers response for endpoint ID {EID}, completion code {CC}",
-            "EID", eid, "CC", completionCode);
+        // The FD may fail the request transiently, e.g. while it is busy
+        // with other PLDM traffic. The response arrives immediately, so defer
+        // the retry to give the FD time to recover.
+        if (isRetryableCompletionCode(completionCode))
+        {
+            warning(
+                "QueryDeviceIdentifiers for endpoint ID {EID} returned completion code {CC}",
+                "EID", eid, "CC", completionCode);
+            scheduleInventoryRequestRetry(
+                eid, "QueryDeviceIdentifiers",
+                &InventoryManager::sendQueryDeviceIdentifiersRequest);
+        }
+        else
+        {
+            error(
+                "Failed to query device identifiers response for endpoint ID {EID}, completion code {CC}",
+                "EID", eid, "CC", completionCode);
+        }
         return;
+    }
+
+    if (auto it = inventoryRequestRetries.find(eid);
+        it != inventoryRequestRetries.end())
+    {
+        it->second.count = 0;
     }
 
     base::Descriptors descriptors{};
@@ -628,12 +768,17 @@ void InventoryManager::sendGetFirmwareParametersRequest(mctp_eid_t eid)
         error(
             "Failed to send get firmware parameters request for endpoint ID {EID}, response code {RC}",
             "EID", eid, "RC", rc);
+        return;
     }
+
+    trackInventoryRequest(eid, instanceId, PLDM_GET_FIRMWARE_PARAMETERS);
 }
 
 void InventoryManager::getFirmwareParameters(
     mctp_eid_t eid, const pldm_msg* response, size_t respMsgLen)
 {
+    untrackInventoryRequest(eid);
+
     if (response == nullptr || !respMsgLen)
     {
         error(
@@ -662,10 +807,29 @@ void InventoryManager::getFirmwareParameters(
     if (fwParams.completion_code)
     {
         auto fw_param_cc = fwParams.completion_code;
-        error(
-            "Failed to get firmware parameters response for endpoint ID {EID}, completion code {CC}",
-            "EID", eid, "CC", fw_param_cc);
+        // The FD may be busy right after answering QueryDeviceIdentifiers.
+        if (isRetryableCompletionCode(fw_param_cc))
+        {
+            warning(
+                "GetFirmwareParameters for endpoint ID {EID} returned completion code {CC}",
+                "EID", eid, "CC", fw_param_cc);
+            scheduleInventoryRequestRetry(
+                eid, "GetFirmwareParameters",
+                &InventoryManager::sendGetFirmwareParametersRequest);
+        }
+        else
+        {
+            error(
+                "Failed to get firmware parameters response for endpoint ID {EID}, completion code {CC}",
+                "EID", eid, "CC", fw_param_cc);
+        }
         return;
+    }
+
+    if (auto it = inventoryRequestRetries.find(eid);
+        it != inventoryRequestRetries.end())
+    {
+        it->second.count = 0;
     }
 
     auto compParamPtr = compParamTable.ptr;

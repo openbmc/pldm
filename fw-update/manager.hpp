@@ -47,7 +47,7 @@ class Manager : public pldm::MctpDiscoveryHandlerIntf
                       componentInfoMap),
         inventoryMgr(dbusHandler, handler, instanceIdDb, descriptorMap,
                      downstreamDescriptorMap, componentInfoMap, configurations,
-                     updateManager)
+                     updateManager, event)
     {}
 
     /** @brief Helper function to invoke registered handlers for
