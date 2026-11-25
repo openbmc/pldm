@@ -176,6 +176,40 @@ class SensorManager
     exec::task<int> getStateEffecterStates(
         std::shared_ptr<StateEffecter> effecter);
 
+    /** @brief Hand the state set property of each exposed effecter offset of
+     *         the state effecters of a terminus to its state effecter, so a
+     *         D-Bus client can set the state of the entity
+     *
+     *  @param[in] tid - Destination TID
+     */
+    void bindStateEffecters(pldm_tid_t tid);
+
+    /** @brief Accept a state which a D-Bus client requests for an effecter
+     *         offset and start the setter of the state effecter
+     *
+     *  @param[in] effecter - the state effecter
+     *  @param[in] offset - effecter offset of the composite effecter
+     *  @param[in] state - the requested state
+     *  @throws sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument
+     *          when the state is not a possible state of the effecter offset
+     *  @throws sdbusplus::xyz::openbmc_project::Common::Error::Unavailable
+     *          when the setter or the getter of the effecter is active, or
+     *          the terminus is not available for PLDM requests
+     */
+    void requestStateEffecterSet(std::shared_ptr<StateEffecter> effecter,
+                                 uint8_t offset, uint8_t state);
+
+    /** @brief Sending setStateEffecterStates command to set the state of one
+     *         effecter offset, leaving the other effecter offsets unchanged
+     *
+     *  @param[in] effecter - the state effecter
+     *  @param[in] offset - effecter offset of the composite effecter
+     *  @param[in] state - the requested state
+     *  @return coroutine return_value - PLDM completion code
+     */
+    exec::task<int> setStateEffecterStates(
+        std::shared_ptr<StateEffecter> effecter, uint8_t offset, uint8_t state);
+
     /** @brief Reference to to PLDM daemon's main event loop.
      */
     sdeventplus::Event& event;
@@ -215,6 +249,9 @@ class SensorManager
 
     /** @brief Round robin state sensor iter of terminus */
     std::map<pldm_tid_t, SensorID> roundRobinStateSensorItMap;
+
+    /** @brief The setters of the state effecters in flight */
+    exec::async_scope effecterSetScope;
 
     /** @brief pointer to Manager */
     Manager* manager;

@@ -25,6 +25,7 @@ class MockSensorManager : public SensorManager
     using SensorManager::doSensorPollingTask;
     using SensorManager::getStateEffecterStates;
     using SensorManager::getStateSensorReadings;
+    using SensorManager::requestStateEffecterSet;
     using SensorManager::setStateEffecterEnables;
     using SensorManager::setStateSensorEnables;
 };

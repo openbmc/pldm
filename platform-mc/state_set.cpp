@@ -1,6 +1,7 @@
 #include "state_set.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 PHOSPHOR_LOG2_USING;
 
@@ -17,6 +18,16 @@ std::unique_ptr<StateSetBase> createStateSet(
         default:
             return nullptr;
     }
+}
+
+void StateSetBase::requestState(uint8_t state)
+{
+    if (!requester)
+    {
+        throw sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed();
+    }
+
+    requester(state);
 }
 
 bool isWritableStateSet(StateSetId stateSetId)

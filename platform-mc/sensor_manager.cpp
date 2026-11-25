@@ -4,6 +4,7 @@
 #include "terminus_manager.hpp"
 
 #include <phosphor-logging/lg2.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <algorithm>
 #include <array>
@@ -45,6 +46,8 @@ void SensorManager::startPolling(pldm_tid_t tid)
     roundRobinStateSensorItMap[tid] = 0;
 
     updateAvailableState(tid, true);
+
+    bindStateEffecters(tid);
 
     sensorPollTimers[tid] = std::make_unique<sdbusplus::Timer>(
         event.get(), [this, tid] { this->doSensorPolling(tid); });
@@ -952,6 +955,185 @@ exec::task<int> SensorManager::getStateEffecterStates(
     effecter->getterActive = updatePending;
 
     co_return resp.completion_code;
+}
+
+void SensorManager::bindStateEffecters(pldm_tid_t tid)
+{
+    auto terminusIt = termini.find(tid);
+    if (terminusIt == termini.end() || !terminusIt->second)
+    {
+        return;
+    }
+
+    for (const auto& effecter : terminusIt->second->stateEffecters)
+    {
+        if (!effecter)
+        {
+            continue;
+        }
+
+        for (uint8_t offset = 0; offset < effecter->getCompositeEffecterCount();
+             offset++)
+        {
+            auto stateSet = effecter->getStateSet(offset);
+            if (!stateSet)
+            {
+                continue;
+            }
+
+            std::weak_ptr<StateEffecter> weakEffecter = effecter;
+            stateSet->setStateRequester(
+                [this, weakEffecter, offset](uint8_t state) {
+                    auto effecter = weakEffecter.lock();
+                    if (!effecter)
+                    {
+                        throw sdbusplus::xyz::openbmc_project::Common::Error::
+                            Unavailable();
+                    }
+                    requestStateEffecterSet(effecter, offset, state);
+                });
+        }
+    }
+}
+
+void SensorManager::requestStateEffecterSet(
+    std::shared_ptr<StateEffecter> effecter, uint8_t offset, uint8_t state)
+{
+    using namespace sdbusplus::xyz::openbmc_project::Common::Error;
+
+    auto tid = effecter->getTid();
+    auto effecterId = effecter->getEffecterId();
+    if (!effecter->isPossibleState(offset, state))
+    {
+        lg2::error(
+            "Terminus ID {TID}: Reject state {STATE} for effecter offset {OFFSET} of state effecter {ID} - not a possible state.",
+            "TID", tid, "STATE", state, "OFFSET", offset, "ID", effecterId);
+        throw InvalidArgument();
+    }
+
+    if (effecter->setterActive || effecter->getterActive)
+    {
+        lg2::error(
+            "Terminus ID {TID}: Reject state {STATE} for effecter offset {OFFSET} of state effecter {ID} - the effecter is busy.",
+            "TID", tid, "STATE", state, "OFFSET", offset, "ID", effecterId);
+        throw Unavailable();
+    }
+
+    if (!getAvailableState(tid))
+    {
+        throw Unavailable();
+    }
+
+    effecter->setterActive = true;
+    effecterSetScope.spawn(
+        [](SensorManager& self, std::shared_ptr<StateEffecter> effecter,
+           uint8_t offset, uint8_t state) -> exec::task<void> {
+            co_await stdexec::stopped_as_optional(
+                self.setStateEffecterStates(effecter, offset, state));
+
+            /* The getter reads back the state which the terminus took,
+             * whatever the outcome of the setter
+             */
+            effecter->setterActive = false;
+            effecter->getterActive = true;
+        }(*this, effecter, offset, state),
+        exec::default_task_context<void>(stdexec::inline_scheduler{}));
+}
+
+exec::task<int> SensorManager::setStateEffecterStates(
+    std::shared_ptr<StateEffecter> effecter, uint8_t offset, uint8_t state)
+{
+    if (!effecter)
+    {
+        lg2::error(
+            "Call `setStateEffecterStates` with null `effecter` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = effecter->getTid();
+    auto effecterId = effecter->getEffecterId();
+    auto compositeEffecterCount = effecter->getCompositeEffecterCount();
+    if (!compositeEffecterCount ||
+        compositeEffecterCount > PLDM_GET_EFFECTER_STATE_FIELD_COUNT_MAX ||
+        offset >= compositeEffecterCount)
+    {
+        lg2::error(
+            "State effecter {ID} of terminus ID {TID} has no effecter offset {OFFSET} in composite effecter count {COUNT}.",
+            "ID", effecterId, "TID", tid, "OFFSET", offset, "COUNT",
+            compositeEffecterCount);
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    std::array<set_effecter_state_field,
+               PLDM_GET_EFFECTER_STATE_FIELD_COUNT_MAX>
+        fields{};
+    for (auto& field : fields)
+    {
+        field.set_request = PLDM_NO_CHANGE;
+    }
+    fields[offset].set_request = PLDM_REQUEST_SET;
+    fields[offset].effecter_state = state;
+
+    Request request(
+        sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_REQ_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    auto rc = encode_set_state_effecter_states_req(
+        0, effecterId, compositeEffecterCount, fields.data(), requestMsg);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request SetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+    request.resize(
+        sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_MIN_REQ_BYTES +
+        sizeof(set_effecter_state_field) * (compositeEffecterCount - 1));
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send SetStateEffecterStates message for terminus {TID}, effecter Id {ID}, error {RC}",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!isSensorPollTimerRunning(tid))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    uint8_t completionCode = PLDM_SUCCESS;
+    rc = decode_set_state_effecter_states_resp(responseMsg, responseLen,
+                                               &completionCode);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response SetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (completionCode != PLDM_SUCCESS)
+    {
+        lg2::error(
+            "Error : SetStateEffecterStates for terminus ID {TID}, effecter Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", effecterId, "CC", completionCode);
+    }
+
+    co_return completionCode;
 }
 
 exec::task<int> SensorManager::getStateSensorReadings(
