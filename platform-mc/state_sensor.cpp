@@ -2,6 +2,8 @@
 
 #include <phosphor-logging/lg2.hpp>
 
+#include <algorithm>
+
 PHOSPHOR_LOG2_USING;
 
 namespace pldm
@@ -22,6 +24,17 @@ StateSensor::StateSensor(pldm_tid_t tid, std::shared_ptr<StateSensorInfo> info,
     for (const auto& componentInfo : this->info->componentInfo)
     {
         const auto stateSetId = componentInfo.first;
+        const auto offset = componentStateSets.size();
+        if (this->stateSets->isEffecterStateSet(stateSetId))
+        {
+            lg2::info(
+                "Terminus ID {TID}: Skip composite sensor offset {OFFSET} of state sensor {SENSORID} - a state effecter controls state set {STATESETID}.",
+                "TID", tid, "OFFSET", offset, "SENSORID",
+                this->info->pdr.sensor_id, "STATESETID", stateSetId);
+            componentStateSets.emplace_back(nullptr);
+            continue;
+        }
+
         auto stateSet = this->stateSets->getStateSet(stateSetId);
         if (!stateSet)
         {
@@ -34,6 +47,14 @@ StateSensor::StateSensor(pldm_tid_t tid, std::shared_ptr<StateSensorInfo> info,
     }
 
     componentOpStates.assign(componentStateSets.size(), PLDM_SENSOR_ENABLED);
+}
+
+bool StateSensor::isControlledByEffecters() const
+{
+    return std::ranges::all_of(
+        info->componentInfo, [this](const auto& componentInfo) {
+            return stateSets->isEffecterStateSet(componentInfo.first);
+        });
 }
 
 void StateSensor::updatePresentState(uint8_t offset, uint8_t presentState)

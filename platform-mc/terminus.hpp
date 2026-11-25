@@ -387,8 +387,9 @@ class Terminus
     void addStateEffecters();
 
     /** @brief Construct the StateSensor class of every state sensor of the
-     *         terminus. A state sensor whose entity has no D-Bus object is
-     *         not constructed.
+     *         terminus. A state sensor whose entity has no D-Bus object, or
+     *         whose state sets are all controlled by state effecters, is not
+     *         constructed.
      */
     void addStateSensors();
 

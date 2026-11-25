@@ -748,8 +748,17 @@ void Terminus::addStateSensors()
             continue;
         }
 
-        stateSensors.emplace_back(
-            std::make_shared<StateSensor>(tid, info, std::move(stateSets)));
+        auto stateSensor =
+            std::make_shared<StateSensor>(tid, info, std::move(stateSets));
+        if (stateSensor->isControlledByEffecters())
+        {
+            lg2::info(
+                "Terminus ID {TID}: Skip state sensor {SENSORID} - state effecters control all of its state sets.",
+                "TID", tid, "SENSORID", info->pdr.sensor_id);
+            continue;
+        }
+
+        stateSensors.emplace_back(std::move(stateSensor));
     }
 }
 

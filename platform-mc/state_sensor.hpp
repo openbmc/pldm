@@ -95,6 +95,12 @@ class StateSensor
         return info->pdr.sensor_init != PLDM_NO_INIT;
     }
 
+    /** @brief Whether a state effecter of the entity controls the state set
+     *         of every component sensor, so that the sensor publishes no
+     *         state and is not enabled or read
+     */
+    bool isControlledByEffecters() const;
+
     /** @brief Publish the state which one component sensor reports on the
      *         state set interface of the entity
      *
@@ -152,7 +158,8 @@ class StateSensor
 
     /** @brief The state set interface of each component sensor, indexed by
      *         its composite sensor offset, nullptr when the state set has no
-     *         D-Bus interface. The interfaces are owned by stateSets.
+     *         D-Bus interface or a state effecter of the entity controls it.
+     *         The interfaces are owned by stateSets.
      */
     std::vector<StateSetBase*> componentStateSets;
 
