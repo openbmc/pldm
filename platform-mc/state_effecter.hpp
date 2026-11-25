@@ -90,6 +90,21 @@ class StateEffecter
     /** @brief Whether any effecter offset of the effecter is exposed */
     bool hasExposedOffset() const;
 
+    /** @brief The getter to return the state set interface of an effecter
+     *         offset, nullptr when the effecter offset is not exposed
+     *
+     *  @param[in] offset - effecter offset of the composite effecter
+     */
+    StateSetBase* getStateSet(uint8_t offset) const;
+
+    /** @brief Whether a state is one of the possible states which the PDR
+     *         lists for an effecter offset
+     *
+     *  @param[in] offset - effecter offset of the composite effecter
+     *  @param[in] state - the state of the state set of the effecter offset
+     */
+    bool isPossibleState(uint8_t offset, uint8_t state) const;
+
     /** @brief Whether the initialization agent has to enable the composite
      *         effecters, `effecterInit` of `Table 90 - State Effecter PDR`
      *         of DSP0248 v1.3.0
@@ -138,6 +153,12 @@ class StateEffecter
      *         when GetStateEffecterStates fails.
      */
     bool getterActive = true;
+
+    /** @brief Whether the setter of the effecter is active, from the time a
+     *         requested state is accepted until SetStateEffecterStates
+     *         completes
+     */
+    bool setterActive = false;
 
   private:
     /** @brief Terminus ID which the effecter belongs to */

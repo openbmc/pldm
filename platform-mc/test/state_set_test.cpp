@@ -1,6 +1,9 @@
 #include "platform-mc/state_set.hpp"
 
+#include <xyz/openbmc_project/Common/error.hpp>
 #include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
+
+#include <optional>
 
 #include <gtest/gtest.h>
 
@@ -45,4 +48,42 @@ TEST(StateSets, effecterControlsStateSetOnce)
     EXPECT_FALSE(stateSets.addEffecterStateSet(controlled));
     EXPECT_TRUE(stateSets.isEffecterStateSet(controlled));
     EXPECT_FALSE(stateSets.isEffecterStateSet(uncontrolled));
+}
+
+namespace
+{
+
+/** @brief A state set whose writable property requests the state it is set
+ *         to
+ */
+class WritableStateSet : public pldm::platform_mc::StateSetBase
+{
+  public:
+    void setPresentState(uint8_t) override {}
+
+    void setProperty(uint8_t state)
+    {
+        requestState(state);
+    }
+};
+
+} // namespace
+
+TEST(StateSetBase, requestWithoutEffecterIsNotAllowed)
+{
+    WritableStateSet stateSet;
+    EXPECT_THROW(stateSet.setProperty(1),
+                 sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed);
+}
+
+TEST(StateSetBase, requestIsHandedToEffecter)
+{
+    WritableStateSet stateSet;
+    std::optional<uint8_t> requested;
+    stateSet.setStateRequester([&requested](uint8_t state) {
+        requested = state;
+    });
+
+    stateSet.setProperty(2);
+    EXPECT_EQ(2, requested);
 }

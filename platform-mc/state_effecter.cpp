@@ -56,6 +56,26 @@ bool StateEffecter::hasExposedOffset() const
         [](const StateSetBase* stateSet) { return stateSet != nullptr; });
 }
 
+StateSetBase* StateEffecter::getStateSet(uint8_t offset) const
+{
+    if (offset >= componentStateSets.size())
+    {
+        return nullptr;
+    }
+
+    return componentStateSets[offset];
+}
+
+bool StateEffecter::isPossibleState(uint8_t offset, uint8_t state) const
+{
+    if (offset >= info->componentInfo.size())
+    {
+        return false;
+    }
+
+    return info->componentInfo[offset].second.contains(state);
+}
+
 void StateEffecter::updatePresentState(uint8_t offset, uint8_t opState,
                                        uint8_t presentState)
 {
@@ -79,7 +99,7 @@ void StateEffecter::updatePresentState(uint8_t offset, uint8_t opState,
         return;
     }
 
-    if (!info->componentInfo[offset].second.contains(presentState))
+    if (!isPossibleState(offset, presentState))
     {
         lg2::error(
             "Terminus ID {TID}: Effecter offset {OFFSET} of state effecter {EFFECTERID} reports state {STATE}, which is not one of its possible states.",

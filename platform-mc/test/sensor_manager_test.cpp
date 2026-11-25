@@ -8,6 +8,7 @@
 #include "utils_test.hpp"
 
 #include <sdeventplus/event.hpp>
+#include <xyz/openbmc_project/Common/error.hpp>
 
 #include <array>
 #include <optional>
@@ -550,4 +551,89 @@ TEST_F(StateEffecterManagerTest, pollingReadsEffecterAfterEnableTest)
     EXPECT_EQ(PLDM_SET_STATE_EFFECTER_ENABLES, sentCommand(1));
     EXPECT_EQ(PLDM_GET_STATE_EFFECTER_STATES, sentCommand(2));
     EXPECT_FALSE(effecter->getterActive);
+}
+
+using SetStateResp = std::array<
+    uint8_t, sizeof(pldm_msg_hdr) + PLDM_SET_STATE_EFFECTER_STATES_RESP_BYTES>;
+
+TEST_F(StateEffecterManagerTest, setStateEffecterRequestsOneOffsetTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+    effecter->getterActive = false;
+
+    SetStateResp resp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_STATES, PLDM_SUCCESS};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    sensorManager.requestStateEffecterSet(effecter, 1, 2);
+
+    /* Only the requested effecter offset is set */
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_EFFECTER_STATES, sentCommand(0));
+    const std::vector<uint8_t> expectedPayload{
+        0x5,
+        0x0, // effecterID
+        2,   // compositeEffecterCount
+        PLDM_NO_CHANGE,
+        0x0,
+        PLDM_REQUEST_SET,
+        0x2};
+    auto& request = mockTerminusManager.sentRequests.at(0);
+    EXPECT_EQ(expectedPayload,
+              std::vector<uint8_t>(request.begin() + sizeof(pldm_msg_hdr),
+                                   request.end()));
+
+    /* The setter ends and the getter reads back the state */
+    EXPECT_FALSE(effecter->setterActive);
+    EXPECT_TRUE(effecter->getterActive);
+}
+
+TEST_F(StateEffecterManagerTest, setStateEffecterFailureRestartsGetterTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+    effecter->getterActive = false;
+
+    SetStateResp resp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_STATES, PLDM_ERROR};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    sensorManager.requestStateEffecterSet(effecter, 0, 1);
+
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_FALSE(effecter->setterActive);
+    EXPECT_TRUE(effecter->getterActive);
+}
+
+TEST_F(StateEffecterManagerTest, setStateEffecterRejectsImpossibleStateTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+    effecter->getterActive = false;
+
+    EXPECT_THROW(
+        sensorManager.requestStateEffecterSet(effecter, 0, 3),
+        sdbusplus::xyz::openbmc_project::Common::Error::InvalidArgument);
+    EXPECT_TRUE(mockTerminusManager.sentRequests.empty());
+    EXPECT_FALSE(effecter->setterActive);
+}
+
+TEST_F(StateEffecterManagerTest, setStateEffecterRejectsBusyEffecterTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+
+    /* The getter is active after discovery until its first read */
+    EXPECT_THROW(sensorManager.requestStateEffecterSet(effecter, 0, 1),
+                 sdbusplus::xyz::openbmc_project::Common::Error::Unavailable);
+
+    effecter->getterActive = false;
+    effecter->setterActive = true;
+    EXPECT_THROW(sensorManager.requestStateEffecterSet(effecter, 0, 1),
+                 sdbusplus::xyz::openbmc_project::Common::Error::Unavailable);
+
+    EXPECT_TRUE(mockTerminusManager.sentRequests.empty());
 }

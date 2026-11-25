@@ -40,6 +40,43 @@ class StateSetBase
      *  @param[in] presentState - DSP0249 state value of the state set
      */
     virtual void setPresentState(uint8_t presentState) = 0;
+
+    /** @brief Hands a state which a D-Bus client requests to the state
+     *         effecter which controls the state set. It throws an sdbusplus
+     *         error to reject the request.
+     */
+    using StateRequester = std::function<void(uint8_t state)>;
+
+    /** @brief Set the hand-off to the state effecter which controls the
+     *         state set
+     *
+     *  @param[in] stateRequester - the hand-off to the state effecter
+     */
+    void setStateRequester(StateRequester stateRequester)
+    {
+        requester = std::move(stateRequester);
+    }
+
+  protected:
+    /** @brief Request the state which a D-Bus client set the property of the
+     *         state set to
+     *  @details A state set calls this from the setter of its writable
+     *           property, with the state which the value maps to, and keeps
+     *           the property unchanged: the property follows the state which
+     *           the state effecter reads back from the terminus.
+     *
+     *  @param[in] state - the state of the state set
+     *  @throws sdbusplus::xyz::openbmc_project::Common::Error::NotAllowed
+     *          when no state effecter controls the state set, or the error
+     *          of the state effecter which rejects the request
+     */
+    void requestState(uint8_t state);
+
+  private:
+    /** @brief The hand-off to the state effecter which controls the state
+     *         set, empty when no state effecter controls it
+     */
+    StateRequester requester;
 };
 
 class StateSets;
