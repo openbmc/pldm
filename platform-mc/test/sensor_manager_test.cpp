@@ -238,13 +238,17 @@ class StateSensorManagerTest : public testing::Test
         termini[tid]->pdrs.push_back(entityAuxNamesPdr);
         termini[tid]->pdrs.push_back(entityAssociationPdr);
 
-        /* SetStateSensorEnables is only sent to a terminus which supports it */
+        /* SetStateSensorEnables and SetStateEffecterEnables are only sent to
+         * a terminus which supports them
+         */
         std::vector<uint8_t> pldmCmds(
             PLDM_MAX_TYPES * (PLDM_MAX_CMDS_PER_TYPE / 8));
-        auto idx = PLDM_PLATFORM * (PLDM_MAX_CMDS_PER_TYPE / 8) +
-                   (PLDM_SET_STATE_SENSOR_ENABLES / 8);
-        pldmCmds[idx] = pldmCmds[idx] |
-                        (1 << (PLDM_SET_STATE_SENSOR_ENABLES % 8));
+        for (uint8_t cmd :
+             {PLDM_SET_STATE_SENSOR_ENABLES, PLDM_SET_STATE_EFFECTER_ENABLES})
+        {
+            auto idx = PLDM_PLATFORM * (PLDM_MAX_CMDS_PER_TYPE / 8) + (cmd / 8);
+            pldmCmds[idx] = pldmCmds[idx] | (1 << (cmd % 8));
+        }
         termini[tid]->setSupportedCommands(pldmCmds);
 
         termini[tid]->parseTerminusPDRs();
@@ -837,4 +841,116 @@ TEST_F(StateSensorManagerTest, pollingReadsStateSensorsOfANumericOnlyBudgetTest)
     EXPECT_EQ(0x2, sentSensorId(2));
     EXPECT_EQ(PLDM_GET_SENSOR_READING, sentCommand(3));
     EXPECT_EQ(0x3, sentSensorId(3));
+}
+
+/** @brief A state effecter of a composite of two effecters on the power
+ *         supply entity of terminus @p tid
+ *
+ *  @param[in] tid - the terminus ID of the effecter
+ *  @param[in] effecterId - the effecter ID the PDR reports
+ *  @param[in] effecterInit - the `effecterInit` the PDR reports
+ */
+static std::shared_ptr<pldm::platform_mc::StateEffecter> makeStateEffecter(
+    pldm_tid_t tid, uint16_t effecterId, uint8_t effecterInit)
+{
+    auto info = std::make_shared<pldm::platform_mc::StateEffecterInfo>();
+    info->pdr.effecter_id = effecterId;
+    info->pdr.effecter_init = effecterInit;
+    info->pdr.composite_effecter_count = 2;
+    info->componentInfo.emplace_back(1, pldm::pdr::PossibleStates{1, 2});
+    info->componentInfo.emplace_back(3, pldm::pdr::PossibleStates{1, 2});
+
+    auto stateSets = std::make_shared<pldm::platform_mc::StateSets>(
+        "/xyz/openbmc_project/inventory/system/Effecter_Entity");
+    return std::make_shared<pldm::platform_mc::StateEffecter>(
+        tid, std::move(info), std::move(stateSets));
+}
+
+using EffecterEnableState = pldm::platform_mc::StateEffecter::EnableState;
+
+TEST_F(StateSensorManagerTest, setStateEffecterEnablesTest)
+{
+    discoverTerminus({});
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_ENABLE_EFFECTER);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_ENABLES, PLDM_SUCCESS};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res =
+        stdexec::sync_wait(sensorManager.setStateEffecterEnables(effecter));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_SUCCESS, std::get<0>(*res));
+    EXPECT_EQ(EffecterEnableState::enabled, effecter->enableState);
+
+    /* Every composite effecter is enabled with its event messages disabled */
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_EFFECTER_ENABLES, sentCommand(0));
+    const std::vector<uint8_t> expectedPayload{
+        0x5,
+        0x0, // effecterID
+        2,   // compositeEffecterCount
+        PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_ENABLED,
+        PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_DISABLE_EVENTS,
+        PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_ENABLED,
+        PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_DISABLE_EVENTS};
+    auto& request = mockTerminusManager.sentRequests.at(0);
+    EXPECT_EQ(expectedPayload,
+              std::vector<uint8_t>(request.begin() + sizeof(pldm_msg_hdr),
+                                   request.end()));
+}
+
+TEST_F(StateSensorManagerTest, setStateEffecterEnablesErrorTest)
+{
+    discoverTerminus({});
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_ENABLE_EFFECTER);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_ENABLES, PLDM_ERROR};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res =
+        stdexec::sync_wait(sensorManager.setStateEffecterEnables(effecter));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_ERROR, std::get<0>(*res));
+
+    /* The terminus answered, so the effecter is not enabled again */
+    EXPECT_EQ(EffecterEnableState::rejected, effecter->enableState);
+}
+
+TEST_F(StateSensorManagerTest, pollingEnablesEffecterOnceTest)
+{
+    discoverTerminus({});
+    auto enableEffecter = makeStateEffecter(tid, 0x5, PLDM_ENABLE_EFFECTER);
+    auto noInitEffecter = makeStateEffecter(tid, 0x6, PLDM_NO_INIT);
+    termini[tid]->stateEffecters.push_back(enableEffecter);
+    termini[tid]->stateEffecters.push_back(noInitEffecter);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_ENABLES, PLDM_SUCCESS};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+
+    /* Only the effecter whose PDR asks for it is enabled */
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_EFFECTER_ENABLES, sentCommand(0));
+    EXPECT_EQ(0x5, sentSensorId(0));
+    EXPECT_EQ(EffecterEnableState::enabled, enableEffecter->enableState);
+    EXPECT_EQ(EffecterEnableState::pending, noInitEffecter->enableState);
+
+    /* An enabled effecter is not enabled again on the next pass */
+    res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(1, mockTerminusManager.sentRequests.size());
 }
