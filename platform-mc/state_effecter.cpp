@@ -56,5 +56,40 @@ bool StateEffecter::hasExposedOffset() const
         [](const StateSetBase* stateSet) { return stateSet != nullptr; });
 }
 
+void StateEffecter::updatePresentState(uint8_t offset, uint8_t opState,
+                                       uint8_t presentState)
+{
+    if (offset >= componentStateSets.size())
+    {
+        lg2::error(
+            "Terminus ID {TID}: State effecter {EFFECTERID} has no effecter offset {OFFSET}.",
+            "TID", tid, "EFFECTERID", info->pdr.effecter_id, "OFFSET", offset);
+        return;
+    }
+
+    auto stateSet = componentStateSets[offset];
+    if (!stateSet)
+    {
+        return;
+    }
+
+    if (opState != EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING &&
+        opState != EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING)
+    {
+        return;
+    }
+
+    if (!info->componentInfo[offset].second.contains(presentState))
+    {
+        lg2::error(
+            "Terminus ID {TID}: Effecter offset {OFFSET} of state effecter {EFFECTERID} reports state {STATE}, which is not one of its possible states.",
+            "TID", tid, "OFFSET", offset, "EFFECTERID", info->pdr.effecter_id,
+            "STATE", presentState);
+        return;
+    }
+
+    stateSet->setPresentState(presentState);
+}
+
 } // namespace platform_mc
 } // namespace pldm

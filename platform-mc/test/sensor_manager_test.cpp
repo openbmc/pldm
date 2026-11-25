@@ -376,6 +376,10 @@ TEST_F(StateEffecterManagerTest, pollingEnablesEffecterOnceTest)
     discoverTerminus();
     auto enableEffecter = makeStateEffecter(tid, 0x5, PLDM_ENABLE_EFFECTER);
     auto noInitEffecter = makeStateEffecter(tid, 0x6, PLDM_NO_INIT);
+
+    /* Only the enable command is under test, so neither effecter is read */
+    enableEffecter->getterActive = false;
+    noInitEffecter->getterActive = false;
     termini[tid]->stateEffecters.push_back(enableEffecter);
     termini[tid]->stateEffecters.push_back(noInitEffecter);
 
@@ -400,4 +404,150 @@ TEST_F(StateEffecterManagerTest, pollingEnablesEffecterOnceTest)
     res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
     ASSERT_TRUE(res.has_value());
     EXPECT_EQ(1, mockTerminusManager.sentRequests.size());
+}
+
+/** @brief A GetStateEffecterStates response of a composite of two effecters
+ *         in state 1, with the given operational states
+ */
+static std::array<uint8_t, sizeof(pldm_msg_hdr) + 2 + (3 * 2)>
+    makeStateEffecterStatesResp(uint8_t opState0, uint8_t opState1)
+{
+    return {
+        0x0,      0x02, PLDM_GET_STATE_EFFECTER_STATES, PLDM_SUCCESS,
+        2,        // compositeEffecterCount
+        opState0, // effecterOperationalState[0]
+        0x1,      // pendingState[0]
+        0x1,      // presentState[0]
+        opState1, // effecterOperationalState[1]
+        0x1,      // pendingState[1]
+        0x1       // presentState[1]
+    };
+}
+
+TEST_F(StateEffecterManagerTest, getStateEffecterStatesStopsGetterTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+
+    auto resp =
+        makeStateEffecterStatesResp(EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                                    EFFECTER_OPER_STATE_DISABLED);
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res =
+        stdexec::sync_wait(sensorManager.getStateEffecterStates(effecter));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(PLDM_SUCCESS, std::get<0>(*res));
+
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_STATE_EFFECTER_STATES, sentCommand(0));
+    EXPECT_EQ(0x5, sentEffecterId(0));
+
+    /* No composite effecter has an update pending, so the getter stops */
+    EXPECT_FALSE(effecter->getterActive);
+}
+
+TEST_F(StateEffecterManagerTest, pollingReadsEffecterWhileUpdatePendingTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+    termini[tid]->stateEffecters.push_back(effecter);
+
+    auto pendingResp =
+        makeStateEffecterStatesResp(EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+                                    EFFECTER_OPER_STATE_ENABLED_UPDATEPENDING);
+    auto settledResp = makeStateEffecterStatesResp(
+        EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+        EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING);
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(pendingResp.data()),
+                  sizeof(pendingResp)));
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(settledResp.data()),
+                  sizeof(settledResp)));
+
+    /* The getter starts after discovery, and an update pending on one
+     * composite effecter keeps it for the next pass
+     */
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_STATE_EFFECTER_STATES, sentCommand(0));
+    EXPECT_TRUE(effecter->getterActive);
+
+    res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    ASSERT_EQ(2, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_GET_STATE_EFFECTER_STATES, sentCommand(1));
+    EXPECT_FALSE(effecter->getterActive);
+
+    /* A stopped getter sends nothing on the following pass */
+    res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(2, mockTerminusManager.sentRequests.size());
+}
+
+TEST_F(StateEffecterManagerTest, pollingStopsGetterOnFailedReadTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_NO_INIT);
+    termini[tid]->stateEffecters.push_back(effecter);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_GET_STATE_EFFECTER_STATES_MIN_RESP_BYTES>
+        resp{0x0, 0x02, PLDM_GET_STATE_EFFECTER_STATES, PLDM_ERROR, 0};
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(resp.data()), sizeof(resp)));
+
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_FALSE(effecter->getterActive);
+
+    res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    EXPECT_EQ(1, mockTerminusManager.sentRequests.size());
+}
+
+TEST_F(StateEffecterManagerTest, pollingReadsEffecterAfterEnableTest)
+{
+    discoverTerminus();
+    auto effecter = makeStateEffecter(tid, 0x5, PLDM_ENABLE_EFFECTER);
+    termini[tid]->stateEffecters.push_back(effecter);
+
+    /* SetStateEffecterEnables gets no response, so the effecter is not read
+     * until the command completes
+     */
+    auto res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    ASSERT_EQ(1, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_EFFECTER_ENABLES, sentCommand(0));
+    EXPECT_TRUE(effecter->getterActive);
+
+    std::array<uint8_t, sizeof(pldm_msg_hdr) +
+                            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_RESP_BYTES>
+        enableResp{0x0, 0x02, PLDM_SET_STATE_EFFECTER_ENABLES, PLDM_SUCCESS};
+    auto readResp = makeStateEffecterStatesResp(
+        EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING,
+        EFFECTER_OPER_STATE_ENABLED_NOUPDATEPENDING);
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(enableResp.data()),
+                  sizeof(enableResp)));
+    EXPECT_EQ(PLDM_SUCCESS,
+              mockTerminusManager.enqueueResponse(
+                  std::start_lifetime_as<pldm_msg>(readResp.data()),
+                  sizeof(readResp)));
+
+    res = stdexec::sync_wait(sensorManager.doSensorPollingTask(tid));
+    ASSERT_TRUE(res.has_value());
+    ASSERT_EQ(3, mockTerminusManager.sentRequests.size());
+    EXPECT_EQ(PLDM_SET_STATE_EFFECTER_ENABLES, sentCommand(1));
+    EXPECT_EQ(PLDM_GET_STATE_EFFECTER_STATES, sentCommand(2));
+    EXPECT_FALSE(effecter->getterActive);
 }
