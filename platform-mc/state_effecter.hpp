@@ -90,6 +90,31 @@ class StateEffecter
     /** @brief Whether any effecter offset of the effecter is exposed */
     bool hasExposedOffset() const;
 
+    /** @brief Whether the initialization agent has to enable the composite
+     *         effecters, `effecterInit` of `Table 90 - State Effecter PDR`
+     *         of DSP0248 v1.3.0
+     */
+    bool requiresEnable() const
+    {
+        return info->pdr.effecter_init == PLDM_ENABLE_EFFECTER;
+    }
+
+    /** @brief Whether SetStateEffecterEnables has to be sent for the
+     *         composite effecters of the effecter
+     */
+    enum class EnableState : uint8_t
+    {
+        pending,  /**< the command has not completed for the effecter */
+        enabled,  /**< the terminus enabled the composite effecters */
+        rejected, /**< the terminus answered with an error completion code,
+                       so the command is not sent for the effecter again */
+    };
+
+    /** @brief Outcome of SetStateEffecterEnables for the composite effecters
+     *         of the effecter
+     */
+    EnableState enableState = EnableState::pending;
+
   private:
     /** @brief Terminus ID which the effecter belongs to */
     pldm_tid_t tid;

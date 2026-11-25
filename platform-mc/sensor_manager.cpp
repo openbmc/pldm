@@ -227,6 +227,12 @@ exec::task<int> SensorManager::doSensorPollingTask(pldm_tid_t tid)
             co_await manager->oemPollForPlatformEvent(tid);
         }
 
+        rc = co_await enableStateEffecters(tid, terminus);
+        if (rc != PLDM_SUCCESS)
+        {
+            co_return rc;
+        }
+
         sd_event_now(event.get(), CLOCK_MONOTONIC, &t1);
 
         auto& numericSensors = terminus->numericSensors;
@@ -415,6 +421,162 @@ exec::task<int> SensorManager::getSensorReading(
 
     sensor->updateReading(true, true, value);
     co_return completionCode;
+}
+
+exec::task<int> SensorManager::enableStateEffecters(
+    pldm_tid_t tid, std::shared_ptr<Terminus> terminus)
+{
+    if (!terminus)
+    {
+        lg2::error("Call `enableStateEffecters` with null `terminus` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    if (!terminus->doesSupportCommand(PLDM_PLATFORM,
+                                      PLDM_SET_STATE_EFFECTER_ENABLES))
+    {
+        co_return PLDM_SUCCESS;
+    }
+
+    /* Copy the list, as the terminus may drop its effecters while a command
+     * is in flight
+     */
+    auto stateEffecters = terminus->stateEffecters;
+    for (const auto& effecter : stateEffecters)
+    {
+        if (!effecter || !effecter->requiresEnable() ||
+            effecter->enableState != StateEffecter::EnableState::pending)
+        {
+            continue;
+        }
+
+        auto rc = co_await setStateEffecterEnables(effecter);
+        if (!isSensorPollTimerRunning(tid))
+        {
+            co_return PLDM_ERROR;
+        }
+
+        if (rc == PLDM_SUCCESS)
+        {
+            lg2::info(
+                "Terminus ID {TID}: Enabled the composite effecters of state effecter {ID}.",
+                "TID", tid, "ID", effecter->getEffecterId());
+        }
+        else
+        {
+            lg2::error(
+                "Failed to enable state effecter {ID} of terminus {TID}, error: {RC}",
+                "ID", effecter->getEffecterId(), "TID", tid, "RC", rc);
+        }
+    }
+
+    co_return PLDM_SUCCESS;
+}
+
+exec::task<int> SensorManager::setStateEffecterEnables(
+    std::shared_ptr<StateEffecter> effecter)
+{
+    if (!effecter)
+    {
+        lg2::error(
+            "Call `setStateEffecterEnables` with null `effecter` pointer.");
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    auto tid = effecter->getTid();
+    auto effecterId = effecter->getEffecterId();
+    auto compositeEffecterCount = effecter->getCompositeEffecterCount();
+    if (!compositeEffecterCount ||
+        compositeEffecterCount >
+            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_MAX_COUNT)
+    {
+        lg2::error(
+            "State effecter {ID} of terminus ID {TID} has an out of range composite effecter count {COUNT}.",
+            "ID", effecterId, "TID", tid, "COUNT", compositeEffecterCount);
+        co_return PLDM_ERROR_INVALID_DATA;
+    }
+
+    /* The state effecters are read by polling, so event messages are
+     * disabled for every composite effecter.
+     */
+    pldm_platform_set_state_effecter_enables_req req{};
+    req.effecter_id = effecterId;
+    req.composite_effecter_count = compositeEffecterCount;
+    for (uint8_t offset = 0; offset < compositeEffecterCount; offset++)
+    {
+        req.op_fields[offset].effecter_operational_state =
+            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_ENABLED;
+        req.op_fields[offset].event_msg_enable =
+            PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_DISABLE_EVENTS;
+    }
+
+    Request request(sizeof(pldm_msg_hdr) +
+                    PLDM_PLATFORM_SET_STATE_EFFECTER_ENABLES_REQ_MAX_BYTES);
+    auto requestMsg = new (request.data()) pldm_msg;
+    size_t payloadLength = request.size() - sizeof(pldm_msg_hdr);
+    auto rc = encode_pldm_platform_set_state_effecter_enables_req(
+        0, &req, requestMsg, &payloadLength);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to encode request SetStateEffecterEnables for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+    request.resize(sizeof(pldm_msg_hdr) + payloadLength);
+
+    if (!getAvailableState(tid))
+    {
+        lg2::info(
+            "Terminus ID {TID} is not available for PLDM request from {NOW}.",
+            "TID", tid, "NOW", pldm::utils::getCurrentSystemTime());
+        co_await stdexec::just_stopped();
+    }
+
+    const pldm_msg* responseMsg = nullptr;
+    size_t responseLen = 0;
+    rc = co_await terminusManager.sendRecvPldmMsg(tid, request, &responseMsg,
+                                                  &responseLen);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to send SetStateEffecterEnables message for terminus {TID}, effecter Id {ID}, error {RC}",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (!isSensorPollTimerRunning(tid))
+    {
+        co_return PLDM_ERROR;
+    }
+
+    pldm_platform_set_state_effecter_enables_resp resp{};
+    rc = decode_pldm_platform_set_state_effecter_enables_resp(
+        responseMsg, responseLen, &resp);
+    if (rc)
+    {
+        lg2::error(
+            "Failed to decode response SetStateEffecterEnables for terminus ID {TID}, effecter Id {ID}, error {RC}.",
+            "TID", tid, "ID", effecterId, "RC", rc);
+        co_return rc;
+    }
+
+    if (resp.completion_code != PLDM_SUCCESS)
+    {
+        /* The terminus answered, so the command is not sent for the effecter
+         * again. Only a transport failure leaves the effecter pending.
+         */
+        effecter->enableState = StateEffecter::EnableState::rejected;
+        lg2::error(
+            "Error : SetStateEffecterEnables for terminus ID {TID}, effecter Id {ID}, complete code {CC}.",
+            "TID", tid, "ID", effecterId, "CC", resp.completion_code);
+    }
+    else
+    {
+        effecter->enableState = StateEffecter::EnableState::enabled;
+    }
+
+    co_return resp.completion_code;
 }
 
 } // namespace platform_mc
