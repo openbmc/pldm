@@ -4,6 +4,7 @@
 #include "dbus_impl_fru.hpp"
 #include "entity.hpp"
 #include "numeric_sensor.hpp"
+#include "state_effecter.hpp"
 
 #include <libpldm/fru.h>
 #include <libpldm/pdr.h>
@@ -167,6 +168,9 @@ class Terminus
     /** @brief A list of numericSensors */
     std::vector<std::shared_ptr<NumericSensor>> numericSensors{};
 
+    /** @brief A list of stateEffecters */
+    std::vector<std::shared_ptr<StateEffecter>> stateEffecters{};
+
     /** @brief The flag indicates that the terminus FIFO contains a large
      *         message that will require a multipart transfer via the
      *         PollForPlatformEvent command
@@ -238,6 +242,15 @@ class Terminus
      */
     std::shared_ptr<StateSets> getEntityStateSets(const EntityKey& key);
 
+    /** @brief Get the State Effecter object by effecter ID
+     *
+     *  @param[in] id - effecter ID
+     *
+     *  @return state effecter object, nullptr when the terminus has no state
+     *          effecter with an exposed effecter offset of that ID
+     */
+    std::shared_ptr<StateEffecter> getStateEffecterObject(EffecterID id);
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
@@ -302,6 +315,14 @@ class Terminus
     std::shared_ptr<SensorAuxiliaryNames> parseCompactNumericSensorNames(
         const std::vector<uint8_t>& pdrData);
 
+    /** @brief Parse the state effecter PDRs
+     *
+     *  @param[in] pdrData - the response PDRs from GetPDR command
+     *  @return pointer to parsed state effecter info struct
+     */
+    std::shared_ptr<StateEffecterInfo> parseStateEffecterPDR(
+        const std::vector<uint8_t>& pdrData);
+
     /** @brief Parse the Entity Association PDRs
      *
      *  @param[in] pdrData - the response PDRs from GetPDR command
@@ -336,6 +357,14 @@ class Terminus
      *  @return the entity name, nullopt when no PDR names the entity
      */
     std::optional<std::string> findEntityName(const EntityKey& key);
+
+    /** @brief Construct the StateEffecter class of every state effecter of
+     *         the terminus, recording the state sets which the state
+     *         effecters control on each entity D-Bus object. A state
+     *         effecter whose entity has no D-Bus object, or which exposes no
+     *         effecter offset, is not constructed.
+     */
+    void addStateEffecters();
 
     /** @brief Get the D-Bus object name of an entity, the last element of
      *         its object path
@@ -471,6 +500,9 @@ class Terminus
     /** @brief Compact Numeric Sensor PDR list */
     std::vector<std::shared_ptr<pldm_compact_numeric_sensor_pdr>>
         compactNumericSensorPdrs{};
+
+    /** @brief State Effecter PDR list */
+    std::vector<std::shared_ptr<StateEffecterInfo>> stateEffecterPdrs{};
 
     /** @brief Iteration to loop through sensor PDRs when adding sensors */
     SensorID sensorPdrIt = 0;

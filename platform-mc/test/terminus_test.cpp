@@ -1387,3 +1387,171 @@ TEST(TerminusTest, getEntityStateSetsTest)
     /* An entity with no D-Bus object has no state sets */
     EXPECT_EQ(nullptr, t1.getEntityStateSets({unmappedEntityType, 1, 1}));
 }
+
+TEST(TerminusTest, addStateEffecterTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    constexpr uint16_t unmappedEntityType = 0xFFFF;
+    constexpr pldm::pdr::StateSetId firstStateSetId = 1;
+    constexpr pldm::pdr::StateSetId secondStateSetId = 3;
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> entityAuxNamesPdr{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number = 1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
+    // State Effecter PDR: effecterID = 1, on a power supply entity, with two
+    // state sets which have no writable D-Bus property
+    std::vector<uint8_t> stateEffecterPdr{
+        0x2, 0x0, 0x0,
+        0x0,                     // record handle
+        0x1,                     // PDRHeaderVersion
+        PLDM_STATE_EFFECTER_PDR, // PDRType
+        0x0,
+        0x0,                     // recordChangeNumber
+        23,
+        0,                       // dataLength
+        /* State Effecter PDR Data*/
+        0,
+        0,            // PLDMTerminusHandle
+        0x1,
+        0x0,          // effecterID = 1
+        PLDM_ENTITY_POWER_SUPPLY,
+        0,            // entityType power supply
+        1,
+        0,            // entityInstanceNumber = 1
+        0x1,
+        0x0,          // containerID = 1
+        0,
+        0,            // effecterSemanticID
+        PLDM_NO_INIT, // effecterInit
+        false,        // effecterDescriptionPDR
+        2,            // compositeEffecterCount
+        firstStateSetId,
+        0x0,          // stateSetID[0]
+        0x1,          // possibleStatesSize[0]
+        0x6,          // possibleStates[0] = {1,2}
+        secondStateSetId,
+        0x0,          // stateSetID[1]
+        0x1,          // possibleStatesSize[1]
+        0x1e          // possibleStates[1] = {1,2,3,4}
+    };
+
+    // State Effecter PDR: effecterID = 2, on an entity type with no Inventory
+    // Item interface, so no D-Bus object is published for its entity
+    std::vector<uint8_t> unresolvedStateEffecterPdr{
+        0x3, 0x0, 0x0,
+        0x0,                     // record handle
+        0x1,                     // PDRHeaderVersion
+        PLDM_STATE_EFFECTER_PDR, // PDRType
+        0x0,
+        0x0,                     // recordChangeNumber
+        19,
+        0,                       // dataLength
+        /* State Effecter PDR Data*/
+        0,
+        0,            // PLDMTerminusHandle
+        0x2,
+        0x0,          // effecterID = 2
+        0xff,
+        0xff,         // entityType with no Item interface
+        1,
+        0,            // entityInstanceNumber = 1
+        0x1,
+        0x0,          // containerID = 1
+        0,
+        0,            // effecterSemanticID
+        PLDM_NO_INIT, // effecterInit
+        false,        // effecterDescriptionPDR
+        1,            // compositeEffecterCount
+        firstStateSetId,
+        0x0,          // stateSetID[0]
+        0x1,          // possibleStatesSize[0]
+        0x6           // possibleStates[0] = {1,2}
+    };
+
+    // Entity Association PDR: the terminus entity contains the power supply
+    // and the entity type with no Inventory Item interface
+    std::vector<uint8_t> entityAssociationPdr{
+        0x5, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x16,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0x1,
+        0x0,  // containerID = 1
+        0x0,  // associationType physical
+        0x80,
+        0x0,  // container entityType system software
+        0x1,
+        0x0,  // container entity instance number = 1
+        0x0,
+        0x0,  // container entity container ID = 0
+        2,    // numberOfChildren
+        PLDM_ENTITY_POWER_SUPPLY,
+        0x0,  // child entityType power supply
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x1,
+        0x0,  // child entity container ID = 1
+        0xff,
+        0xff, // child entityType with no Item interface
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x1,
+        0x0   // child entity container ID = 1
+    };
+
+    t1.pdrs.emplace_back(entityAuxNamesPdr);
+    t1.pdrs.emplace_back(stateEffecterPdr);
+    t1.pdrs.emplace_back(unresolvedStateEffecterPdr);
+    t1.pdrs.emplace_back(entityAssociationPdr);
+    t1.parseTerminusPDRs();
+
+    auto entity = t1.getEntity({PLDM_ENTITY_POWER_SUPPLY, 1, 1});
+    ASSERT_NE(nullptr, entity);
+    EXPECT_EQ(nullptr, t1.getEntity({unmappedEntityType, 1, 1}));
+
+    /* No state set has a writable D-Bus property yet, so the state effecter
+     * of the resolved entity exposes no effecter offset and is not
+     * constructed, and the state effecter of the unresolved entity has no
+     * D-Bus object to be exposed on
+     */
+    EXPECT_TRUE(t1.stateEffecters.empty());
+    EXPECT_EQ(nullptr, t1.getStateEffecterObject(1));
+    EXPECT_EQ(nullptr, t1.getStateEffecterObject(2));
+
+    /* A state set which no state effecter exposes is not recorded as
+     * controlled
+     */
+    auto stateSets = entity->getStateSets();
+    EXPECT_FALSE(stateSets->isEffecterStateSet(firstStateSetId));
+    EXPECT_FALSE(stateSets->isEffecterStateSet(secondStateSetId));
+}

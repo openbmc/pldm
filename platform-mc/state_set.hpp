@@ -8,6 +8,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <string_view>
 
@@ -56,6 +57,14 @@ class StateSets;
  */
 std::unique_ptr<StateSetBase> createStateSet(StateSets& stateSets,
                                              StateSetId stateSetId);
+
+/** @brief Whether a D-Bus client can set the D-Bus property of the given state
+ *         set, so that a state effecter can control the state set
+ *
+ *  @param[in] stateSetId - DSP0249 state set ID
+ *  @return true when the state set has a writable D-Bus property
+ */
+bool isWritableStateSet(StateSetId stateSetId);
 
 /** @class StateSets
  *  @brief The state set interfaces implemented on one D-Bus object.
@@ -127,6 +136,29 @@ class StateSets
         return *std::static_pointer_cast<Intf>(intf);
     }
 
+    /** @brief Record that a state effecter controls the state set
+     *
+     *  A state set is controlled by one state effecter, so a state set which
+     *  is already recorded is not recorded again.
+     *
+     *  @param[in] stateSetId - DSP0249 state set ID
+     *  @return true when the state set is recorded, false when a state
+     *          effecter already controls it
+     */
+    bool addEffecterStateSet(StateSetId stateSetId)
+    {
+        return effecterStateSets.insert(stateSetId).second;
+    }
+
+    /** @brief Whether a state effecter controls the state set
+     *
+     *  @param[in] stateSetId - DSP0249 state set ID
+     */
+    bool isEffecterStateSet(StateSetId stateSetId) const
+    {
+        return effecterStateSets.contains(stateSetId);
+    }
+
   private:
     /** @brief The D-Bus object path the interfaces are implemented on */
     std::string path;
@@ -139,6 +171,9 @@ class StateSets
 
     /** @brief The interface of each implemented state set */
     std::map<StateSetId, std::unique_ptr<StateSetBase>> stateSets;
+
+    /** @brief The state sets which a state effecter controls */
+    std::set<StateSetId> effecterStateSets;
 };
 
 } // namespace platform_mc

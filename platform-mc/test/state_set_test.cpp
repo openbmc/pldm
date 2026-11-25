@@ -32,3 +32,17 @@ TEST(StateSets, initInterfaceOnce)
     });
     EXPECT_TRUE(intf.functional());
 }
+
+TEST(StateSets, effecterControlsStateSetOnce)
+{
+    pldm::platform_mc::StateSets stateSets(
+        "/xyz/openbmc_project/inventory/system/Entity_3");
+
+    constexpr pldm::pdr::StateSetId controlled = 1;
+    constexpr pldm::pdr::StateSetId uncontrolled = 2;
+
+    EXPECT_TRUE(stateSets.addEffecterStateSet(controlled));
+    EXPECT_FALSE(stateSets.addEffecterStateSet(controlled));
+    EXPECT_TRUE(stateSets.isEffecterStateSet(controlled));
+    EXPECT_FALSE(stateSets.isEffecterStateSet(uncontrolled));
+}
