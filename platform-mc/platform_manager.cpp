@@ -89,23 +89,27 @@ exec::task<int> PlatformManager::initTerminus()
             continue;
         }
 
+        bool pdrsFetched = true;
         if (terminus->doesSupportCommand(PLDM_PLATFORM, PLDM_GET_PDR))
         {
             auto rc = co_await getPDRs(terminus);
-            if (rc)
-            {
-                lg2::error(
-                    "Failed to fetch PDRs for terminus with TID: {TID}, error: {ERROR}",
-                    "TID", tid, "ERROR", rc);
-                continue; // Continue to next terminus
-            }
 
             if (!termini.contains(tid))
             {
                 continue;
             }
 
-            terminus->parseTerminusPDRs();
+            if (rc)
+            {
+                lg2::error(
+                    "Failed to fetch PDRs for terminus with TID: {TID}, error: {ERROR}",
+                    "TID", tid, "ERROR", rc);
+                pdrsFetched = false;
+            }
+            else
+            {
+                terminus->parseTerminusPDRs();
+            }
         }
 
         /**
@@ -160,7 +164,8 @@ exec::task<int> PlatformManager::initTerminus()
                 "TID", tid, "ERROR", rc);
         }
 
-        terminus->initialized = true;
+        // Stays uninitialized so the next discovery retries GetPDR.
+        terminus->initialized = pdrsFetched;
         if (manager)
         {
             manager->startSensorPolling(tid);
