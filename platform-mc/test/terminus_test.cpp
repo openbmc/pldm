@@ -1300,3 +1300,90 @@ TEST(TerminusTest, getPldmEntityNameTest)
             << "Failed for entity type " << entityType;
     }
 }
+
+TEST(TerminusTest, getEntityStateSetsTest)
+{
+    auto event = sdeventplus::Event::get_default();
+    auto t1 = pldm::platform_mc::Terminus(
+        1, 1 << PLDM_BASE | 1 << PLDM_PLATFORM, event);
+
+    constexpr uint16_t terminusEntityType = 0x8003;
+    constexpr uint16_t unmappedEntityType = 0xFFFF;
+
+    // Entity Auxiliary Names PDR: terminus name "S0"
+    std::vector<uint8_t> entityAuxNamesPdr{
+        0x1, 0x0, 0x0,
+        0x0,                             // record handle
+        0x1,                             // PDRHeaderVersion
+        PLDM_ENTITY_AUXILIARY_NAMES_PDR, // PDRType
+        0x1,
+        0x0,                             // recordChangeNumber
+        0x11,
+        0,                               // dataLength
+        /* Entity Auxiliary Names PDR Data*/
+        3,
+        0x80, // entityType system software
+        0x1,
+        0x0,  // Entity instance number = 1
+        0,
+        0,    // Overall system
+        0,    // shared Name Count one name only
+        01,   // nameStringCount
+        0x65, 0x6e, 0x00,
+        0x00, // Language Tag "en"
+        0x53, 0x00, 0x30, 0x00,
+        0x00  // Entity Name "S0"
+    };
+
+    // Entity Association PDR: the terminus entity contains a power supply
+    std::vector<uint8_t> entityAssociationPdr{
+        0x2, 0x0, 0x0,
+        0x0,                         // record handle
+        0x1,                         // PDRHeaderVersion
+        PLDM_PDR_ENTITY_ASSOCIATION, // PDRType
+        0x1,
+        0x0,                         // recordChangeNumber
+        0x10,
+        0,                           // dataLength
+        /* Entity Association PDR Data*/
+        0x1,
+        0x0,  // containerID = 1
+        0x0,  // associationType physical
+        0x3,
+        0x80, // container entityType system software
+        0x1,
+        0x0,  // container entity instance number = 1
+        0x0,
+        0x0,  // container entity container ID = 0
+        1,    // numberOfChildren
+        PLDM_ENTITY_POWER_SUPPLY,
+        0x0,  // child entityType power supply
+        0x1,
+        0x0,  // child entity instance number = 1
+        0x1,
+        0x0   // child entity container ID = 1
+    };
+
+    t1.pdrs.emplace_back(entityAuxNamesPdr);
+    t1.pdrs.emplace_back(entityAssociationPdr);
+    t1.parseTerminusPDRs();
+
+    /* An entity with a D-Bus object resolves to the state sets of its object
+     */
+    auto entity = t1.getEntity({PLDM_ENTITY_POWER_SUPPLY, 1, 1});
+    ASSERT_NE(nullptr, entity);
+    auto entityStateSets =
+        t1.getEntityStateSets({PLDM_ENTITY_POWER_SUPPLY, 1, 1});
+    ASSERT_NE(nullptr, entityStateSets);
+    EXPECT_EQ(entity->getStateSets(), entityStateSets);
+
+    /* The overall terminus entity resolves to the state sets of the terminus
+     * inventory path
+     */
+    auto terminusStateSets = t1.getEntityStateSets({terminusEntityType, 1, 0});
+    ASSERT_NE(nullptr, terminusStateSets);
+    EXPECT_NE(entityStateSets, terminusStateSets);
+
+    /* An entity with no D-Bus object has no state sets */
+    EXPECT_EQ(nullptr, t1.getEntityStateSets({unmappedEntityType, 1, 1}));
+}

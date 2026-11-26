@@ -230,6 +230,14 @@ class Terminus
      */
     std::string getEntityInventoryPath(const EntityKey& key);
 
+    /** @brief Get the state set interfaces of the D-Bus object of an entity
+     *
+     *  @param[in] key - the entity identification fields of the PDR
+     *  @return the state set interfaces of the entity D-Bus object, nullptr
+     *          when no D-Bus object is published for the entity
+     */
+    std::shared_ptr<StateSets> getEntityStateSets(const EntityKey& key);
+
   private:
     /** @brief Find the Terminus Name from the Entity Auxiliary name list
      *         The Entity Auxiliary name list is entityAuxiliaryNamesTbl.
@@ -425,6 +433,11 @@ class Terminus
 
     /** @brief A list of entity D-Bus objects */
     std::vector<std::shared_ptr<Entity>> entities{};
+
+    /** @brief The state set interfaces of the terminus inventory path, which
+     *         the overall terminus entity is exposed by
+     */
+    std::shared_ptr<StateSets> terminusStateSets{};
 
     /** @brief Terminus name */
     EntityName terminusName{};

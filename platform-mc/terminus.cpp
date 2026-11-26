@@ -185,6 +185,7 @@ bool Terminus::createInventoryPath(std::string tName, uint16_t entityType)
             std::make_unique<InventoryItemIntf>(bus, inventoryPath.c_str());
         terminusItemIntf->prettyName(tName);
         terminusItemIntf->present(true);
+        terminusStateSets = std::make_shared<StateSets>(inventoryPath);
         return true;
     }
     catch (const sdbusplus::exception_t& e)
@@ -569,6 +570,24 @@ std::string Terminus::getEntityInventoryPath(const EntityKey& key)
     }
 
     return inventoryPath;
+}
+
+std::shared_ptr<StateSets> Terminus::getEntityStateSets(const EntityKey& key)
+{
+    auto entity = getEntity(key);
+    if (entity)
+    {
+        return entity->getStateSets();
+    }
+
+    /* The overall terminus entity is exposed by the terminus inventory path */
+    auto terminusEntityKey = findTerminusEntityKey();
+    if (terminusEntityKey && key == *terminusEntityKey)
+    {
+        return terminusStateSets;
+    }
+
+    return nullptr;
 }
 
 void Terminus::addNextSensorFromPDRs()
