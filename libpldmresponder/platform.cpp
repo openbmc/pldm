@@ -390,7 +390,9 @@ Response Handler::platformEventMessage(const pldm_msg* request,
                     oneFailedHandler = true;
                 }
             }
-            if (oneFailedHandler)
+            // The final completion code may be success even if an earlier
+            // handler failed. Successful responses must include Status below.
+            if (oneFailedHandler && rc != PLDM_SUCCESS)
             {
                 return CmdHandler::ccOnlyResponse(request, rc);
             }
