@@ -22,6 +22,30 @@
       },
       "revId": "3d066df930818b5a081b83a05554ced765d5370a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "879e0aa9_4e55b187",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-26T05:37:30Z",
+      "side": 1,
+      "message": "Ack, made the messages clearer",
+      "parentUuid": "cb6f0b94_1a44ece4",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 76
+      },
+      "revId": "3d066df930818b5a081b83a05554ced765d5370a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
