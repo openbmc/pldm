@@ -449,7 +449,8 @@ std::string getUtcTimestamp()
  * @return true for a non-empty file matching size, or an unknown maximum.
  */
 bool downloadPldmFileToPath(
-    EventThreadCalls& eventCalls, const CrashlogFile& file,
+    EventThreadCalls& eventCalls, platform_mc::Manager& manager,
+    const std::string& terminusName, const CrashlogFile& file,
     const fs::path& outputPath, uint64_t expectedSize, uint64_t& totalBytes)
 {
     fs::create_directories(outputPath.parent_path());
@@ -467,31 +468,70 @@ bool downloadPldmFileToPath(
     std::optional<size_t> bytesRead;
     try
     {
-        auto transfer = eventCalls.call([descriptor = file.descriptor,
-                                         expectedSize] {
-            auto live = descriptor.lock();
-            if (!live)
+        // Only retry local availability checks, never an Open already sent.
+        const auto deadline =
+            std::chrono::steady_clock::now() + std::chrono::seconds(5);
+        using Transfer =
+            std::pair<int, std::shared_ptr<platform_mc::FileDescriptor>>;
+        std::optional<Transfer> transfer;
+        for (unsigned retry = 0; retry <= 2; ++retry)
+        {
+            transfer = eventCalls.call(
+                [descriptor = file.descriptor, expectedSize, deadline, &manager,
+                 &terminusName]() -> std::optional<Transfer> {
+                    auto live = descriptor.lock();
+                    if (!live)
+                    {
+                        throw std::runtime_error(
+                            "Crashlog file descriptor removed");
+                    }
+                    if (std::chrono::steady_clock::now() >= deadline ||
+                        !manager.getActiveEidByName(terminusName))
+                    {
+                        return std::nullopt;
+                    }
+                    auto stream =
+                        live->startFileTransfer(0, expectedSize, false);
+                    return Transfer{stream.fd, std::move(live)};
+                });
+            if (transfer)
             {
-                throw std::runtime_error("Crashlog file descriptor removed");
+                break;
             }
-            auto stream =
-                live->startFileTransfer(0, expectedSize, false);
-            return std::pair{stream.fd, std::move(live)};
-        });
+            if (retry == 0)
+            {
+                lg2::warning("PLDM crashlog file {FILE} endpoint unavailable; "
+                             "waiting up to 5 seconds before Open",
+                             "FILE", file.name);
+            }
+            // Only the collector worker sleeps; pldmd keeps processing
+            // recovery.
+            std::this_thread::sleep_until(
+                std::min(deadline, std::chrono::steady_clock::now() +
+                                       std::chrono::seconds(2)));
+        }
+        if (!transfer)
+        {
+            lg2::error("PLDM crashlog file {FILE} endpoint unavailable after "
+                       "5-second Open wait",
+                       "FILE", file.name);
+            fs::remove(outputPath);
+            return false;
+        }
         try
         {
-            pldm::utils::CustomFD inputFd(transfer.first);
+            pldm::utils::CustomFD inputFd(transfer->first);
             bytesRead = copyFdToFile(inputFd(), outputFd());
         }
         catch (...)
         {
-            eventCalls.call([live = std::move(transfer.second)]() mutable {
+            eventCalls.call([live = std::move(transfer->second)]() mutable {
                 live.reset();
             });
             throw;
         }
         // Release the last FileDescriptor reference on its owning thread.
-        eventCalls.call([live = std::move(transfer.second)]() mutable {
+        eventCalls.call([live = std::move(transfer->second)]() mutable {
             live.reset();
         });
     }
@@ -677,7 +717,8 @@ int notifySystemDump(uint32_t sourceId, uint64_t size)
  * @return PLDM completion code.
  */
 int collectCrashlogFile(
-    EventThreadCalls& eventCalls, const CrashlogFile& file,
+    EventThreadCalls& eventCalls, platform_mc::Manager& manager,
+    const std::string& terminusName, const CrashlogFile& file,
     size_t fileInstance, const fs::path& workDir,
     std::vector<CollectedCrashlogFile>& collectedFiles)
 {
@@ -704,8 +745,8 @@ int collectCrashlogFile(
 
     auto outputPath = workDir / file.name;
     uint64_t bytesRead = 0;
-    if (!downloadPldmFileToPath(eventCalls, file, outputPath, *currentSize,
-                                bytesRead))
+    if (!downloadPldmFileToPath(eventCalls, manager, terminusName, file,
+                                outputPath, *currentSize, bytesRead))
     {
         return PLDM_ERROR;
     }
@@ -758,8 +799,9 @@ int collectCrashlog(EventThreadCalls& eventCalls, platform_mc::Manager& manager,
 
     for (size_t index = 0; index < files.size(); ++index)
     {
-        auto rc = collectCrashlogFile(eventCalls, files[index], index, workDir,
-                                       collectedFiles);
+        auto rc =
+            collectCrashlogFile(eventCalls, manager, terminusName, files[index],
+                                index, workDir, collectedFiles);
         if (rc != PLDM_SUCCESS)
         {
             fs::remove_all(workDir);
