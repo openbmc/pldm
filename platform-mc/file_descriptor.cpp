@@ -639,6 +639,10 @@ FileSize FileDescriptor::getFileSize() const
     }
 
     double fileSize = sizeSensor->getSensorValue();
+    lg2::info("PLDM file size sensor {SENSOR} for terminus {TID}, "
+              "file {ID}: value {SIZE}, maximum {MAX}",
+              "SENSOR", sizeSensor->sensorId, "TID", tid, "ID", identifier,
+              "SIZE", fileSize, "MAX", maxSize);
     if (std::isfinite(fileSize))
     {
         return fileSize;
