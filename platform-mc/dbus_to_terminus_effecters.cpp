@@ -205,7 +205,7 @@ bool HostEffecterParser::isHostOn(void)
             currHostState != Stages::SystemSetup &&
             currHostState != Stages::OEM)
         {
-            info(
+            debug(
                 "Remote terminus is not up/active, current remote terminus state is: '{CURRENT_HOST_STATE}'",
                 "CURRENT_HOST_STATE", currHostState);
             return false;
