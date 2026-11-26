@@ -16,6 +16,24 @@
       "message": "Doesm ERROR_UNSUPPORTED_PLDM_CMD makes sense if only PLDM T5 requests are routed here.",
       "revId": "f3ab3732e97338dfc2241caab0f3f7f4b94630f2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baaf46f6_f5cc1d15",
+        "filename": "fw-update/device_updater.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1002297
+      },
+      "writtenOn": "2026-11-26T05:36:42Z",
+      "side": 1,
+      "message": "Ack, updated the return code",
+      "parentUuid": "bf0cff1d_3b08fd4c",
+      "revId": "f3ab3732e97338dfc2241caab0f3f7f4b94630f2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
