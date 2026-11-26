@@ -446,7 +446,7 @@ std::string getUtcTimestamp()
  * @param[in] outputPath Local file path to write.
  * @param[in] expectedSize Number of bytes expected from the file.
  * @param[out] totalBytes Number of bytes copied from PLDM transfer stream.
- * @return true when the transfer completed and byte count matched.
+ * @return true for a non-empty file matching size, or an unknown maximum.
  */
 bool downloadPldmFileToPath(
     EventThreadCalls& eventCalls, const CrashlogFile& file,
@@ -509,18 +509,45 @@ bool downloadPldmFileToPath(
     }
     if (expectedSize != 0 && totalBytes != expectedSize)
     {
-        lg2::error("PLDM file {FILE} size mismatch: expected {EXPECTED}, "
-                   "downloaded {ACTUAL}",
-                   "FILE", file.name, "EXPECTED", expectedSize,
-                   "ACTUAL", totalBytes);
-        fs::remove(outputPath);
-        return false;
+        // Endpoint recovery can invalidate the size sensor, causing
+        // getFileSize() to return the EID's advertised maximum, UINT32_MAX.
+        // This fallback is a capacity, not the current length; retain
+        // the downloaded crashlog rather than reject it on that basis.
+        if (expectedSize == UINT32_MAX)
+        {
+            lg2::warning("PLDM file {FILE} size mismatch: expected {EXPECTED}, "
+                         "downloaded {ACTUAL}; expected size unavailable, "
+                         "continuing crashlog collection",
+                         "FILE", file.name, "EXPECTED", expectedSize, "ACTUAL",
+                         totalBytes);
+        }
+        else
+        {
+            lg2::error("PLDM file {FILE} size mismatch: expected {EXPECTED}, "
+                       "downloaded {ACTUAL}; rejecting crashlog file",
+                       "FILE", file.name, "EXPECTED", expectedSize, "ACTUAL",
+                       totalBytes);
+            fs::remove(outputPath);
+            return false;
+        }
     }
 
     lg2::info("Downloaded {BYTES} bytes from PLDM file {FILE} to {PATH}",
               "BYTES", totalBytes, "FILE", file.name, "PATH",
               outputPath.string());
     return true;
+}
+
+/** @brief Classify the size comparison, not file content integrity.
+ * UINT32_MAX may be the FileMaximumSize fallback, so it cannot verify size.
+ */
+const char* crashlogSizeCheck(uint64_t expectedSize, uint64_t copiedSize)
+{
+    if (expectedSize == 0 || expectedSize == UINT32_MAX)
+    {
+        return "unverified";
+    }
+    return expectedSize == copiedSize ? "match" : "mismatch";
 }
 
 /** @brief Write metadata describing the crashlog archive contents.
@@ -559,6 +586,10 @@ bool writeCrashlogManifest(const fs::path& manifestPath,
                  << ".expected_size=" << files[index].expectedSize << '\n';
         manifest << "file." << index
                  << ".copied_size=" << files[index].copiedSize << '\n';
+        manifest << "file." << index << ".size_check="
+                 << crashlogSizeCheck(files[index].expectedSize,
+                                      files[index].copiedSize)
+                 << '\n';
     }
 
     return manifest.good();
