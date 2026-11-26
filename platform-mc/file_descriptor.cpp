@@ -13,8 +13,10 @@
 #include <phosphor-logging/lg2.hpp>
 #include <xyz/openbmc_project/Common/error.hpp>
 
+#include <cmath>
 #include <cstring>
 #include <iostream>
+#include <limits>
 #include <string>
 
 PHOSPHOR_LOG2_USING;
@@ -615,6 +617,34 @@ sdbusplus::message::unix_fd FileDescriptor::open(size_t offset, size_t length,
     dbusClientFd.reset();
     dbusClientFd.emplace(clientFd.fd);
     return clientFd;
+}
+
+std::optional<FileSize> FileDescriptor::getSensorFileSize() const
+{
+    if (!sizeSensor)
+    {
+        sizeSensor =
+            terminusManager.getFileSizeMonitoringSensor(tid, entityInfo);
+        if (!sizeSensor)
+        {
+            // Discovery can complete after the ready event. Retry association
+            // on the next sample; the advertised maximum is not a sample.
+            return std::nullopt;
+        }
+    }
+
+    const double size = sizeSensor->getSensorValue();
+    lg2::info("PLDM file size sensor {SENSOR} for terminus {TID}, "
+              "file {ID}: value {SIZE}, maximum {MAX}",
+              "SENSOR", sizeSensor->sensorId, "TID", tid, "ID", identifier,
+              "SIZE", size, "MAX", maxSize);
+    if (!std::isfinite(size) || size < 0 ||
+        size > std::numeric_limits<FileSize>::max() || size > maxSize ||
+        std::trunc(size) != size)
+    {
+        return std::nullopt;
+    }
+    return static_cast<FileSize>(size);
 }
 
 FileSize FileDescriptor::getFileSize() const

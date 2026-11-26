@@ -68,8 +68,15 @@ class FileDescriptor : virtual public FileInterface
     sdbusplus::message::unix_fd startFileTransfer(size_t offset, size_t length,
                                                   bool exclusivity);
 
-    /** @brief Get current file size from the associated size sensor. */
+    /** @brief Get protocol file size, including the File PDR fallback. */
     FileSize getFileSize() const;
+
+    /** @brief Read a current size sample without a FileMaximumSize fallback.
+     *  @return Sensor byte count, or nullopt if association/sample is
+     * unavailable. Zero is a valid sample but does not indicate a ready
+     * crashlog. Call on the descriptor's owning event thread.
+     */
+    std::optional<FileSize> getSensorFileSize() const;
 
     /** @brief Get the PLDM file name from the File Descriptor PDR. */
     const std::string& getFileName() const

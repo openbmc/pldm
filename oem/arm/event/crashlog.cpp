@@ -363,10 +363,11 @@ std::vector<CrashlogFile> waitForCrashlogFiles(EventThreadCalls& eventCalls,
 /** @brief Wait until a crashlog file reports a non-zero size.
  *
  * The file-ready state event can arrive before the file size sensor has been
- * updated. Poll the FileDescriptor size helper before initiating transfer.
+ * updated. Poll the associated size sensor before initiating transfer; a File
+ * PDR maximum is not evidence that crashlog data is ready.
  *
  * @param[in] file Crashlog FileDescriptor object.
- * @return Non-zero file size, zero on timeout, or std::nullopt on read failure.
+ * @return Non-zero sensor byte count, or std::nullopt on timeout/removal.
  */
 std::optional<uint32_t> waitForNonZeroCurrentSize(
     EventThreadCalls& eventCalls, const CrashlogFile& file)
@@ -386,11 +387,12 @@ std::optional<uint32_t> waitForNonZeroCurrentSize(
                 {
                     throw std::runtime_error("Crashlog file descriptor removed");
                 }
-                return live->getFileSize();
+                return live->getSensorFileSize();
             });
         }
         catch (const std::exception& e)
         {
+            currentSize.reset();
             lg2::debug("Failed to read size from PLDM crashlog file "
                        "{FILE}: {ERROR}",
                        "FILE", file.name, "ERROR", e);
@@ -411,13 +413,13 @@ std::optional<uint32_t> waitForNonZeroCurrentSize(
         if (retry == 0)
         {
             lg2::info("PLDM crashlog file {FILE} size is not available; "
-                      "waiting for the file provider to publish size",
+                      "waiting for a valid non-zero sensor reading",
                       "FILE", file.name);
         }
         std::this_thread::sleep_for(crashlogSizeRetryDelay);
     }
 
-    return currentSize;
+    return std::nullopt;
 }
 
 /** @brief Return a compact UTC timestamp for crashlog archive naming.
@@ -725,7 +727,7 @@ int collectCrashlogFile(
     auto currentSize = waitForNonZeroCurrentSize(eventCalls, file);
     if (!currentSize)
     {
-        lg2::error("Failed to read size from PLDM crashlog file {FILE}",
+        lg2::error("No valid non-zero size for PLDM crashlog file {FILE}",
                    "FILE", file.name);
         return PLDM_ERROR_NOT_READY;
     }
