@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1343db5_14c5ad2e",
+        "filename": "common/endpoint.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3af8f21_a44f25ad",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5bb78af_2d9b6bbd",
@@ -31,6 +49,24 @@
       "writtenOn": "2026-11-12T14:38:36Z",
       "side": 1,
       "message": "nit: Can we move this to `common/types.hpp` where `MCTP_START_VALID_EID` currently exists?",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1823089_db0ff625",
+        "filename": "requester/endpoint_registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5bb78af_2d9b6bbd",
       "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae8a8f0_1f83b167",
+        "filename": "requester/endpoint_registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "fixed",
+      "parentUuid": "c48a64c0_6037cee1",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4eef80ce_f6d7f09f",
@@ -65,6 +119,24 @@
       "writtenOn": "2026-11-12T16:44:37Z",
       "side": 1,
       "message": "Please add a log here as well",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b54015_8d716e65",
+        "filename": "requester/endpoint_registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4eef80ce_f6d7f09f",
       "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -86,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eef46c3_abd80ea2",
+        "filename": "requester/endpoint_registry.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a7e3c10_9ff638da",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15743b25_7f91ba24",
@@ -99,6 +189,24 @@
       "writtenOn": "2026-11-12T14:38:36Z",
       "side": 1,
       "message": "nit: Can you move this to `requester/test/test_peer_id_policy.hpp` where a similar class already exists?",
+      "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff2d2117_5d31f02e",
+        "filename": "requester/test/endpoint_registry_test.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:36:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15743b25_7f91ba24",
       "revId": "6a818979accbe59826cc7e65cfecd049650eb729",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
