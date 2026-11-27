@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53157ed7_7ce5f038",
+        "filename": "common/transport.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:40:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d24c7f2f_84202c41",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9482c0a5_6eae916f",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d1e310f_33fc2ea8",
+        "filename": "common/transport.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:40:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9482c0a5_6eae916f",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b29b1aea_f03dba70",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-11-12T14:57:19Z",
       "side": 1,
       "message": "Can you add a doxygen comment please?",
+      "revId": "89b141e56c439408c940f322912430c473bf8eb0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa0acf9_eb641af7",
+        "filename": "common/transport.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1002607
+      },
+      "writtenOn": "2026-11-27T05:40:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b29b1aea_f03dba70",
       "revId": "89b141e56c439408c940f322912430c473bf8eb0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
