@@ -37,6 +37,7 @@ owners:
 - manojkiran.eda@gmail.com
 
 reviewers:
+- meghanav@ami.com
 - pavithrabarithaya07@gmail.com
 - thu@os.amperecomputing.com
 
@@ -77,3 +78,6 @@ openbmc:
 - name: Thu Nguyen
   email: thu@os.amperecomputing.com
   discord: Thu Nguyen
+- name: Meghana Vangapandu
+  email: meghanav@ami.com
+  discord: meghanavangapandu_69334
